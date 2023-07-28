@@ -1,0 +1,150 @@
+#section {
+  width: 100%;
+  height: 2000px;
+
+  position: relative;
+}
+
+#first {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-image: url("background/info.png");
+  color: white;
+  background-repeat:no-repeat;
+  background-size: contain;
+}
+
+.container {
+  display: grid;
+  width: 100%;
+
+  grid-template-rows: 200px 350px;
+}
+
+/* 첫 번째 그리드 */
+#firstSection {
+  width:100%;
+
+  margin-top: 150px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+#firstSection img {
+  margin: 20px 0px 20px 80px;
+}
+
+#search {
+  margin-right: 80px;
+}
+
+#search button {
+  background-color: black;
+  color: white;
+}
+
+/* 두 번째 그리드 */
+#secondSection {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+#secondSection img {
+  width: 1064px;
+  height: 92px;
+
+  margin-top: 100px;
+}
+
+/* 세 번째 섹션 */
+#thirdSection {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#thirdSectionBox {
+  width: 80%;
+  height: 1200px;
+
+  box-shadow: 10px 10px 20px black;
+  background-color: white;
+}
+
+.boxSection {
+  display: grid;
+  width: 100%;
+
+  margin-top: 100px;
+  margin-left: 100px;
+
+  grid-template-columns: 25% 60%;
+}
+
+.boxSection h1 {
+  font-size: 2em;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.boxSection p {
+  font-size: 1.3em;
+}
+
+.box {
+  width: 350px;
+  height: 200px;
+  background-color: black;
+}
+
+.boxbox {
+  text-align: left;
+}
+
+.title {
+  color: black;
+}
+
+.content {
+  color: black;
+}
+
+#secondBoxSection {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#moreBox {
+  position: absolute;
+
+  width: 70%;
+  height: 60px;
+
+  margin-top: 280px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  background-color: #161616;
+}

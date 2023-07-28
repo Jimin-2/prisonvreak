@@ -2,6 +2,7 @@
 아예 시발 사라지게 하고 싶다... 왜 찾아도
 나오지 않는 걸까? 힘들다... */
 
+
 #header {
   display: flex;
   justify-content: space-between;
@@ -40,4 +41,25 @@
 
 .nav > li {
   margin-left: 80px;
+}
+
+/* linkone */
+.link-1 a:before, .link-1 a:after {
+  content: '';
+  border-bottom: solid 1px white;
+  position: absolute;
+  bottom: 0;
+  width: 0;
+}
+
+.link-1 a:before { left: 0; }
+.link-1 a:after { right: 0; }
+
+.link-1 a:hover:before, .link-1 a:hover:after {
+  width: 50%;
+}
+
+.link-1 a:before, .link-1 a:after {
+  -webkit-transition: all 0.2s ease;
+          transition: all 0.2s ease;
 }

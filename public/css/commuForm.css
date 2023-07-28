@@ -1,0 +1,222 @@
+hr {
+  width: 90%;
+  color: #cccccc;
+
+  margin-bottom: 20px;
+}
+
+#section {
+  width: 100%;
+  height: 1700px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+#layout {
+  width: 1000px;
+  height: 1500px;
+  margin-top: 100px;
+  margin-bottom: 100px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+/* 다음글, 목록 */
+#first {
+  width: 900px;
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#first button {
+  width: 50px;
+  height: 30px;
+
+  margin-left: 10px;
+}
+
+/* 제목 */
+#second {
+  width: 900px;
+  height: 60px;
+
+  margin-bottom: 30px;
+}
+
+#second h1 {
+  font-size: 1.5em;
+  color: #161616;
+}
+
+#second h4 {
+  font-size: 0.8em;
+  color: gray;
+
+  margin-bottom: 10px;
+}
+
+/* 프로필 */
+#third {
+  width: 900px;
+  height: 50px;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-wrap: wrap;
+
+  margin-bottom: 20px;
+}
+
+.profile {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+
+  background-color: black;
+}
+
+.ninkname {
+  font-size: 1em;
+}
+
+.date {
+  font-size: 0.5em;
+}
+
+.commentEdit {
+  font-size: 0.5em;
+}
+
+/* 내용 */
+#fourth {
+  width: 900px;
+  height: 600px;
+}
+
+#fourth p {
+  font-size: 1em;
+}
+
+/* 댓글보기 */
+#fifth {
+  width: 900px;
+  height: 150px;
+}
+
+#fifth h2 {
+  margin-bottom: 10px;
+}
+
+.fifthFifth {
+  width: 100%;
+  height: auto;
+
+  margin-bottom: 15px;
+}
+
+#fifthFifthComment {
+  width: 100%;
+  height: auto;
+
+  font-size: 0.5em;
+  margin-top: 5px;
+}
+
+#writewrite {
+  width: 900px;
+  height: 50px;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+}
+
+#fifthComment {
+  width: 900px;
+  height: 150px;
+
+  margin-left: 50px;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+/* 댓글입력 */
+#sixth {
+  width: 900px;
+  height: 200px;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+#commentArea {
+  width: 900px;
+  height: 80px;
+
+  margin-top: 10px;
+}
+
+.submit {
+  width: 900px;
+  height: auto;
+  
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+}
+
+.submit button {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.submit p {
+  font-size: 0.7em;
+  color: #161616;
+}
+
+.button {
+  display: block;
+  float: left;
+  width: 50px;
+  height: 30px;
+  line-height: 3px;
+  color: #161616;
+  border-radius: 5px;
+}
+
+.btnFade.btnBlack:hover {
+  background: #161616;
+  color: white;
+}

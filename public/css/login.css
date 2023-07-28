@@ -67,6 +67,10 @@ body {
   justify-content: space-between;
 }
 
+#rememberCheck a:link {
+  color: #161616;
+}
+
 #signUp {
   font-size: 12px;
   color: #bebebe;
