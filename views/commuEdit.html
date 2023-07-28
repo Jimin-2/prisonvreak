@@ -14,7 +14,7 @@
   <link rel="stylesheet" type="text/css" href="css/header.css">
   <link rel="stylesheet" type="text/css" href="css/footer.css">
 
-  <link rel="stylesheet" type="text/css" href="css/login.css">
+  <link rel="stylesheet" type="text/css" href="css/commuEdit.css">
 
   <!-- JavaScript -->
   <script src="javascript/index.js"></script>
@@ -42,7 +42,31 @@
 
   <!-- Section -->
   <section id="section">
+    <div id="layout">
+      <div id="sectionTitle">
+        <h1> 커뮤니티 글 수정하기 </h1>
+        <hr>
+      </div>
 
+      <div id="titleForm" class="form">
+        <h4> 제목 </h4>
+        <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+      </div>
+
+      <div id="contentForm" class="form">
+        <h4> 내용 </h4>
+        <textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요"></textarea>
+      </div>
+
+      <div id="tagForm" class="form">
+        <h4> 태그 </h4>
+        <input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
+      </div>
+
+      <div id="btn">
+        <button class="custom-btn btn-16"> 수정하기 </button>
+      </div>
+    </div>
   </section>
 
   <!-- footer -->

@@ -28,22 +28,21 @@
   <!-- header -->
   <div id="header">
     <div class="logo">
-      <img src="/img/LOGO.png" onclick="location.href='/auth/index'" style="cursor: pointer;">
+      <img src="/img/LOGO.png">
     </div>
       <ul class="nav">
-        <li class="link-1"><a href="/auth/gameinfo"> 게임정보 </a></li>
-        <li class="link-1"><a href="/auth/info"> 공지사항 </a></li>
-        <li class="link-1"><a href="/auth/commu"> 커뮤니티 </a></li>
-        <li class="link-1"><a href="/auth/rank"> 랭킹 </a></li>
-        <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
-        <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
+        <li><a href="gameinfo.html"> 게임정보 </a></li>
+        <li><a href="info.html"> 공지사항 </a></li>
+        <li><a href="commu.html"> 커뮤니티 </a></li>
+        <li><a href="rank.html"> 랭킹 </a></li>
+        <li><a href="customer.html"> 고객지원 </a></li>
+        <li><a href="/auth/login"> 로그인 </a></li>
       </ul>
   </div>
 
   <!-- Section -->
   <section id="section">
     <div id="loginTool">
-      <form action="/auth/register_process" method="post">
       <h1> SIGN UP </h1>
 
           <!-- ID -->
@@ -53,36 +52,33 @@
         </div>
 
           <!-- Nickname -->
-        <div class="inputBox" id="nickname">
+        <div class="inputBox" id="Nickname">
           <p> Nickname </p>
-          <input type="text" name="nickname" required>
+          <input type="text" name="Nickname" required>
         </div>
 
           <!-- ID -->
-        <div class="inputBox" id="id">
+        <div class="inputBox" id="ID">
           <p> ID </p>
-          <input type="text" name="id" required>
-          <div> <button> 중복 확인 </button> </div>
-          <p> 사용 가능한 아이디입니다. </p> <!-- 중복된 아이디입니다. -->
+          <input type="text" name="ID" required>
         </div>
 
           <!-- Password -->
         <div class="inputBox" id="password">
           <p> Password </p>
-          <input type="password" name="pwd" required>
+          <input type="password" name="Password" required>
         </div>
 
           <!-- Ppassword -->
-        <div class="inputBox" id="confirmPassword">
+        <div class="inputBox" id="Ppassword">
           <p> Password++ </p>
-          <input type="password" name="pwd2" required>
-          <p> 일치합니다. </p> <!-- 일치하지 않습니다. -->
+          <input type="password" name="Ppassword" required>
         </div>
 
           <!-- Phone -->
-        <div class="inputBox" id="phone">
+        <div class="inputBox" id="Phone">
           <p> Phone </p>
-          <input type="text" name="phone" required>
+          <input type="text" name="Phone" required>
         </div>
 
           <!-- email -->
@@ -91,15 +87,12 @@
           <input type="email" name="email" required> <br>
           <button> 인증번호 받기 </button>
           <input type="number" placeholder="인증번호 입력">
-          <p> 인증번호 유효 시간 </p>
-          <p> 인증번호가 유효합니다. </p> <!-- 유효하지 않습니다. -->
         </div>
 
         <!-- submit -->
         <div class="submit">
           <button> SIGN UP </button>
         </div>
-      </form>
 
         <div id="signin"> <a href="/auth/login"> Sign In </a> </div>
 

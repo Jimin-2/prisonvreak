@@ -10,10 +10,8 @@
 
     ** index 해결해야할 점 **
     #1. 유튜브, VR Download 컨텐츠 화면 비율이 줄어들어도 픽스되게. absolute 때문에 그러는 거 같은데 다른 방법 찾는 게 나을 듯
-    
     #2. VR Download를 다른 컨텐츠로 바꿔야 함. (Download 창 안 만든다고 했으니까...)
     #3. index의 공지사항, 커뮤니티가 꽤나 비루함. 레이아웃 새로 설정해야할 거 같음. (새 디자인) --일단 보류--
-
     #4. 애니메이션, 세부적인 요소는 추후 추가하는 것으로
     #5. logo를 바꿔야겠다.
 
@@ -23,14 +21,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
   <!--CSS-->
-  <link rel="stylesheet" type="text/css" href="css/main.css">
-  <link rel="stylesheet" type="text/css" href="css/header.css">
-  <link rel="stylesheet" type="text/css" href="css/footer.css">
+  <link rel="stylesheet" type="text/css" href="../public/css/main.css">
+  <link rel="stylesheet" type="text/css" href="../public/css/header.css">
+  <link rel="stylesheet" type="text/css" href="../public/css/footer.css">
 
-  <link rel="stylesheet" type="text/css" href="css/index.css">
+  <link rel="stylesheet" type="text/css" href="../public/css/index.css">
 
   <!-- JavaScript -->
-  <script src="javascript/index.js"></script>
+  <script src="../public/javascript/index.js"></script>
 
   <!-- 반응형 웹 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -45,15 +43,15 @@
   <!-- header -->
   <div id="header">
     <div class="logo">
-      <img src="/img/LOGO.png" onclick="location.href='index.html'" style="cursor: pointer;">
+      <img src="/img/LOGO.png">
     </div>
-      <ul class="nav"> 
-        <li class="link-1"><a href="gameinfo.html"> 게임정보 </a></li>
-        <li class="link-1"><a href="info.html"> 공지사항 </a></li>
-        <li class="link-1"><a href="commu.html"> 커뮤니티 </a></li>
-        <li class="link-1"><a href="rank.html"> 랭킹 </a></li>
-        <li class="link-1"><a href="customer.html"> 고객지원 </a></li>
-        <li class="link-1"><a href="login.html"> 로그인 </a></li>
+      <ul class="nav">
+        <li><a href="gameinfo.html"> 게임정보 </a></li>
+        <li><a href="info.html"> 공지사항 </a></li>
+        <li><a href="commu.html"> 커뮤니티 </a></li>
+        <li><a href="rank.html"> 랭킹 </a></li>
+        <li><a href="customer.html"> 고객지원 </a></li>
+        <li><a href="../public/login.html"> 로그인 </a></li>
       </ul>
   </div>
 
@@ -64,7 +62,7 @@
     <div id="firstSection">
       <div id="firstGrid">
           <img id="pvLogo" src="/img/prisonVreak.png">
-          <button class="btn" onclick="location.href='game.html'"> button </button>
+          <img id="playButton" src="/img/playButton.png">
 
             <!-- youtube -->
             <iframe id="youtube" width="860" height="420" src="https://www.youtube.com/embed/i5nUufn_FmE" 

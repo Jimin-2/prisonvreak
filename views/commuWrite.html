@@ -14,7 +14,7 @@
   <link rel="stylesheet" type="text/css" href="css/header.css">
   <link rel="stylesheet" type="text/css" href="css/footer.css">
 
-  <link rel="stylesheet" type="text/css" href="css/customer.css">
+  <link rel="stylesheet" type="text/css" href="css/commuWrite.css">
 
   <!-- JavaScript -->
   <script src="javascript/index.js"></script>
@@ -24,52 +24,58 @@
 
 </head>
 
+</script>
+
 <body>
   <!-- header -->
   <div id="header">
     <div class="logo">
       <img src="/img/LOGO.png" onclick="location.href='index.html'" style="cursor: pointer;">
     </div>
-      <ul class="nav"> 
-        <li class="link-1"><a href="gameinfo.html"> 게임정보 </a></li>
-        <li class="link-1"><a href="info.html"> 공지사항 </a></li>
-        <li class="link-1"><a href="commu.html"> 커뮤니티 </a></li>
-        <li class="link-1"><a href="rank.html"> 랭킹 </a></li>
-        <li class="link-1"><a href="customer.html"> 고객지원 </a></li>
-        <li class="link-1"><a href="login.html"> 로그인 </a></li>
-      </ul>
+    <ul class="nav">
+      <li class="link-1"><a href="gameinfo.html"> 게임정보 </a></li>
+      <li class="link-1"><a href="info.html"> 공지사항 </a></li>
+      <li class="link-1"><a href="commu.html"> 커뮤니티 </a></li>
+      <li class="link-1"><a href="rank.html"> 랭킹 </a></li>
+      <li class="link-1"><a href="customer.html"> 고객지원 </a></li>
+      <li class="link-1"><a href="login.html"> 로그인 </a></li>
+    </ul>
   </div>
 
   <!-- Section -->
   <section id="section">
-    <div id="first">
-      <img src="/img/logoCustomer.png">
-      <a> 010-1234-5678 / yeeunj356@gmail.com </a>
+
+    <div id="layout">
+      <div id="sectionTitle">
+        <h1> 커뮤니티 글쓰기 </h1>
+        <hr>
+      </div>
+
+      <div id="titleForm" class="form">
+        <h4> 제목 </h4>
+        <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+      </div>
+
+      <div id="contentForm" class="form">
+        <h4> 내용 </h4>
+        <textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요"></textarea>
+      </div>
+
+      <div id="tagForm" class="form">
+        <h4> 태그 </h4>
+        <input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
+      </div>
+
+      <div id="btn">
+        <button class="custom-btn btn-16"> 글쓰기 </button>
+      </div>
     </div>
-    <div id="second">
-      <h2> Let the various voices of users be heard. </h2>
-      <h4> 사용자 여러분의 다양한 목소리를 들려주세요. </h4>
 
-      <div id="name">
-        <input class="inputBox" type="text" name="name" placeholder="Your name" required>
-      </div>
-
-      <div id="email">
-        <input class="inputBox" type="text" name="email" placeholder="Your E-mail" required>
-      </div>
-
-      <div id="contents">
-        <textarea class="contentsBox" name="contents" placeholder="Content" required></textarea>
-      </div>
-
-      <button class="custom-btn"> SENT </button>
-
-    </div>
   </section>
 
   <!-- footer -->
   <footer id="footer">
-      <div>
+    <div>
       <div class="can">
         <img src="/img/CAN.png">
       </div>
