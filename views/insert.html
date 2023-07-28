@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insert Post</title>
+</head>
+<body>
+<h1>Insert Post</h1>
+<form action="/board/insert" method="post">
+    <label for="post_title">Title:</label>
+    <input type="text" name="post_title" id="post_title" required>
+    <br>
+    <label for="post_content">Content:</label>
+    <textarea name="post_content" id="post_content" required></textarea>
+    <br>
+    <label for="post_usernum">usernum:</label>
+    <textarea name="post_usernum" id="post_usernum" required></textarea>
+    <br>
+    <label for="post_hit">hit:</label>
+    <textarea name="post_hit" id="post_hit" required></textarea>
+    <br>
+
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

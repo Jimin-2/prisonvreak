@@ -1,0 +1,28 @@
+#footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+  width: 100%;
+  height: 450px;
+
+  font-size: 10px;
+
+  color: white;
+  background-color: #161616;
+}
+
+#footer div {
+  white-space: pre-line;
+}
+
+#age15 img {
+  width: 30px;
+}
+
+/* img 설정 */
+.can > img {
+  padding: 10px 10px 10px 10px;
+}
+

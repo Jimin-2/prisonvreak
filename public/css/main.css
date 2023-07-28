@@ -1,0 +1,20 @@
+* {
+  font-family: 'Noto Sans KR', sans-serif;
+  /* font-family: 'Gowun Batang', serif; */
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin:0px;
+  padding:0px;
+  color: inherit; /* 링크의 색상 제거 */
+}
+
+a:link {
+  color: black;
+}
+
+body {
+  background-image: url("background/background.png");
+  background-repeat:no-repeat;
+  background-size: cover;
+}

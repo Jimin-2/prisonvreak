@@ -1,0 +1,129 @@
+#section {
+  width: 100%;
+  height: 1800px;
+}
+
+#first {
+  height: 725px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-image: url("background/customer.png");
+  color: white;
+  background-repeat:no-repeat;
+  background-size: cover;
+}
+
+#second {
+  height: 1075px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-color: #2D2D2D;
+}
+
+#second h2 {
+  color: white;
+  font-size: 30px;
+}
+
+#second h4 {
+  color: white;
+  margin-bottom: 100px;
+}
+
+.inputBox {
+  width: 1000px;
+  height: 50px;
+
+  box-sizing: border-box;
+  background-color: #484848;
+
+  margin: 10px 0px 40px 0px;
+}
+
+.contentsBox {
+  width: 1000px;
+  height: 400px;
+
+  margin: 20px 0px 40px 0px;
+
+  resize: none;
+
+  box-sizing: border-box;
+  background-color: #484848;
+}
+
+.custom-btn {
+  width: 130px;
+  height: 40px;
+  padding: 10px 25px;
+  border: 2px solid white;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+}
+
+#second button {
+  font-size: 20px;
+  margin: 20px;
+  outline: none;
+}
+
+#second button {
+  position: relative;
+  color: white;
+  z-index: 2;
+  line-height: 40px;
+  padding: 0;
+}
+#second button:hover{
+  border: none;
+}
+#second button:before,
+#second button:after {
+  position: absolute;
+  content: "";
+  width: 0%;
+  height: 0%;
+  border: 2px solid;
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+#second button:before {
+  top: 0;
+  left: 0;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  border-top-color: white;
+  border-left-color: white;
+}
+#second button:after{
+  bottom: 0;
+  right: 0;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: white;
+  border-right-color: white;
+}
+#second button:hover:before,
+#second button:hover:after {
+  border-color: white;
+  height: 100%;
+  width: 100%;
+}

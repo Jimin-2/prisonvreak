@@ -1,0 +1,113 @@
+#section {
+  width: 100%;
+  height: 4069px;
+}
+
+/* ------- 첫 번째 섹션 ------- */
+#firstSection {
+  height: 100vh;
+  font-size: 100px;
+
+  background-image: url("background/index01.png");
+  background-repeat:no-repeat;
+  background-size: cover;
+}
+
+#pvLogo {
+  width: 614px;
+}
+
+#firstGrid {
+  width: 100%;
+  height: 800px;
+  
+  /*중앙(수평/수직)정렬*/
+  display: flex;
+  align-items:center; 
+  justify-content:center;
+
+  /*줄바꿈*/
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  /*background-color: black;*/
+}
+
+#youtube {
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.gameInfo {
+  box-shadow: 20px 20px 20px #000;
+  margin-right: 70px;
+}
+
+/* ------- 두 번째 섹션 ------- */
+#secondSection {
+  height: 1004px;
+  font-size: 100px;
+
+  /*background-color: black;*/
+}
+
+#secondGrid {
+  width: 100%;
+  height: 720px;
+
+  display: flex;
+  align-items:center; 
+  justify-content:center;
+
+  background-image: url("background/index02.png");
+  background-repeat:no-repeat;
+  background-size: cover;
+}
+
+#vrVersion {
+  max-width: 100%;
+  height: auto;
+
+  position: absolute;
+  left: 50%;
+  top: 187%;
+  transform: translate(-50%, -50%);
+}
+
+#vrVersion img {
+  box-shadow: 15px 15px 15px #000;
+}
+
+.vrVersion {
+  
+}
+
+/* ------- 세 번째 섹션 ------- */
+
+#thirdSection{
+  width: 1980px;
+  height: 2248px;
+
+  display: flex;
+  justify-content:center;
+  text-align: center;
+}
+
+#thirdSection h1 {
+  font-size: 30px;
+}
+
+#thFirst {
+  /*background-color: #000;*/
+}
+
+#thSecond {
+  /*background-color: aqua;*/
+}
+
+.thirdGrid {
+  width: 1980px;
+  height: 1124px;
+}

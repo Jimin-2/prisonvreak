@@ -1,0 +1,133 @@
+body {
+  font-size: 14px;
+}
+
+#section {
+  height: 1200px;
+
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  background-image: url("background/bgLogin.png");
+  display: flex;
+  align-items:center; 
+  justify-content:center;
+}
+
+#loginTool {
+  position: relative;
+  margin: 70px auto;
+  width: 500px;
+  height: 800px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 10px 10px 20px #161616;
+
+  box-sizing: border-box;
+}
+
+#loginTool h1{
+  font-size: 32px;
+  color: #161616;
+  margin-bottom: 50px;
+}
+
+.inputBox p {
+  margin-left: 5px;
+  margin-bottom: 3px;
+}
+
+.inputBox input {
+  width: 400px;
+  height: 60px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: white;
+}
+
+#password {
+  margin-top: 10px;
+}
+
+#rememberCheck {
+  width: 400px;
+  font-size: 10px;
+
+  margin-top: 7px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+#signUp {
+  font-size: 12px;
+  color: #bebebe;
+  margin-top: 5px;
+}
+
+#signUp a:link {
+  color: #bebebe;
+}
+
+.submit button {
+
+  width: 400px;
+	height: 50px;
+
+	justify-content: center;
+	display: block;
+
+	color: #fff;
+	background: #161616;
+
+	font-size: 1em;
+	font-weight: bold;
+
+	margin-top: 30px;
+
+	outline: none;
+	border: none;
+	border-radius: 5px;
+
+	cursor: pointer;
+}
+
+#another {
+  width: 400px;
+
+  align-items:center; 
+  justify-content:center;
+
+  margin-top: 60px;
+}
+
+#another p {
+  font-size: 12px;
+
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#logo {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 30px;
+}
+
+#logo img {
+  width: 25px;
+  margin: 0px 70px 0px 70px;
+
+  filter: drop-shadow(2px 2px 2px #161616);
+}
