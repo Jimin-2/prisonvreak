@@ -1,8 +1,9 @@
 const userModel = require('../models/userModel');
-const passport = require('passport');
+const passport = require('../config/passport');
 const KakaoStrategy = require('passport-kakao').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path'); // 예를 들어, path 모듈을 사용하려면 이와 같이 정의할 수 있습니다.
+
 
 // 회원가입 프로세스
 exports.register_process = function (req, res) {
