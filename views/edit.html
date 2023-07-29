@@ -48,7 +48,8 @@
                 <hr>
             </div>
 
-            <form action="/board/edit/<%= data.post_num %>" method="post">
+            <!-- <form action="/board/edit/<%= data.post_num %>" method="post"> -->
+            <form id="form" action="" method="post">
                 <div id="titleForm" class="form">
                     <h4> 제목 </h4>
                     <input type="text" name="post_title" id="post_title" placeholder="제목을 입력해 주세요"
@@ -57,7 +58,7 @@
 
                 <div id="contentForm" class="form">
                     <h4> 내용 </h4>
-                    <textarea name="post_content" id="post_content" class="form-control" row="5"
+                    <textarea name="post_content" id="post_content" class="form-control" rows="5"
                         required><%= data.post_content %></textarea>
                 </div>
 
@@ -68,16 +69,36 @@
                 <br>
                 <div style="display: flex; justify-content: center; ">
 
-                    <div id="btn">
-                        <input type="submit" value="수정하기" class="custom-btn btn-16">
+                    <div class="btn">
+                        <input type="submit" data-action="edit" value="수정하기" class="custom-btn btn-16">
                     </div>
-                    <div id="btn">
-                        <input type="submit" value="삭제하기" class="custom-btn btn-16">
+                    <div class="btn">
+                        <input type="submit" data-action="delete" value="삭제하기" class="custom-btn btn-16">
                     </div>
                 </div>
             </form>
+
         </div>
     </section>
+
+    <script>
+        function submitForm(actionType) {
+            const form = document.getElementById("form");
+            const actionTypeField = document.getElementById("actionType");
+
+            if (actionType === "edit") {
+                form.action = "/board/edit/<%= data.post_num %>";
+            } else if (actionType === "delete") {
+                form.action = "/board/delete/<%= data.post_num %>";
+            }
+
+            // 액션타입 값을 히든 필드에 설정
+            actionTypeField.value = actionType;
+
+            // 폼 제출
+            form.submit();
+        }
+    </script>
 
     <!-- footer -->
     <footer id="footer">
