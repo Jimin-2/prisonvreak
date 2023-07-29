@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Edit Post</h1>
-    <form action="/edit/<%= data.post_num %>" method="post">
+    <form action="/board/edit/<%= data.post_num %>" method="post">
         <label for="post_title">Title:</label>
         <input type="text" name="post_title" id="post_title" value="<%= data.post_title %>" required>
         <br>

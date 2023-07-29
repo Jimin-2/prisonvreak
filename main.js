@@ -7,7 +7,7 @@ const passport = require('passport');
 const authController = require('./controllers/authController');
 const mainRouter = require('./routes/auth');
 const authCheck = require('./middleware/authCheck');
-const boardRouter = require('./routes/boardRouter');
+const boardRouter = require('./routes/board');
 
 const app = express();
 const port = 8080;
