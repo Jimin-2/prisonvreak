@@ -8,6 +8,6 @@ router.get('/board/delete/:post_num', boardController.deletePost);
 router.get('/board/insert', boardController.showInsertForm);
 router.post('/board/insert', boardController.insertPost);
 router.get('/board/edit/:post_num', boardController.showEditForm);
-router.post('/edit/:post_num', boardController.updatePost);
+router.post('/board/edit/:post_num', boardController.updatePost);
 
 module.exports = router;

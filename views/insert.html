@@ -1,25 +1,113 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Insert Post</title>
-</head>
-<body>
-<h1>Insert Post</h1>
-<form action="/board/insert" method="post">
-    <label for="post_title">Title:</label>
-    <input type="text" name="post_title" id="post_title" required>
-    <br>
-    <label for="post_content">Content:</label>
-    <textarea name="post_content" id="post_content" required></textarea>
-    <br>
-    <label for="post_usernum">usernum:</label>
-    <textarea name="post_usernum" id="post_usernum" required></textarea>
-    <br>
-    <label for="post_hit">hit:</label>
-    <textarea name="post_hit" id="post_hit" required></textarea>
-    <br>
+<html lang="en">
 
-    <input type="submit" value="Submit">
-</form>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/commuWrite.css">
+
+    <!-- JavaScript -->
+    <script src="javascript/index.js"></script>
+
+    <!--Title-->
+    <title> CAN </title>
+
+</head>
+
+<body>
+
+    <!-- header -->
+    <div id="header">
+        <div class="logo">
+            <img src="/img/LOGO.png" onclick="location.href='index.html'" style="cursor: pointer;">
+        </div>
+        <ul class="nav">
+            <li class="link-1"><a href="gameinfo.html"> 게임정보 </a></li>
+            <li class="link-1"><a href="info.html"> 공지사항 </a></li>
+            <li class="link-1"><a href="commu.html"> 커뮤니티 </a></li>
+            <li class="link-1"><a href="rank.html"> 랭킹 </a></li>
+            <li class="link-1"><a href="customer.html"> 고객지원 </a></li>
+            <li class="link-1"><a href="login.html"> 로그인 </a></li>
+        </ul>
+    </div>
+
+
+    <!-- Section -->
+    <section id="section">
+
+        <div id="layout">
+            <div id="sectionTitle">
+                <h1> 커뮤니티 글쓰기 </h1>
+                <hr>
+            </div>
+
+            <form action="/board/insert" method="post">
+                <div id="titleForm" class="form">
+                    <!-- <label for="post_title">Title:</label> -->
+                    <h4> 제목 </h4>
+                    <input type="text" name="post_title" id="post_title" class="form-control" placeholder="제목을 입력해 주세요"
+                        required>
+                </div>
+
+                <div id="contentForm" class="form">
+                    <!-- <label for="post_content">Content:</label> -->
+                    <h4> 내용 </h4>
+                    <textarea name="post_content" id="post_content" class="form-control" rows="5"
+                        placeholder="내용을 입력해 주세요" required></textarea>
+                </div>
+
+                <!-- <label for="post_usernum">usernum:</label> -->
+                <div id="contentForm" class="form">
+                    <h4> usernum </h4>
+                    <textarea name="post_usernum" id="post_usernum" required></textarea>
+                </div>
+
+                <div id="contentForm" class="form">
+                    <!-- <label for="post_hit">hit:</label> -->
+                    <h4> 조회수 </h4>
+                    <textarea name="post_hit" id="post_hit" required></textarea>
+                </div>
+                <br>
+
+                <div id="tagForm" class="form">
+                    <h4> 태그 </h4>
+                    <input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
+                </div>
+
+                <div id="btn">
+                    <input type="submit" value="글쓰기" class="custom-btn btn-16">
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer id="footer">
+        <div>
+            <div class="can">
+                <img src="/img/CAN.png">
+            </div>
+
+            <a>개인정보 처리방침 | 서비스 이용약관 | 운영정책 | 쿠키 설정</a> <br>
+            <a>2023 Dongyang Computer Software</a> <br>
+
+            <script> document.writeln("한국시간 : " + kr_curr); </script>
+
+            <div id="age15">
+                <img src="/img/15.png">
+            </div>
+        </div>
+    </footer>
 </body>
+
 </html>
