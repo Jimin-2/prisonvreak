@@ -15,7 +15,7 @@ const port = 8080;
 app.engine('html', require('ejs').renderFile); // 'html'을 뷰 엔진으로 설정
 app.set('view engine', 'html');
 
-app.set("views", "./src/views");
+app.set("views", "./views");
 app.use(express.static(`public`));
 
 app.use(bodyParser.json());
@@ -42,8 +42,8 @@ app.use(passport.session());
     }
 });*/
 app.get('/',(req,res) => {
-    res.sendFile(__dirname + '/views/index.html');
-})
+    res.render('index');
+});
 
 // 인증 라우터
 app.use('/', authRouter);
