@@ -18,10 +18,10 @@ const boardModel = {
     });
   },
 
-  insertPost: (title, content, usernum, hit, createdAt, callback) => {
+  insertPost: (title, content, usernum, createdAt, callback) => {
     db.query(
-      'INSERT INTO post (post_title, post_content, post_usernum, post_hit, post_created_at) VALUES (?, ?, ?, ?, ?)',
-      [title, content, usernum, hit, createdAt],
+      'INSERT INTO post (post_title, post_content, post_usernum, post_created_at) VALUES (?, ?, ?, ?)',
+      [title, content, usernum, createdAt],
       () => {
         callback();
       }

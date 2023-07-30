@@ -33,7 +33,6 @@ const boardController = {
       body.post_title,
       body.post_content,
       body.post_usernum,
-      body.post_hit,
       koreanTime,
       () => {
         res.redirect('/board');

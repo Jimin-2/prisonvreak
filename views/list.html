@@ -25,83 +25,89 @@
 </head>
 
 <body>
-<!-- header -->
-<div id="header">
-    <div class="logo">
-        <img src="/img/LOGO.png">
-    </div>
-    <ul class="nav">
-        <li><a href=""> 게임정보 </a></li>
-        <li><a href=""> 공지사항 </a></li>
-        <li><a href=""> 커뮤니티 </a></li>
-        <li><a href=""> 랭킹 </a></li>
-        <li><a href=""> 고객지원 </a></li>
-        <li><a href=""> 로그인 </a></li>
-    </ul>
-</div>
-
-<section id="section">
-    <div id="first">
-        <img src="/img/cmLogo.png">
-    </div>
-    <div id="buttonSection">
-        <form action="/board/insert" method="GET">
-            <button type="submit">글쓰기</button>
-        </form>
-    </div>
-    <div id="second">
-        <table>
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>날짜</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <% data.forEach(function(post) { %>
-            <tr>
-                <td>
-                    <%= post.post_num %>
-                </td>
-                <td><a href="board/edit/<%= post.post_num %>">
-                    <%= post.post_title %>
-                </a></td>
-                <td>
-                    <%= post.post_usernum %>
-                </td>
-                <td>
-                    <%= post.post_created_at %>
-                </td>
-            </tr>
-            <% }); %>
-            </tbody>
-        </table>
-    </div>
-    <div id="third">
-        <a> 1 </a>
-    </div>
-</section>
-
-<!-- footer -->
-<footer id="footer">
-    <div>
-        <div class="can">
-            <img src="/img/CAN.png">
+    <!-- header -->
+    <div id="header">
+        <div class="logo">
+            <img src="/img/LOGO.png" onclick="location.href='index.html'" style="cursor: pointer;">
         </div>
-
-        <a>개인정보 처리방침 | 서비스 이용약관 | 운영정책 | 쿠키 설정</a> <br>
-        <a>2023 Dongyang Computer Software</a> <br>
-
-        <script> document.writeln("한국시간 : " + kr_curr); </script>
-
-        <div id="age15">
-            <img src="/img/15.png">
-        </div>
+        <ul class="nav">
+            <li><a href=""> 게임정보 </a></li>
+            <li><a href=""> 공지사항 </a></li>
+            <li><a href=""> 커뮤니티 </a></li>
+            <li><a href=""> 랭킹 </a></li>
+            <li><a href=""> 고객지원 </a></li>
+            <li><a href=""> 로그인 </a></li>
+        </ul>
     </div>
-</footer>
+
+    <section id="section">
+        <div id="first">
+            <img src="/img/cmLogo.png">
+        </div>
+        <div id="buttonSection">
+            <form action="/board/insert" method="GET">
+                <button type="submit">글쓰기</button>
+            </form>
+        </div>
+        <div id="second">
+            <div id="type09" class="effect8">
+                <table class="type09">
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>제목</th>
+                            <th>글쓴이</th>
+                            <th>날짜</th>
+                            <th>조회수</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% data.forEach(function(post) { %>
+                            <tr>
+                                <td>
+                                    <%= post.post_num %>
+                                </td>
+                                <td><a href="board/edit/<%= post.post_num %>">
+                                        <%= post.post_title %>
+                                    </a></td>
+                                <td>
+                                    <%= post.post_usernum %>
+                                </td>
+                                <td>
+                                    <%= post.post_created_at %>
+                                </td>
+                                <td>
+                                    <%= post.post_hit %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="third">
+            <a> 1 </a>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer id="footer">
+        <div>
+            <div class="can">
+                <img src="/img/CAN.png">
+            </div>
+
+            <a>개인정보 처리방침 | 서비스 이용약관 | 운영정책 | 쿠키 설정</a> <br>
+            <a>2023 Dongyang Computer Software</a> <br>
+
+            <script> document.writeln("한국시간 : " + kr_curr); </script>
+
+            <div id="age15">
+                <img src="/img/15.png">
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
