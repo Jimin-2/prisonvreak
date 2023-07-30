@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const FileStore = require('session-file-store')(session);
 const passport = require('passport');
 
-const authController = require('./controllers/authController');
-const mainRouter = require('./routes/auth');
+const mainRouter = require('./routes/main');
+const authRouter = require('./routes/auth');
 const authCheck = require('./middleware/authCheck');
 const boardRouter = require('./routes/board');
 
@@ -32,7 +32,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     if (!authCheck.isOwner(req, res)) {
         res.redirect('/auth/login');
         return false;
@@ -40,14 +40,17 @@ app.get('/', (req, res) => {
         res.redirect('/main');
         return false;
     }
-});
+});*/
+app.get('/',(req,res) => {
+    res.sendFile(__dirname + '/views/index.html');
+})
 
 // 인증 라우터
-app.use('/auth', mainRouter);
+app.use('/', authRouter);
 app.use('/', boardRouter); // 게시판
 
 // 메인 페이지
-app.get('/main', (req, res) => {
+/*app.get('/main', (req, res) => {
     if (!authCheck.isOwner(req, res)) {
         res.redirect('/auth/login');
         return false;
@@ -60,7 +63,7 @@ app.get('/main', (req, res) => {
         ${authCheck.statusUI(req, res)}
     `;
     res.send(html);
-});
+});*/
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
