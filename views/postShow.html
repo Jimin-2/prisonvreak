@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 상세 조회</title>
+</head>
+<body>
+    <div>
+        <h1>글 상세 조회</h1>
+        <div>
+            <p>작성자: <%= data.post_num %></p>
+            <p>제목: <%= data.post_title %></p>
+            <p>내용: <%= data.post_content %></p>
+            <p>작성일자: <%= data.post_created_at %></p>
+        </div>
+        <a href="/post">목록</a>
+    </div>
+</body>
+</html>

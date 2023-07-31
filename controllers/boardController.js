@@ -3,7 +3,7 @@ const ejs = require('ejs');
 const moment = require('moment');
 const boardModel = require('../models/boardModel');
 
-// 컨트롤러 함수들
+// 컨트롤러 함수
 const boardController = {
   showList: (req, res) => {
     fs.readFile('views/list.html', 'utf8', (error, data) => {
