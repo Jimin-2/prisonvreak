@@ -4,8 +4,8 @@ const passport = require('../config/passport');
 const path = require('path'); // 예를 들어, path 모듈을 사용하려면 이와 같이 정의할 수 있습니다.
 const nodemailer = require('nodemailer');
 const authCheckMiddleware = require('../middleware/authCheck');
-// 회원가입 프로세스
 
+// 회원가입 프로세스
 exports.register_process = function (req, res) {
     const name = req.body.name;
     const nickname = req.body.nickname;
@@ -67,7 +67,10 @@ exports.login_process = function (req, res) {
                 req.session.is_logined = true;      // 세션 정보 갱신
                 req.session.nickname = id;
                 req.session.save(function () {
-                    res.redirect(`/`);
+                    // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
+                    const authStatusUI = `${req.session.nickname}님 환영합니다!`;
+                    res.send(`<script type="text/javascript">alert("${authStatusUI}");
+                    document.location.href="/";</script>`);
                 });
             } else {
                 res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); 
