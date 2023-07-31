@@ -1,6 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+  function checkIdAvailability() {
+    var id = document.getElementById('id').value;
+    var availabilitySpan = document.getElementById('idAvailability');
 
+    fetch('/auth/check_id_availability', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: id })
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.available) {
+                availabilitySpan.textContent = '사용 가능한 아이디입니다.';
+                availabilitySpan.style.color = 'green';
+              } else {
+                availabilitySpan.textContent = '이미 사용 중인 아이디입니다.';
+                availabilitySpan.style.color = 'red';
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  }
+
+  function checkPasswordMatch() {
+    var password = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirmPassword').value;
+    var matchSpan = document.getElementById('passwordMatch');
+    if (password === confirmPassword) {
+      matchSpan.textContent = '비밀번호가 일치합니다.';
+      matchSpan.style.color = 'green';
+    } else {
+      matchSpan.textContent = '비밀번호가 일치하지 않습니다.';
+      matchSpan.style.color = 'red';
+    }
+  }
+
+  function sendVerificationCode() {
+    var email = document.getElementById('email').value;
+    var verificationCodeForm = document.getElementById('verificationCodeForm');
+
+    var verificationCodeExpiration = 5 * 60; // 인증번호 만료 시간 (5분)
+    // 인증번호 만료 시간 설정
+    var expirationTime = new Date().getTime() + verificationCodeExpiration * 1000;
+    localStorage.setItem('verificationCodeExpiration', expirationTime);
+
+    // 인증 번호 생성 (6자리 숫자)
+    var verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+    // 이메일로 인증 번호 전송
+    fetch('/auth/send_verification_email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: email, code: verificationCode })
+    })
+            .then(response => {
+              if (response.ok) {
+                verificationCodeForm.style.display = 'block'; // 인증 번호 입력 폼 표시
+                // 인증 번호 입력 칸 밑에 시간 카운트다운 엘리먼트 추가
+                var countdownElement = document.createElement('p');
+                countdownElement.id = 'countdown';
+                verificationCodeForm.appendChild(countdownElement);
+                updateCountdown(); // 카운트다운 시작
+              } else {
+                alert('이메일 전송에 실패했습니다.');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  }
+
+  function updateCountdown() {
+    var expirationTime = localStorage.getItem('verificationCodeExpiration');
+    if (!expirationTime) return;
+
+    var countdownElement = document.getElementById('countdown');
+
+    // 남은 시간 계산
+    var now = new Date().getTime();
+    var remainingSeconds = Math.max(0, Math.floor((expirationTime - now) / 1000));
+
+    // 분과 초로 변환하여 표시
+    var minutes = Math.floor(remainingSeconds / 60);
+    var seconds = remainingSeconds % 60;
+    countdownElement.textContent = minutes + '분 ' + seconds + '초';
+
+    if (remainingSeconds === 0) {
+      // 시간이 만료되면 인증번호 입력 폼 숨기기
+      document.getElementById('verificationCodeForm').style.display = 'none';
+      localStorage.removeItem('verificationCodeExpiration');
+    } else {
+      // 1초마다 업데이트
+      setTimeout(updateCountdown, 1000);
+    }
+  }
+
+  function verifyCode() {
+    var enteredCode = document.getElementById('verificationCode').value;
+    var verificationStatus = document.getElementById('verificationStatus');
+
+    // 입력된 인증 번호와 생성된 인증 번호 비교
+    fetch('/auth/verify_code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ code: enteredCode })
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.valid) {
+                verificationStatus.textContent = '인증되었습니다.';
+                verificationStatus.style.color = 'green';
+              } else {
+                verificationStatus.textContent = '인증번호가 잘못되었습니다.';
+                verificationStatus.style.color = 'red';
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  }
+
+  function validateForm() {
+    var idAvailability = document.getElementById('idAvailability').textContent;
+    var passwordMatch = document.getElementById('passwordMatch').textContent;
+    var verificationStatus = document.getElementById('verificationStatus').textContent;
+
+    if (idAvailability !== '사용 가능한 아이디입니다.') {
+      alert('아이디 중복확인을 해주세요.');
+      return false;
+    } else if (passwordMatch !== '비밀번호가 일치합니다.') {
+      alert('비밀번호 일치여부를 확인해주세요.');
+      return false;
+    } else if (verificationStatus !== '인증되었습니다.') {
+      alert('이메일 인증을 완료해주세요.');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // 세션 초기화
+  document.getElementById('verificationCodeForm').style.display = 'none';
+  document.getElementById('verificationCode').value = '';
+  document.getElementById('verificationStatus').textContent = '';
+</script>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,51 +201,97 @@
           <!-- ID -->
         <div class="inputBox">
           <p> Name </p>
-          <input type="text" name="name" required>
+          <input type="text" name="name"  required>
         </div>
 
           <!-- Nickname -->
-        <div class="inputBox" id="nickname">
+        <!--<div class="inputBox" id="nickname">
           <p> Nickname </p>
           <input type="text" name="nickname" required>
         </div>
-
-          <!-- ID -->
         <div class="inputBox" id="id">
-          <p> ID </p>
-          <input type="text" name="id" required>
-          <div> <button> 중복 확인 </button> </div>
-          <p> 사용 가능한 아이디입니다. </p> <!-- 중복된 아이디입니다. -->
+          <p> Name </p>
+          <input type="text" name="name" required>
+        </div>-->
+
+        <div class="inputBox" >
+          <p> Nickname </p>
+          <input type="text" name="nickname"  required>
         </div>
 
-          <!-- Password -->
+        <div class="inputBox" id="divid">
+          <p> ID </p>
+          <input type="text" name="id" id="id" required>
+          <button type="button" onclick="checkIdAvailability()"> 중복 확인 </button>
+        </div>
+        <span id="idAvailability"></span>
+
+        <div class="inputBox">
+          <p> Password </p>
+          <input type="password" name="pwd" id="password" required>
+        </div>
+
+        <div class="inputBox" >
+          <p> Password++ </p>
+          <input type="password" name="pwd2" id="confirmPassword" required oninput="checkPasswordMatch()">
+        </div>
+        <span id="passwordMatch"></span>
+
+        <div class="inputBox" >
+          <p> Phone </p>
+          <input type="tel" name="phone"  required>
+        </div>
+
+        <div class="inputBox" id="divemail">
+          <p> E-mail </p>
+          <input type="email" name="email" id="email" required>
+          <button type="button" onclick="sendVerificationCode()"> 인증 </button>
+        </div>
+
+        <div class="inputBox" id="verificationCodeForm" style="display: none;">
+          <input type="number" placeholder="인증번호 입력" id="verificationCode">
+          <button type="button" onclick="verifyCode()"> 확인 </button>
+          <p> 인증번호 유효 시간: <span id="countdown">5분 0초</span> </p>
+          <p id="verificationStatus"> </p> <!-- 유효하지 않습니다. -->
+        </div>
+
+
+        <!-- ID -->
+        <!--<div class="inputBox" id="id">
+          <p> ID </p>
+          <input type="text" name="id" required>
+          <div> <button type="button" onclick="checkIdAvailability()"> 중복 확인 </button> </div>
+          <p> 사용 가능한 아이디입니다. </p> &lt;!&ndash; 중복된 아이디입니다. &ndash;&gt;
+        </div>
+
+          &lt;!&ndash; Password &ndash;&gt;
         <div class="inputBox" id="password">
           <p> Password </p>
           <input type="password" name="pwd" required>
         </div>
 
-          <!-- Ppassword -->
+          &lt;!&ndash; Ppassword &ndash;&gt;
         <div class="inputBox" id="confirmPassword">
           <p> Password++ </p>
           <input type="password" name="pwd2" required>
-          <p> 일치합니다. </p> <!-- 일치하지 않습니다. -->
+          <p> 일치합니다. </p> &lt;!&ndash; 일치하지 않습니다. &ndash;&gt;
         </div>
 
-          <!-- Phone -->
+          &lt;!&ndash; Phone &ndash;&gt;
         <div class="inputBox" id="phone">
           <p> Phone </p>
           <input type="text" name="phone" required>
         </div>
 
-          <!-- email -->
+          &lt;!&ndash; email &ndash;&gt;
         <div class="inputBox" id="email">
           <p> E-mail </p>
           <input type="email" name="email" required> <br>
-          <button> 인증번호 받기 </button>
+          <button type="button" onclick="sendVerificationCode()"> 인증번호 받기 </button>
           <input type="number" placeholder="인증번호 입력">
           <p> 인증번호 유효 시간 </p>
-          <p> 인증번호가 유효합니다. </p> <!-- 유효하지 않습니다. -->
-        </div>
+          <p> 인증번호가 유효합니다. </p> &lt;!&ndash; 유효하지 않습니다. &ndash;&gt;
+        </div>-->
 
         <!-- submit -->
         <div class="submit">

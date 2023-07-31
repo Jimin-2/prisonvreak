@@ -1,12 +1,10 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const FileStore = require('session-file-store')(session);
-const passport = require('passport');
+//const FileStore = require('session-file-store')(session);
+const passport = require('./config/passport');
 
-const mainRouter = require('./routes/main');
 const authRouter = require('./routes/auth');
-const authCheck = require('./middleware/authCheck');
 const boardRouter = require('./routes/board');
 
 const app = express();
@@ -25,7 +23,7 @@ app.use(session({
     secret: 'aaaa@aaaa', // 원하는 문자 입력
     resave: false,
     saveUninitialized: true,
-    store: new FileStore({ path: './sessions' }),
+    //store: new FileStore({ path: './sessions' }),
 }));
 
 // Passport 및 세션 미들웨어 초기화
@@ -46,7 +44,7 @@ app.get('/',(req,res) => {
 });
 
 // 인증 라우터
-app.use('/', authRouter);
+app.use('/auth', authRouter);
 app.use('/', boardRouter); // 게시판
 
 // 메인 페이지

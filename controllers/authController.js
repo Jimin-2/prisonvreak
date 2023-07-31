@@ -1,11 +1,11 @@
+require('dotenv').config();
 const userModel = require('../models/userModel');
 const passport = require('../config/passport');
-const KakaoStrategy = require('passport-kakao').Strategy;
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const path = require('path'); // 예를 들어, path 모듈을 사용하려면 이와 같이 정의할 수 있습니다.
-
-
+const nodemailer = require('nodemailer');
+const authCheckMiddleware = require('../middleware/authCheck');
 // 회원가입 프로세스
+
 exports.register_process = function (req, res) {
     const name = req.body.name;
     const nickname = req.body.nickname;
@@ -13,8 +13,8 @@ exports.register_process = function (req, res) {
     const password = req.body.pwd;
     const phone = req.body.phone;
     const email = req.body.email;
-    const kakaoUserId = req.body.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
-    const googleUserId = req.body.googleUserId; // 구글 로그인 시 저장한 구글 아이디
+    const kakaoUserId = req.query.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
+    const googleUserId = req.query.googleUserId; // 구글 로그인 시 저장한 구글 아이디
 
     // 구현 내용...
     if (name && nickname && id && password && phone && email) {
@@ -93,9 +93,12 @@ exports.logout = function (req, res) {
 exports.kakao_login = passport.authenticate('kakao');
 
 // 카카오 로그인 콜백 처리
-exports.kakao_callback = passport.authenticate('kakao', { failureRedirect: '/auth/login' }),
-    function (req, res) {
-        var kakaoUserId = req.user.id;
+exports.kakao_callback = function (req, res, next) {
+    passport.authenticate('kakao', function (err, user, info) {
+        if (err) { return next(err); }
+        if (!user) { return res.redirect('/auth/login'); }
+
+        var kakaoUserId = user.id;
         console.log('카카오톡 아이디:', kakaoUserId);
 
         userModel.getUserByKakaoId(kakaoUserId, function (error, results) {
@@ -110,18 +113,22 @@ exports.kakao_callback = passport.authenticate('kakao', { failureRedirect: '/aut
                 });
             } else {
                 // 회원가입이 되어 있지 않은 경우 회원가입 페이지로 이동
-                res.redirect('/auth/register?kakaoUserId=' + kakaoUserId);
+                res.redirect('/auth/signup?kakaoUserId=' + kakaoUserId);
             }
         });
-    };
+    })(req, res, next);
+};
 
 // 구글 로그인 요청
 exports.google_login = passport.authenticate('google', { scope: ['profile', 'email'] });
 
 // 구글 로그인 콜백 처리
-exports.google_callback = passport.authenticate('google', { failureRedirect: '/auth/login' }),
-    function (req, res) {
-        var googleUserId = req.user.id;
+exports.google_callback = function (req, res, next) {
+    passport.authenticate('google', function (err, user, info) {
+        if (err) { return next(err); }
+        if (!user) { return res.redirect('/auth/login'); }
+
+        var googleUserId = user.id;
         console.log('구글 아이디:', googleUserId);
 
         userModel.getUserByGoogleId(googleUserId, function (error, results) {
@@ -136,10 +143,11 @@ exports.google_callback = passport.authenticate('google', { failureRedirect: '/a
                 });
             } else {
                 // 회원가입이 되어 있지 않은 경우 회원가입 페이지로 이동
-                res.redirect('/auth/register?googleUserId=' + googleUserId);
+                res.redirect('/auth/signup?googleUserId=' + googleUserId);
             }
         });
-    };
+    })(req, res, next);
+};
 
 // 회원가입 화면
 exports.register = function (req, res) {
@@ -190,11 +198,91 @@ exports.check_id_availability = function (req, res) {
     });
 };
 
+// 고객지원프로세스
+exports.customer_send = function (req, res) {
+    const name = req.body.name;
+    const email = req.body.email;
+    const contents = req.body.contents;
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'prisonvreakcan@gmail.com',
+            pass: process.env.EMAIL_PASS
+        },
+    });
+
+    const mailOptions = {
+        from: 'prisonvreakcan@gmail.com',
+        to: 'prisonvreakcan@gmail.com',
+        subject: '고객지원문의',
+        text: `고객명: ${name}\n이메일: ${email}\n문의내용: ${contents}`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.error('이메일 전송 오류:', error);
+            res.status(500).send();
+        } else {
+            console.log('이메일 전송 성공:', info.response);
+            res.status(200).send();
+        }
+    });
+    res.send(`<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");
+                document.location.href="/auth/customer";</script>`);
+};
+
+// 고객지원화면
+exports.customer = authCheckMiddleware.redirectToLogin(function (req, res) {
+    res.render('customer');
+});
+
+
 // 이메일 인증 코드 전송
 exports.send_verification_email = function (req, res) {
     const email = req.body.email;
 
-    // 구현 내용...
+    console.log('Sending verification email to:', email);
+
+    // 무작위 인증 코드 생성 (6자리 숫자)
+    var verificationCode = generateVerificationCode();
+
+    // 이메일과 인증 코드를 세션에 저장
+    req.session.verificationCode = verificationCode;
+
+    // Nodemailer를 사용하여 이메일 전송
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'prisonvreakcan@gmail.com',
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    var mailOptions = {
+        from: 'prisonvreakcan@gmail.com',
+        to: email,
+        subject: '이메일 인증 번호',
+        text: '인증 번호는 다음과 같습니다: ' + verificationCode
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.error('이메일 전송 오류:', error);
+            res.status(500).send();
+        } else {
+            console.log('이메일 전송 성공:', info.response);
+            res.status(200).send();
+        }
+    });
+    // 인증 코드 생성 함수
+    function generateVerificationCode() {
+        var code = '';
+        for (var i = 0; i < 6; i++) {
+            code += Math.floor(Math.random() * 10);
+        }
+        return code;
+    }
 };
 
 // 인증 코드 확인
@@ -202,18 +290,17 @@ exports.verify_code = function (req, res) {
     const enteredCode = req.body.code;
     const storedCode = req.session.verificationCode;
 
+    if (enteredCode === storedCode) {
+        // 인증 성공
+        res.json({ valid: true });
+    } else {
+        // 인증 실패
+        res.json({ valid: false });
+    }
     // 구현 내용...
 };
 
-// 인증 코드 생성 함수
-function generateVerificationCode() {
-    var code = '';
-    for (var i = 0; i < 6; i++) {
-        code += Math.floor(Math.random() * 10);
-    }
-    return code;
-};
-
+/*
 // 사용자가 인증되었는지 확인하는 미들웨어
 exports.authCheck = function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -224,3 +311,5 @@ exports.authCheck = function (req, res, next) {
         res.redirect('/auth/login');
     }
 };
+
+*/

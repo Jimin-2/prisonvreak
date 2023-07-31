@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const bodyParser = require('body-parser');
+
+router.use(bodyParser.json());
 
 // 카카오 로그인 요청
 router.get('/kakao', authController.kakao_login);
@@ -37,5 +40,11 @@ router.post('/verify_code', authController.verify_code);
 
 // 회원가입 프로세스
 router.post('/register_process', authController.register_process);
+
+// 고객지원 화면
+router.get('/customer',authController.customer);
+
+// 고객지원 프로세스
+router.post('/customer_send',authController.customer_send);
 
 module.exports = router;

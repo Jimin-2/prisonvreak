@@ -10,14 +10,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
   <!--CSS-->
-  <link rel="stylesheet" type="text/css" href="css/main.css">
-  <link rel="stylesheet" type="text/css" href="css/header.css">
-  <link rel="stylesheet" type="text/css" href="css/footer.css">
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/header.css">
+  <link rel="stylesheet" type="text/css" href="/css/footer.css">
 
-  <link rel="stylesheet" type="text/css" href="css/customer.css">
+  <link rel="stylesheet" type="text/css" href="/css/customer.css">
 
   <!-- JavaScript -->
-  <script src="javascript/index.js"></script>
+  <script src="/javascript/index.js"></script>
 
   <!--Title-->
   <title> CAN </title>
@@ -47,6 +47,7 @@
       <a> 010-1234-5678 / yeeunj356@gmail.com </a>
     </div>
     <div id="second">
+      <form action="/auth/customer_send" method="post">
       <h2> Let the various voices of users be heard. </h2>
       <h4> 사용자 여러분의 다양한 목소리를 들려주세요. </h4>
 
@@ -62,9 +63,10 @@
         <textarea class="contentsBox" name="contents" placeholder="Content" required></textarea>
       </div>
 
-      <button class="custom-btn"> SENT </button>
-
+      <button class="custom-btn" type="submit"> SENT </button>
+      </form>
     </div>
+
   </section>
 
   <!-- footer -->
@@ -88,3 +90,4 @@
 </body>
 
 </html>
+
