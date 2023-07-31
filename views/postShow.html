@@ -1,21 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>글 상세 조회</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/header.css">
+  <link rel="stylesheet" type="text/css" href="/css/footer.css">
+
+  <link rel="stylesheet" type="text/css" href="/css/commuForm.css">
+
+  <!-- JavaScript -->
+  <script src="javascript/index.js"></script>
+
+  <!--Title-->
+  <title> CAN </title>
+
 </head>
 <body>
-    <div>
-        <h1>글 상세 조회</h1>
+    <!-- Section -->
+  <section id="section">
+    <div id="layout">
+
+      <div id="first">
+        <button> 다음글 </button>
+        <button onclick="location.href='commu.html'"> 목록 </button>
+      </div>
+      <div id="second">
+        <h4> > 커뮤니티 </h4>
+        <h1> <%= data.post_title %> </h1>
+      </div>
+
+      <div id="third">
+        <div class="profile"></div>
         <div>
-            <p>작성자: <%= data.post_num %></p>
-            <p>제목: <%= data.post_title %></p>
-            <p>내용: <%= data.post_content %></p>
-            <p>작성일자: <%= data.post_created_at %></p>
+          <p class="ninkname" name="mem_nickname"> <%= data.post_num %> </p>
+          <p class="date"> <%= data.post_created_at %> </p>
         </div>
-        <a href="/post">목록</a>
+      </div>
+
+      <hr>
+
+      <div id="fourth">
+        <p>
+            <%= data.post_content %>
+        </p>
+      </div>
+
+      <hr>
+
+      <div id="fifth">
+        <h2> 댓글 </h2>
+
+        <div class="fifthFifth">
+          <p class="ninkname"> 작성자: <%= data.post_num %> </p>
+        </div>
+        <div> 댓글! </div>
+
+        <div id="fifthFifthComment"> 답글 </div>
+      </div>
+      
+      <div id="fifthComment">
+        <div class="fifthFifth">
+          <p class="ninkname"> 정예은 </p>
+          <p><a class=date> 2023/07/27 PM 03:14</a></p>
+        </div>
+        <div> 답글 내용입니다. </div>
+      </div>
+
+      <hr>
+
+      <div id="sixth">
+        <p name="mem_nickname"> 정예은 </p>
+        <textarea id="commentArea" placeholder="댓글을 입력하세요."></textarea>
+        <div class="submit">
+          <p> 0 byte </p>
+          <button class="button btnFade btnBlack"> 등록 </button>
+        </div>
+      </div>
+      <a href="/post">목록</a>
     </div>
+  </section>
 </body>
 </html>
