@@ -1,7 +1,7 @@
 module.exports = {
-    isOwner: function (req, res) {
-        if (req.session.is_logined) {
-            return true;
+    isOwner: function (req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
         } else {
             return false;
         }
@@ -18,9 +18,11 @@ module.exports = {
             return next();
         } else {
             // 인증되지 않은 사용자에게 알림을 띄우고 로그인 페이지로 리디렉션
-            res.send(`<script type="text/javascript">alert("로그인 후 사용 가능합니다.");
-      document.location.href="/auth/login";</script>`);
+            return res.send(`<script type="text/javascript">alert("로그인 후 사용 가능합니다.");
+        document.location.href="/auth/login";</script>`);
+            // return 키워드를 추가하여 res.send()가 실행된 후 함수를 종료합니다.
         }
     },
 };
+
 

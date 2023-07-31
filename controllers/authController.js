@@ -233,10 +233,15 @@ exports.customer_send = function (req, res) {
 };
 
 // 고객지원화면
-exports.customer = authCheckMiddleware.redirectToLogin(function (req, res) {
-    res.render('customer');
-});
-
+exports.customer = function (req, res) {
+    if (authCheckMiddleware.isOwner(req, res)) {
+        res.render('customer');
+    } else {
+        // 인증되지 않은 사용자에게 알림을 띄우고 로그인 페이지로 리디렉션
+        res.send(`<script type="text/javascript">alert("로그인 후 사용 가능합니다.");
+        document.location.href="/auth/login";</script>`);
+    }
+};
 
 // 이메일 인증 코드 전송
 exports.send_verification_email = function (req, res) {
