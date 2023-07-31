@@ -63,7 +63,7 @@
                     </thead>
 
                     <tbody>
-                        <% data.forEach(function(post) { %>
+                        <% data.sort((a, b) => new Date(b.post_created_at) - new Date(a.post_created_at)).forEach(function(post) { %>
                             <tr>
                                 <td>
                                     <%= post.post_num %>
