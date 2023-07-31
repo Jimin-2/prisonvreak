@@ -12,24 +12,24 @@ const boardModel = {
     });
   },
 
-  deletePost: (postNum, callback) => {
-    db.query('DELETE FROM post WHERE post_num = ?', [postNum], () => {
+  deletePost: (post_num, callback) => {
+    db.query('DELETE FROM post WHERE post_num = ?', [post_num], () => {
       callback();
     });
   },
 
-  insertPost: (title, content, usernum, createdAt, callback) => {
+  insertPost: (post_title, post_content, post_usernum, post_created_at, callback) => {
     db.query(
       'INSERT INTO post (post_title, post_content, post_usernum, post_created_at) VALUES (?, ?, ?, ?)',
-      [title, content, usernum, createdAt],
+      [post_title, post_content, post_usernum, post_created_at],
       () => {
         callback();
       }
     );
   },
 
-  getPostById: (postNum, callback) => {
-    db.query('SELECT * FROM post WHERE post_num = ?', [postNum], (error, result) => {
+  getPostById: (post_num, callback) => {
+    db.query('SELECT * FROM post WHERE post_num = ?', [post_num], (error, result) => {
       if (error) {
         callback(error, null);
       } else {
@@ -38,27 +38,25 @@ const boardModel = {
     });
   },
 
-  updatePost: (title, content, updatedAt, postNum, callback) => {
+  updatePost: (post_title, post_content, post_updated_at, post_num, callback) => {
     db.query(
       'UPDATE post SET post_title = ?, post_content = ?, post_updated_at = ? WHERE post_num = ?',
-      [title, content, updatedAt, postNum],
+      [post_title, post_content, post_updated_at, post_num],
       () => {
         callback();
       }
     );
   },
+
+  incrementPostHit: (post_num, callback) => {
+    db.query('UPDATE post SET post_hit = post_hit + 1 WHERE post_num = ?', [post_num], (error, results) => {
+      if (error) {
+        console.error('Error incrementing post hit:', error);
+      }
+      callback(error, results);
+    });
+  },
+
 };
 
-const postModel = {
-  getPostById: (postNum, callback) => {
-      db.query('SELECT * FROM post WHERE post_num = ?', [postNum], (error, result) => {
-          if (error) {
-              callback(error, null);
-          } else {
-              callback(null, result[0]);
-          }
-      });
-  },
-}
-
-module.exports = { boardModel, postModel };
+module.exports = boardModel;

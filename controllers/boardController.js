@@ -1,7 +1,7 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const moment = require('moment');
-const { boardModel, postModel } = require('../models/boardModel');
+const boardModel = require('../models/boardModel');
 
 // 컨트롤러 함수
 const boardController = {
@@ -85,23 +85,30 @@ const postController = {
   },
 
   showForm: (req, res) => {
-      fs.readFile('views/postShow.html', 'utf8', (error, data) => {
+    fs.readFile('views/postShow.html', 'utf8', (error, data) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      } else {
+        const postNum = req.params.post_num;
+        boardModel.getPostById(postNum, (error, result) => {
           if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
           } else {
-            const postNum = req.params.post_num;
-            postModel.getPostById(postNum, (error, result) => {
+            boardModel.incrementPostHit(postNum, (error) => { // 조회수 증가
               if (error) {
                 console.error(error);
-                res.status(500).send('Internal Server Error');
-              } else {
-                res.send(ejs.render(data, { data: result }));
               }
+              res.send(ejs.render(data, { data: result }));
             });
           }
         });
+      }
+    });
   },
+
+  
 }
 
 module.exports = { boardController, postController};
