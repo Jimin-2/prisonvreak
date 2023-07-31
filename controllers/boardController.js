@@ -1,7 +1,7 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const moment = require('moment');
-const boardModel = require('../models/boardModel');
+const { boardModel, postModel } = require('../models/boardModel');
 
 // 컨트롤러 함수
 const boardController = {
@@ -75,4 +75,33 @@ const boardController = {
   },
 };
 
-module.exports = boardController;
+const postController = {
+  showList: (req, res) => {
+    fs.readFile('views/post.html', 'utf8', (error, data) => {
+      boardModel.getPosts((error, results) => {
+        res.send(ejs.render(data, { data: results }));
+      });
+    });
+  },
+
+  showForm: (req, res) => {
+      fs.readFile('views/postShow.html', 'utf8', (error, data) => {
+          if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+          } else {
+            const postNum = req.params.post_num;
+            postModel.getPostById(postNum, (error, result) => {
+              if (error) {
+                console.error(error);
+                res.status(500).send('Internal Server Error');
+              } else {
+                res.send(ejs.render(data, { data: result }));
+              }
+            });
+          }
+        });
+  },
+}
+
+module.exports = { boardController, postController};

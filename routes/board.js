@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const boardController = require('../controllers/boardController');
-const postController = require('../controllers/postController');
+const { boardController, postController} = require('../controllers/boardController');
 
 // 라우트 수행
 router.get('/board', boardController.showList);

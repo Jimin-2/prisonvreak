@@ -49,4 +49,16 @@ const boardModel = {
   },
 };
 
-module.exports = boardModel;
+const postModel = {
+  getPostById: (postNum, callback) => {
+      db.query('SELECT * FROM post WHERE post_num = ?', [postNum], (error, result) => {
+          if (error) {
+              callback(error, null);
+          } else {
+              callback(null, result[0]);
+          }
+      });
+  },
+}
+
+module.exports = { boardModel, postModel };
