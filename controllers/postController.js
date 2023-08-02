@@ -1,13 +1,13 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const moment = require('moment');
-const boardModel = require('../models/boardModel');
+const postModel = require('../models/postModel');
 
 // 컨트롤러 함수
 const boardController = {
   showList: (req, res) => {
     fs.readFile('views/board.html', 'utf8', (error, data) => {
-      boardModel.getPosts((error, results) => {
+      postModel.getPosts((error, results) => {
         res.send(ejs.render(data, { data: results }));
       });
     });
@@ -15,8 +15,8 @@ const boardController = {
 
   deletePost: (req, res) => {
     const postNum = req.params.post_num;
-    boardModel.deletePost(postNum, () => {
-      res.redirect('/board');
+    postModel.deletePost(postNum, () => {
+      res.redirect('/community');
     });
   },
 
@@ -29,13 +29,13 @@ const boardController = {
   insertPost: (req, res) => {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    boardModel.insertPost(
+    postModel.insertPost(
       body.post_title,
       body.post_content,
       body.post_usernum,
       koreanTime,
       () => {
-        res.redirect('/board');
+        res.redirect('/community');
       }
     );
   },
@@ -47,7 +47,7 @@ const boardController = {
         res.status(500).send('Internal Server Error');
       } else {
         const postNum = req.params.post_num;
-        boardModel.getPostById(postNum, (error, result) => {
+        postModel.getPostById(postNum, (error, result) => {
           if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
@@ -63,22 +63,22 @@ const boardController = {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const postNum = req.params.post_num;
-    boardModel.updatePost(
+    postModel.updatePost(
       body.post_title,
       body.post_content,
       koreanTime,
       postNum,
       () => {
-        res.redirect('/board');
+        res.redirect('/community');
       }
     );
   },
 };
 
-const postController = {
+const noticeController = {
   showList: (req, res) => {
-    fs.readFile('views/post.html', 'utf8', (error, data) => {
-      boardModel.getPosts((error, results) => {
+    fs.readFile('views/notice.html', 'utf8', (error, data) => {
+      postModel.getPosts((error, results) => {
         res.send(ejs.render(data, { data: results }));
       });
     });
@@ -91,12 +91,12 @@ const postController = {
         res.status(500).send('Internal Server Error');
       } else {
         const postNum = req.params.post_num;
-        boardModel.getPostById(postNum, (error, result) => {
+        postModel.getPostById(postNum, (error, result) => {
           if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
           } else {
-            boardModel.incrementPostHit(postNum, (error) => { // 조회수 증가
+            postModel.incrementPostHit(postNum, (error) => { // 조회수 증가
               if (error) {
                 console.error(error);
               }
@@ -111,4 +111,4 @@ const postController = {
   
 }
 
-module.exports = { boardController, postController};
+module.exports = { boardController, noticeController };

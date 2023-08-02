@@ -90,10 +90,10 @@
 
         if (actionType === "edit") {
             form.setAttribute("method", "post");
-            form.action = "/board/edit/<%= data.post_num %>";
+            form.action = "/community/edit/<%= data.post_num %>";
         } else if (actionType === "delete") {
             form.setAttribute("method", "get");
-            form.action = "/board/delete/<%= data.post_num %>";
+            form.action = "/community/delete/<%= data.post_num %>";
         }
 
         // 액션타입 값을 히든 필드에 설정

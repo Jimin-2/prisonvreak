@@ -45,7 +45,7 @@
             <img src="/img/cmLogo.png">
         </div>
         <div id="buttonSection">
-            <form action="/board/insert" method="GET">
+            <form action="/community/insert" method="GET">
                 <button type="submit">글쓰기</button>
             </form>
         </div>
@@ -68,7 +68,7 @@
                                 <td>
                                     <%= post.post_num %>
                                 </td>
-                                <td><a href="board/edit/<%= post.post_num %>">
+                                <td><a href="community/edit/<%= post.post_num %>">
                                         <%= post.post_title %>
                                     </a></td>
                                 <td>

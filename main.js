@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const passport = require('./config/passport');
 
 const authRouter = require('./routes/auth');
-const boardRouter = require('./routes/board');
+const postRouter = require('./routes/post');
 
 const app = express();
 const port = 8080;
@@ -45,7 +45,7 @@ app.get('/',(req,res) => {
 
 // 인증 라우터
 app.use('/auth', authRouter);
-app.use('/', boardRouter); // 게시판
+app.use('/', postRouter); // 게시판
 
 // 메인 페이지
 /*app.get('/main', (req, res) => {

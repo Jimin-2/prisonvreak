@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 
-const boardModel = {
+const postModel = {
   getPosts: (callback) => {
     db.query('SELECT * FROM post', (error, results) => {
       if (error) {
@@ -59,4 +59,4 @@ const boardModel = {
 
 };
 
-module.exports = boardModel;
+module.exports = postModel;
