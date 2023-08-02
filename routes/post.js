@@ -9,7 +9,7 @@ router.get('/community/insert', boardController.showInsertForm);
 router.post('/community/insert', boardController.insertPost);
 router.get('/community/edit/:post_num', boardController.showEditForm); // 편집 폼
 router.post('/community/edit/:post_num', boardController.updatePost);
-router.get('/notice', noticeController.showList);
+router.get('/notice', noticeController.showManagerPosts);
 router.get('/notice/show/:post_num', noticeController.showForm);
 
 module.exports = router;

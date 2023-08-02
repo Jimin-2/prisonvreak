@@ -76,11 +76,16 @@ const boardController = {
 };
 
 const noticeController = {
-  showList: (req, res) => {
-    fs.readFile('views/notice.html', 'utf8', (error, data) => {
-      postModel.getPosts((error, results) => {
-        res.send(ejs.render(data, { data: results }));
-      });
+  showManagerPosts: (req, res) => {
+    const userNum = 1;
+
+    postModel.getPostsByUserNum(userNum, (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      } else {
+        res.render('notice', { data: results });
+      }
     });
   },
 
@@ -99,8 +104,10 @@ const noticeController = {
             postModel.incrementPostHit(postNum, (error) => { // 조회수 증가
               if (error) {
                 console.error(error);
-              }
+              } else {
               res.send(ejs.render(data, { data: result }));
+              console.log(data);
+              }
             });
           }
         });
@@ -108,7 +115,6 @@ const noticeController = {
     });
   },
 
-  
-}
+};
 
 module.exports = { boardController, noticeController };

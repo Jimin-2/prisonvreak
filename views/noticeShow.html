@@ -40,10 +40,11 @@
       <div id="third">
         <div class="profile"></div>
         <div>
-          <p class="ninkname" name="mem_nickname"> <%= data.post_num %> </p>
-          <p class="date"> <%= data.post_created_at %> </p>
-          <p class="nickname"><%= data.post_hit %></p>
-          <p class="nickname">마지막 수정일시: <%= data.post_updated_at %></p>
+          
+          <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %> </p>
+          <p class="date">작성일: <%= data.post_created_at %> </p>
+          <p class="date">조회수: <%= data.post_hit %></p>
+          <p class="date">마지막 수정일시: <%= data.post_updated_at %></p>
         </div>
       </div>
 
@@ -51,10 +52,9 @@
 
       <div id="fourth">
         <p>
-            <%= data.post_content %>
+          <%= data.post_content %>
         </p>
       </div>
-
       <hr>
 
       <div id="fifth">

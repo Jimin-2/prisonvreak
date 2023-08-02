@@ -57,6 +57,14 @@ const postModel = {
     });
   },
 
+  getPostsByUserNum: (post_usernum, callback) => {
+    db.query('SELECT * FROM post WHERE post_usernum = ?', [post_usernum], (error, results) => {
+      if (error) {
+        console.error('Error getpostByUserNum', null);
+      }
+      callback(null, results);
+    })
+  },
 };
 
 module.exports = postModel;
