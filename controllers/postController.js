@@ -85,7 +85,7 @@ const noticeController = {
   },
 
   showForm: (req, res) => {
-    fs.readFile('views/postShow.html', 'utf8', (error, data) => {
+    fs.readFile('views/noticeShow.html', 'utf8', (error, data) => {
       if (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
