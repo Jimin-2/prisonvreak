@@ -106,7 +106,6 @@ const noticeController = {
                 console.error(error);
               } else {
               res.send(ejs.render(data, { data: result }));
-              console.log(data);
               }
             });
           }

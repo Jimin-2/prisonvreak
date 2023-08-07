@@ -34,7 +34,7 @@ const postModel = {
         callback(error, null);
       } else {
         callback(null, result[0]);
-      }
+      } // 이 아이디의 값들만 나옴
     });
   },
 

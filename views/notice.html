@@ -74,7 +74,7 @@
                                 <th>사진</th>
                                 <th>번호</th>
                                 <th>제목</th>
-                                <th>작성자</th>
+                                <th>날짜</th>
                             </tr>
                         </thead>
                         <tbody class="content">
@@ -92,7 +92,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <%= data[i].post_usernum %>
+                                        <%= new Date(data[i].post_created_at).toISOString().slice(0, 10) %>
                                     </td>
                                 </tr>
                             <% } %>

@@ -63,7 +63,7 @@
                     </thead>
 
                     <tbody>
-                        <% data.sort((a, b) => new Date(b.post_created_at) - new Date(a.post_created_at)).forEach(function(post) { %>
+                        <% data.sort((a, b) => new Date(b.post_num) - new Date(a.post_num)).forEach(function(post) { %>
                             <tr>
                                 <td>
                                     <%= post.post_num %>
@@ -75,13 +75,13 @@
                                     <%= post.post_usernum %>
                                 </td>
                                 <td>
-                                    <%= post.post_created_at %>
+                                    <%= new Date(post.post_created_at).toISOString().slice(0, 10) %>
                                 </td>
                                 <td>
                                     <%= post.post_hit %>
                                 </td>
                             </tr>
-                            <% }); %>
+                        <% }); %>
                     </tbody>
                 </table>
             </div>
