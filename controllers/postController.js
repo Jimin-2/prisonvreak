@@ -11,7 +11,7 @@ const boardController = {
         ...post,
         formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
       }));
-  
+
       res.render('board', { data: formattedResults });
     });
   },
@@ -24,8 +24,36 @@ const boardController = {
   },
 
   showInsertForm: (req, res) => {
-    fs.readFile('views/boardInsert.html', 'utf8', (error, data) => {
-      res.send(data);
+    // 로그인 확인
+    const isLoggedIn = req.session.nickname !== undefined; // 세션 사용자 정보 확인
+
+    if (!isLoggedIn) { // 로그인 X
+      // alert 메시지 이후, 이전 페이지 돌아가기
+      console.log(req.session.user)
+      return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+
+    // 로그인시
+    res.render('boardInsert');
+    console.log(req.session);
+  },
+
+  showForm: (req, res) => {
+    const postNum = req.params.post_num;
+
+    postModel.getPostById(postNum, (error, result) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        postModel.incrementPostHit(postNum, (error) => {
+            if (error) {
+                console.error(error);
+            } else {
+                res.render('boardShow', { data: result });
+            }
+        });
     });
   },
 
@@ -81,7 +109,7 @@ const boardController = {
 const noticeController = {
   showManagerPosts: (req, res) => {
     const userNum = 1;
-  
+
     postModel.getPostsByUserNum(userNum, (error, results) => {
       if (error) {
         console.error(error);
@@ -91,36 +119,31 @@ const noticeController = {
           ...post,
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
-  
+
         res.render('notice', { data: formattedResults });
       }
     });
   },
 
   showForm: (req, res) => {
-    fs.readFile('views/noticeShow.html', 'utf8', (error, data) => {
-      if (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-      } else {
-        const postNum = req.params.post_num;
-        postModel.getPostById(postNum, (error, result) => {
-          if (error) {
+    const postNum = req.params.post_num;
+
+    postModel.getPostById(postNum, (error, result) => {
+        if (error) {
             console.error(error);
             res.status(500).send('Internal Server Error');
-          } else {
-            postModel.incrementPostHit(postNum, (error) => { // 조회수 증가
-              if (error) {
+            return;
+        }
+        postModel.incrementPostHit(postNum, (error) => {
+            if (error) {
                 console.error(error);
-              } else {
-              res.send(ejs.render(data, { data: result }));
-              }
-            });
-          }
+            } else {
+                res.render('noticeShow', { data: result });
+            }
         });
-      }
     });
   },
+
 
 };
 

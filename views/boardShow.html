@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/header.css">
+  <link rel="stylesheet" type="text/css" href="/css/footer.css">
+
+  <link rel="stylesheet" type="text/css" href="/css/commuForm.css">
+
+  <!-- JavaScript -->
+  <script src="javascript/index.js"></script>
+
+  <!--Title-->
+  <title> CAN </title>
+
+</head>
+<body>
+    <!-- Section -->
+  <section id="section">
+    <div id="layout">
+
+      <div id="first">
+        <button> 다음글 </button>
+        <button onclick="location.href='/notice'"> 목록 </button>
+      </div>
+      <div id="second">
+        <h4> > 공지사항 </h4>
+        <h1> <%= data.post_title %> </h1>
+      </div>
+
+      <div id="third">
+        <div class="profile"></div>
+        <div>
+          
+          <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %> </p>
+          <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %> </p>
+          <p class="date">조회수: <%= data.post_hit %></p>
+          <p class="date">마지막 수정일시: <%= data.post_updated_at %></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div id="fourth">
+        <p>
+          <%= data.post_content %>
+        </p>
+      </div>
+      <hr>
+
+      <div id="fifth">
+        <h2> 댓글 </h2>
+
+        <div class="fifthFifth">
+          <p class="ninkname"> 작성자: <%= data.post_num %> </p>
+        </div>
+        <div> 댓글! </div>
+
+        <div id="fifthFifthComment"> 답글 </div>
+      </div>
+      
+      <div id="fifthComment">
+        <div class="fifthFifth">
+          <p class="ninkname"> 정예은 </p>
+          <p><a class=date> 2023/07/27 PM 03:14</a></p>
+        </div>
+        <div> 답글 내용입니다. </div>
+      </div>
+
+      <hr>
+
+      <div id="sixth">
+        <p name="mem_nickname"> 정예은 </p>
+        <textarea id="commentArea" placeholder="댓글을 입력하세요."></textarea>
+        <div class="submit">
+          <p> 0 byte </p>
+          <button class="button btnFade btnBlack"> 등록 </button>
+        </div>
+      </div>
+      <a href="/notice">목록</a>
+    </div>
+  </section>
+</body>
+</html>

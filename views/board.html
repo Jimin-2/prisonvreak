@@ -36,7 +36,7 @@
             <li><a href=""> 커뮤니티 </a></li>
             <li><a href=""> 랭킹 </a></li>
             <li><a href=""> 고객지원 </a></li>
-            <li><a href=""> 로그인 </a></li>
+            <li><a href="/auth/login"> 로그인 </a></li>
         </ul>
     </div>
 
@@ -68,7 +68,7 @@
                                 <td>
                                     <%= post.post_num %>
                                 </td>
-                                <td><a href="community/edit/<%= post.post_num %>">
+                                <td><a href="/community/show/<%= post.post_num %>">
                                         <%= post.post_title %>
                                     </a></td>
                                 <td>

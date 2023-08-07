@@ -38,6 +38,7 @@ const postModel = {
     });
   },
 
+
   updatePost: (post_title, post_content, post_updated_at, post_num, callback) => {
     db.query(
       'UPDATE post SET post_title = ?, post_content = ?, post_updated_at = ? WHERE post_num = ?',
