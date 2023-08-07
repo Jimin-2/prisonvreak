@@ -75,7 +75,7 @@
                                     <%= post.post_usernum %>
                                 </td>
                                 <td>
-                                    <%= new Date(post.post_created_at).toISOString().slice(0, 10) %>
+                                    <%= post.formattedCreatedAt %>
                                 </td>
                                 <td>
                                     <%= post.post_hit %>

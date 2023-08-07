@@ -42,7 +42,7 @@
         <div>
           
           <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %> </p>
-          <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().replace("T", " ").slice(0, 19) %> </p>
+          <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %> </p>
           <p class="date">조회수: <%= data.post_hit %></p>
           <p class="date">마지막 수정일시: <%= data.post_updated_at %></p>
         </div>

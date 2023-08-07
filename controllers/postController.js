@@ -6,10 +6,13 @@ const postModel = require('../models/postModel');
 // 컨트롤러 함수
 const boardController = {
   showList: (req, res) => {
-    fs.readFile('views/board.html', 'utf8', (error, data) => {
-      postModel.getPosts((error, results) => {
-        res.send(ejs.render(data, { data: results }));
-      });
+    postModel.getPosts((error, results) => {
+      const formattedResults = results.map(post => ({
+        ...post,
+        formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+      }));
+  
+      res.render('board', { data: formattedResults });
     });
   },
 
@@ -78,13 +81,18 @@ const boardController = {
 const noticeController = {
   showManagerPosts: (req, res) => {
     const userNum = 1;
-
+  
     postModel.getPostsByUserNum(userNum, (error, results) => {
       if (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
       } else {
-        res.render('notice', { data: results });
+        const formattedResults = results.map(post => ({
+          ...post,
+          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+        }));
+  
+        res.render('notice', { data: formattedResults });
       }
     });
   },

@@ -92,7 +92,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <%= new Date(data[i].post_created_at).toISOString().slice(0, 10) %>
+                                        <%= data[i].formattedCreatedAt %>
                                     </td>
                                 </tr>
                             <% } %>
