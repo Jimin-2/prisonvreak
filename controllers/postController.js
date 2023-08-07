@@ -1,7 +1,7 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const moment = require('moment');
-const postModel = require('../models/postModel');
+const { postModel, commentModel } = require('../models/postModel');
 
 // 컨트롤러 함수
 const boardController = {
@@ -42,18 +42,26 @@ const boardController = {
     const postNum = req.params.post_num;
 
     postModel.getPostById(postNum, (error, result) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+      postModel.incrementPostHit(postNum, (error) => {
         if (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error');
-            return;
-        }
-        postModel.incrementPostHit(postNum, (error) => {
-            if (error) {
-                console.error(error);
-            } else {
-                res.render('boardShow', { data: result });
+          console.error(error);
+        } else {
+          commentModel.getComments(postNum, (commentError, comments) => {
+            if (commentError) {
+              console.error(commentError);
+              res.status(500).send('Internal Server Error');
+              return;
             }
-        });
+            res.render('boardShow', { data: result, comments: comments });
+            console.log(comments)
+          });
+        }
+      });
     });
   },
 
@@ -101,6 +109,22 @@ const boardController = {
       postNum,
       () => {
         res.redirect('/community');
+      }
+    );
+  },
+
+  addComment: (req, res) => {
+    const body = req.body;
+    const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    const postNum = req.params.post_num;
+    commentModel.insertComments(
+      postNum,
+      body.cmt_content,
+      body.cmt_usernum,
+      koreanTime,
+      () => {
+        console.log(postNum);
+        res.send('<script>alert("댓글 등록 완료"); history.back();</script>');
       }
     );
   },

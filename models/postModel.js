@@ -68,4 +68,29 @@ const postModel = {
   },
 };
 
-module.exports = postModel;
+const commentModel = {
+  getComments: (post_usernum, callback) => {
+    db.query('SELECT * FROM comment AS c JOIN post AS p ON c.post_num = p.post_num WHERE c.post_num = ?', [post_usernum], (error, results) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  },
+
+  insertComments: (post_num, cmt_content, cmt_usernum, cmt_created_at, callback) => {
+    
+    db.query(
+      'INSERT INTO comment (post_num, cmt_content, cmt_usernum, cmt_created_at) VALUES (?, ?, ?, ?)',
+      [post_num, cmt_content, cmt_usernum, cmt_created_at],
+      () => {
+        callback();
+      }
+    );
+
+  },
+
+}
+
+module.exports = { postModel, commentModel };

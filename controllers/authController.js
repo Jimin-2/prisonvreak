@@ -65,7 +65,8 @@ exports.login_process = function (req, res) {
             if (error) throw error;
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                 req.session.is_logined = true;      // 세션 정보 갱신
-                req.session.nickname = id;
+                req.session.nickname = results[0].mem_email;
+                console.log(results[0].mem_email)
                 req.session.save(function () {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
