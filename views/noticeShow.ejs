@@ -11,19 +11,22 @@
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/header.css">
-  <link rel="stylesheet" type="text/css" href="/css/footer.css">
-
   <link rel="stylesheet" type="text/css" href="/css/commuForm.css">
 
   <!-- JavaScript -->
-  <script src="javascript/index.js"></script>
+  <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!--Title-->
-  <title> CAN </title>
+    <!--Title-->
+    <title> CAN </title>
 
 </head>
+
 <body>
+
+<!-- header -->
+<%- include('partials/header')%>
     <!-- Section -->
   <section id="section">
     <div id="layout">
@@ -40,7 +43,7 @@
       <div id="third">
         <div class="profile"></div>
         <div>
-          
+
           <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %> </p>
           <p class="date">작성일: <%= data.post_created_at %> </p>
           <p class="date">조회수: <%= data.post_hit %></p>
@@ -67,7 +70,7 @@
 
         <div id="fifthFifthComment"> 답글 </div>
       </div>
-      
+
       <div id="fifthComment">
         <div class="fifthFifth">
           <p class="ninkname"> 정예은 </p>
@@ -89,5 +92,7 @@
       <a href="/notice">목록</a>
     </div>
   </section>
+<!-- footer -->
+<%- include('partials/footer')%>
 </body>
 </html>

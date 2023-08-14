@@ -1,49 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <script>
-    function checkIdAvailability() {
-        var id = document.getElementById('id').value;
-        var availabilitySpan = document.getElementById('idAvailability');
-
-        fetch('/auth/check_id_availability', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: id })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.available) {
-                    availabilitySpan.textContent = '사용 가능한 아이디입니다.';
-                    availabilitySpan.style.color = 'green';
-                } else {
-                    availabilitySpan.textContent = '이미 사용 중인 아이디입니다.';
-                    availabilitySpan.style.color = 'red';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-
-    function checkPasswordMatch() {
-        var password = document.getElementById('password').value;
-        var confirmPassword = document.getElementById('confirmPassword').value;
-        var matchSpan = document.getElementById('passwordMatch');
-        if (password === confirmPassword) {
-            matchSpan.textContent = '비밀번호가 일치합니다.';
-            matchSpan.style.color = 'green';
-        } else {
-            matchSpan.textContent = '비밀번호가 일치하지 않습니다.';
-            matchSpan.style.color = 'red';
-        }
-    }
-
     function sendVerificationCode() {
         var email = document.getElementById('email').value;
         var verificationCodeForm = document.getElementById('verificationCodeForm');
@@ -134,17 +91,9 @@
     }
 
     function validateForm() {
-        var idAvailability = document.getElementById('idAvailability').textContent;
-        var passwordMatch = document.getElementById('passwordMatch').textContent;
         var verificationStatus = document.getElementById('verificationStatus').textContent;
 
-        if (idAvailability !== '사용 가능한 아이디입니다.') {
-            alert('아이디 중복확인을 해주세요.');
-            return false;
-        } else if (passwordMatch !== '비밀번호가 일치합니다.') {
-            alert('비밀번호 일치여부를 확인해주세요.');
-            return false;
-        } else if (verificationStatus !== '인증되었습니다.') {
+        if (verificationStatus !== '인증되었습니다.') {
             alert('이메일 인증을 완료해주세요.');
             return false;
         } else {
@@ -157,29 +106,91 @@
     document.getElementById('verificationCode').value = '';
     document.getElementById('verificationStatus').textContent = '';
 </script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/signup.css">
+
+    <!-- JavaScript -->
+    <script src="/javascript/index.js"></script>
+    <script type="text/javascript">
+        history.replaceState({}, null, location.pathname);
+    </script>
+
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Title-->
+    <title> CAN </title>
+
+</head>
+
 <body>
-<h2>회원가입</h2>
-<form action="/auth/register_process" method="post">
-    <p><input class="login" type="text" name="name" placeholder="이름"></p>
-    <p><input class="login" type="text" name="nickname" placeholder="닉네임"></p>
-    <p>
-        <input class="login" type="text" name="id" id="id" placeholder="아이디">
-        <button type="button" onclick="checkIdAvailability()">중복확인</button>
-        <span id="idAvailability"></span>
-    </p>
-    ${hiddenInput}
-    <p><input class="login" type="password" name="pwd" id="password" placeholder="비밀번호"></p>
-    <p><input class="login" type="password" name="pwd2" id="confirmPassword" placeholder="비밀번호 재확인" oninput="checkPasswordMatch()"><span id="passwordMatch"></span></p>
-    <p><input class="login" type="tel" name="phone" placeholder="핸드폰번호"></p>
-    <p><input class="login" type="email" name="email" id="email" placeholder="이메일">
-        <button type="button" onclick="sendVerificationCode()">인증</button></p>
-    <div id="verificationCodeForm" style="display: none;">
-        <p><input class="login" type="text" id="verificationCode" placeholder="인증번호">
-            <button type="button" onclick="verifyCode()">확인</button></p>
-        <p id="verificationStatus"></p>
+
+<!-- header -->
+<%- include('partials/header')%>
+
+<!-- Section -->
+<section id="section">
+    <div id="loginTool">
+        <form action="/auth/socialregister_process" method="post">
+            <h1> SIGN UP </h1>
+
+
+            <!-- ID -->
+            <div class="inputBox">
+                <p> Name </p>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="inputBox" >
+                <p> Nickname </p>
+                <input type="text" name="nickname"  required>
+            </div>
+
+            <div class="inputBox" >
+                <p> Phone </p>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="inputBox" id="divemail">
+                <p> E-mail </p>
+                <input type="email" name="email" id="email" value= "<%=email%>" required>
+                <button type="button" onclick="sendVerificationCode()"> 인증 </button>
+            </div>
+
+            <div class="inputBox" id="verificationCodeForm" style="display: none;">
+                <input type="number" placeholder="인증번호 입력" id="verificationCode">
+                <button type="button" onclick="verifyCode()"> 확인 </button>
+                <p> 인증번호 유효 시간: <span id="countdown">5분 0초</span> </p>
+                <p id="verificationStatus"> </p> <!-- 유효하지 않습니다. -->
+            </div>
+
+            <div style="display: none;">
+            <input type="text" name="<%=provider%>" id="<%=provider%>" value="<%=hiddenInput%>">
+            </div>
+
+            <!-- submit -->
+            <div class="submit">
+                <button> SIGN UP </button>
+            </div>
+        </form>
+
+        <div id="signin"> <a href="/auth/login"> Sign In </a> </div>
+
     </div>
-    <p><input class="btn" type="submit" value="회원가입" onclick="return validateForm()"></p>
-</form>
-<p><a href="/auth/login">로그인화면으로 돌아가기</a></p>
+</section>
+
+<!-- footer -->
+<%- include('partials/footer')%>
 </body>
+
+
 </html>

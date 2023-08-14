@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/customer.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--Title-->
+  <title> CAN </title>
+
+</head>
+
+<body>
+<!-- header -->
+<%- include('partials/header')%>
+
+<!-- Section -->
+<section id="section">
+  <div id="first">
+    <img src="/img/logoCustomer.png">
+    <a> 010-1234-5678 / yeeunj356@gmail.com </a>
+  </div>
+  <div id="second">
+    <form action="/auth/customer_send" method="post">
+      <h2> Let the various voices of users be heard. </h2>
+      <h4> 사용자 여러분의 다양한 목소리를 들려주세요. </h4>
+
+      <div id="name">
+        <input class="inputBox" type="text" name="name" placeholder="Your name" required>
+      </div>
+
+      <div id="email">
+        <input class="inputBox" type="text" name="email" placeholder="Your E-mail" required>
+      </div>
+
+      <div id="contents">
+        <textarea class="contentsBox" name="contents" placeholder="Content" required></textarea>
+      </div>
+
+      <button class="custom-btn" type="submit"> SENT </button>
+    </form>
+  </div>
+
+</section>
+
+<!-- footer -->
+<%- include('partials/footer')%>
+
+</body>
+
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/game.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script>
+    $(document).ready(function () {
+    $(".tab_menu li").click(function () {
+      var $this = $(this),
+        tabId = $this.data("tab"),
+        tabIndex = $this.index();
+
+      $(".tab_menu li, .tab_content li").removeClass("on");
+
+      $this.addClass("on");
+      $("#"+tabId).addClass("on");
+
+      $(".tab_menu li").each(function (content) {
+        $(this).find("img").attr("src", $(this).find("img").attr("src").replace("_off","_on"));
+
+        if (tabIndex != content) {
+          $(this).find("img").attr("src", $(this).find("img").attr("src").replace("_on","_off"));
+        }
+      });
+    });
+  })
+  </script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--Title-->
+  <title> CAN </title>
+
+</head>
+
+<body>
+<!-- header -->
+<%- include('partials/header')%>
+
+  <!-- Section -->
+  <section id="section">
+    <div id="wrap">
+    <div id="container">
+      <div id="content">
+      <div id="box" hidden="true">
+        <div id="warning" hidden="true"></div>
+        <div>
+          <span>Codec preferences:</span>
+          <select id="codecPreferences" autocomplete="off" disabled>
+            <option selected value="">Default</option>
+          </select>
+        </div>
+
+        <div>
+          <span>Lock Cursor to Player:</span>
+          <input type="checkbox" id="lockMouseCheck" autocomplete="off" />
+        </div>
+
+        <p>
+          For more information about sample, see
+          <a href="https://docs.unity3d.com/Packages/com.unity.renderstreaming@3.1/manual/sample-broadcast.html">Broadcast sample</a> document page.
+        </p>
+
+        <div id="message"></div>
+
+        <section>
+          <a href="https://github.com/Unity-Technologies/UnityRenderStreaming/tree/develop/WebApp/client/public/receiver"
+             title="View source for this page on GitHub" id="viewSource">View source on GitHub</a>
+        </section>
+      </div>
+      <div id="playerField">
+        <div id="player"  class="item1"></div>
+      </div>
+        <div id="playManual">
+          <ul class="tab_menu">
+            <!-- 이미지 이름: [비활성화 상태의 이미지는 _off] | [활성화 상태의 이미지는 _on]  -->
+            <li data-tab="tab-1" class="button button&#45;&#45;wapasha button&#45;&#45;round-s on">표지</li>
+            <li data-tab="tab-2" class="button button&#45;&#45;wapasha button&#45;&#45;round-s">전선 연결</li>
+            <li data-tab="tab-3" class="button button&#45;&#45;wapasha button&#45;&#45;round-s">모스 부호</li>
+            <li data-tab="tab-4" class="button button&#45;&#45;wapasha button&#45;&#45;round-s">슬라이드 스위치</li>
+          </ul>
+          <ul class="tab_content">
+            <li id="tab-1" class="on"><img src="/img/manual1.JPG" alt="표지"></li>
+            <li id="tab-2"><img src="/img/manual2.JPG" alt="전선연결"></li>
+            <li id="tab-3"><img src="/img/manual3.JPG" alt="모스부호"></li>
+            <li id="tab-4"><img src="/img/manual4.JPG" alt="슬라이드스위치"></li>
+          </ul>
+        </div>
+
+        <!--<div id="mapBtn">
+          <button id="btn01" class="button button&#45;&#45;wapasha button&#45;&#45;round-s"> #1 </button>
+          <button id="btn02" class="button button&#45;&#45;wapasha button&#45;&#45;round-s"> #2 </button>
+          <button id="btn03" class="button button&#45;&#45;wapasha button&#45;&#45;round-s"> #3 </button>
+        </div>-->
+        <div id="cctv_btn">
+          <ul>
+            <li><input type="button" value="CCTV-1" class="button button&#45;&#45;wapasha button&#45;&#45;round-s cctv_btn" id="CCTV-1"></li>
+            <li><input type="button" value="CCTV-2" class="button button&#45;&#45;wapasha button&#45;&#45;round-s cctv_btn" id="CCTV-2"></li>
+            <li><input type="button" value="CCTV-3" class="button button&#45;&#45;wapasha button&#45;&#45;round-s cctv_btn" id="CCTV-3"></li>
+            <li><input type="button" value="CCTV-4" class="button button&#45;&#45;wapasha button&#45;&#45;round-s cctv_btn" id="CCTV-4"></li>
+            <li><input type="button" value="CCTV-5" class="button button&#45;&#45;wapasha button&#45;&#45;round-s cctv_btn" id="CCTV-5"></li>
+          </ul>
+        </div>
+        <p id="both"></p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+<!-- footer -->
+<%- include('partials/footer')%>
+
+
+  <script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="https://unpkg.com/event-target@latest/min.js"></script>
+  <script src="https://unpkg.com/resize-observer-polyfill@1.5.0/dist/ResizeObserver.global.js"></script>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+  <script type="module" src="module/js/game.js"></script>
+
+</body>
+
+
+</html>

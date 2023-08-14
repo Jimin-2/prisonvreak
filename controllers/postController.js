@@ -6,7 +6,7 @@ const postModel = require('../models/postModel');
 // 컨트롤러 함수
 const boardController = {
   showList: (req, res) => {
-    fs.readFile('views/board.html', 'utf8', (error, data) => {
+    fs.readFile('views_latest/board.html', 'utf8', (error, data) => {
       postModel.getPosts((error, results) => {
         res.send(ejs.render(data, { data: results }));
       });
@@ -21,7 +21,7 @@ const boardController = {
   },
 
   showInsertForm: (req, res) => {
-    fs.readFile('views/boardInsert.html', 'utf8', (error, data) => {
+    fs.readFile('views_latest/boardInsert.html', 'utf8', (error, data) => {
       res.send(data);
     });
   },
@@ -41,7 +41,7 @@ const boardController = {
   },
 
   showEditForm: (req, res) => {
-    fs.readFile('views/boardEdit.html', 'utf8', (error, data) => {
+    fs.readFile('views_latest/boardEdit.html', 'utf8', (error, data) => {
       if (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -90,7 +90,7 @@ const noticeController = {
   },
 
   showForm: (req, res) => {
-    fs.readFile('views/noticeShow.html', 'utf8', (error, data) => {
+    fs.readFile('views_latest/noticeShow.html', 'utf8', (error, data) => {
       if (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

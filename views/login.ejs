@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/login.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Title-->
+    <title> CAN </title>
+
+</head>
+
+<body>
+
+<!-- header -->
+<%- include('partials/header')%>
+
+<!-- Section -->
+<section id="section">
+  <div id="loginTool">
+    <form action="/auth/login_process" method="post">
+      <h1> LOGIN </h1>
+
+      <!-- ID -->
+      <div class="inputBox">
+        <p> ID </p>
+        <input type="text" name="id" id="id" required>
+      </div>
+
+      <!-- Password -->
+      <div class="inputBox" id="divpassword">
+        <p> Password </p>
+        <input type="password" name="pwd" id="password" required>
+      </div>
+
+      <div id="rememberCheck">
+        <div>
+          <input type="checkbox"> ID저장
+        </div>
+        <div> <a href="###"> ID </a> / <a href="###">비밀번호</a> 찾기 </div>
+      </div>
+
+      <!-- submit -->
+      <div class="submit">
+        <button> SIGN IN </button>
+      </div>
+    </form>
+    <div id="signUp"> <a href="/auth/signup"> sign Up </a> </div>
+
+    <div id="another">
+      <p> 다른 방법으로 로그인하기 </p>
+      <hr>
+
+      <div id="logo">
+
+        <a href="/auth/google"><img src="/img/naver.png" onclick=""></a> <!--- onclick으로 js 코드에 연결시키면 됨 -->
+        <a href="/auth/kakao"><img src="/img/kakao.png" onclick=""></a> <!--- onclick으로 js 코드에 연결시키면 됨 -->
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- footer -->
+<%- include('partials/footer')%>
+</body>
+</html>
