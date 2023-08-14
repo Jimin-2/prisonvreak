@@ -34,9 +34,10 @@ const postModel = {
         callback(error, null);
       } else {
         callback(null, result[0]);
-      }
+      } // 이 아이디의 값들만 나옴
     });
   },
+
 
   updatePost: (post_title, post_content, post_updated_at, post_num, callback) => {
     db.query(
@@ -67,4 +68,29 @@ const postModel = {
   },
 };
 
-module.exports = postModel;
+const commentModel = {
+  getComments: (post_usernum, callback) => {
+    db.query('SELECT * FROM comment AS c JOIN post AS p ON c.post_num = p.post_num WHERE c.post_num = ?', [post_usernum], (error, results) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  },
+
+  insertComments: (post_num, cmt_content, cmt_usernum, cmt_created_at, callback) => {
+    
+    db.query(
+      'INSERT INTO comment (post_num, cmt_content, cmt_usernum, cmt_created_at) VALUES (?, ?, ?, ?)',
+      [post_num, cmt_content, cmt_usernum, cmt_created_at],
+      () => {
+        callback();
+      }
+    );
+
+  },
+
+}
+
+module.exports = { postModel, commentModel };

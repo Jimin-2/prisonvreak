@@ -11,23 +11,21 @@
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/header.css">
+  <link rel="stylesheet" type="text/css" href="/css/footer.css">
+
   <link rel="stylesheet" type="text/css" href="/css/commuForm.css">
 
   <!-- JavaScript -->
-  <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="javascript/index.js"></script>
 
-    <!--Title-->
-    <title> CAN </title>
+  <!--Title-->
+  <title> CAN </title>
 
 </head>
 
 <body>
-
-<!-- header -->
-<%- include('partials/header')%>
-    <!-- Section -->
+  <!-- Section -->
   <section id="section">
     <div id="layout">
 
@@ -37,17 +35,23 @@
       </div>
       <div id="second">
         <h4> > 공지사항 </h4>
-        <h1> <%= data.post_title %> </h1>
+        <h1>
+          <%= data.post_title %>
+        </h1>
       </div>
 
       <div id="third">
         <div class="profile"></div>
         <div>
 
-          <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %> </p>
-          <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %> </p>
-          <p class="date">조회수: <%= data.post_hit %></p>
-          <p class="date">마지막 수정일시: <%= data.post_updated_at %></p>
+          <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %>
+          </p>
+          <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %>
+          </p>
+          <p class="date">조회수: <%= data.post_hit %>
+          </p>
+          <p class="date">마지막 수정일시: <%= data.post_updated_at %>
+          </p>
         </div>
       </div>
 
@@ -64,35 +68,37 @@
         <h2> 댓글 </h2>
 
         <div class="fifthFifth">
-          <p class="ninkname"> 작성자: <%= data.post_num %> </p>
+          <% comments.forEach(comment=> { %>
+            <p class="ninkname"> 작성자: <%= comment.cmt_usernum %>
+            </p>
+            <%= comment.cmt_content %>
+              <% }); %>
         </div>
-        <div> 댓글! </div>
-
-        <div id="fifthFifthComment"> 답글 </div>
+        <!-- <div id="fifthFifthComment"> 답글 </div> -->
       </div>
-
-      <div id="fifthComment">
+      <!-- <div id="fifthComment">
         <div class="fifthFifth">
           <p class="ninkname"> 정예은 </p>
           <p><a class=date> 2023/07/27 PM 03:14</a></p>
         </div>
         <div> 답글 내용입니다. </div>
-      </div>
+      </div> -->
 
       <hr>
 
       <div id="sixth">
-        <p name="mem_nickname"> 정예은 </p>
-        <textarea id="commentArea" placeholder="댓글을 입력하세요."></textarea>
-        <div class="submit">
+        <form action="/community/show" method="post">
+          <input type="text" name="cmt_usernum" id="cmt_usernum" placeholder="아이디"> </input>
+          <br>
+          <textarea name="cmt_content" id="cmt_content" placeholder="댓글을 입력하세요."></textarea>
+            <input type="submit" value="댓글 등록" class="custom-btn btn-16">
           <p> 0 byte </p>
-          <button class="button btnFade btnBlack"> 등록 </button>
-        </div>
       </div>
-      <a href="/notice">목록</a>
+
+      </form>
+      <a href="/community">목록</a>
     </div>
   </section>
-<!-- footer -->
-<%- include('partials/footer')%>
 </body>
+
 </html>
