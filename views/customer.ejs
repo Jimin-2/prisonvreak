@@ -15,50 +15,62 @@
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <!--Title-->
   <title> CAN </title>
 
 </head>
 
 <body>
-<!-- header -->
-<%- include('partials/header')%>
+  <!-- header -->
+  <%- include('partials/header')%>
 
-<!-- Section -->
-<section id="section">
-  <div id="first">
-    <img src="/img/logoCustomer.png">
-    <a> 010-1234-5678 / yeeunj356@gmail.com </a>
-  </div>
-  <div id="second">
-    <form action="/auth/customer_send" method="post">
+  <!-- Section -->
+  <section id="section">
+    <div id="first">
+      <img src="/img/logoCustomer.png">
+      <a> 010-1234-5678 / yeeunj356@gmail.com </a>
+    </div>
+    <div id="second">
+      <form action="/auth/customer_send" method="post">
       <h2> Let the various voices of users be heard. </h2>
       <h4> 사용자 여러분의 다양한 목소리를 들려주세요. </h4>
 
-      <div id="name">
+      <div class="h5">
+        <h5> | 서비스 이용자 정보 </h5>
+      </div>
+
+      <div id="divName">
         <input class="inputBox" type="text" name="name" placeholder="Your name" required>
       </div>
 
-      <div id="email">
+      <div id="divEmail">
         <input class="inputBox" type="text" name="email" placeholder="Your E-mail" required>
+      </div>
+
+      <div id="divNumber">
+        <input class="inputBox" type="text" name="phone" placeholder="Your PhoneNumber" required>
+      </div>
+
+      <div class="h5">
+        <h5> | 전달 내용 <button id="btnFile"> 첨부파일 </button> </h5>
       </div>
 
       <div id="contents">
         <textarea class="contentsBox" name="contents" placeholder="Content" required></textarea>
       </div>
 
-      <button class="custom-btn" type="submit"> SENT </button>
-    </form>
-  </div>
+        <button class="custom-btn" type="submit"> SENT </button>
+      </form>
 
-</section>
+    </div>
+  </section>
 
-<!-- footer -->
-<%- include('partials/footer')%>
+  <!-- footer -->
+  <%- include('partials/footer')%>
 
 </body>
-
 
 </html>
