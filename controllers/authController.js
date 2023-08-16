@@ -33,8 +33,9 @@ exports.socialregister_process = function (req, res) {
     const phone = req.body.phone;
     const email = req.body.email;
     const kakaoUserId = req.body.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
-    const googleUserId = req.query.googleUserId; // 구글 로그인 시 저장한 구글 아이디
+    const googleUserId = req.body.googleUserId; // 구글 로그인 시 저장한 구글 아이디
     console.log(req.body)
+
     // 구현 내용...
     if (name && nickname && phone && email) {
         if (kakaoUserId) {
@@ -144,12 +145,12 @@ exports.google_login = passport.authenticate('google', { scope: ['profile', 'ema
 
 // 구글 로그인 콜백 처리
 exports.google_callback = function (req, res, next) {
-    passport.authenticate('google', function (err, user, info) {
+    passport.authenticate('google', function (err, profile, info) {
         if (err) { return next(err); }
-        if (!user) { return res.redirect('/auth/login'); }
+        if (!profile) { return res.redirect('/auth/login'); }
 
-        var googleUserId = user.id;
-        var email = user.email;
+        var googleUserId = profile.id;
+        var email = profile.emails[0].value;;
         console.log('구글 아이디:', googleUserId);
 
         userModel.getUserByGoogleId(googleUserId, function (error, results) {
@@ -158,14 +159,17 @@ exports.google_callback = function (req, res, next) {
             if (results.length > 0) {
                 // 이미 회원가입이 되어 있는 경우 로그인 처리
                 req.session.is_logined = true;
-                req.session.nickname = googleUserId;
-                req.session.save(function () {
+                req.session.nickname = results[0].mem_nickname;
+                const authStatusUI = `${req.session.nickname}님 환영합니다!`;
+                res.send(`<script type="text/javascript">alert("${authStatusUI}");
+                    document.location.href="/";</script>`);
+                /*req.session.save(function () {
                     res.redirect('/');
-                });
+                });*/
             } else {
                 // 회원가입이 되어 있지 않은 경우 회원가입 페이지로 이동
 
-                res.redirect('/auth/signupsocial?googleUserId=${googleUserId}&email=${email}');
+                res.redirect('/auth/signupsocial?googleUserId=' + googleUserId +'&email='+ email);
             }
         });
     })(req, res, next);
@@ -239,6 +243,7 @@ exports.check_id_availability = function (req, res) {
 exports.customer_send = function (req, res) {
     const name = req.body.name;
     const email = req.body.email;
+    const phone = req.body.phone;
     const contents = req.body.contents;
 
     const transporter = nodemailer.createTransport({
@@ -253,7 +258,7 @@ exports.customer_send = function (req, res) {
         from: 'prisonvreakcan@gmail.com',
         to: 'prisonvreakcan@gmail.com',
         subject: '고객지원문의',
-        text: `고객명: ${name}\n이메일: ${email}\n문의내용: ${contents}`,
+        text: `고객명: ${name}\n이메일: ${email}\n전화번호:${phone}\n문의내용: ${contents}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {

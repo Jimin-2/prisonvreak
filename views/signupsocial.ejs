@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <script>
-    function getEmail() {
-
-    }
     function sendVerificationCode() {
         var email = document.getElementById('email').value;
         var verificationCodeForm = document.getElementById('verificationCodeForm');
@@ -146,6 +143,7 @@
         <form action="/auth/socialregister_process" method="post">
             <h1> SIGN UP </h1>
 
+
             <!-- ID -->
             <div class="inputBox">
                 <p> Name </p>
@@ -164,7 +162,7 @@
 
             <div class="inputBox" id="divemail">
                 <p> E-mail </p>
-                <input type="email" name="email" id="email" value=<%= email %> required>
+                <input type="email" name="email" id="email" value= "<%=email%>" required>
                 <button type="button" onclick="sendVerificationCode()"> 인증 </button>
             </div>
 
@@ -173,6 +171,10 @@
                 <button type="button" onclick="verifyCode()"> 확인 </button>
                 <p> 인증번호 유효 시간: <span id="countdown">5분 0초</span> </p>
                 <p id="verificationStatus"> </p> <!-- 유효하지 않습니다. -->
+            </div>
+
+            <div style="display: none;">
+                <input type="text" name="<%=provider%>" id="<%=provider%>" value="<%=hiddenInput%>">
             </div>
 
             <!-- submit -->
