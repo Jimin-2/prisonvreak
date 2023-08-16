@@ -10,10 +10,10 @@ const postRouter = require('./routes/post');
 const app = express();
 const port = 8080;
 
-app.engine('html', require('ejs').renderFile); // 'html'을 뷰 엔진으로 설정
-app.set('view engine', 'html');
+//app.engine('html', require('ejs').renderFile); // 'html'을 뷰 엔진으로 설정
+app.set('view engine', 'ejs');
 
-app.set("views", "./views");
+app.set("views", './views');
 app.use(express.static(`public`));
 
 app.use(bodyParser.json());

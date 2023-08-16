@@ -29,6 +29,9 @@ router.get('/logout', authController.logout);
 // 회원가입 화면
 router.get('/signup', authController.register);
 
+// 소셜 회원가입 화면
+router.get('/signupsocial', authController.socialregister);
+
 // 아이디 중복 확인
 router.post('/check_id_availability', authController.check_id_availability);
 
@@ -40,6 +43,9 @@ router.post('/verify_code', authController.verify_code);
 
 // 회원가입 프로세스
 router.post('/register_process', authController.register_process);
+
+// 회원가입 프로세스
+router.post('/socialregister_process', authController.socialregister_process);
 
 // 고객지원 화면
 router.get('/customer',authController.customer);

@@ -13,42 +13,54 @@ exports.register_process = function (req, res) {
     const password = req.body.pwd;
     const phone = req.body.phone;
     const email = req.body.email;
-    const kakaoUserId = req.query.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
-    const googleUserId = req.query.googleUserId; // 구글 로그인 시 저장한 구글 아이디
 
-    // 구현 내용...
     if (name && nickname && id && password && phone && email) {
-        // 회원가입하기 전에 인증 번호를 확인
-        // 생성된 인증 번호와 입력된 인증 번호를 비교하여 유효성을 확인해야 함
+        userModel.registerUserLocal(name, nickname, id, password, phone, email, function (error, data) {
+            if (error) throw error;
+            res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
+            document.location.href="/";</script>`);
+        });
+    } else {
+        res.send(`<script type="text/javascript">alert("입력되지 않은 정보가 있습니다.");
+        history.back();</script>`);
+    }
+};
 
+//소셜 회원가입
+exports.socialregister_process = function (req, res) {
+    const name = req.body.name;
+    const nickname = req.body.nickname;
+    const phone = req.body.phone;
+    const email = req.body.email;
+    const kakaoUserId = req.body.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
+    const googleUserId = req.query.googleUserId; // 구글 로그인 시 저장한 구글 아이디
+    console.log(req.body)
+    // 구현 내용...
+    if (name && nickname && phone && email) {
         if (kakaoUserId) {
             // 카카오톡으로 가입한 경우, kakao_id 값을 저장
-           userModel.registerUserWithKakao(name, nickname, id, password, phone, email, kakaoUserId, function (error, data) {
-                    if (error) throw error;
-                    // 회원가입 완료 후 카카오 아이디 세션 제거
-                    delete req.session.kakaoUserId;
-                    res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
+            userModel.registerUserWithKakao(name, nickname, kakaoUserId, phone, email, function (error, data) {
+                if (error) throw error;
+                // 회원가입 완료 후 카카오 아이디 세션 제거
+                delete req.session.kakaoUserId;
+                res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
                 document.location.href="/";</script>`);
-                });
+
+            });
         }
         else if (googleUserId) {
             // 구글로 가입한 경우, google_id 값을 저장
-            userModel.registerUserWithGoogle(name, nickname, id, password, phone, email, googleUserId, function (error, data) {
-                    if (error) throw error;
-                    // 회원가입 완료 후 구글 아이디 세션 제거
-                    delete req.session.googleUserId;
-                    res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
+            userModel.registerUserWithGoogle(name, nickname, googleUserId, phone, email, function (error, data) {
+                if (error) throw error;
+                // 회원가입 완료 후 구글 아이디 세션 제거
+                delete req.session.googleUserId;
+                res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
                 document.location.href="/";</script>`);
-                });
+
+            });
         }
-        else {
-            // 일반 가입인 경우, kakao_id 값을 null로 저장
-            userModel.registerUserLocal(name, nickname, id, password, phone, email, function (error, data) {
-                    if (error) throw error;
-                    res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
-                document.location.href="/";</script>`);
-                });
-        }
+
+
     } else {
         res.send(`<script type="text/javascript">alert("입력되지 않은 정보가 있습니다.");
         history.back();</script>`);
@@ -65,8 +77,7 @@ exports.login_process = function (req, res) {
             if (error) throw error;
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                 req.session.is_logined = true;      // 세션 정보 갱신
-                req.session.nickname = results[0].mem_email;
-                console.log(results[0].mem_email)
+                req.session.nickname = results[0].mem_nickname;
                 req.session.save(function () {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
@@ -103,7 +114,9 @@ exports.kakao_callback = function (req, res, next) {
         if (!user) { return res.redirect('/auth/login'); }
 
         var kakaoUserId = user.id;
+        var email = user._json.kakao_account.email;
         console.log('카카오톡 아이디:', kakaoUserId);
+        console.log('카카오톡 이메일:', email);
 
         userModel.getUserByKakaoId(kakaoUserId, function (error, results) {
             if (error) throw error;
@@ -111,13 +124,16 @@ exports.kakao_callback = function (req, res, next) {
             if (results.length > 0) {
                 // 이미 회원가입이 되어 있는 경우 로그인 처리
                 req.session.is_logined = true;
-                req.session.nickname = kakaoUserId;
-                req.session.save(function () {
+                req.session.nickname = results[0].mem_nickname;
+                const authStatusUI = `${req.session.nickname}님 환영합니다!`;
+                res.send(`<script type="text/javascript">alert("${authStatusUI}");
+                    document.location.href="/";</script>`);
+                /*req.session.save(function () {
                     res.redirect('/');
-                });
+                });*/
             } else {
                 // 회원가입이 되어 있지 않은 경우 회원가입 페이지로 이동
-                res.redirect('/auth/signup?kakaoUserId=' + kakaoUserId);
+                res.redirect('/auth/signupsocial?kakaoUserId=' + kakaoUserId +'&email='+ email);
             }
         });
     })(req, res, next);
@@ -133,6 +149,7 @@ exports.google_callback = function (req, res, next) {
         if (!user) { return res.redirect('/auth/login'); }
 
         var googleUserId = user.id;
+        var email = user.email;
         console.log('구글 아이디:', googleUserId);
 
         userModel.getUserByGoogleId(googleUserId, function (error, results) {
@@ -147,7 +164,8 @@ exports.google_callback = function (req, res, next) {
                 });
             } else {
                 // 회원가입이 되어 있지 않은 경우 회원가입 페이지로 이동
-                res.redirect('/auth/signup?googleUserId=' + googleUserId);
+
+                res.redirect('/auth/signupsocial?googleUserId=${googleUserId}&email=${email}');
             }
         });
     })(req, res, next);
@@ -156,33 +174,48 @@ exports.google_callback = function (req, res, next) {
 // 회원가입 화면
 exports.register = function (req, res) {
     var title = '회원가입';
+    // register.html 파일을 읽어서 렌더링
+    res.render('signup'), {
+        title: title
+        //hiddenInput: hiddenInput
+    };
+};
+
+// 소셜 회원가입 화면
+exports.socialregister = function (req, res) {
+    var title = '회원가입';
+    console.log(req.query)
     var kakaoUserId = req.query.kakaoUserId; // URL 매개변수로 전달받은 kakaoUserId
     var googleUserId = req.query.googleUserId; // URL 매개변수로 전달받은 googleUserId
+    var email = req.query.email;
     var hiddenInput = '';
+    var provider = '';
 
     // 카카오톡으로 로그인한 경우에는 kakaoUserId를 input hidden으로 추가
     if (kakaoUserId) {
-        hiddenInput = '<input type="hidden" name="kakaoUserId" value="' + kakaoUserId + '">';
+        hiddenInput = kakaoUserId;
+        provider = 'kakaoUserId';
     }
     // 구글로 로그인한 경우에는 googleUserId를 input hidden으로 추가
     else if (googleUserId) {
-        hiddenInput = '<input type="hidden" name="googleUserId" value="' + googleUserId + '">';
+        hiddenInput = googleUserId;
+        provider = 'googleUserId';
     }
-
-    // register.html 파일을 읽어서 렌더링
-    res.render(path.join(__dirname, '../views/signup.html'), {
+    // register.html 파일을 읽어서 렌더링하며, 이름과 전화번호를 템플릿에 전달합니다.
+    res.render('signupsocial', {
         title: title,
-        hiddenInput: hiddenInput
+        hiddenInput: hiddenInput,
+        provider : provider,
+        email: email
     });
 };
-
 // 로그인 화면
 exports.login = function (req, res) {
     var title = '로그인';
-    res.render(path.join(__dirname, '../views/login.html'), {
+    res.render('login'), {
         title: title
         //html: html
-    });
+    };
 };
 
 // 아이디 중복 확인
@@ -237,7 +270,7 @@ exports.customer_send = function (req, res) {
 };
 
 // 고객지원화면
-exports.customer = function (req, res) {
+/*exports.customer = function (req, res) {
     if (authCheckMiddleware.isOwner(req, res)) {
         res.render('customer');
     } else {
@@ -245,6 +278,10 @@ exports.customer = function (req, res) {
         res.send(`<script type="text/javascript">alert("로그인 후 사용 가능합니다.");
         document.location.href="/auth/login";</script>`);
     }
+};*/
+
+exports.customer = function (req, res) {
+    res.render('customer');
 };
 
 // 이메일 인증 코드 전송

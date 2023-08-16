@@ -11,13 +11,12 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/header.css">
-    <link rel="stylesheet" type="text/css" href="/css/footer.css">
-
     <link rel="stylesheet" type="text/css" href="/css/info.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!--Title-->
     <title> CAN </title>
@@ -26,25 +25,14 @@
 
 <body>
 
-  <!-- header -->
-  <div id="header">
-    <div class="logo">
-      <img src="/img/LOGO.png" onclick="location.href='index.html'" style="cursor: pointer;">
-    </div>
-      <ul class="nav"> 
-        <li class="link-1"><a href="gameinfo.html"> 게임정보 </a></li>
-        <li class="link-1"><a href="info.html"> 공지사항 </a></li>
-        <li class="link-1"><a href="commu.html"> 커뮤니티 </a></li>
-        <li class="link-1"><a href="rank.html"> 랭킹 </a></li>
-        <li class="link-1"><a href="customer.html"> 고객지원 </a></li>
-        <li class="link-1"><a href="login.html"> 로그인 </a></li>
-      </ul>
-  </div>
+<!-- header -->
+<%- include('partials/header')%>
+
 
   <!-- Section -->
   <section id="section">
     <div id="first">
-      
+
       <div class="container">
         <!-- Section -->
         <div id="firstSection" class="item">
@@ -57,7 +45,7 @@
 
         <!-- Section -->
         <div id="secondSection" class="item">
-          <img src="img/grandopenInfo.png">
+          <img src="/img/grandopenInfo.png">
         </div>
 
       </div>
@@ -74,7 +62,7 @@
                                 <th>사진</th>
                                 <th>번호</th>
                                 <th>제목</th>
-                                <th>날짜</th>
+                                <th>작성자</th>
                             </tr>
                         </thead>
                         <tbody class="content">
@@ -87,12 +75,12 @@
                                         <%= data[i].post_num %>
                                     </td>
                                     <td>
-                                        <a href="notice/show/<%= data[i].post_num %>">
+                                        <a href="/notice/show/<%= data[i].post_num %>">
                                             <%= data[i].post_title %>
                                         </a>
                                     </td>
                                     <td>
-                                        <%= data[i].formattedCreatedAt %>
+                                        <%= data[i].post_usernum %>
                                     </td>
                                 </tr>
                             <% } %>
@@ -108,24 +96,8 @@
     </div>
   </section>
 
-  <!-- footer -->
-  <footer id="footer">
-      <div>
-      <div class="can">
-        <img src="/img/CAN.png">
-      </div>
-
-      <a>개인정보 처리방침 | 서비스 이용약관 | 운영정책 | 쿠키 설정</a> <br>
-      <a>2023 Dongyang Computer Software</a> <br>
-
-      <script> document.writeln("한국시간 : " + kr_curr); </script>
-
-      <div id="age15">
-        <img src="/img/15.png">
-      </div>
-    </div>
-  </footer>
-
+<!-- footer -->
+<%- include('partials/footer')%>
 </body>
 
 </html>
