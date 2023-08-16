@@ -123,7 +123,6 @@ const boardController = {
       body.cmt_usernum,
       koreanTime,
       () => {
-        console.log(postNum);
         res.send('<script>alert("댓글 등록 완료"); history.back();</script>');
       }
     );
