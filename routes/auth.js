@@ -59,4 +59,13 @@ router.get('/findID',authController.findID);
 //아이디 찾기 프로세스
 router.post('/find_id',authController.find_id);
 
+//비밀번호 찾기 화면
+router.get('/findPW',authController.findPW);
+
+//비밀번호 찾기 프로세스
+router.post('/find_pw',authController.find_pw);
+
+//임시 비밀번호 발급 프로세스
+router.post('/sendTemporaryPassword', authController.sendTemporaryPassword);
+
 module.exports = router;

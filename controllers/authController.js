@@ -371,6 +371,7 @@ exports.findID = function (req, res) {
     res.render('findID');
 };
 
+//아이디 찾기 프로세스
 exports.find_id = function (req,res) {
     const name = req.body.name;
     const email = req.body.email;
@@ -394,3 +395,89 @@ exports.find_id = function (req,res) {
     });
 
 };
+
+//비밀번호 찾기 화면
+exports.findPW = function (req, res) {
+    res.render('findPW');
+};
+
+//비밀번호 찾기 프로세스
+exports.find_pw = function (req, res) {
+    const id = req.body.id;
+    const name = req.body.name;
+    const email = req.body.email;
+
+    userModel.findUserForPasswordReset(id, name, email, (error, results) => {
+        if (error) {
+            throw error;
+        } else {
+            if (results.length > 0) {
+                // Generate a temporary password
+                const temporaryPassword = generateTemporaryPassword();
+
+                // Update the temporary password in the database
+                userModel.updateTemporaryPassword(id, temporaryPassword, (updateError, updateResults) => {
+                    if (updateError) {
+                        throw updateError;
+                    } else {
+                        // Send the temporary password via email
+                        exports.sendTemporaryPassword(email, temporaryPassword, (sendError, sendInfo) => {
+                            if (sendError) {
+                                res.send(`<script type="text/javascript">alert("이메일 전송 오류");history.back();</script>`);
+                            } else {
+                                res.send(`<script type="text/javascript">
+                                          alert("임시 비밀번호가 발급되었습니다");
+                                          document.location.href="/auth/login";</script>`);
+                            }
+                        });
+                    }
+                });
+            } else {
+                res.send(`<script type="text/javascript">alert("정보가 일치하지 않습니다");history.back();</script>`);
+            }
+        }
+    });
+};
+
+
+exports.sendTemporaryPassword = function (email, temporaryPassword, callback) {
+    console.log('Sending temporary password email to:', email);
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'prisonvreakcan@gmail.com',
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    const mailOptions = {
+        from: 'prisonvreakcan@gmail.com',
+        to: email,
+        subject: '임시 비밀번호 발급',
+        text: '임시 비밀번호는 다음과 같습니다: ' + temporaryPassword
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.error('이메일 전송 오류:', error);
+            callback(error, null);
+        } else {
+            console.log('이메일 전송 성공:', info.response);
+            callback(null, info);
+        }
+    });
+};
+
+// 무작위 임시 비밀번호 생성 함수
+function generateTemporaryPassword() {
+    let password = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const length = 10;
+
+    for (let i = 0; i < length; i++) {
+        password += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    return password;
+}

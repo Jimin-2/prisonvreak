@@ -62,7 +62,7 @@ exports.registerUserWithGoogle = function (name, nickname, googleUserId, phone, 
 
 // 회원가입 처리 - 일반 가입
 exports.registerUserLocal = function (name, nickname, id, password, phone, email, callback) {
-  db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_password, mem_phone, mem_email, mem_snsid, mem_provider) VALUES (?, ?, ?, ?, ?, ?, NULL, "local")',
+  db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_password, mem_phone, mem_email, mem_provider) VALUES (?, ?, ?, ?, ?, ?, "local")',
     [name, nickname, id, password, phone, email], function (error, data) {
       if (error) {
         callback(error, null);
@@ -104,3 +104,26 @@ exports.findUserId = function (name, email, callback) {
     }
   });
 };
+
+//비밀번호 찾기 - 사용자 일치 정보 조회
+exports.findUserForPasswordReset = function (id, name, email, callback) {
+  db.query('SELECT * FROM member WHERE mem_id = ? AND mem_name = ? AND mem_email = ?', [id, name, email], function (error, results) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+//임시 비밀번호 생성 및 업데이트
+exports.updateTemporaryPassword = function (id, temporaryPassword, callback) {
+  db.query('UPDATE member SET mem_password = ? WHERE mem_id = ?', [temporaryPassword, id], function (error, results) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+

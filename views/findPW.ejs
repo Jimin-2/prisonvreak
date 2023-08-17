@@ -31,47 +31,32 @@
 <!-- Section -->
 <section id="section">
   <div id="loginTool">
-    <form action="/auth/login_process" method="post">
-      <h1> LOGIN </h1>
+    <form action="/auth/find_pw" method="post">
+      <h1> 비밀번호 찾기 </h1>
 
-      <!-- ID -->
       <div class="inputBox">
         <p> ID </p>
         <input type="text" name="id" id="id" required>
       </div>
 
-      <!-- Password -->
-      <div class="inputBox" id="divpassword">
-        <p> Password </p>
-        <input type="password" name="pwd" id="password" required>
+      <div class="inputBox">
+        <p> Name </p>
+        <input type="text" name="name"  required>
       </div>
 
-      <div id="rememberCheck">
-        <div>
-          <input type="checkbox"> ID저장
-        </div>
-        <div> <a href="/auth/findID"> ID </a> / <a href="/auth/findPW">비밀번호</a> 찾기 </div>
+      <div class="inputBox" id="divemail">
+        <p> E-mail </p>
+        <input type="email" name="email" id="email" required>
       </div>
 
       <!-- submit -->
       <div class="submit">
-        <button> SIGN IN </button>
+        <button> 비밀번호 찾기 </button>
       </div>
     </form>
+
     <div id="signUp"> <a href="/auth/signup"> sign Up </a> </div>
-
-    <div id="another">
-      <p> 다른 방법으로 로그인하기 </p>
-      <hr>
-
-      <div id="logo">
-
-        <a href="/auth/google"><img src="/img/naver.png" onclick=""></a> <!--- onclick으로 js 코드에 연결시키면 됨 -->
-        <a href="/auth/kakao"><img src="/img/kakao.png" onclick=""></a> <!--- onclick으로 js 코드에 연결시키면 됨 -->
-
-      </div>
-
-    </div>
+    <div id="signin"> <a href="/auth/login"> Sign In </a> </div>
 
   </div>
 </section>
