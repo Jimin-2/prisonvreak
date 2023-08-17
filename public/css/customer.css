@@ -44,6 +44,21 @@
   margin-bottom: 100px;
 }
 
+.h5 {
+  width: 1000px;
+  height: auto;
+
+  font-size: 1.1em;
+  margin-bottom: 10px;
+
+  color: white;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: center;
+}
+
 .inputBox {
   width: 1000px;
   height: 50px;
@@ -51,19 +66,39 @@
   box-sizing: border-box;
   background-color: #484848;
 
-  margin: 10px 0px 40px 0px;
+  font-size: 1.1em;
+  padding-left: 10px;
+  color: #ccc;
+
+  margin: 0px 0px 30px 0px;
 }
 
 .contentsBox {
   width: 1000px;
   height: 400px;
 
-  margin: 20px 0px 40px 0px;
+  margin: 0px 0px 40px 0px;
 
   resize: none;
 
+  font-size: 1.1em;
+  padding-top: 10px;
+  padding-left: 10px;
+  color: #ccc;
+
   box-sizing: border-box;
   background-color: #484848;
+}
+
+input::placeholder {
+  font-size: 1.1em;
+  color:#ccc;
+  padding: 10px 10px 10px 10px;
+}
+textarea::placeholder {
+  font-size: 1.1em;
+  color:#ccc;
+  padding: 10px 10px 10px 10px;
 }
 
 .custom-btn {
@@ -79,24 +114,24 @@
   display: inline-block;
 }
 
-#second button {
+#second .custom-btn {
   font-size: 20px;
   margin: 20px;
   outline: none;
 }
 
-#second button {
+#second .custom-btn {
   position: relative;
   color: white;
   z-index: 2;
   line-height: 40px;
   padding: 0;
 }
-#second button:hover{
+#second .custom-btn:hover{
   border: none;
 }
-#second button:before,
-#second button:after {
+#second .custom-btn:before,
+#second .custom-btn:after {
   position: absolute;
   content: "";
   width: 0%;
@@ -105,7 +140,7 @@
   z-index: -1;
   transition: all 0.3s ease;
 }
-#second button:before {
+#second .custom-btn:before {
   top: 0;
   left: 0;
   border-bottom-color: transparent;
@@ -113,7 +148,7 @@
   border-top-color: white;
   border-left-color: white;
 }
-#second button:after{
+#second .custom-btn:after{
   bottom: 0;
   right: 0;
   border-top-color: transparent;
@@ -121,9 +156,19 @@
   border-bottom-color: white;
   border-right-color: white;
 }
-#second button:hover:before,
-#second button:hover:after {
+#second .custom-btn:hover:before,
+#second .custom-btn:hover:after {
   border-color: white;
   height: 100%;
   width: 100%;
+}
+
+#btnFile {
+  width: 50px;
+  height: 18px;
+
+  margin-left: 5px;
+
+  background-color: #484848;
+  color: #ccc;
 }
