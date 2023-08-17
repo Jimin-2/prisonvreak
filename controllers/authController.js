@@ -285,6 +285,7 @@ exports.customer_send = function (req, res) {
     }
 };*/
 
+// 고객지원화면
 exports.customer = function (req, res) {
     res.render('customer');
 };
@@ -364,3 +365,32 @@ exports.authCheck = function (req, res, next) {
 };
 
 */
+
+//아이디 찾기 화면
+exports.findID = function (req, res) {
+    res.render('findID');
+};
+
+exports.find_id = function (req,res) {
+    const name = req.body.name;
+    const email = req.body.email;
+
+    userModel.findUserId(name, email, (error, results) => {
+        if (error) {
+            throw error; // 에러가 발생하면 프로그램 중단
+        } else {
+            if (results.length > 0) {
+                const foundId = results[0].mem_id;
+                res.render('resultID', { id: foundId });
+            } else {
+                res.send(`
+                    <script type="text/javascript">
+                        alert("가입된 정보가 없습니다");
+                        history.back();
+                    </script>
+                `);
+            }
+        }
+    });
+
+};

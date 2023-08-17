@@ -93,3 +93,14 @@ exports.getUserByGoogleId = function (googleUserId, callback) {
     }
   });
 };
+
+//아이디 찾기
+exports.findUserId = function (name, email, callback) {
+  db.query('SELECT mem_id FROM member WHERE mem_name = ? AND mem_email = ?', [name, email], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};

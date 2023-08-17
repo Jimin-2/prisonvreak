@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/login.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Title-->
+    <title> CAN </title>
+
+</head>
+
+<body>
+
+<!-- header -->
+<%- include('partials/header')%>
+
+<!-- Section -->
+<section id="section">
+  <div id="loginTool">
+    <form action="/auth/find_id" method="post">
+      <h1> 아이디 찾기 </h1>
+
+      <div class="inputBox">
+        <p> Name </p>
+        <input type="text" name="name"  required>
+      </div>
+
+      <div class="inputBox" id="divemail">
+        <p> E-mail </p>
+        <input type="email" name="email" id="email" required>
+      </div>
+
+      <!-- submit -->
+      <div class="submit">
+        <button> 아이디 찾기 </button>
+      </div>
+    </form>
+
+    <div id="signUp"> <a href="/auth/signup"> sign Up </a> </div>
+    <div id="signin"> <a href="/auth/login"> Sign In </a> </div>
+
+  </div>
+</section>
+
+<!-- footer -->
+<%- include('partials/footer')%>
+</body>
+</html>

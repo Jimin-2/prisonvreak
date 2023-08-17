@@ -53,4 +53,10 @@ router.get('/customer',authController.customer);
 // 고객지원 프로세스
 router.post('/customer_send',authController.customer_send);
 
+//아이디 찾기 화면
+router.get('/findID',authController.findID);
+
+//아이디 찾기 프로세스
+router.post('/find_id',authController.find_id);
+
 module.exports = router;
