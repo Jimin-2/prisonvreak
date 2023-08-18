@@ -26,6 +26,15 @@ app.use(session({
     //store: new FileStore({ path: './sessions' }),
 }));
 
+// is_logined 값 초기화
+app.use((req, res, next) => {
+    if (!req.session.is_logined) {
+        req.session.is_logined = false; // 초기값은 로그인되지 않은 상태
+    }
+    res.locals.is_logined = req.session.is_logined;
+    next();
+});
+
 // Passport 및 세션 미들웨어 초기화
 app.use(passport.initialize());
 app.use(passport.session());

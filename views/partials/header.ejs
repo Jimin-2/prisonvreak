@@ -10,6 +10,11 @@
     <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
     <li class="link-1"><a href="/"> 랭킹 </a></li>
     <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
-    <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
+    <% if (is_logined) { %>
+      <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
+      <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
+    <% } else { %>
+      <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
+    <% } %>
   </ul>
 </div>
