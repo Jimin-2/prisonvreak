@@ -1,0 +1,226 @@
+section {
+  width: 100%;
+  height: 1800px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#layout {
+  width: 1200px;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+}
+
+#firstLayout, #secondLayout {
+  margin-top: 100px;
+}
+
+#firstLayout {
+  width: 300px;
+  height: 1400px;
+
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#firstLayout hr {
+  width: 80%;
+  margin-bottom: 30px;
+}
+
+.myPageList {
+  margin-left: 30px;
+}
+
+.myPageList h2 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 15px;
+  margin-left: 10px;
+
+  margin-top: 80px;
+}
+
+.myPageList li {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  margin-left: 30px;
+}
+
+#secondLayout {
+  width: 800px;
+  height: 950px;
+
+  margin-left: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#secondLayout h2 {
+  font-size: 2.2em;
+  font-weight: bold;
+
+  text-align: left;
+
+  margin-bottom: 30px;
+}
+
+
+/* 마이페이지 첫번째 */
+
+#first {
+  width: 90%;
+  height: 600px;
+
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+#myProfile {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#profileImg {
+  width: 200px;
+  height: 200px;
+  background-color: black;
+}
+
+#myProfileInfo {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+#myProfileInfo hr {
+  margin-top: 10px;
+}
+
+#myProfileInfo div {
+  width: 470px;
+
+  font-size: 1em;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#myProfileInfo h3 {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+  font-size: 2em;
+}
+
+#rank {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  margin-top: 20px;
+}
+
+#rank div {
+  margin-top: 10px;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+#rank h4 {
+
+  font-weight: 900;
+  font-size: 1.2em;
+}
+
+#introduce {
+  width: 93%;
+  height: 100px;
+
+  margin-top: 20px;
+  margin-left: 10px;
+
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  border-radius: 15px;
+  border: 1px solid #161616;
+}
+
+/* 마이페이지 두번째 */
+
+#second {
+  width: 90%;
+  height: 350px;
+}
+
+#other {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+
+  margin-bottom: 5px;
+}
+
+table {
+  width: 90%;
+  text-align: center;
+  border: 1px solid #fff;
+  border-spacing: 1px;
+  margin: auto;
+}
+
+table td {
+  padding: 10px;
+}
+
+table th {
+  padding: 10px;
+}

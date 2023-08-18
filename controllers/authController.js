@@ -481,3 +481,8 @@ function generateTemporaryPassword() {
 
     return password;
 }
+
+//마이페이지 화면
+exports.myPage = function (req, res) {
+    res.render('myPage');
+};

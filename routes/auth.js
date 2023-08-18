@@ -68,4 +68,7 @@ router.post('/find_pw',authController.find_pw);
 //임시 비밀번호 발급 프로세스
 router.post('/sendTemporaryPassword', authController.sendTemporaryPassword);
 
+// 마이페이지
+router.get('/myPage', authController.myPage);
+
 module.exports = router;

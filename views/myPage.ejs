@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/myPage.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--Title-->
+
+  <!--Title-->
+  <title> CAN </title>
+
+</head>
+
+<body>
+  <!-- header -->
+  <%- include('partials/header')%>
+
+  <!-- Section -->
+  <section id="section">
+    <div id="layout">
+      <div id="firstLayout">
+        <div class="myPageList">
+          <h2> 1번 제목 </h2>
+          <hr>
+          <ul>
+            <li><a href="myPage.html"> 내 프로필 </a></li>
+            <li><a href="modifyInfo.html"> 개인정보 수정 </a></li>
+            <li> 개인정보 확인 </li>
+            <li> 별도 추가 내용 </li>
+          </ul>
+        </div>
+
+        <div class="myPageList">
+          <h2> 2번 제목 </h2>
+          <hr>
+          <ul>
+            <li><a href="myPage.html"> 내 프로필 </a></li>
+            <li> 개인정보 수정 </li>
+            <li> 개인정보 확인 </li>
+            <li> 별도 추가 내용 </li>
+          </ul>
+        </div>
+
+        <div class="myPageList">
+          <h2> 3번 제목 </h2>
+          <hr>
+          <ul>
+            <li><a href="myPage.html"> 내 프로필 </a></li>
+            <li> 개인정보 수정 </li>
+            <li> 개인정보 확인 </li>
+            <li> 별도 추가 내용 </li>
+          </ul>
+        </div>
+      </div>
+      <div id="secondLayout">
+
+        <!-- 마이페이지 첫 번재 레이아웃 -->
+        <div id="first">
+          <h2> My Profile </h2>
+
+            <div id="myProfile">
+              <div id="profileImg"> 이미지 </div>
+
+              <div id="myProfileInfo">
+                <h3> 정예은 </h3>
+                <div>
+                  <p class="next"> ID yeeunyeeun</p>
+                  <p><a href="modifyInfo.html"> 회원정보수정 </a></p>
+                </div>
+
+                <hr>
+
+                <div id="rank">
+                  <h4> 최고기록 </h4>
+                  <div id="rankPuzzle">
+                    <div> puzzle 000:000:000 </div>
+                    <div> total 000:000:000 </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div id="introduce"> 한 줄 소개 </div>
+            
+        </div>
+
+        <!-- 마이페이지 두 번재 레이아웃 -->
+        <div id="second">
+          <h2> Community </h2>
+          <div id="other">
+            <p> 더 보기 </p>
+          </div>
+
+          <hr>
+
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>글쓴이</th>
+                  <th>날짜</th>
+                  <th>조회수</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>04</td>
+                  <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
+                  <td>정예은</td>
+                  <td>2023/07/27</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>04</td>
+                  <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
+                  <td>정예은</td>
+                  <td>2023/07/27</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>04</td>
+                  <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
+                  <td>정예은</td>
+                  <td>2023/07/27</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>04</td>
+                  <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
+                  <td>정예은</td>
+                  <td>2023/07/27</td>
+                  <td>0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <%- include('partials/footer')%>
+
+</body>
+
+</html>
