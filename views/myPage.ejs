@@ -68,7 +68,7 @@
       </div>
       <div id="secondLayout">
 
-        <!-- 마이페이지 첫 번재 레이아웃 -->
+        <!-- 마이페이지 첫 번재 레이아웃 --><!--마이페이지 메인-->
         <div id="first">
           <h2> My Profile </h2>
 
@@ -76,9 +76,9 @@
               <div id="profileImg"> 이미지 </div>
 
               <div id="myProfileInfo">
-                <h3> 정예은 </h3>
+                <h3> <%= userProfile.mem_nickname %> </h3>
                 <div>
-                  <p class="next"> ID yeeunyeeun</p>
+                  <p class="next"> ID <%= userProfile.mem_id %></p>
                   <p><a href="modifyInfo.html"> 회원정보수정 </a></p>
                 </div>
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const bodyParser = require('body-parser');
+const authCheckMiddleware = require('../middleware/authCheck');
 
 router.use(bodyParser.json());
 
@@ -68,7 +69,8 @@ router.post('/find_pw',authController.find_pw);
 //임시 비밀번호 발급 프로세스
 router.post('/sendTemporaryPassword', authController.sendTemporaryPassword);
 
-// 마이페이지
-router.get('/myPage', authController.myPage);
+router.get('/mypage', authController.mypage);
+
+
 
 module.exports = router;

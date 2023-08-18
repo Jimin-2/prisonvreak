@@ -79,6 +79,7 @@ exports.login_process = function (req, res) {
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                 req.session.is_logined = true;      // 세션 정보 갱신
                 req.session.nickname = results[0].mem_nickname;
+                req.session.user_id = results[0].mem_id;
                 req.session.save(function () {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
@@ -126,6 +127,7 @@ exports.kakao_callback = function (req, res, next) {
                 // 이미 회원가입이 되어 있는 경우 로그인 처리
                 req.session.is_logined = true;
                 req.session.nickname = results[0].mem_nickname;
+                req.session.user_id = results[0].mem_id;
                 const authStatusUI = `${req.session.nickname}님 환영합니다!`;
                 res.send(`<script type="text/javascript">alert("${authStatusUI}");
                     document.location.href="/";</script>`);
@@ -160,6 +162,7 @@ exports.google_callback = function (req, res, next) {
                 // 이미 회원가입이 되어 있는 경우 로그인 처리
                 req.session.is_logined = true;
                 req.session.nickname = results[0].mem_nickname;
+                req.session.user_id = results[0].mem_id;
                 const authStatusUI = `${req.session.nickname}님 환영합니다!`;
                 res.send(`<script type="text/javascript">alert("${authStatusUI}");
                     document.location.href="/";</script>`);
@@ -482,7 +485,24 @@ function generateTemporaryPassword() {
     return password;
 }
 
-//마이페이지 화면
+/*//마이페이지 화면
 exports.myPage = function (req, res) {
     res.render('myPage');
+};*/
+
+exports.mypage = function (req, res) {
+    const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    //console.log('User ID:', userId);
+    // userModel을 사용하여 사용자의 프로필 정보 가져오기
+    userModel.getUserProfile(userId, (error, results) => {
+        if (error) {
+            //console.error(error);
+            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else {
+            //console.log('User Profile Results:', results);
+            const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+            //console.log('User Profile:', userProfile); // 프로필 정보 출력
+            res.render('myPage', { userProfile: userProfile }); // myPage 뷰에 userProfile 변수 전달
+        }
+    });
 };

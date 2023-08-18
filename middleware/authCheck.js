@@ -3,7 +3,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             return next();
         } else {
-            return false;
+            return res.redirect('/auth/login'); // 로그인 페이지로 리다이렉션
         }
     },
     statusUI: function (req, res) {

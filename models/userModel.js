@@ -1,17 +1,5 @@
 const db = require('../config/db');
 
-// 회원가입 처리
-/*exports.registerUser = function (name, nickname, id, password, phone, email, provider, callback) {
-  db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_password, mem_phone, mem_email, mem_provider) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [name, nickname, id, password, phone, email, snsId, provider], function (error, data) {
-      if (error) {
-        callback(error, null);
-      } else {
-        callback(null, data);
-      }
-    });
-};*/
-
 exports.checkIdAvailability = function (id,callback){
   db.query('SELECT * FROM member WHERE mem_id = ?', [id], function(error, results, fields) {
     if (error) {
@@ -127,3 +115,13 @@ exports.updateTemporaryPassword = function (id, temporaryPassword, callback) {
   });
 };
 
+// 마이페이지 정보 불러오기
+exports.getUserProfile = function (id, callback) {
+  db.query('SELECT mem_name, mem_nickname, mem_id, mem_email FROM member WHERE mem_id = ?', [id], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
