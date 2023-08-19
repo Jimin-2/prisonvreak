@@ -87,15 +87,13 @@ section {
 
 .myInfo p {
     width: 300px;
-    text-align: left;
-    padding-left: 50px;
     margin-left: 50px;
+    text-align: center;
 }
 
 .inputBox p {
     width: 300px;
-    text-align: left;
-    padding-left: 50px;
+    text-align: center;
     margin-left: 50px;
 }
 .myInfo input {

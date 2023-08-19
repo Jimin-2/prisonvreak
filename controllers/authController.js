@@ -636,12 +636,20 @@ exports.withdrawal = function (req, res) {
     const password = req.body.pwd;
 
     if (id && password) {             // id와 pw가 입력되었는지 확인
-        userModel.withdrawal(id, password, function (error, data) {
+        userModel.getMyProfile(id, password, function(error, results) {
             if (error) throw error;
-            req.session.is_logined = false;
-            res.send(`<script type="text/javascript">
-            opener.parent.location='/';
-            window.close();</script>`);
+            if (results.length > 0) {
+                userModel.withdrawal(id, password, function (error, data) {
+                    if (error) throw error;
+                    req.session.is_logined = false;
+                    res.send(`<script type="text/javascript">
+                    opener.parent.location='/';
+                    window.close();</script>`);
+                });
+            } else {
+                res.send(`<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); 
+                history.back();</script>`);
+            }
         });
     } else {
         res.send(`<script type="text/javascript">alert("비밀번호를 입력하세요!"); 
