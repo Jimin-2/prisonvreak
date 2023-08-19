@@ -2,6 +2,9 @@
 아예 시발 사라지게 하고 싶다... 왜 찾아도
 나오지 않는 걸까? 힘들다... */
 
+.link-1 a {
+  color: white;
+}
 
 #header {
   display: flex;

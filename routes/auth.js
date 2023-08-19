@@ -71,6 +71,16 @@ router.post('/sendTemporaryPassword', authController.sendTemporaryPassword);
 
 router.get('/mypage', authController.mypage);
 
+router.get('/myProfileInfo',authController.myProfileInfo);
 
+router.post('/editMyProfile', authController.editMyProfile);
+
+router.post('/editMyInfo', authController.editMyInfo);
+
+router.post('/editMyPassword', authController.editMyPassword);
+
+router.post('/withdrawal', authController.withdrawal);
+
+router.post('/socialWithdrawal', authController.socialWithdrawal);
 
 module.exports = router;

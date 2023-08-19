@@ -80,6 +80,7 @@ exports.login_process = function (req, res) {
                 req.session.is_logined = true;      // 세션 정보 갱신
                 req.session.nickname = results[0].mem_nickname;
                 req.session.user_id = results[0].mem_id;
+                req.session.provider = results[0].mem_provider;
                 req.session.save(function () {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
@@ -128,6 +129,7 @@ exports.kakao_callback = function (req, res, next) {
                 req.session.is_logined = true;
                 req.session.nickname = results[0].mem_nickname;
                 req.session.user_id = results[0].mem_id;
+                req.session.provider = results[0].mem_provider;
                 const authStatusUI = `${req.session.nickname}님 환영합니다!`;
                 res.send(`<script type="text/javascript">alert("${authStatusUI}");
                     document.location.href="/";</script>`);
@@ -163,6 +165,7 @@ exports.google_callback = function (req, res, next) {
                 req.session.is_logined = true;
                 req.session.nickname = results[0].mem_nickname;
                 req.session.user_id = results[0].mem_id;
+                req.session.provider = results[0].mem_provider;
                 const authStatusUI = `${req.session.nickname}님 환영합니다!`;
                 res.send(`<script type="text/javascript">alert("${authStatusUI}");
                     document.location.href="/";</script>`);
@@ -492,6 +495,11 @@ exports.myPage = function (req, res) {
 
 exports.mypage = function (req, res) {
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
     //console.log('User ID:', userId);
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
     userModel.getUserProfile(userId, (error, results) => {
@@ -501,8 +509,159 @@ exports.mypage = function (req, res) {
         } else {
             //console.log('User Profile Results:', results);
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
-            //console.log('User Profile:', userProfile); // 프로필 정보 출력
+            console.log('User Profile:', userProfile); // 프로필 정보 출력
             res.render('myPage', { userProfile: userProfile }); // myPage 뷰에 userProfile 변수 전달
         }
     });
 };
+
+exports.myProfileInfo = function (req, res) {
+    const isLogined = req.session.is_logined;
+    const provider = req.session.provider;
+    const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+    if(provider == 'local') {
+        res.render('myProfileInfo', {user: req.session});
+    }
+    else{
+        userModel.getUserProfile(userId, (error, results) => {
+            if (error) {
+                res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+            } else {
+                const myProfile = results[0]; // 프로필 정보를 myProfile 변수로 저장
+                console.log('User Profile:', myProfile); // 프로필 정보 출력
+                res.render('editMyProfile', { myProfile: myProfile }); // editMyProfile 뷰에 myProfile 변수 전달
+            }
+        });
+    }
+};
+
+exports.editMyProfile = function (req, res) {
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+
+    const id = req.body.id;
+    const password = req.body.pwd;
+
+    if (id && password) {             // id와 pw가 입력되었는지 확인
+        userModel.getMyProfile(id, password, function(error, results) {
+            if (error) throw error;
+            if (results.length > 0) {
+                const myProfile = results[0]; // 프로필 정보를 myProfile 변수로 저장
+                res.render('editMyProfile', { myProfile: myProfile });
+            } else {
+                res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); 
+                history.back();</script>`);
+            }
+        });
+
+    } else {
+        res.send(`<script type="text/javascript">alert("비밀번호를 입력하세요!"); 
+        history.back();</script>`);
+    }
+};
+
+exports.editMyInfo = function (req, res) {
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+    const id = req.body.id;
+    const nickname = req.body.nickname;
+    const email = req.body.email;
+    const phone = req.body.phone;
+
+    userModel.getUserProfile(id, function (error, results){
+        if (error) {
+            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else {
+            const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+            if(nickname==userProfile.mem_nickname && email == userProfile.mem_email && phone == userProfile.mem_phone){
+                res.send(`<script type="text/javascript">
+            alert('수정된 정보가 없습니다.');
+            history.back();</script>`);
+            } else{
+                userModel.updateUserInfo(id,nickname,phone,email,function (error, data){
+                    if (error) {
+                        res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+                    } else {
+                        res.send(`<script type="text/javascript">
+                        alert('수정되었습니다.');
+                        opener.parent.location.reload();
+                        window.close();</script>`);
+                    }
+                });
+            }
+        }
+    });
+}
+
+exports.editMyPassword = function (req, res) {
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+    const id = req.body.id;
+    const password = req.body.pwd;
+
+    if (id && password) {             // id와 pw가 입력되었는지 확인
+        userModel.updateUserPassword(id, password, function (error, data) {
+            if (error) throw error;
+            res.send(`<script type="text/javascript">
+            alert('비밀번호가 변경되었습니다!')
+            opener.parent.location.reload();
+            window.close();</script>`);
+        });
+    } else {
+        res.send(`<script type="text/javascript">alert("비밀번호를 입력하세요!"); 
+        history.back();</script>`);
+    }
+}
+
+exports.withdrawal = function (req, res) {
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+    const id = req.body.id;
+    const password = req.body.pwd;
+
+    if (id && password) {             // id와 pw가 입력되었는지 확인
+        userModel.withdrawal(id, password, function (error, data) {
+            if (error) throw error;
+            req.session.is_logined = false;
+            res.send(`<script type="text/javascript">
+            opener.parent.location='/';
+            window.close();</script>`);
+        });
+    } else {
+        res.send(`<script type="text/javascript">alert("아이디와 비밀번호를 입력하세요!"); 
+        history.back();</script>`);
+    }
+}
+
+exports.socialWithdrawal = function (req, res) {
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+    const id = req.body.id;
+            // id와 pw가 입력되었는지 확인
+    userModel.socialWithdrawal(id, function (error, data) {
+        if (error) throw error;
+        req.session.is_logined = false;
+        res.send(`<script type="text/javascript">
+           opener.parent.location='/';
+           window.close();</script>`);
+    });
+}

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        function checkPasswordMatch() {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+            var matchSpan = document.getElementById('passwordMatch');
+            if (password === confirmPassword) {
+                matchSpan.textContent = '비밀번호가 일치합니다.';
+                matchSpan.style.color = 'green';
+            } else {
+                matchSpan.textContent = '비밀번호가 일치하지 않습니다.';
+                matchSpan.style.color = 'red';
+            }
+        }
+
+        function validateForm() {
+            var passwordMatch = document.getElementById('passwordMatch').textContent;
+            if (passwordMatch !== '비밀번호가 일치합니다.') {
+                alert('비밀번호 일치여부를 확인해주세요.');
+                return false;
+            }else {
+                return true;
+            }
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/editMyProfile.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Title-->
+
+    <!--Title-->
+    <title> CAN </title>
+
+</head>
+
+<body>
+    <div id="header">
+        <div class="logo">
+            <img src="/img/LOGO.png" style="cursor: pointer;">
+        </div>
+    </div>
+
+    <!-- Section -->
+    <section id="section">
+        <div id="layout">
+            <div id="first">
+                <div class="tab_menu">
+                    <!-- 일반 회원일때만 비밀번호 변경 가능하도록 + 일반 회원은 탈퇴 시 비밀번호 입력 필수 -->
+                    <% if(myProfile.mem_provider == 'local') { %>
+                        <ul class="tab_list">
+                            <li class="is_on">
+                                <a href="#tab_content_1" class="btn btnFade btnGray">개인정보</a>
+                            </li>
+                            <li>
+                                <a href="#tab_content_2" class="btn btnFade btnGray">비밀번호 변경</a>
+                            </li>
+                            <li>
+                                <a href="#tab_content_3" class="btn btnFade btnGray">회원 탈퇴</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+
+                        <div class="cont_area">
+                            <div id="tab_content_1" class="cont">
+                                <form action="/auth/editMyInfo" method="post">
+                                    <div class="myInfo">
+                                      <h4> Id </h4>
+                                       <p><%= myProfile.mem_id%></p>
+                                     <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                   </div>
+
+                                    <div class="myInfo">
+                                        <h4> Name </h4>
+                                        <p><%= myProfile.mem_name%></p>
+                                    </div>
+
+                                    <div class="myInfo">
+                                        <h4> Nickname </h4>
+                                        <input type="text" name="nickname" value="<%= myProfile.mem_nickname%>" required>
+                                    </div>
+
+                                    <div class="myInfo">
+                                        <h4> E-mail </h4>
+                                        <input type="text" name="email" value="<%= myProfile.mem_email%>" required>
+                                    </div>
+
+                                    <div class="myInfo">
+                                        <h4> Phone </h4>
+                                        <input type="text" name="phone" value="<%= myProfile.mem_phone%>" required>
+                                    </div>
+                                    <div class="btn_div">
+                                        <button type="submit" class="submit btnFade btnGray"> 수정 </button>
+                                        <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="tab_content_2" class="cont">
+                                <form action="/auth/editMyPassword" method="post">
+                                    <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                    <div class="inputBox">
+                                        <h4> New Password </h4>
+                                        <input type="password" name="pwd" id="password" required>
+                                    </div>
+
+                                    <div class="inputBox" >
+                                        <h4> Confirm Password </h4>
+                                        <input type="password" name="pwd2" id="confirmPassword" required oninput="checkPasswordMatch()">
+                                    </div>
+                                    <span id="passwordMatch"></span>
+                                    <div class="btn_div">
+                                        <button type="submit" class="submit btnFade btnGray"> 수정 </button>
+                                        <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div id="tab_content_3" class="cont">
+                                <form action="/auth/withdrawal" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
+                                    <div class="inputBox" >
+                                        <h4> Id </h4>
+                                        <p><%= myProfile.mem_id%></p>
+                                        <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                    </div>
+
+                                    <div class="inputBox">
+                                        <h4>Password </h4>
+                                        <input type="password" name="pwd" id="password" required>
+                                    </div>
+                                    <div class="btn_div">
+                                        <button type="submit" class="submit btnFade btnGray"> 회원 탈퇴 </button>
+                                        <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    <!-- 소셜 회원은 비밀번호 변경 없음 + 탈퇴 시 입력사항 없음 -->
+                    <% } else { %>
+                            <ul class="tab_list">
+                                <li class="is_on">
+                                    <a href="#tab_content_1" class="btn btnFade btnGray">개인정보</a>
+                                </li>
+                                <li>
+                                    <a href="#tab_content_2" class="btn btnFade btnGray">회원 탈퇴</a>
+                                </li>
+                            </ul>
+
+                            <div class="cont_area">
+                                <div id="tab_content_1" class="cont">
+                                    <form action="/auth/editMyInfo" method="post">
+                                        <div class="myInfo">
+                                            <h4> Id </h4>
+                                            <p><%= myProfile.mem_id%></p>
+                                        </div>
+
+                                        <div class="myInfo">
+                                            <h4> Name </h4>
+                                            <p><%= myProfile.mem_name%></p>
+                                        </div>
+
+                                        <div class="myInfo">
+                                            <h4> Nickname </h4>
+                                            <input type="text" value="<%= myProfile.mem_nickname%>" required>
+                                        </div>
+
+                                        <div class="myInfo">
+                                            <h4> E-mail </h4>
+                                            <input type="text" value="<%= myProfile.mem_email%>" required>
+                                        </div>
+
+                                        <div class="myInfo">
+                                            <h4> Phone </h4>
+                                            <input type="text" value="<%= myProfile.mem_phone%>" required>
+                                        </div>
+                                        <div class="btn_div">
+                                            <button type="submit" class="submit btnFade btnGray"> 수정 </button>
+                                            <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="tab_content_2" class="cont">
+                                    <form action="/auth/socialWithdrawal" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
+                                        <div class="inputBox" >
+                                            <h4> Id </h4>
+                                            <p><%= myProfile.mem_id%></p>
+                                            <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                        </div>
+                                        <div class="btn_div">
+                                            <button type="submit" class="submit btnFade btnGray"> 회원 탈퇴 </button>
+                                            <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    const tabList = document.querySelectorAll('.tab_menu .tab_list li');
+    const contents = document.querySelectorAll('.tab_menu .cont_area .cont')
+    let activeCont = ''; // 현재 활성화 된 컨텐츠 (기본:#tab1 활성화)
+
+    for(var i = 0; i < tabList.length; i++){
+        tabList[i].querySelector('.btn').addEventListener('click', function(e){
+            e.preventDefault();
+            for(var j = 0; j < tabList.length; j++){
+                // 나머지 버튼 클래스 제거
+                tabList[j].classList.remove('is_on');
+
+                // 나머지 컨텐츠 display:none 처리
+                contents[j].style.display = 'none';
+            }
+
+            // 버튼 관련 이벤트
+            this.parentNode.classList.add('is_on');
+
+            // 버튼 클릭시 컨텐츠 전환
+            activeCont = this.getAttribute('href');
+            document.querySelector(activeCont).style.display = 'block';
+        });
+    }
+</script>
+</html>

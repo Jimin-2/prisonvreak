@@ -117,7 +117,7 @@ exports.updateTemporaryPassword = function (id, temporaryPassword, callback) {
 
 // 마이페이지 정보 불러오기
 exports.getUserProfile = function (id, callback) {
-  db.query('SELECT mem_name, mem_nickname, mem_id, mem_email FROM member WHERE mem_id = ?', [id], function (error, results, fields) {
+  db.query('SELECT * FROM member WHERE mem_id = ?', [id], function (error, results, fields) {
     if (error) {
       callback(error, null);
     } else {
@@ -125,3 +125,57 @@ exports.getUserProfile = function (id, callback) {
     }
   });
 };
+
+exports.getMyProfile = function (id, password, callback) {
+  db.query('SELECT * FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+//개인정보 수정
+exports.updateUserInfo = function (id, nickname, phone, email, callback) {
+  db.query('UPDATE member SET mem_nickname = ?, mem_email = ?, mem_phone = ? WHERE mem_id = ?', [nickname, email, phone, id], function (error, results) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+//비밀번호 변경
+exports.updateUserPassword = function (id, password, callback) {
+  db.query('UPDATE member SET mem_password = ? WHERE mem_id = ?', [password, id], function (error, results) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+// 회원 탈퇴 처리
+exports.withdrawal = function (id, password, callback){
+  db.query('DELETE FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+}
+
+// 소셜 회원 탈퇴 처리
+exports.socialWithdrawal = function (id, callback){
+  db.query('DELETE FROM member WHERE mem_id = ? ', [id], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+}

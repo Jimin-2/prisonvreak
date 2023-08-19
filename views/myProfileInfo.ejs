@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/myProfileInfo.css">
+
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Title-->
+
+    <!--Title-->
+    <title> CAN </title>
+
+</head>
+
+<body>
+<div id="header">
+    <div class="logo">
+        <img src="/img/LOGO.png" style="cursor: pointer;">
+    </div>
+</div>
+
+<!-- Section -->
+<section id="section">
+
+        <div id="layout">
+
+            <!-- 마이페이지 첫 번재 레이아웃 -->
+            <div id="first">
+                <h2> 개인 정보 변경 </h2>
+                <div id="myProfileInfo">
+                    <div id="info">
+                        <p> <%= user.nickname %>님의 개인정보 보호를 위해 본인확인을 진행합니다</p>
+                        <p> 넥슨 비밀번호를 입력해주세요.</p>
+                    </div>
+                    <form action="/auth/editMyProfile" method="post">
+                    <div class="inputBox" >
+                        <input type="text" name="id" value="<%= user.user_id %>" readonly style="display: none">
+                    </div>
+
+                    <div id="divpassword">
+                        <h4> 비밀번호 확인 </h4>
+                        <input type="password" name="pwd" id="password" required>
+                        <div class="submit">
+                            <button> 확인 </button>
+                        </div>
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+
+</html>
