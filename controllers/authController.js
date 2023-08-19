@@ -556,7 +556,7 @@ exports.editMyProfile = function (req, res) {
                 const myProfile = results[0]; // 프로필 정보를 myProfile 변수로 저장
                 res.render('editMyProfile', { myProfile: myProfile });
             } else {
-                res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); 
+                res.send(`<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); 
                 history.back();</script>`);
             }
         });
@@ -644,7 +644,7 @@ exports.withdrawal = function (req, res) {
             window.close();</script>`);
         });
     } else {
-        res.send(`<script type="text/javascript">alert("아이디와 비밀번호를 입력하세요!"); 
+        res.send(`<script type="text/javascript">alert("비밀번호를 입력하세요!"); 
         history.back();</script>`);
     }
 }
