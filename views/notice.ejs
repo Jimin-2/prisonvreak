@@ -37,10 +37,10 @@
         <!-- Section -->
         <div id="firstSection" class="item">
           <img src="/img/logoInfo.png">
-          <div id="search">
-            <input type="text" name="search" value="">
-            <button type="submit">검색</button>
-          </div>
+          <form action="/search" method="get">
+            <input type="text" name="keyword" placeholder="검색">
+            <button type="submit" value="검색"></button>
+        </form>
         </div>
 
         <!-- Section -->
@@ -63,6 +63,7 @@
                                 <th>번호</th>
                                 <th>제목</th>
                                 <th>작성자</th>
+                                <th>날짜</th>
                             </tr>
                         </thead>
                         <tbody class="content">
@@ -81,6 +82,9 @@
                                     </td>
                                     <td>
                                         <%= data[i].post_usernum %>
+                                    </td>
+                                    <td>
+                                      <%= data[i].formattedCreatedAt %>
                                     </td>
                                 </tr>
                             <% } %>

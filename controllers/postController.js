@@ -6,6 +6,7 @@ const { postModel, commentModel } = require('../models/postModel');
 
 // 컨트롤러 함수
 const boardController = {
+  
 
   showInsertForm: (req, res) => {
     // 로그인 확인
@@ -49,9 +50,14 @@ const boardController = {
 
   showList: (req, res) => {
       postModel.getPosts((error, results) => {
-        res.render('board', { data: results });
-  });
-      },
+        const formattedResults = results.map(post => ({
+          ...post,
+          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+        }));
+  
+        res.render('board', { data: formattedResults });
+      });
+    },
 
   deletePost: (req, res) => {
     const postNum = req.params.post_num;
@@ -129,13 +135,17 @@ const noticeController = {
         console.error(error);
         res.status(500).send('Internal Server Error');
       } else {
-        res.render('notice', { data: results });
+        const formattedResults = results.map(post => ({
+          ...post,
+          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+        }));
+
+        res.render('notice', { data: formattedResults });
       }
     });
   },
 
   showForm: (req, res) => {
-
       const postNum = req.params.post_num;
       postModel.getPostById(postNum, (error, result) => {
         if (error) {
