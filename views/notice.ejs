@@ -25,83 +25,102 @@
 
 <body>
 
-<!-- header -->
-<%- include('partials/header')%>
+    <!-- header -->
+    <%- include('partials/header')%>
 
-
-  <!-- Section -->
-  <section id="section">
-    <div id="first">
-
-      <div class="container">
-        <!-- Section -->
-        <div id="firstSection" class="item">
-          <img src="/img/logoInfo.png">
-          <form action="/search" method="get">
-            <input type="text" name="keyword" placeholder="검색">
-            <button type="submit" value="검색"></button>
-        </form>
-        </div>
 
         <!-- Section -->
-        <div id="secondSection" class="item">
-          <img src="/img/grandopenInfo.png">
-        </div>
+        <section id="section">
+            <div id="first">
 
-      </div>
+                <div class="container">
+                    <!-- Section -->
+                    <div id="firstSection" class="item">
+                        <img src="/img/logoInfo.png">
+                        <form action="/notice/search" method="get">
+                            <input type="text" name="keyword" placeholder="검색">
+                            <button type="submit">검색</button>
+                        </form>
+                    </div>
 
-      <!-- Section -->
-      <div id="thirdSection">
-        <div id="thirdSectionBox">
-            <div id="firstBoxSection">
-                <div id="firstBox" class="boxSection">
-                    <div class="boxbox">
-                      <table id="firstBoxSection">
-                        <thead>
-                            <tr class="title">
-                                <th>사진</th>
-                                <th>번호</th>
-                                <th>제목</th>
-                                <th>작성자</th>
-                                <th>날짜</th>
-                            </tr>
-                        </thead>
-                        <tbody class="content">
-                            <% for (let i = data.length - 1; i >= 0; i--) { %>
-                                <tr>
-                                    <td>
-                                        <div>사진</div>
-                                    </td>
-                                    <td>
-                                        <%= data[i].post_num %>
-                                    </td>
-                                    <td>
-                                        <a href="/notice/show/<%= data[i].post_num %>">
-                                            <%= data[i].post_title %>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <%= data[i].post_usernum %>
-                                    </td>
-                                    <td>
-                                      <%= data[i].formattedCreatedAt %>
-                                    </td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
+                    <!-- Section -->
+                    <div id="secondSection" class="item">
+                        <img src="/img/grandopenInfo.png">
+                    </div>
+
+                </div>
+
+                <!-- Section -->
+                <div id="thirdSection">
+                    <div id="thirdSectionBox">
+                        <div id="firstBoxSection">
+                            <div id="firstBox" class="boxSection">
+                                <div class="boxbox">
+                                    <table id="firstBoxSection">
+                                        <thead>
+                                            <tr class="title">
+                                                <th>사진</th>
+                                                <th>번호</th>
+                                                <th>제목</th>
+                                                <th>날짜</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="content">
+                                            <% if (search && search.length> 0) { %>
+                                                <% for (let i=search.length - 1; i>= 0; i--) { %>
+                                                    <tr>
+                                                        <td>
+                                                            <div>사진</div>
+                                                        </td>
+                                                        <td>
+                                                            <%= search[i].post_num %>
+                                                        </td>
+                                                        <td>
+                                                            <a href="/notice/show/<%= search[i].post_num %>">
+                                                                <%= search[i].post_title %>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <%= data[i].formattedCreatedAt %>
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                                        <% } else if (data && data.length> 0) { %>
+                                                            <% for (let i=data.length - 1; i>= 0; i--) { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div>사진</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= data[i].post_num %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a href="/notice/show/<%= data[i].post_num %>">
+                                                                            <%= data[i].post_title %>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= data[i].formattedCreatedAt %>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+                                                                    <% } %>
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="secondBoxSection">
+                            <div id="moreBox"> more </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="secondBoxSection">
-                <div id="moreBox"> more </div>
-            </div>
-        </div>
-    </div>
-  </section>
+        </section>
 
-<!-- footer -->
-<%- include('partials/footer')%>
+        <!-- footer -->
+        <%- include('partials/footer')%>
 </body>
 
 </html>

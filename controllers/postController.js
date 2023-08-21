@@ -6,7 +6,7 @@ const { postModel, commentModel } = require('../models/postModel');
 
 // 컨트롤러 함수
 const boardController = {
-  
+
 
   showInsertForm: (req, res) => {
     // 로그인 확인
@@ -40,24 +40,24 @@ const boardController = {
               res.status(500).send('Internal Server Error');
               return;
             }
-         res.render('boardShow', { data: result, comments: comments });
-          console.log(comments)
-        });
-      }
+            res.render('boardShow', { data: result, comments: comments });
+            console.log(comments)
+          });
+        }
+      });
     });
-  });
-},
+  },
 
   showList: (req, res) => {
-      postModel.getPosts((error, results) => {
-        const formattedResults = results.map(post => ({
-          ...post,
-          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
-        }));
-  
-        res.render('board', { data: formattedResults });
-      });
-    },
+    postModel.getPosts((error, results) => {
+      const formattedResults = results.map(post => ({
+        ...post,
+        formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+      }));
+
+      res.render('board', { data: formattedResults });
+    });
+  },
 
   deletePost: (req, res) => {
     const postNum = req.params.post_num;
@@ -83,15 +83,15 @@ const boardController = {
   },
 
   showEditForm: (req, res) => {
-        const postNum = req.params.post_num;
-        postModel.getPostById(postNum, (error, result) => {
-          if (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error');
-          } else {
-            res.render('boardEdit', { data: result });
-          }
-        });
+    const postNum = req.params.post_num;
+    postModel.getPostById(postNum, (error, result) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      } else {
+        res.render('boardEdit', { data: result });
+      }
+    });
   },
 
   updatePost: (req, res) => {
@@ -139,30 +139,47 @@ const noticeController = {
           ...post,
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
-
-        res.render('notice', { data: formattedResults });
+        res.render('notice', { data: formattedResults, search: [] });
       }
     });
   },
 
   showForm: (req, res) => {
-      const postNum = req.params.post_num;
-      postModel.getPostById(postNum, (error, result) => {
-        if (error) {
-          console.error(error);
-          res.status(500).send('Internal Server Error');
-        } else {
-          postModel.incrementPostHit(postNum, (error) => { // 조회수 증가
-            if (error) {
-              console.error(error);
-            } else {
-              res.render('noticeShow', { data: result });
-            }
-          });
-        }
-      });
+    const postNum = req.params.post_num;
+    postModel.getPostById(postNum, (error, result) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      } else {
+        postModel.incrementPostHit(postNum, (error) => { // 조회수 증가
+          if (error) {
+            console.error(error);
+          } else {
+            res.render('noticeShow', { data: result });
+          }
+        });
+      }
+    });
   },
 
+  searchKeyword: (req, res) => {
+    const keyword = req.query.keyword;
+
+    postModel.searchKeyword(keyword, (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+      } else {
+        //res.json(results);
+        const formattedResults = results.map(post => ({
+          ...post,
+          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+        }));
+        res.render('notice', { data: formattedResults, search: results || [] });
+        console.log(results);
+      }
+    });
+  },
 };
 
 module.exports = { boardController, noticeController };

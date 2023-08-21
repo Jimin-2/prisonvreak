@@ -13,5 +13,6 @@ router.get('/community/show/:post_num', boardController.showForm);
 router.post('/community/show', boardController.addComment); // 댓글 추가
 router.get('/notice', noticeController.showManagerPosts);
 router.get('/notice/show/:post_num', noticeController.showForm);
+router.get('/notice/search', noticeController.searchKeyword);
 
 module.exports = router;

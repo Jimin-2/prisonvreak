@@ -65,6 +65,18 @@ const postModel = {
       callback(null, results);
     })
   },
+
+  searchKeyword: (keyword, callback) => { // 게시판 검색기능
+    const searchKeyword = `%${keyword}%`;
+    db.query('SELECT * FROM post WHERE post_title LIKE ?', [searchKeyword], (error, results) => {
+      if (error) {
+          console.error(error);
+          callback(error, null);
+      } else {
+          callback(null, results);
+      }
+    });
+  },
 };
 
 const commentModel = {
