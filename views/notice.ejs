@@ -118,12 +118,19 @@
                     </div>
                 </div>
                 <div id="pagination">
-                    <% for (let page = totalPages; page >= 1; page--) { %>
-                        <a href="/notice?page=<%= page %>" class="<%= currentPage === page ? 'active' : '' %>">
-                            <%= totalPages - page + 1 %>
-                        </a>
+                    <a href="/notice?page=1" class="<%= !currentPage ? 'active' : '' %>">
+                      1
+                    </a>
+                    <% for (let page = 2; page <= totalPages; page++) { %>
+                      <a href="/notice?page=<%= page %>"
+                         class="<%= currentPage === page ? 'active' : '' %>">
+                        <%= page %>
+                      </a>
                     <% } %>
-                </div>
+                  </div>
+                  
+                  
+                         
                 
         </section>
 

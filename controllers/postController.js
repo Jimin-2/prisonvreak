@@ -129,8 +129,7 @@ const boardController = {
 const noticeController = {
   showManagerPosts: (req, res) => {
     const userNum = 1;
-    const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
-    const currentPage = req.query.page || 1; // 현재 페이지 번호, 기본값은 1
+    const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
 
     postModel.getPostsByUserNum(userNum, (error, results) => {
       if (error) {
@@ -139,6 +138,9 @@ const noticeController = {
       } else {
         const totalPosts = results.length;
         const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+        // 페이지 번호를 역순으로 계산
+        const currentPage = req.query.page ? totalPages - (req.query.page - 1) : totalPages;
 
         const startIndex = (currentPage - 1) * postsPerPage;
         const endIndex = startIndex + postsPerPage;
@@ -159,6 +161,7 @@ const noticeController = {
       }
     });
   },
+  
 
 
   showForm: (req, res) => {
