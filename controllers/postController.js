@@ -129,20 +129,37 @@ const boardController = {
 const noticeController = {
   showManagerPosts: (req, res) => {
     const userNum = 1;
+    const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
+    const currentPage = req.query.page || 1; // 현재 페이지 번호, 기본값은 1
 
     postModel.getPostsByUserNum(userNum, (error, results) => {
       if (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
       } else {
-        const formattedResults = results.map(post => ({
+        const totalPosts = results.length;
+        const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+        const startIndex = (currentPage - 1) * postsPerPage;
+        const endIndex = startIndex + postsPerPage;
+
+        const paginatedResults = results.slice(startIndex, endIndex);
+
+        const formattedResults = paginatedResults.map(post => ({
           ...post,
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
-        res.render('notice', { data: formattedResults, search: [] });
+
+        res.render('notice', {
+          data: formattedResults,
+          search: [],
+          totalPages: totalPages,
+          currentPage: currentPage
+        });
       }
     });
   },
+
 
   showForm: (req, res) => {
     const postNum = req.params.post_num;
@@ -176,7 +193,6 @@ const noticeController = {
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
         res.render('notice', { data: formattedResults, search: results || [] });
-        console.log(results);
       }
     });
   },

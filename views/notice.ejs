@@ -117,6 +117,14 @@
                         </div>
                     </div>
                 </div>
+                <div id="pagination">
+                    <% for (let page = totalPages; page >= 1; page--) { %>
+                        <a href="/notice?page=<%= page %>" class="<%= currentPage === page ? 'active' : '' %>">
+                            <%= totalPages - page + 1 %>
+                        </a>
+                    <% } %>
+                </div>
+                
         </section>
 
         <!-- footer -->
