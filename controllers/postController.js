@@ -127,43 +127,71 @@ const boardController = {
 };
 
 const noticeController = {
-  showManagerPosts: (req, res) => {
+  fetchAndRenderPosts: (req, res, searchResults = []) => {
     const userNum = 1;
     const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
 
-    postModel.getPostsByUserNum(userNum, (error, results) => {
+    const getPostsFunction = searchResults.length > 0 ? postModel.searchKeyword : postModel.getPostsByUserNum;
+    const params = searchResults.length > 0 ? [req.query.keyword] : [userNum];
+
+    getPostsFunction(...params, (error, results) => {
       if (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
-      } else {
-        const totalPosts = results.length;
-        const totalPages = Math.ceil(totalPosts / postsPerPage);
+        return;
+      }
 
-        // 페이지 번호를 역순으로 계산
-        const currentPage = req.query.page ? totalPages - (req.query.page - 1) : totalPages;
+      const totalPosts = results.length;
+      const totalPages = Math.ceil(totalPosts / postsPerPage);
 
-        const startIndex = (currentPage - 1) * postsPerPage;
-        const endIndex = startIndex + postsPerPage;
+      const currentPage = req.query.page ? totalPages - (req.query.page - 1) : totalPages;
 
-        const paginatedResults = results.slice(startIndex, endIndex);
+      const startIndex = (currentPage - 1) * postsPerPage;
+      const endIndex = startIndex + postsPerPage;
 
-        const formattedResults = paginatedResults.map(post => ({
+      const paginatedResults = results.slice(startIndex, endIndex);
+
+      const formattedResults = paginatedResults.map(post => ({
+        ...post,
+        formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+      }));
+
+      res.render('notice', {
+        data: formattedResults,
+        search: searchResults,
+        totalPages: totalPages,
+        currentPage: currentPage
+      });
+    });
+  },
+
+  showManagerPosts: (req, res) => {
+    noticeController.fetchAndRenderPosts(req, res);
+  },
+
+  searchKeyword: (req, res) => {
+    const keyword = req.query.keyword;
+
+    if (keyword) {
+      postModel.searchKeyword(keyword, (error, results) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send('Internal Server Error');
+          return;
+        }
+
+        const formattedResults = results.map(post => ({
           ...post,
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
 
-        res.render('notice', {
-          data: formattedResults,
-          search: [],
-          totalPages: totalPages,
-          currentPage: currentPage
-        });
-      }
-    });
+        noticeController.fetchAndRenderPosts(req, res, formattedResults);
+      });
+    } else {
+      res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
+    }
   },
   
-
-
   showForm: (req, res) => {
     const postNum = req.params.post_num;
     postModel.getPostById(postNum, (error, result) => {
@@ -182,23 +210,7 @@ const noticeController = {
     });
   },
 
-  searchKeyword: (req, res) => {
-    const keyword = req.query.keyword;
-
-    postModel.searchKeyword(keyword, (error, results) => {
-      if (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-      } else {
-        //res.json(results);
-        const formattedResults = results.map(post => ({
-          ...post,
-          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
-        }));
-        res.render('notice', { data: formattedResults, search: results || [] });
-      }
-    });
-  },
 };
 
 module.exports = { boardController, noticeController };
+

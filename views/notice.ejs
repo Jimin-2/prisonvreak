@@ -81,7 +81,7 @@
                                                             </a>
                                                         </td>
                                                         <td>
-                                                            <%= data[i].formattedCreatedAt %>
+                                                            <%= search[i].formattedCreatedAt %>
                                                         </td>
                                                     </tr>
                                                     <% } %>
@@ -117,21 +117,20 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="pagination">
-                    <a href="/notice?page=1" class="<%= !currentPage ? 'active' : '' %>">
+                    <a href="<%= search && search.length > 0 ? '/notice/search?page=1' : '/notice?page=1' %>"
+                       class="<%= !currentPage ? 'active' : '' %>">
                       1
                     </a>
                     <% for (let page = 2; page <= totalPages; page++) { %>
-                      <a href="/notice?page=<%= page %>"
+                      <a href="<%= search && search.length > 0 ? `/notice/search?page=${page}` : `/notice?page=${page}` %>"
                          class="<%= currentPage === page ? 'active' : '' %>">
                         <%= page %>
                       </a>
                     <% } %>
                   </div>
                   
-                  
-                         
-                
         </section>
 
         <!-- footer -->
