@@ -210,6 +210,15 @@ const noticeController = {
     noticeController.fetchAndRenderPosts(req, res);
   },
 
+  getPaginationLink: (req, page) => {
+    const keyword = req.query.keyword;
+    if (keyword) {
+      return `?keyword=${encodeURIComponent(keyword)}&page=${page}`;
+    } else {
+      return `?page=${page}`;
+    }
+  },
+
   searchKeyword: (req, res) => {
     const keyword = req.query.keyword;
 
@@ -220,42 +229,47 @@ const noticeController = {
           res.status(500).send('Internal Server Error');
           return;
         }
-
-        const reversedResults = results.reverse();
-
-        const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
-        const totalPosts = reversedResults.length;
-        const totalPages = Math.ceil(totalPosts / postsPerPage);
-
-        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
-
-        const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
-
-        let startIndex, endIndex;
-        if (currentPage === totalPages) {
-          endIndex = totalPosts;
-          startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+        
+        if (results.length === 0) {
+          res.send('<script>alert("검색결과가 없습니다."); history.back();</script>');
         } else {
-          startIndex = (currentPage - 1) * postsPerPage;
-          endIndex = startIndex + postsPerPage;
+  
+          const reversedResults = results.reverse();
+  
+          const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
+          const totalPosts = reversedResults.length;
+          const totalPages = Math.ceil(totalPosts / postsPerPage);
+  
+          const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+  
+          const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+  
+          let startIndex, endIndex;
+          if (currentPage === totalPages) {
+            endIndex = totalPosts;
+            startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+          } else {
+            startIndex = (currentPage - 1) * postsPerPage;
+            endIndex = startIndex + postsPerPage;
+          }
+  
+          const paginatedResults = reversedResults.slice(startIndex, endIndex);
+          const formattedResults = paginatedResults.map(post => ({
+            ...post,
+            formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+          }));
+  
+          res.render('notice', {
+            data: formattedResults,
+            search: formattedResults, // 검색 결과를 전달
+            totalPages: totalPages,
+            currentPage: currentPage,
+            prevPage,
+            startPage,
+            endPage,
+            nextPage
+          });
         }
-
-        const paginatedResults = reversedResults.slice(startIndex, endIndex);
-        const formattedResults = paginatedResults.map(post => ({
-          ...post,
-          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
-        }));
-
-        res.render('notice', {
-          data: formattedResults,
-          search: formattedResults, // 검색 결과를 전달
-          totalPages: totalPages,
-          currentPage: currentPage,
-          prevPage,
-          startPage,
-          endPage,
-          nextPage
-        });
       });
     } else {
       res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
@@ -283,4 +297,3 @@ const noticeController = {
 };
 
 module.exports = { boardController, noticeController };
-
