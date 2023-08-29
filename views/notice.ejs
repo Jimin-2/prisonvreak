@@ -11,7 +11,7 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/info.css">
+    <link rel="stylesheet" type="text/css" href="/css/notice.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
@@ -30,21 +30,22 @@
 
 
         <!-- Section -->
-        <section id="section">
-            <div id="first">
-
-                <div class="container">
+        <section>
+            <div class="notice-background">
+                <div class="container-01">
                     <!-- Section -->
-                    <div id="firstSection" class="item">
+                    <div id="notice-logo" class="item">
                         <img src="/img/logoInfo.png">
-                        <form action="/notice/search" method="get">
-                            <input type="text" name="keyword" placeholder="검색">
-                            <button type="submit">검색</button>
-                        </form>
+                        <div id="search">
+                            <form action="/notice/search" method="get">
+                                <input type="text" name="keyword" placeholder="검색">
+                                <button type="submit">검색</button>
+                            </form>
+                        </div>
                     </div>
 
                     <!-- Section -->
-                    <div id="secondSection" class="item">
+                    <div id="grandopen-logo" class="item">
                         <img src="/img/grandopenInfo.png">
                     </div>
 
@@ -53,10 +54,8 @@
                 <!-- Section -->
                 <div id="thirdSection">
                     <div id="thirdSectionBox">
-                        <div id="firstBoxSection">
-                            <div id="firstBox" class="boxSection">
-                                <div class="boxbox">
-                                    <table id="firstBoxSection">
+                            <div class="boxSection">
+                                    <table class="type09">
                                         <thead>
                                             <tr class="title">
                                                 <th>사진</th>
@@ -106,31 +105,27 @@
                                                                 <% } %>
                                                                     <% } %>
                                         </tbody>
-
-
                                     </table>
-                                </div>
                             </div>
-                        </div>
                         <div id="secondBoxSection">
                             <div id="moreBox"> more </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="pagination">
+                <div id="pagination" class="page-numbering">
                     <a href="<%= search && search.length > 0 ? '/notice/search?page=1' : '/notice?page=1' %>"
-                       class="<%= !currentPage ? 'active' : '' %>">
-                      1
+                        class="<%= !currentPage ? 'active' : '' %>">
+                        1
                     </a>
-                    <% for (let page = 2; page <= totalPages; page++) { %>
-                      <a href="<%= search && search.length > 0 ? `/notice/search?page=${page}` : `/notice?page=${page}` %>"
-                         class="<%= currentPage === page ? 'active' : '' %>">
-                        <%= page %>
-                      </a>
-                    <% } %>
-                  </div>
-                  
+                    <% for (let page=2; page <=totalPages; page++) { %>
+                        <a href="<%= search && search.length > 0 ? `/notice/search?page=${page}` : `/notice?page=${page}` %>"
+                            class="<%= currentPage === page ? 'active' : '' %>">
+                            <%= page %>
+                        </a>
+                        <% } %>
+                </div>
+
         </section>
 
         <!-- footer -->

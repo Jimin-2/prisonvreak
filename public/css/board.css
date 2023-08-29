@@ -1,0 +1,157 @@
+section {
+  width: 100%;
+  height: 2300px;
+}
+
+.board-logo {
+  height: 400px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.board-logo img {
+  margin-top: 120px;
+}
+
+.write-button {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: right;
+  align-items: flex-end; /* 변경 */
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.write-button button {
+  margin-right: 100px; /* 이걸 %로 바꿔야 겠는데 왜 적용이 안됨 */
+
+  width: 50px;
+	height: 25px;
+
+	justify-content: center;
+	display: block;
+
+	color: #fff;
+	background: #161616;
+
+	font-size: 10px;
+	font-weight: bold;
+
+	outline: none;
+	border: none;
+	border-radius: 5px;
+
+	cursor: pointer;
+}
+
+.board-section {
+  width: 100%;
+  height: 1600px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 변경 */
+  text-align: center;
+
+  margin-top: 10px;
+}
+
+.board {
+  width: 90%;
+  height: 1600px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  background-color: white;
+
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+table.table-template {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  line-height: 1.5;
+  color: #161616;
+}
+table.table-template thead th {
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  color: #161616;
+  border-bottom: 2px solid #161616;
+}
+table.table-template tbody th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border-bottom: 1px solid #f3f3f3;
+  white-space: nowrap; /* 긴 내용을 한 줄로 표시 */
+  overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
+  text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
+  background: white;
+}
+table.table-template td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #f3f3f3;
+  white-space: nowrap; /* 긴 내용을 한 줄로 표시 */
+  overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
+  text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
+}
+
+.page-numbering {
+  width: 100%;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 변경 */
+  text-align: center;
+
+  margin-top: 80px;
+}
+
+.page-numbering a {
+  filter: drop-shadow(2px 2px 2px #161616);
+}
+
+tbody i {
+  margin-right: 5px;
+}
+
+/* 각 셀의 너비 조정 */
+table.table-template tbody th:nth-child(1),
+table.table-template td:nth-child(1) {
+  width: 45%; /* 첫 번째 열의 너비를 30%로 설정 */
+}
+
+table.table-template tbody th:nth-child(2),
+table.table-template td:nth-child(2) {
+  width: 15%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+table.table-template tbody th:nth-child(3),
+table.table-template td:nth-child(3) {
+  width: 10%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+table.table-template tbody th:nth-child(4),
+table.table-template td:nth-child(4) {
+  width: 10%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+table.table-template tbody th:nth-child(5),
+table.table-template td:nth-child(5) {
+  width: 10%; /* 두 번째 열의 너비를 20%로 설정 */
+}

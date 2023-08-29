@@ -11,73 +11,73 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/commuWrite.css">
+    <link rel="stylesheet" type="text/css" href="/css/boardInsert.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
     <!-- 반응형 웹 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--Title-->
-  <title> CAN </title>
+    <!--Title-->
+    <title> CAN </title>
 
 </head>
 
 <body>
-<!-- header -->
-<%- include('partials/header')%>
+    <!-- header -->
+    <%- include('partials/header')%>
 
 
-    <!-- Section -->
-    <section id="section">
+        <!-- Section -->
+        <section id="section">
 
-        <div id="layout">
-            <div id="sectionTitle">
-                <h1> 커뮤니티 글쓰기 </h1>
-                <hr>
-            </div>
-
-            <form action="/community/insert" method="post">
-                <div id="titleForm" class="form">
-                    <!-- <label for="post_title">Title:</label> -->
-                    <h4> 제목 </h4>
-                    <input type="text" name="post_title" id="post_title" class="form-control" placeholder="제목을 입력해 주세요"
-                        required>
+            <div id="layout">
+                <div id="sectionTitle">
+                    <h1> 커뮤니티 글쓰기 </h1>
+                    <hr>
                 </div>
 
-                <div id="contentForm" class="form">
-                    <!-- <label for="post_content">Content:</label> -->
-                    <h4> 내용 </h4>
-                    <textarea name="post_content" id="post_content" class="form-control" rows="5"
-                        placeholder="내용을 입력해 주세요" required></textarea>
-                </div>
+                <form action="/community/insert" method="post">
+                    <div id="titleForm" class="form">
+                        <!-- <label for="post_title">Title:</label> -->
+                        <h4> 제목 </h4>
+                        <input type="text" name="post_title" id="post_title" class="form-control"
+                            placeholder="제목을 입력해 주세요" required>
+                    </div>
 
-                <!-- <label for="post_usernum">usernum:</label> -->
-                <div id="contentForm" class="form">
-                    <h4> usernum </h4>
-                    <textarea name="post_usernum" id="post_usernum" required></textarea>
-                </div>
+                    <div id="contentForm" class="form">
+                        <!-- <label for="post_content">Content:</label> -->
+                        <h4> 내용 </h4>
+                        <textarea name="post_content" id="post_content" class="form-control" rows="5"
+                            placeholder="내용을 입력해 주세요" required></textarea>
+                    </div>
 
-                <!-- <div id="contentForm" class="form">
+                    <!-- <label for="post_usernum">usernum:</label> -->
+                    <div id="contentForm" class="form">
+                        <h4> usernum </h4>
+                        <textarea name="post_usernum" id="post_usernum" required></textarea>
+                    </div>
+
+                    <!-- <div id="contentForm" class="form">
                      <label for="post_hit">hit:</label>
                     <h4> 조회수 </h4>
                     <textarea name="post_hit" id="post_hit" required></textarea>
                 </div>
                 <br> -->
 
-                <div id="tagForm" class="form">
-                    <h4> 태그 </h4>
-                    <input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
-                </div>
+                    <div id="tagForm" class="form">
+                        <h4> 태그 </h4>
+                        <input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
+                    </div>
 
-                <div id="btn">
-                    <input type="submit" value="글쓰기" class="custom-btn btn-16">
-                </div>
-            </form>
-        </div>
-    </section>
+                    <div id="btn">
+                        <input type="submit" value="글쓰기" class="custom-btn btn-16">
+                    </div>
+                </form>
+            </div>
+        </section>
 
-<!-- footer -->
-<%- include('partials/footer')%>
+        <!-- footer -->
+        <%- include('partials/footer')%>
 
 </body>
 
