@@ -11,12 +11,15 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/commu.css">
+    <link rel="stylesheet" type="text/css" href="/css/board.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
     <!-- 반응형 웹 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- icon -->
+    <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
 
     <!--Title-->
     <title> CAN </title>
@@ -25,62 +28,77 @@
 
 <body>
 
-<!-- header -->
-<%- include('partials/header')%>
+    <!-- header -->
+    <%- include('partials/header')%>
 
-    <section id="section">
-        <div id="first">
-            <img src="/img/cmLogo.png">
-        </div>
-        <div id="buttonSection">
-            <form action="/community/insert" method="GET">
-                <button type="submit">글쓰기</button>
-            </form>
-        </div>
-        <div id="second">
-            <div id="type09" class="effect8">
-                <table class="type09">
-                    <thead>
-                        <tr>
-                            <th>번호</th>
-                            <th>제목</th>
-                            <th>글쓴이</th>
-                            <th>날짜</th>
-                            <th>조회수</th>
-                        </tr>
-                    </thead>
+        <section>
 
-                    <tbody>
-                        <% data.sort((a, b) => new Date(b.post_created_at) - new Date(a.post_created_at)).forEach(function(post) { %>
-                            <tr>
-                                <td>
-                                    <%= post.post_num %>
-                                </td>
-                                <td><a href="/community/show/<%= post.post_num %>">
-                                        <%= post.post_title %>
-                                    </a></td>
-                                <td>
-                                    <%= post.post_usernum %>
-                                </td>
-                                <td>
-                                    <%= post.formattedCreatedAt %>
-                                </td>
-                                <td>
-                                    <%= post.post_hit %>
-                                </td>
-                            </tr>
-                            <% }); %>
-                    </tbody>
-                </table>
+            <!-- 커뮤니티 로고 -->
+            <div class="board-logo">
+                <img src="/img/cmLogo.png">
             </div>
-        </div>
-        <div id="third">
-            <a> 1 </a>
-        </div>
-    </section>
 
-    <!-- footer -->
-<%- include('partials/footer')%>
+            <!-- 글쓰기 버튼 -->
+            <div class="write-button">
+                <form action="/community/insert" method="GET">
+                    <button type="submit">글쓰기</button>
+                </form>
+            </div>
+
+            <!-- 보드board -->
+            <div class="board-section">
+                <div class="board" class="effect8">
+                    <table class="table-template">
+                        <thead>
+                            <tr>
+                                <!-- <th>번호</th> -->
+                                <th>제목</th>
+                                <th>글쓴이</th>
+                                <th>추천</th>
+                                <th>날짜</th>
+                                <th>조회수</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <% data.sort((a, b)=> new Date(b.post_created_at) - new
+                                Date(a.post_created_at)).forEach(function(post) { %>
+                                <tr>
+                                    <!-- 번호 임시 삭게
+                                    <td>
+                                        <%= post.post_num %>
+                                    </td>
+                                    -->
+                                    <td><a href="/community/show/<%= post.post_num %>">
+                                            <%= post.post_title %>
+                                        </a></td>
+                                    <td>
+                                        <i class="fa-solid fa-user"></i><%= post.post_usernum %>
+                                    </td>
+                                    <td>
+                                        <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
+                                    </td>
+                                    <td>
+                                        <i class="fa-solid fa-calendar"></i><%= post.formattedCreatedAt %>
+                                    </td>
+                                    <td>
+                                        <i class="fa-solid fa-users"></i><%= post.post_hit %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 페이지 넘버링 -->
+            <div class="page-numbering">
+                <a> 1 </a>
+            </div>
+        </section>
+
+        <!-- footer -->
+        <%- include('partials/footer')%>
 
 </body>
 

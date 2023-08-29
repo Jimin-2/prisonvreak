@@ -5,6 +5,8 @@ const path = require('path'); // 예를 들어, path 모듈을 사용하려면 �
 const nodemailer = require('nodemailer');
 const authCheckMiddleware = require('../middleware/authCheck');
 
+//test
+
 // 회원가입 프로세스
 exports.register_process = function (req, res) {
     const name = req.body.name;
