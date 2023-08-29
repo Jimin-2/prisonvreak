@@ -65,6 +65,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="content">
+<<<<<<< HEAD
                                             <% if (search && search.length> 0) { %>
                                                 <% for (let i=search.length - 1; i>= 0; i--) { %>
                                                     <tr>
@@ -105,6 +106,50 @@
                                                                 <% } %>
                                                                     <% } %>
                                         </tbody>
+=======
+                                            <% if (search && search.length > 0) { %>
+                                              <% for (let i = 0; i < search.length; i++) { %>
+                                                <tr>
+                                                  <td>
+                                                    <div>사진</div>
+                                                  </td>
+                                                  <td>
+                                                    <%= search[i].post_num %>
+                                                  </td>
+                                                  <td>
+                                                    <a href="/notice/show/<%= search[i].post_num %>">
+                                                      <%= search[i].post_title %>
+                                                    </a>
+                                                  </td>
+                                                  <td>
+                                                    <%= search[i].formattedCreatedAt %>
+                                                  </td>
+                                                </tr>
+                                              <% } %>
+                                            <% } else if (data && data.length > 0) { %>
+                                              <% for (let i = 0; i < data.length; i++) { %>
+                                                <tr>
+                                                  <td>
+                                                    <div>사진</div>
+                                                  </td>
+                                                  <td>
+                                                    <%= data[i].post_num %>
+                                                  </td>
+                                                  <td>
+                                                    <a href="/notice/show/<%= data[i].post_num %>">
+                                                      <%= data[i].post_title %>
+                                                    </a>
+                                                  </td>
+                                                  <td>
+                                                    <%= data[i].formattedCreatedAt %>
+                                                  </td>
+                                                </tr>
+                                              <% } %>
+                                            <% } %>
+                                          </tbody>
+
+
+>>>>>>> edadd3b76a83b583b06c8e4fa36d7c145a4131e5
                                     </table>
                             </div>
                         <div id="secondBoxSection">
@@ -113,6 +158,7 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
                 <div id="pagination" class="page-numbering">
                     <a href="<%= search && search.length > 0 ? '/notice/search?page=1' : '/notice?page=1' %>"
                         class="<%= !currentPage ? 'active' : '' %>">
@@ -126,6 +172,36 @@
                         <% } %>
                 </div>
 
+=======
+                <div class="pagination">
+                  <% if (prevPage !== null) { %>
+                    <a href="?page=<%= prevPage %>">&laquo; 이전</a>
+                  <% } %>
+                
+                  <% for (let i = startPage; i <= endPage; i++) { %>
+                    <% if (i === currentPage) { %>
+                      <span class="active"><%= i %></span>
+                    <% } else { %>
+                      <a href="?page=<%= i %>"><%= i %></a>
+                    <% } %>
+                  <% } %>
+                
+                  <% if (nextPage !== null) { %>
+                    <a href="?page=<%= nextPage %>">다음 &raquo;</a>
+                  <% } else { %>
+                    <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                    <script>
+                      document.getElementById("disabledNextPage").addEventListener("click", function(event) {
+                        event.preventDefault();
+                        alert("더 이상 페이지가 없습니다.");
+                      });
+                    </script>
+                  <% } %>
+                </div>
+                
+                
+                
+>>>>>>> edadd3b76a83b583b06c8e4fa36d7c145a4131e5
         </section>
 
         <!-- footer -->

@@ -127,13 +127,41 @@ const boardController = {
 };
 
 const noticeController = {
+  calculatePagination: (currentPage, totalPages) => {
+    const maxPagePerGroup = 5;
+    const totalGroups = Math.ceil(totalPages / maxPagePerGroup);
+    const currentGroup = Math.ceil(currentPage / maxPagePerGroup);
+  
+    let prevPage = null;
+    if (currentPage > 1) {
+      const prevPageGroup = currentGroup - 1;
+      prevPage = (prevPageGroup - 1) * maxPagePerGroup + 1;
+    }
+  
+    const startPage = (currentGroup - 1) * maxPagePerGroup + 1;
+    const endPage = Math.min(currentGroup * maxPagePerGroup, totalPages);
+  
+    let nextPage = null;
+    if (endPage < totalPages) {
+      const nextPageGroup = currentGroup + 1;
+      nextPage = (nextPageGroup - 1) * maxPagePerGroup + 1;
+    }
+  
+    return {
+      prevPage,
+      startPage,
+      endPage,
+      nextPage
+    };
+  },
+
   fetchAndRenderPosts: (req, res, searchResults = []) => {
     const userNum = 1;
     const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
-
+  
     const getPostsFunction = searchResults.length > 0 ? postModel.searchKeyword : postModel.getPostsByUserNum;
     const params = searchResults.length > 0 ? [req.query.keyword] : [userNum];
-
+  
     getPostsFunction(...params, (error, results) => {
       if (error) {
         console.error(error);
@@ -141,30 +169,43 @@ const noticeController = {
         return;
       }
 
-      const totalPosts = results.length;
+      const reversedResults = results.reverse();
+  
+      const totalPosts = reversedResults.length;
       const totalPages = Math.ceil(totalPosts / postsPerPage);
+  
+      const currentPage = req.query.page ? parseInt(req.query.page) : 1;
 
-      const currentPage = req.query.page ? totalPages - (req.query.page - 1) : totalPages;
+      const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
 
-      const startIndex = (currentPage - 1) * postsPerPage;
-      const endIndex = startIndex + postsPerPage;
-
-      const paginatedResults = results.slice(startIndex, endIndex);
-
+      let startIndex, endIndex;
+      if (currentPage === totalPages) {
+        endIndex = totalPosts;
+        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+      } else {
+        startIndex = (currentPage - 1) * postsPerPage;
+        endIndex = startIndex + postsPerPage;
+      }
+  
+      const paginatedResults = reversedResults.slice(startIndex, endIndex);
       const formattedResults = paginatedResults.map(post => ({
         ...post,
         formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
       }));
-
+  
       res.render('notice', {
         data: formattedResults,
         search: searchResults,
         totalPages: totalPages,
-        currentPage: currentPage
+        currentPage: currentPage,
+        prevPage,
+        startPage,
+        endPage,
+        nextPage
       });
     });
   },
-
+  
   showManagerPosts: (req, res) => {
     noticeController.fetchAndRenderPosts(req, res);
   },
@@ -180,12 +221,41 @@ const noticeController = {
           return;
         }
 
-        const formattedResults = results.map(post => ({
+        const reversedResults = results.reverse();
+
+        const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
+        const totalPosts = reversedResults.length;
+        const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+
+        const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+
+        let startIndex, endIndex;
+        if (currentPage === totalPages) {
+          endIndex = totalPosts;
+          startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+        } else {
+          startIndex = (currentPage - 1) * postsPerPage;
+          endIndex = startIndex + postsPerPage;
+        }
+
+        const paginatedResults = reversedResults.slice(startIndex, endIndex);
+        const formattedResults = paginatedResults.map(post => ({
           ...post,
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
 
-        noticeController.fetchAndRenderPosts(req, res, formattedResults);
+        res.render('notice', {
+          data: formattedResults,
+          search: formattedResults, // 검색 결과를 전달
+          totalPages: totalPages,
+          currentPage: currentPage,
+          prevPage,
+          startPage,
+          endPage,
+          nextPage
+        });
       });
     } else {
       res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
