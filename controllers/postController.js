@@ -212,7 +212,7 @@ const noticeController = {
 
   searchKeyword: (req, res) => {
     const keyword = req.query.keyword;
-  
+
     if (keyword) {
       postModel.searchKeyword(keyword, (error, results) => {
         if (error) {
@@ -220,19 +220,18 @@ const noticeController = {
           res.status(500).send('Internal Server Error');
           return;
         }
-  
-        // 결과를 역순으로 정렬
+
         const reversedResults = results.reverse();
-  
+
         const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
         const totalPosts = reversedResults.length;
         const totalPages = Math.ceil(totalPosts / postsPerPage);
-  
+
         const currentPage = req.query.page ? parseInt(req.query.page) : 1;
-  
+
+        const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+
         let startIndex, endIndex;
-  
-        // 마지막 페이지에 남은 개수만큼 표시
         if (currentPage === totalPages) {
           endIndex = totalPosts;
           startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
@@ -240,18 +239,22 @@ const noticeController = {
           startIndex = (currentPage - 1) * postsPerPage;
           endIndex = startIndex + postsPerPage;
         }
-  
+
         const paginatedResults = reversedResults.slice(startIndex, endIndex);
         const formattedResults = paginatedResults.map(post => ({
           ...post,
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
-  
+
         res.render('notice', {
           data: formattedResults,
           search: formattedResults, // 검색 결과를 전달
           totalPages: totalPages,
-          currentPage: currentPage
+          currentPage: currentPage,
+          prevPage,
+          startPage,
+          endPage,
+          nextPage
         });
       });
     } else {
