@@ -66,46 +66,46 @@
                                             </tr>
                                         </thead>
                                         <tbody class="content">
-                                            <% if (search && search.length> 0) { %>
-                                                <% for (let i=search.length - 1; i>= 0; i--) { %>
-                                                    <tr>
-                                                        <td>
-                                                            <div>사진</div>
-                                                        </td>
-                                                        <td>
-                                                            <%= search[i].post_num %>
-                                                        </td>
-                                                        <td>
-                                                            <a href="/notice/show/<%= search[i].post_num %>">
-                                                                <%= search[i].post_title %>
-                                                            </a>
-                                                        </td>
-                                                        <td>
-                                                            <%= search[i].formattedCreatedAt %>
-                                                        </td>
-                                                    </tr>
-                                                    <% } %>
-                                                        <% } else if (data && data.length> 0) { %>
-                                                            <% for (let i=data.length - 1; i>= 0; i--) { %>
-                                                                <tr>
-                                                                    <td>
-                                                                        <div>사진</div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= data[i].post_num %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a href="/notice/show/<%= data[i].post_num %>">
-                                                                            <%= data[i].post_title %>
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= data[i].formattedCreatedAt %>
-                                                                    </td>
-                                                                </tr>
-                                                                <% } %>
-                                                                    <% } %>
-                                        </tbody>
+                                            <% if (search && search.length > 0) { %>
+                                              <% for (let i = 0; i < search.length; i++) { %>
+                                                <tr>
+                                                  <td>
+                                                    <div>사진</div>
+                                                  </td>
+                                                  <td>
+                                                    <%= search[i].post_num %>
+                                                  </td>
+                                                  <td>
+                                                    <a href="/notice/show/<%= search[i].post_num %>">
+                                                      <%= search[i].post_title %>
+                                                    </a>
+                                                  </td>
+                                                  <td>
+                                                    <%= search[i].formattedCreatedAt %>
+                                                  </td>
+                                                </tr>
+                                              <% } %>
+                                            <% } else if (data && data.length > 0) { %>
+                                              <% for (let i = 0; i < data.length; i++) { %>
+                                                <tr>
+                                                  <td>
+                                                    <div>사진</div>
+                                                  </td>
+                                                  <td>
+                                                    <%= data[i].post_num %>
+                                                  </td>
+                                                  <td>
+                                                    <a href="/notice/show/<%= data[i].post_num %>">
+                                                      <%= data[i].post_title %>
+                                                    </a>
+                                                  </td>
+                                                  <td>
+                                                    <%= data[i].formattedCreatedAt %>
+                                                  </td>
+                                                </tr>
+                                              <% } %>
+                                            <% } %>
+                                          </tbody>
 
 
                                     </table>
@@ -120,17 +120,17 @@
 
                 <div id="pagination">
                     <a href="<%= search && search.length > 0 ? '/notice/search?page=1' : '/notice?page=1' %>"
-                       class="<%= !currentPage ? 'active' : '' %>">
-                      1
+                        class="<%= !currentPage ? 'active' : '' %>">
+                        1
                     </a>
-                    <% for (let page = 2; page <= totalPages; page++) { %>
-                      <a href="<%= search && search.length > 0 ? `/notice/search?page=${page}` : `/notice?page=${page}` %>"
-                         class="<%= currentPage === page ? 'active' : '' %>">
-                        <%= page %>
-                      </a>
-                    <% } %>
-                  </div>
-                  
+                    <% for (let page=2; page <=totalPages; page++) { %>
+                        <a href="<%= search && search.length > 0 ? `/notice/search?page=${page}` : `/notice?page=${page}` %>"
+                            class="<%= currentPage === page ? 'active' : '' %>">
+                            <%= page %>
+                        </a>
+                        <% } %>
+                </div>
+
         </section>
 
         <!-- footer -->
