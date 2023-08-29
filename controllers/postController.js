@@ -127,6 +127,34 @@ const boardController = {
 };
 
 const noticeController = {
+  calculatePagination: (currentPage, totalPages) => {
+    const maxPagePerGroup = 5;
+    const totalGroups = Math.ceil(totalPages / maxPagePerGroup);
+    const currentGroup = Math.ceil(currentPage / maxPagePerGroup);
+  
+    let prevPage = null;
+    if (currentPage > 1) {
+      const prevPageGroup = currentGroup - 1;
+      prevPage = (prevPageGroup - 1) * maxPagePerGroup + 1;
+    }
+  
+    const startPage = (currentGroup - 1) * maxPagePerGroup + 1;
+    const endPage = Math.min(currentGroup * maxPagePerGroup, totalPages);
+  
+    let nextPage = null;
+    if (endPage < totalPages) {
+      const nextPageGroup = currentGroup + 1;
+      nextPage = (nextPageGroup - 1) * maxPagePerGroup + 1;
+    }
+  
+    return {
+      prevPage,
+      startPage,
+      endPage,
+      nextPage
+    };
+  },
+
   fetchAndRenderPosts: (req, res, searchResults = []) => {
     const userNum = 1;
     const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
@@ -140,18 +168,17 @@ const noticeController = {
         res.status(500).send('Internal Server Error');
         return;
       }
-  
-      // 결과를 역순으로 정렬
+
       const reversedResults = results.reverse();
   
       const totalPosts = reversedResults.length;
       const totalPages = Math.ceil(totalPosts / postsPerPage);
   
       const currentPage = req.query.page ? parseInt(req.query.page) : 1;
-  
+
+      const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+
       let startIndex, endIndex;
-  
-      // 마지막 페이지에 남은 개수만큼 표시
       if (currentPage === totalPages) {
         endIndex = totalPosts;
         startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
@@ -170,12 +197,15 @@ const noticeController = {
         data: formattedResults,
         search: searchResults,
         totalPages: totalPages,
-        currentPage: currentPage
+        currentPage: currentPage,
+        prevPage,
+        startPage,
+        endPage,
+        nextPage
       });
     });
   },
   
-
   showManagerPosts: (req, res) => {
     noticeController.fetchAndRenderPosts(req, res);
   },
@@ -191,23 +221,43 @@ const noticeController = {
           return;
         }
   
-        const formattedResults = results.map(post => ({
+        // 결과를 역순으로 정렬
+        const reversedResults = results.reverse();
+  
+        const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
+        const totalPosts = reversedResults.length;
+        const totalPages = Math.ceil(totalPosts / postsPerPage);
+  
+        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+  
+        let startIndex, endIndex;
+  
+        // 마지막 페이지에 남은 개수만큼 표시
+        if (currentPage === totalPages) {
+          endIndex = totalPosts;
+          startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+        } else {
+          startIndex = (currentPage - 1) * postsPerPage;
+          endIndex = startIndex + postsPerPage;
+        }
+  
+        const paginatedResults = reversedResults.slice(startIndex, endIndex);
+        const formattedResults = paginatedResults.map(post => ({
           ...post,
           formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
         }));
   
-        const reversedFormattedResults = formattedResults.reverse();
-        
-        noticeController.fetchAndRenderPosts(req, res, reversedFormattedResults);
-        
+        res.render('notice', {
+          data: formattedResults,
+          search: formattedResults, // 검색 결과를 전달
+          totalPages: totalPages,
+          currentPage: currentPage
+        });
       });
     } else {
       res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
     }
   },
-  
-  
-  
   
   showForm: (req, res) => {
     const postNum = req.params.post_num;
