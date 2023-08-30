@@ -3,7 +3,7 @@ const router = express.Router();
 const { boardController, noticeController } = require('../controllers/postController');
 
 // 라우트 수행
-router.get('/community', boardController.showList);
+router.get('/community', boardController.showboard);
 router.get('/community/delete/:post_num', boardController.deletePost);
 router.get('/community/insert', boardController.showInsertForm);
 router.post('/community/insert', boardController.insertPost);

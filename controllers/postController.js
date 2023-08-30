@@ -54,9 +54,13 @@ const boardController = {
         ...post,
         formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
       }));
-
-      res.render('board', { data: formattedResults });
+  
+      noticeController.fetchAndRenderPosts(req, res, 'board', formattedResults); // 'board' 페이지에 데이터를 전달하여 렌더링
     });
+  },
+
+  showboard: (req, res) => {
+    noticeController.fetchAndRenderPosts(req, res, 'board', 20);
   },
 
   deletePost: (req, res) => {
@@ -129,7 +133,6 @@ const boardController = {
 const noticeController = {
   calculatePagination: (currentPage, totalPages) => {
     const maxPagePerGroup = 5;
-    const totalGroups = Math.ceil(totalPages / maxPagePerGroup);
     const currentGroup = Math.ceil(currentPage / maxPagePerGroup);
   
     let prevPage = null;
@@ -155,9 +158,9 @@ const noticeController = {
     };
   },
 
-  fetchAndRenderPosts: (req, res, searchResults = []) => {
+  fetchAndRenderPosts: (req, res, pageName, postsPerPage, searchResults = []) => {
     const userNum = 1;
-    const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
+    //const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
   
     const getPostsFunction = searchResults.length > 0 ? postModel.searchKeyword : postModel.getPostsByUserNum;
     const params = searchResults.length > 0 ? [req.query.keyword] : [userNum];
@@ -193,7 +196,7 @@ const noticeController = {
         formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
       }));
   
-      res.render('notice', {
+      res.render(pageName, {
         data: formattedResults,
         search: searchResults,
         totalPages: totalPages,
@@ -207,16 +210,7 @@ const noticeController = {
   },
   
   showManagerPosts: (req, res) => {
-    noticeController.fetchAndRenderPosts(req, res);
-  },
-
-  getPaginationLink: (req, page) => {
-    const keyword = req.query.keyword;
-    if (keyword) {
-      return `?keyword=${encodeURIComponent(keyword)}&page=${page}`;
-    } else {
-      return `?page=${page}`;
-    }
+    noticeController.fetchAndRenderPosts(req, res, 'notice', 5);
   },
 
   searchKeyword: (req, res) => {
