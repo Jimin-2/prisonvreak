@@ -77,6 +77,16 @@ const postModel = {
       }
     });
   },
+
+  excludedUserNum : (post_usernum, callback) => {
+    db.query('SELECT * FROM post WHERE post_usernum <> ?', [post_usernum], (error, results) => {
+      if (error) {
+        console.error('Error getPostsExcludingUserNum', null);
+        callback(error, null);
+      }
+      callback(null, results);
+    });
+  },
 };
 
 const commentModel = {
