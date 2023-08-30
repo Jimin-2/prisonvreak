@@ -39,6 +39,9 @@
                 <form action="/community/insert" method="post">
                     <div id="titleForm" class="form">
                         <!-- <label for="post_title">Title:</label> -->
+                        <div id="contentForm" class="form">
+                            <p>작성자: <%= userId %> </p>
+                            </div>
                         <h4> 제목 </h4>
                         <input type="text" name="post_title" id="post_title" class="form-control"
                             placeholder="제목을 입력해 주세요" required>
@@ -52,11 +55,7 @@
                     </div>
 
                     <!-- <label for="post_usernum">usernum:</label> -->
-                    <div id="contentForm" class="form">
-                        <h4> usernum </h4>
-                        <textarea name="post_usernum" id="post_usernum" required></textarea>
-                    </div>
-
+                   
                     <!-- <div id="contentForm" class="form">
                      <label for="post_hit">hit:</label>
                     <h4> 조회수 </h4>

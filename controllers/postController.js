@@ -17,8 +17,8 @@ const boardController = {
       return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
     }
     // 로그인시
-    res.render('boardInsert');
-    console.log(req.session);
+    const userId = req.session.user_id;
+    res.render('boardInsert', { userId: userId });
   },
 
   showForm: (req, res) => {
@@ -57,7 +57,7 @@ const boardController = {
       }
       const reversedResults = results.reverse();
 
-      const postsPerPage = 3; // 한 페이지당 표시되는 게시물 수
+      const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
       const totalPosts = reversedResults.length;
       const totalPages = Math.ceil(totalPosts / postsPerPage);
 
@@ -107,19 +107,22 @@ const boardController = {
 
 
   insertPost: (req, res) => {
+    const userId = req.session.user_id;
     const body = req.body;
     console.log(body);
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    postModel.insertPost(
-      body.post_title,
-      body.post_content,
-      body.post_usernum,
-      koreanTime,
-      () => {
-        res.redirect('/community');
-      }
-    );
-  },
+    postModel.getMemNumByMemId(userId, (error, memnum) => {
+      postModel.insertPost(
+        body.post_title,
+        body.post_content,
+        memnum,
+        koreanTime,
+        () => {
+          res.redirect('/community');
+        }
+      );
+    })
+    },
 
   showEditForm: (req, res) => {
     const postNum = req.params.post_num;
@@ -128,7 +131,7 @@ const boardController = {
         console.error(error);
         res.status(500).send('Internal Server Error');
       } else {
-        res.render('boardEdit', { data: result });
+        res.render('boardEdit', { data: result, user_id: userId });
       }
     });
   },
