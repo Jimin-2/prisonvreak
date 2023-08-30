@@ -115,6 +115,7 @@ section {
   width: 200px;
   height: 200px;
   background-color: black;
+  object-fit: cover; /* 이미지가 크기를 맞추며 비율을 유지하도록 설정 */
 }
 
 #myProfileInfo {

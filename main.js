@@ -6,6 +6,7 @@ const passport = require('./config/passport');
 
 const authRouter = require('./routes/auth');
 const postRouter = require('./routes/post');
+const imageRouter = require('./routes/img');
 
 const app = express();
 const port = 8080;
@@ -54,6 +55,7 @@ app.get('/',(req,res) => {
 
 // 인증 라우터
 app.use('/auth', authRouter);
+app.use('/img',imageRouter);
 app.use('/', postRouter); // 게시판
 
 // 메인 페이지

@@ -125,6 +125,15 @@ section {
     padding-bottom: 10px;
     padding-top: 10px;
 }
+.myProfile {
+    width: 700px;
+    display: flex;
+    border-bottom: 1px solid #bfbfbf;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
 
 .inputBox {
     height: 60px;
@@ -139,6 +148,10 @@ section {
 .myInfo h4{
     display: inline-block;
     margin-left: 110px;
+    width: 100px;
+}
+.myProfile h4{
+    display: inline-block;
     width: 100px;
 }
 .inputBox h4{
