@@ -36,7 +36,7 @@
                     <hr>
                 </div>
 
-                <form action="/community/insert" method="post">
+                <form action="/community/insert" method="post" enctype="multipart/form-data">
                     <div id="titleForm" class="form">
                         <!-- <label for="post_title">Title:</label> -->
                         <div id="contentForm" class="form">
@@ -45,6 +45,11 @@
                         <h4> 제목 </h4>
                         <input type="text" name="post_title" id="post_title" class="form-control"
                             placeholder="제목을 입력해 주세요" required>
+                    </div>
+                                        
+                    <div id="contentForm" class="form">
+                        <h4> 첨부파일 </h4>
+                        <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*">
                     </div>
 
                     <div id="contentForm" class="form">

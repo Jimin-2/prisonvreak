@@ -18,10 +18,10 @@ const postModel = {
     });
   },
 
-  insertPost: (post_title, post_content, post_usernum, post_created_at, callback) => {
+  insertPost: (post_title, post_image, post_content, post_usernum, post_created_at, callback) => {
     db.query(
-      'INSERT INTO post (post_title, post_content, post_usernum, post_created_at) VALUES (?, ?, ?, ?)',
-      [post_title, post_content, post_usernum, post_created_at],
+      'INSERT INTO post (post_title, post_image, post_content, post_usernum, post_created_at) VALUES (?, ?, ?, ?, ?)',
+      [post_title, post_image, post_content, post_usernum, post_created_at],
       () => {
         callback();
       }
