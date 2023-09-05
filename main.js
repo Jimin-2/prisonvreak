@@ -57,6 +57,7 @@ app.get('/',(req,res) => {
 app.use('/auth', authRouter);
 app.use('/img',imageRouter);
 app.use('/', postRouter); // 게시판
+app.use('/community', postRouter); // 사진을 s3로
 
 // 메인 페이지
 /*app.get('/main', (req, res) => {
