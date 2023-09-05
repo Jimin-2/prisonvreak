@@ -61,14 +61,13 @@
                         </thead>
 
                         <tbody>
-                            <% data.sort((a, b)=> new Date(b.post_created_at) - new
-                                Date(a.post_created_at)).forEach(function(post) { %>
+                            <% data.sort((a, b) => b.post_num - a.post_num).forEach(function(post) { %>
                                 <tr>
-                                    <!-- 번호 임시 삭게
-                                    <td>
+                                    <!-- 번호 임시 삭게 -->
+                                    <!-- <td>
                                         <%= post.post_num %>
-                                    </td>
-                                    -->
+                                    </td> -->
+                                   
                                     <td><a href="/community/show/<%= post.post_num %>">
                                             <%= post.post_title %>
                                         </a></td>
@@ -82,7 +81,8 @@
                                         <i class="fa-solid fa-calendar"></i><%= post.formattedCreatedAt %>
                                     </td>
                                     <td>
-                                        <i class="fa-solid fa-users"></i><%= post.post_hit %>
+                                        <!-- <i class="fa-solid fa-users"></i><%= post.post_hit %> -->
+                                        <%= post.post_num %>
                                     </td>
                                 </tr>
                                 <% }); %>
@@ -91,10 +91,31 @@
                 </div>
             </div>
 
-            <!-- 페이지 넘버링 -->
-            <div class="page-numbering">
-                <a> 1 </a>
-            </div>
+            <div class="pagination">
+                <% if (prevPage !== null) { %>
+                  <a href="?page=<%= prevPage %>">&laquo; 이전</a>
+                <% } %>
+              
+                <% for (let i = startPage; i <= endPage; i++) { %>
+                  <% if (i === currentPage) { %>
+                    <span class="active"><%= i %></span>
+                  <% } else { %>
+                    <a href="?page=<%= i %>"><%= i %></a>
+                  <% } %>
+                <% } %>
+              
+                <% if (nextPage !== null) { %>
+                  <a href="?page=<%= nextPage %>">다음 &raquo;</a>
+                <% } else { %>
+                  <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                  <script>
+                    document.getElementById("disabledNextPage").addEventListener("click", function(event) {
+                      event.preventDefault();
+                      alert("더 이상 페이지가 없습니다.");
+                    });
+                  </script>
+                <% } %>
+              </div>
         </section>
 
         <!-- footer -->

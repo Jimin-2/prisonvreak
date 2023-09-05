@@ -18,14 +18,34 @@ const postModel = {
     });
   },
 
-  insertPost: (post_title, post_content, post_usernum, post_created_at, callback) => {
+  insertPost: (post_title, post_image, post_content, post_usernum, post_created_at, callback) => {
     db.query(
-      'INSERT INTO post (post_title, post_content, post_usernum, post_created_at) VALUES (?, ?, ?, ?)',
-      [post_title, post_content, post_usernum, post_created_at],
+      'INSERT INTO post (post_title, post_image, post_content, post_usernum, post_created_at) VALUES (?, ?, ?, ?, ?)',
+      [post_title, post_image, post_content, post_usernum, post_created_at],
       () => {
         callback();
       }
     );
+  },
+
+  getMemNumByMemId: (userId, callback) => {
+    // MySQL 쿼리를 통해 user_id로 사용자 정보 조회
+    db.query('SELECT mem_num FROM member WHERE mem_id = ?', [userId], (error, results) => {
+      if (error) {
+        console.error(error);
+        callback(error, null);
+        return;
+      } else {
+        if (results.length === 0) {
+          // 사용자 정보가 없을 경우
+          callback(null, null);
+        } else {
+          // 사용자 정보가 있을 경우 user_num 반환
+          const userNum = results[0].mem_num;
+          callback(null, userNum);
+        }
+      }
+    });
   },
 
   getPostById: (post_num, callback) => {
@@ -70,11 +90,21 @@ const postModel = {
     const searchKeyword = `%${keyword}%`;
     db.query('SELECT * FROM post WHERE post_title LIKE ?', [searchKeyword], (error, results) => {
       if (error) {
-          console.error(error);
-          callback(error, null);
+        console.error(error);
+        callback(error, null);
       } else {
-          callback(null, results);
+        callback(null, results);
       }
+    });
+  },
+
+  excludedUserNum: (post_usernum, callback) => {
+    db.query('SELECT * FROM post WHERE post_usernum <> ?', [post_usernum], (error, results) => {
+      if (error) {
+        console.error('Error getPostsExcludingUserNum', null);
+        callback(error, null);
+      }
+      callback(null, results);
     });
   },
 };

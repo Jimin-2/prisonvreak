@@ -2,151 +2,151 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!--글꼴 Link-->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
-    <!--CSS-->
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/notice.css">
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/notice.css">
 
-    <!-- JavaScript -->
-    <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Title-->
-    <title> CAN </title>
+  <!--Title-->
+  <title> CAN </title>
 
 </head>
 
 <body>
 
-    <!-- header -->
-    <%- include('partials/header')%>
+  <!-- header -->
+  <%- include('partials/header')%>
 
+
+    <!-- Section -->
+    <section>
+      <div class="notice-background">
+        <div class="container-01">
+          <!-- Section -->
+          <div id="notice-logo" class="item">
+            <img src="/img/logoInfo.png">
+            <div id="search">
+              <form action="/notice/search" method="get">
+                <input type="text" name="keyword" placeholder="검색">
+                <button type="submit">검색</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Section -->
+          <div id="grandopen-logo" class="item">
+            <img src="/img/grandopenInfo.png">
+          </div>
+
+        </div>
 
         <!-- Section -->
-        <section>
-            <div class="notice-background">
-                <div class="container-01">
-                    <!-- Section -->
-                    <div id="notice-logo" class="item">
-                        <img src="/img/logoInfo.png">
-                        <div id="search">
-                            <form action="/notice/search" method="get">
-                                <input type="text" name="keyword" placeholder="검색">
-                                <button type="submit">검색</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Section -->
-                    <div id="grandopen-logo" class="item">
-                        <img src="/img/grandopenInfo.png">
-                    </div>
-
-                </div>
-
-                <!-- Section -->
-                <div id="thirdSection">
-                    <div id="thirdSectionBox">
-                            <div class="boxSection">
-                                    <table class="type09">
-                                        <thead>
-                                            <tr class="title">
-                                                <th>사진</th>
-                                                <th>번호</th>
-                                                <th>제목</th>
-                                                <th>날짜</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="content">
-                                            <% if (search && search.length > 0) { %>
-                                              <% for (let i = 0; i < search.length; i++) { %>
-                                                <tr>
-                                                  <td>
-                                                    <div>사진</div>
-                                                  </td>
-                                                  <td>
-                                                    <%= search[i].post_num %>
-                                                  </td>
-                                                  <td>
-                                                    <a href="/notice/show/<%= search[i].post_num %>">
-                                                      <%= search[i].post_title %>
-                                                    </a>
-                                                  </td>
-                                                  <td>
-                                                    <%= search[i].formattedCreatedAt %>
-                                                  </td>
-                                                </tr>
-                                              <% } %>
-                                            <% } else if (data && data.length > 0) { %>
-                                              <% for (let i = 0; i < data.length; i++) { %>
-                                                <tr>
-                                                  <td>
-                                                    <div>사진</div>
-                                                  </td>
-                                                  <td>
-                                                    <%= data[i].post_num %>
-                                                  </td>
-                                                  <td>
-                                                    <a href="/notice/show/<%= data[i].post_num %>">
-                                                      <%= data[i].post_title %>
-                                                    </a>
-                                                  </td>
-                                                  <td>
-                                                    <%= data[i].formattedCreatedAt %>
-                                                  </td>
-                                                </tr>
-                                              <% } %>
-                                            <% } %>
-                                          </tbody>
+        <div id="thirdSection">
+          <div id="thirdSectionBox">
+            <div class="boxSection">
+              <table class="type09">
+                <thead>
+                  <tr class="title">
+                    <th>사진</th>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>날짜</th>
+                  </tr>
+                </thead>
+                <tbody class="content">
+                  <% if (search && search.length> 0) { %>
+                    <% for (let i=0; i < search.length; i++) { %>
+                      <tr>
+                        <td>
+                          <div>사진</div>
+                        </td>
+                        <td>
+                          <%= search[i].post_num %>
+                        </td>
+                        <td>
+                          <a href="/notice/show/<%= search[i].post_num %>">
+                            <%= search[i].post_title %>
+                          </a>
+                        </td>
+                        <td>
+                          <%= search[i].formattedCreatedAt %>
+                        </td>
+                      </tr>
+                      <% } %>
+                        <% } else if (data && data.length> 0) { %>
+                          <% for (let i=0; i < data.length; i++) { %>
+                            <tr>
+                              <td>
+                                <img src="<%= data[i].post_image %>" style="width: 100%">
+                              </td>
+                              <td>
+                                <%= data[i].post_num %>
+                              </td>
+                              <td>
+                                <a href="/notice/show/<%= data[i].post_num %>">
+                                  <%= data[i].post_title %>
+                                </a>
+                              </td>
+                              <td>
+                                <%= data[i].formattedCreatedAt %>
+                              </td>
+                            </tr>
+                            <% } %>
+                              <% } %>
+                </tbody>
 
 
-                                    </table>
-                            </div>
-                        <div id="secondBoxSection">
-                            <div id="moreBox"> more </div>
-                        </div>
-                    </div>
-                </div>
+              </table>
+            </div>
+            <div id="secondBoxSection">
+              <div id="moreBox"> more </div>
+            </div>
+          </div>
+        </div>
 
-                <div class="pagination">
-                  <% if (prevPage !== null) { %>
-                    <a href="?page=<%= prevPage %>">&laquo; 이전</a>
-                  <% } %>
-                
-                  <% for (let i = startPage; i <= endPage; i++) { %>
-                    <% if (i === currentPage) { %>
-                      <span class="active"><%= i %></span>
-                    <% } else { %>
-                      <a href="?page=<%= i %>"><%= i %></a>
-                    <% } %>
-                  <% } %>
-                
-                  <% if (nextPage !== null) { %>
-                    <a href="?page=<%= nextPage %>">다음 &raquo;</a>
-                  <% } else { %>
-                    <a href="#" id="disabledNextPage">다음 &raquo;</a>
-                    <script>
-                      document.getElementById("disabledNextPage").addEventListener("click", function(event) {
-                        event.preventDefault();
-                        alert("더 이상 페이지가 없습니다.");
-                      });
-                    </script>
-                  <% } %>
-                </div>
-                
-                
-                
-        </section>
+        <div class="pagination">
+          <% if (prevPage !== null) { %>
+            <a href="?page=<%= prevPage %>">&laquo; 이전</a>
+          <% } %>
+        
+          <% for (let i = startPage; i <= endPage; i++) { %>
+            <% if (i === currentPage) { %>
+              <span class="active"><%= i %></span>
+            <% } else { %>
+              <a href="?page=<%= i %>"><%= i %></a>
+            <% } %>
+          <% } %>
+        
+          <% if (nextPage !== null) { %>
+            <a href="?page=<%= nextPage %>">다음 &raquo;</a>
+          <% } else { %>
+            <a href="#" id="disabledNextPage">다음 &raquo;</a>
+            <script>
+              document.getElementById("disabledNextPage").addEventListener("click", function(event) {
+                event.preventDefault();
+                alert("더 이상 페이지가 없습니다.");
+              });
+            </script>
+          <% } %>
+        </div>
 
-        <!-- footer -->
-        <%- include('partials/footer')%>
+
+
+    </section>
+
+    <!-- footer -->
+    <%- include('partials/footer')%>
 </body>
 
 </html>
