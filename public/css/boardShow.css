@@ -212,3 +212,8 @@ hr {
   background: #161616;
   color: white;
 }
+
+#content img {
+  width: 60%;
+  height: auto;
+}

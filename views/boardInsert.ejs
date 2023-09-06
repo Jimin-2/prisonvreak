@@ -50,6 +50,7 @@
                     <div id="contentForm" class="form">
                         <h4> 첨부파일 </h4>
                         <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*">
+                        <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px;">
                     </div>
 
                     <div id="contentForm" class="form">
@@ -83,7 +84,26 @@
         <!-- footer -->
         <%- include('partials/footer')%>
 
-</body>
+        <script>
+            document.getElementById('post_image').addEventListener('change', function(e) {
+                const imageInput = e.target;
+                const imagePreview = document.getElementById('imagePreview');
+    
+                if (imageInput.files && imageInput.files[0]) {
+                    const reader = new FileReader();
+    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    }
+    
+                    reader.readAsDataURL(imageInput.files[0]);
+                } else {
+                    imagePreview.style.display = 'none';
+                }
+            });
+        </script>
 
+</body>
 
 </html>
