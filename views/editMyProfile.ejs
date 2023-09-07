@@ -72,10 +72,10 @@
                                 <a href="#tab_content_2" class="btn btnFade btnGray">비밀번호 변경</a>
                             </li>
                             <li>
-                                <a href="#tab_content_3" class="btn btnFade btnGray">회원 탈퇴</a>
+                                <a href="#tab_content_3" class="btn btnFade btnGray">프로필 수정</a>
                             </li>
                             <li>
-                                <a href="#tab_content_4" class="btn btnFade btnGray">프로필 수정</a>
+                                <a href="#tab_content_4" class="btn btnFade btnGray">회원 탈퇴</a>
                             </li>
                         </ul>
                         <div class="clear"></div>
@@ -137,27 +137,7 @@
                                 </form>
                             </div>
 
-
                             <div id="tab_content_3" class="cont">
-                                <form action="/auth/withdrawal" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
-                                    <div class="inputBox" >
-                                        <h4> Id </h4>
-                                        <p><%= myProfile.mem_id%></p>
-                                        <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
-                                    </div>
-
-                                    <div class="inputBox">
-                                        <h4>Password </h4>
-                                        <input type="password" name="pwd" id="password" required>
-                                    </div>
-                                    <div class="btn_div">
-                                        <button type="submit" class="submit btnFade btnGray"> 회원 탈퇴 </button>
-                                        <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div id="tab_content_4" class="cont">
                                 <form action="/img/uploadImage" method="post" enctype="multipart/form-data">
                                     <div class="myProfile">
                                         <h4>프로필 이미지</h4>
@@ -191,6 +171,25 @@
                                     </div>
                                 </form>
                             </div>
+
+                            <div id="tab_content_4" class="cont">
+                                <form action="/auth/withdrawal" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
+                                    <div class="inputBox" >
+                                        <h4> Id </h4>
+                                        <p><%= myProfile.mem_id%></p>
+                                        <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                    </div>
+
+                                    <div class="inputBox">
+                                        <h4>Password </h4>
+                                        <input type="password" name="pwd" id="password" required>
+                                    </div>
+                                    <div class="btn_div">
+                                        <button type="submit" class="submit btnFade btnGray"> 회원 탈퇴 </button>
+                                        <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                 </div>
                     <!-- 소셜 회원은 비밀번호 변경 없음 + 탈퇴 시 입력사항 없음 -->
@@ -200,7 +199,10 @@
                                     <a href="#tab_content_1" class="btn btnFade btnGray">개인정보</a>
                                 </li>
                                 <li>
-                                    <a href="#tab_content_2" class="btn btnFade btnGray">회원 탈퇴</a>
+                                    <a href="#tab_content_2" class="btn btnFade btnGray">프로필 수정</a>
+                                </li>
+                                <li>
+                                    <a href="#tab_content_3" class="btn btnFade btnGray">회원 탈퇴</a>
                                 </li>
                             </ul>
 
@@ -239,6 +241,41 @@
                                 </div>
 
                                 <div id="tab_content_2" class="cont">
+                                    <form action="/img/uploadImage" method="post" enctype="multipart/form-data">
+                                        <div class="myProfile">
+                                            <h4>프로필 이미지</h4>
+                                            <img id="profileImagePreview" src="https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/<%= myProfile.mem_id %>.jpg" alt="프로필 이미지" width="200" height="200">
+                                            <input type="file" id="profileImageInput" accept="image/*" name="image">
+                                        </div>
+                                        <script>
+                                            // 파일 선택(input) 요소에 대한 이벤트 핸들러 설정
+                                            document.getElementById('profileImageInput').addEventListener('change', function () {
+                                                // 선택한 파일 가져오기
+                                                const selectedFile = this.files[0];
+
+                                                // 이미지 파일인지 확인
+                                                if (selectedFile && selectedFile.type.startsWith('image/')) {
+                                                    const reader = new FileReader();
+
+                                                    reader.onload = function (e) {
+                                                        // 이미지를 미리보기 이미지에 표시
+                                                        document.getElementById('profileImagePreview').src = e.target.result;
+                                                    };
+
+                                                    // 이미지 파일을 읽기
+                                                    reader.readAsDataURL(selectedFile);
+                                                }
+                                            });
+                                        </script>
+
+                                        <div class="btn_div">
+                                            <button type="submit" class="submit btnFade btnGray"> 수정 </button>
+                                            <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div id="tab_content_3" class="cont">
                                     <form action="/auth/socialWithdrawal" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
                                         <div class="inputBox" >
                                             <h4> Id </h4>
