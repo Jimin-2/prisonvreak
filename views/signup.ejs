@@ -148,10 +148,12 @@
     }
   }
 
-  // 세션 초기화
-  document.getElementById('verificationCodeForm').style.display = 'none';
-  document.getElementById('verificationCode').value = '';
-  document.getElementById('verificationStatus').textContent = '';
+  document.addEventListener('DOMContentLoaded', function() {
+    // 세션 초기화 코드를 이곳에 배치합니다.
+    document.getElementById('verificationCodeForm').style.display = 'none';
+    document.getElementById('verificationCode').value = '';
+    document.getElementById('verificationStatus').textContent = '';
+  });
 </script>
 <head>
   <meta charset="UTF-8">
@@ -183,7 +185,7 @@
   <!-- Section -->
   <section id="section">
     <div id="loginTool">
-      <form action="/auth/register_process" method="post">
+      <form action="/auth/register_process" method="post" onsubmit="return validateForm();">
       <h1> SIGN UP </h1>
 
           <!-- ID -->
