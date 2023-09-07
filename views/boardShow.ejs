@@ -61,7 +61,7 @@
             <div class="comment-relative">
                 <p class="ninkname"> 작성자: <%= comments.cmt_usernum %> </p>
             </div>
-            <div> <%= comments.cmt_content %> </div> <br>
+            <div> ㄴㄴ<%= comments.cmt_content %> </div> <br>
             <% }); %>
             <div id="comment-absolute"> 답글 </div>
         </div>
@@ -75,16 +75,30 @@
         </div>
 
         <hr>
-        <div id="comment-input">
-            <p name="mem_nickname"> 정예은 </p>
-            <textarea id="comment-input-Area" placeholder="댓글을 입력하세요."></textarea>
-            <div class="submit">
-                <p> 0 byte </p>
-                <button class="button btnFade btnBlack"> 등록 </button>
+        <form action="/community/show" method="POST">
+
+            <div id="comment-input">
+                <p name="mem_nickname"> 정예은 </p>
+                <textarea id="comment-input-Area" name="comment" placeholder="댓글을 입력하세요." oninput="calculateByteCount(this)"></textarea>
+                <div class="submit">
+                    <p id="byte-count">0 byte</p>
+                </div>
+                    <button class="button btnFade btnBlack" type="submit"> 등록 </button>
             </div>
-        </div>
-        <a href="/notice">목록</a>
+        </form>
+        <a href="/community">목록</a>
     </div>
+    <script>
+
+        function calculateByteCount(textarea) {
+            const text = textarea.value;
+            const byteCount = new TextEncoder('utf-8').encode(text).length;
+            const byteCountText = `${byteCount} byte`;
+            
+            // 바이트 수 변화
+            document.getElementById('byte-count').textContent = byteCountText;
+        }
+    </script>
 </section>
 </body>
 </html>
