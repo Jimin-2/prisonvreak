@@ -24,6 +24,8 @@
 
 </head>
 <body>
+<!-- header -->
+<%- include('partials/header')%>
 <!-- Section -->
 <section id="section">
     <div id="layout">
@@ -52,6 +54,9 @@
         <div id="content">
             <p>
                 <%= data.post_content %>
+            </p>
+            <p>
+                <img src="<%= data.post_image %>">
             </p>
         </div>
         <hr>
@@ -88,5 +93,7 @@
         <a href="/notice">목록</a>
     </div>
 </section>
+<!-- footer -->
+<%- include('partials/footer')%>
 </body>
 </html>
