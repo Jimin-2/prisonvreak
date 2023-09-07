@@ -257,7 +257,7 @@ const noticeController = {
     const keyword = req.query.keyword;
 
     if (keyword) {
-      postModel.searchKeyword(keyword, (error, results) => {
+      postModel.searchKeyword(keyword, 1, (error, results) => {
         if (error) {
           console.error(error);
           res.status(500).send('Internal Server Error');
