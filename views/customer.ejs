@@ -54,9 +54,9 @@
         <input class="inputBox" type="text" name="phone" placeholder="Your PhoneNumber" required>
       </div>
 
-      <div class="h5">
-        <h5> | 전달 내용 <button id="btnFile"> 첨부파일 </button> </h5>
-      </div>
+      <<div class="h5">
+          <h5> | 전달 내용 <button id="btnFile" type="button" onclick="handleFileButtonClick()"> 첨부파일 </button> </h5>
+        </div>
 
       <div id="contents">
         <textarea class="contentsBox" name="contents" placeholder="Content" required></textarea>
@@ -67,6 +67,21 @@
 
     </div>
   </section>
+  <script>
+    function handleFileButtonClick() {
+      // 파일 선택 버튼 클릭 시 파일 선택 대화상자 열기
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.style.display = 'none'; // 화면에 표시하지 않음
+      fileInput.addEventListener('change', function () {
+        // 파일 선택 이벤트 처리 (이 부분에 파일을 선택했을 때의 동작을 추가)
+        // 예를 들어, 파일 정보를 얻거나 파일 업로드를 처리할 수 있습니다.
+        // 이 부분을 파일 선택 이벤트에 맞게 수정하세요.
+      });
+      document.body.appendChild(fileInput);
+      fileInput.click(); // 파일 선택 대화상자 열기
+    }
+  </script>
 
   <!-- footer -->
   <%- include('partials/footer')%>
