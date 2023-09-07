@@ -93,7 +93,9 @@
 
             <div class="pagination">
                 <% if (prevPage !== null) { %>
-                  <a href="?page=<%= prevPage %>">&laquo; 이전</a>
+                  <a href="?page=<%= Math.max(1, prevPage) %>">&laquo; 이전</a>
+                <% } else { %>
+                  <span class="disabled">&laquo; 이전</span>
                 <% } %>
               
                 <% for (let i = startPage; i <= endPage; i++) { %>
@@ -116,6 +118,8 @@
                   </script>
                 <% } %>
               </div>
+              
+              
         </section>
 
         <!-- footer -->
