@@ -5,6 +5,6 @@ const { upload } = require('../modules/multer');
 
 // 라우트 설정
 router.post('/uploadImage', upload.single('image'), imageController.uploadImage);
-router.delete('/deleteImage', imageController.deleteImage);
+router.delete('/deleteProfileImage', imageController.deleteProfileImage);
 
 module.exports = router;

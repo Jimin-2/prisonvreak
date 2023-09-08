@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const s3AccessKey = require("../config/s3");
+const fs = require("fs");
 const BUCKET_NAME = process.env.BUCKET_NAME;
 const { accessKeyId, secretAccessKey, region } = s3AccessKey;
 
@@ -70,6 +71,28 @@ exports.uploadImage = (req, res) => {
 
 };
 
+exports.deleteProfileImage = (req,res) => {
+    const userId = req.session.user_id; // 사용자의 아이디
+    const userImageKey =  `profile/${userId}.jpg`; // S3에 저장될 파일 이름
+    const params = {
+        Bucket:BUCKET_NAME, // S3 버킷 이름
+        Key: userImageKey,
+        Body: fs.createReadStream('public/img/profile_default.jpg'), // 로컬 이미지 파일 경로
+        ACL: 'public-read', // 이미지를 공개로 설정합니다.
+    };
+
+    s3.upload(params, (err, data) => {
+        if (err) {
+            console.error('S3 업로드 오류:', err);
+        } else {
+            console.log('S3 업로드 성공:', data.Location);
+            res.status(200).json({ message: '프로필 이미지가 삭제되었습니다.' });
+
+        }
+    });
+
+};
+/*
 exports.deleteImage = (req, res) => {
     const { imageName } = req.body;
     const imageArray = imageName.split("/");
@@ -94,4 +117,4 @@ exports.deleteImage = (req, res) => {
             });
         }
     });
-};
+};*/
