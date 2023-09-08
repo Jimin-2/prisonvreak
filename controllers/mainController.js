@@ -1,8 +1,6 @@
-/*
 const path = require('path');
 
-exports.customer = function (req, res) {
-    res.render('gameinfo')
+exports.gamepage = function (req, res) {
+    res.render('game')
 };
 
-*/
