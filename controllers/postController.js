@@ -156,19 +156,22 @@ const boardController = {
   addComment: (req, res) => {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const postNum = req.params.post_num;
+    const post_num = req.body.post_num;
+    const cmt_usernum = 7;
     commentModel.insertComments(
-      postNum,
+      post_num,
       body.cmt_content,
-      body.cmt_usernum,
+      cmt_usernum,
       koreanTime,
       () => {
-        console.log(postNum);
-        res.send('<script>alert("댓글 등록 완료"); history.back();</script>');
+        res.send(` <script>
+          alert("댓글 등록이 완료되었습니다.");
+          history.back();
+        </script>`);
       }
     );
   },
-};
+}
 
 const noticeController = {
   calculatePagination: (currentPage, totalPages) => {
