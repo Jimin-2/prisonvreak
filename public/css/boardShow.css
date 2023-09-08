@@ -54,19 +54,19 @@ hr {
 }
 
 /* 제목 */
-#detail {
+#title {
   width: 900px;
   height: 60px;
 
   margin-bottom: 30px;
 }
 
-#detail h1 {
+#title h1 {
   font-size: 1.5em;
   color: #161616;
 }
 
-#detail h4 {
+#title h4 {
   font-size: 0.8em;
   color: gray;
 
@@ -211,9 +211,4 @@ hr {
 .btnFade.btnBlack:hover {
   background: #161616;
   color: white;
-}
-
-#content img {
-  width: 60%;
-  height: auto;
 }
