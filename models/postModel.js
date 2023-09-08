@@ -86,9 +86,9 @@ const postModel = {
     })
   },
 
-  searchKeyword: (keyword, callback) => { // 게시판 검색기능
+  searchKeyword: (keyword, post_usernum, callback) => { // 검색 기능
     const searchKeyword = `%${keyword}%`;
-    db.query('SELECT * FROM post WHERE post_title LIKE ?', [searchKeyword], (error, results) => {
+    db.query('SELECT * FROM post WHERE post_title LIKE ? AND post_usernum = ?', [searchKeyword, post_usernum], (error, results) => {
       if (error) {
         console.error(error);
         callback(error, null);
