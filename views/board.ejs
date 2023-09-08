@@ -2,128 +2,136 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!--글꼴 Link-->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
-    <!--CSS-->
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/board.css">
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/board.css">
 
-    <!-- JavaScript -->
-    <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <script src="/javascript/board.js"></script>
 
-    <!-- icon -->
-    <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Title-->
-    <title> CAN </title>
+  <!-- icon -->
+  <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+
+  <!--Title-->
+  <title> CAN </title>
 
 </head>
 
 <body>
 
-    <!-- header -->
-    <%- include('partials/header')%>
+  <!-- header -->
+  <%- include('partials/header')%>
 
-        <section>
+    <section>
 
-            <!-- 커뮤니티 로고 -->
-            <div class="board-logo">
-                <img src="/img/cmLogo.png">
-            </div>
+      <!-- 커뮤니티 로고 -->
+      <div class="board-logo">
+        <img src="/img/cmLogo.png">
+      </div>
 
-            <!-- 글쓰기 버튼 -->
-            <div class="write-button">
-                <form action="/community/insert" method="GET">
-                    <button type="submit">글쓰기</button>
-                </form>
-            </div>
+      <!-- 글쓰기 버튼 -->
+      <div class="write-button">
+        <form action="/community/insert" method="GET">
+          <button type="submit">글쓰기</button>
+        </form>
+      </div>
 
-            <!-- 보드board -->
-            <div class="board-section">
-                <div class="board" class="effect8">
-                    <table class="table-template">
-                        <thead>
-                            <tr>
-                                <!-- <th>번호</th> -->
-                                <th>제목</th>
-                                <th>글쓴이</th>
-                                <th>추천</th>
-                                <th>날짜</th>
-                                <th>조회수</th>
-                            </tr>
-                        </thead>
+      <!-- 보드board -->
+      <div class="board-section">
+        <div class="board" class="effect8">
+          <table class="table-template">
+            <thead>
+              <tr>
+                <!-- <th>번호</th> -->
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th>추천</th>
+                <th>날짜</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
 
-                        <tbody>
-                            <% data.sort((a, b) => b.post_num - a.post_num).forEach(function(post) { %>
-                                <tr>
-                                    <!-- 번호 임시 삭게 -->
-                                    <!-- <td>
+            <tbody>
+              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function(post) { %>
+                <tr>
+                  <!-- 번호 임시 삭게 -->
+                  <!-- <td>
                                         <%= post.post_num %>
                                     </td> -->
-                                   
-                                    <td><a href="/community/show/<%= post.post_num %>">
-                                            <%= post.post_title %>
-                                        </a></td>
-                                    <td>
-                                        <i class="fa-solid fa-user"></i><%= post.post_usernum %>
-                                    </td>
-                                    <td>
-                                        <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
-                                    </td>
-                                    <td>
-                                        <i class="fa-solid fa-calendar"></i><%= post.formattedCreatedAt %>
-                                    </td>
-                                    <td>
-                                        <!-- <i class="fa-solid fa-users"></i><%= post.post_hit %> -->
-                                        <%= post.post_num %>
-                                    </td>
-                                </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
-            <div class="pagination">
-                <% if (prevPage !== null) { %>
-                  <a href="?page=<%= Math.max(1, prevPage) %>">&laquo; 이전</a>
-                <% } else { %>
-                  <span class="disabled">&laquo; 이전</span>
-                <% } %>
-              
-                <% for (let i = startPage; i <= endPage; i++) { %>
-                  <% if (i === currentPage) { %>
-                    <span class="active"><%= i %></span>
+                  <td><a href="/community/show/<%= post.post_num %>">
+                      <%= post.post_title %>
+                    </a></td>
+                  <td>
+                    <i class="fa-solid fa-user"></i>
+                    <%= post.post_usernum %>
+                  </td>
+                  <td>
+                    <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
+                  </td>
+                  <td>
+                    <i class="fa-solid fa-calendar"></i>
+                    <%= post.formattedCreatedAt %>
+                  </td>
+                  <td>
+                    <!-- <i class="fa-solid fa-users"></i><%= post.post_hit %> -->
+                    <%= post.post_num %>
+                  </td>
+                </tr>
+                <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <% if (prevPage !==null) { %>
+          <a href="?page=<%= Math.max(1, prevPage) %>">&laquo; 이전</a>
+          <% } else { %>
+            <span class="disabled">&laquo; 이전</span>
+            <% } %>
+
+              <% for (let i=startPage; i <=endPage; i++) { %>
+                <% if (i===currentPage) { %>
+                  <span class="active">
+                    <%= i %>
+                  </span>
                   <% } else { %>
-                    <a href="?page=<%= i %>"><%= i %></a>
-                  <% } %>
-                <% } %>
-              
-                <% if (nextPage !== null) { %>
-                  <a href="?page=<%= nextPage %>">다음 &raquo;</a>
-                <% } else { %>
-                  <a href="#" id="disabledNextPage">다음 &raquo;</a>
-                  <script>
-                    document.getElementById("disabledNextPage").addEventListener("click", function(event) {
-                      event.preventDefault();
-                      alert("더 이상 페이지가 없습니다.");
-                    });
-                  </script>
-                <% } %>
-              </div>
-              
-              
-        </section>
+                    <a href="?page=<%= i %>">
+                      <%= i %>
+                    </a>
+                    <% } %>
+                      <% } %>
 
-        <!-- footer -->
-        <%- include('partials/footer')%>
+                        <% if (nextPage !==null) { %>
+                          <a href="?page=<%= nextPage %>">다음 &raquo;</a>
+                          <% } else { %>
+                            <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                            <script>
+                              document.getElementById("disabledNextPage").addEventListener("click", function (event) {
+                                event.preventDefault();
+                                alert("더 이상 페이지가 없습니다.");
+                              });
+                            </script>
+                            <% } %>
+      </div>
+
+
+    </section>
+
+    <!-- footer -->
+    <%- include('partials/footer')%>
 
 </body>
 
