@@ -1,158 +1,209 @@
 #section {
-  width: 100%;
+    width: 100%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-#container {
-  display: grid;
+/*#container {
+    display: grid;
 
-  width: 1500px;
+    width: 1500px;
 
-	grid-template-columns: 55% 45%;
-	grid-template-rows: 580px 310px;
+    grid-template-columns: 55% 45%;
+    grid-template-rows: 580px 310px;
+}*/
+
+
+/* 탭메뉴 버튼 */
+.tab_menu {
+    display:table;
+    table-layout:fixed;
+    width: 100%;
+}
+.tab_menu li{
+
+    display:table-cell;
+    padding:20px 0;
+    cursor:pointer;
+    width: 180px;
+    margin: 0;}
+
+.tab_menu li+li{
+    border-left:none
 }
 
-.item1 {
-  grid-row-start: 1;
+/* 탭메뉴 컨텐츠 */
+.tab_content li{display:none;min-height:300px}
+.tab_content li.on{display:block}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  margin-top: 60px;
+#container{
+    position: relative;
+    width:100%;
+    height: 75%;
+    display: block;
+}
+#playManual{
+    width: 720px;
+    display: inline-block;
+    margin-left: 10px;
+    float: right;
+    min-height: 800px;
+}
+#wrap{
+    min-width: 1700px;
 }
 
-.item1 img {
-  width: 754px;
+#content{
+    position: relative;
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 100px 30px;
+    min-height: 1080px;
+}
+#cctv_btn{
+    display: inline-block;
+    width: 50%;
+    margin-top: 300px;
+    float: left;
+}
+#cctv_btn ul{
+    padding: 0;
+    text-align: center;
+}
+#cctv_btn li{
+    display: inline-block;
+    min-width: 130px;
+}
+.cctv_btn {
+    width: 70%;
+    height: 60px;
+
+    margin: 0;
+}
+#both{
+    clear: both;
+}
+#playerField{
+    position: relative;
+    display: inline-block;
+    width: 50%;
+    height: 0;
+    padding-bottom: 30%;
+    float: left;
+}
+#player {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: #323232;
+    margin-top: 250px;
+
 }
 
-.item2 {
-  grid-row-start: 1;
-  grid-row-end: 3;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  margin-top: 60px;
-
-  position: relative;
+#player:before {
+    content: "";
+    display: block;
+    padding-top: 66%;
 }
 
-.item2 img {
-  width: 663px;
+#playButton {
+    width: 15%;
+    max-width: 200px;
+    cursor: pointer;
 }
 
-.item3 {
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.item3 img {
-  width: 754px;
-}
-
-.item3 #mapBtn {
-  position: absolute;
-}
-
-.item3 #mapBtn button {
-  width: 40px;
-}
-
-#btn01 {
-  transform: translate(-50%, -100%);
-}
-
-#btn02 {
-  transform: translate(0%, 180%);
-}
-
-#btn03 {
-  transform: translate(50%, -180%);
+#Video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 
 /* Wapasha */
 a:hover,
 a:focus {
-  color: #2b2b2b;
+    color: #2b2b2b;
 }
-
+.button:active { /*Clicked and held*/
+    box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
+}
 .button.button--wapasha {
-  background: #2b2b2b;
-  color: #fff;
-  -webkit-transition: background-color 0.3s, color 0.3s;
-  transition: background-color 0.3s, color 0.3s;
+    background: #2b2b2b;
+    color: #fff;
+    -webkit-transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
+
+
 }
 .button--wapasha.button--inverted {
-  background: #fff;
-  color: #37474f;
+    background: #fff;
+    color: #37474f;
 }
 .button--wapasha::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 2px solid #505050;
-  z-index: -1;
-  border-radius: inherit;
-  opacity: 0;
-  -webkit-transform: scale3d(0.6, 0.6, 1);
-  transform: scale3d(0.6, 0.6, 1);
-  -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
-  transition: transform 0.3s, opacity 0.3s;
-  -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-  transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #505050;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    -webkit-transform: scale3d(0.6, 0.6, 1);
+    transform: scale3d(0.6, 0.6, 1);
+    -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+    transition: transform 0.3s, opacity 0.3s;
+    -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
+    transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
 }
 .button--wapasha.button--inverted::before {
-  border-color: #cdcdcd;
+    border-color: #cdcdcd;
 }
 .button--wapasha:hover {
-  background-color: #fff;
-  color: #2b2b2b;
+    background-color: #fff;
+    color: #2b2b2b;
 }
 .button--wapasha.button--inverted:hover {
-  background-color: #505050;
-  color: #525252;
+    background-color: #505050;
+    color: #525252;
 }
 .button--wapasha:hover::before {
-  -webkit-transform: scale3d(1, 1, 1);
-  transform: scale3d(1, 1, 1);
-  opacity: 1;
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+    opacity: 1;
 }
 
 .button {
-  float: left;
-  min-width: 150px;
-  max-width: 250px;
-  display: block;
-  margin: 1em;
-  padding: 1em 2em;
-  border: none;
-  background: none;
-  color: inherit;
-  vertical-align: middle;
-  position: relative;
-  z-index: 1;
-  -webkit-backface-visibility: hidden;
-  -moz-osx-font-smoothing: grayscale;
+    float: left;
+    min-width: 145px;
+    max-width: 250px;
+    display: block;
+    padding: 1em 2em;
+    border: none;
+    background: none;
+    color: inherit;
+    vertical-align: middle;
+    position: relative;
+    z-index: 1;
+    -webkit-backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
 }
 .button:focus {
-  outline: none;
+    outline: none;
 }
 .button > span {
-  vertical-align: middle;
+    vertical-align: middle;
 }
+
