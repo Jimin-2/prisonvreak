@@ -121,7 +121,6 @@ const commentModel = {
   },
 
   insertComments: (post_num, cmt_content, cmt_usernum, cmt_created_at, callback) => {
-
     db.query(
       'INSERT INTO comment (post_num, cmt_content, cmt_usernum, cmt_created_at) VALUES (?, ?, ?, ?)',
       [post_num, cmt_content, cmt_usernum, cmt_created_at],
@@ -129,7 +128,6 @@ const commentModel = {
         callback();
       }
     );
-
   },
 
 }

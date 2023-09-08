@@ -18,7 +18,7 @@ exports.loginProcess = function (id, password, callback) {
       callback(error, null);
     } else {
 
-      console.log(results);
+      //console.log(results);
       callback(null, results);
     }
   });
