@@ -141,7 +141,7 @@
                                 <form action="/img/uploadImage" method="post" enctype="multipart/form-data">
                                     <div class="myProfile">
                                         <h4>프로필 이미지</h4>
-                                        <img id="profileImagePreview" src="https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/<%= myProfile.mem_id %>.jpg" alt="프로필 이미지" width="200" height="200">
+                                        <img id="profileImagePreview" src="<%= myProfile.mem_profile %>" alt="프로필 이미지" width="200" height="200">
                                         <input type="file" id="profileImageInput" accept="image/*" name="image">
                                     </div>
                                     <script>
