@@ -28,26 +28,26 @@ exports.loginProcess = function (id, password, callback) {
 exports.registerUserWithKakao = function (name, nickname, kakaoUserId, phone, email, callback) {
   const defaultProfileImageUrl = 'https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg'; // S3 기본 이미지 URL
   db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider,mem_profile) VALUES (?, ?, ?, ?, ?, "kakao",?)',
-    [name, nickname, kakaoUserId, phone, email, defaultProfileImageUrl], function (error, data) {
-      if (error) {
-        callback(error, null);
-      } else {
-        callback(null, data);
-      }
-    });
+      [name, nickname, kakaoUserId, phone, email, defaultProfileImageUrl], function (error, data) {
+        if (error) {
+          callback(error, null);
+        } else {
+          callback(null, data);
+        }
+      });
 };
 
 // 회원가입 처리 - 구글 로그인으로 가입
 exports.registerUserWithGoogle = function (name, nickname, googleUserId, phone, email, callback) {
   const defaultProfileImageUrl = 'https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg'; // S3 기본 이미지 URL
   db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider, mem_profile) VALUES (?, ?, ?, ?, ?, "google",?)',
-    [name, nickname, googleUserId, phone, email, defaultProfileImageUrl], function (error, data) {
-      if (error) {
-        callback(error, null);
-      } else {
-        callback(null, data);
-      }
-    });
+      [name, nickname, googleUserId, phone, email, defaultProfileImageUrl], function (error, data) {
+        if (error) {
+          callback(error, null);
+        } else {
+          callback(null, data);
+        }
+      });
 };
 
 // 회원가입 처리 - 일반 가입

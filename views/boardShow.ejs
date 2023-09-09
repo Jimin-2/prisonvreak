@@ -27,20 +27,7 @@
 <body>
 <!-- header -->
 <%- include('partials/header')%>
-<!-- Section -->
-<section id="section">
-    <div id="layout">
-        <div id="next-list-button">
-            <button> 다음글 </button>
-            <button onclick="location.href='/community'"> 목록 </button>
-        </div>
-        <div id="title">
-            <h4> > 공지사항 </h4>
-            <h1> <%= data.post_title %> </h1>
-        </div>
 
-
-<body>
     <!-- Section -->
     <section id="section">
         <div id="layout">
@@ -76,7 +63,7 @@
                 <div class="profile"></div>
                 <div>
 
-                    <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %>
+                    <p class="ninkname" name="mem_nickname">이름:dd <%= data.post_usernum %>
                     </p>
                     <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %>
                     </p>
@@ -104,6 +91,7 @@
                     <div class="comment-relative">
                         <p class="ninkname"> 작성자: <%= comments.cmt_usernum %>
                         </p>
+                        <a class=date><%= comments.cmt_created_at %></a>
                     </div>
                     <div> ㄴㄴ<%= comments.cmt_content %>
                     </div> <br>

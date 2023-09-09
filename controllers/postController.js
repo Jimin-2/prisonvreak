@@ -6,14 +6,12 @@ const { postModel, commentModel } = require('../models/postModel');
 
 // 컨트롤러 함수
 const boardController = {
-
-
   showInsertForm: (req, res) => {
     // 로그인 확인
     const isLoggedIn = req.session.nickname !== undefined; // 세션 사용자 정보 확인
     if (!isLoggedIn) { // 로그인 X
       // alert 메시지 이후, 이전 페이지 돌아가기
-      console.log(req.session.user)
+      console.log(req.session.user);
       return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
     }
     // 로그인시
@@ -41,7 +39,6 @@ const boardController = {
               return;
             }
             res.render('boardShow', { data: result, comments: comments });
-            console.log(comments)
           });
         }
       });
@@ -109,7 +106,6 @@ const boardController = {
   insertPost: (req, res) => {
     const userId = req.session.user_id;
     const body = req.body;
-    console.log(body);
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const imageUrl = req.file ? req.file.location : null;
     postModel.getMemNumByMemId(userId, (error, memnum) => {
@@ -154,23 +150,40 @@ const boardController = {
   },
 
   addComment: (req, res) => {
+    console.log(req.session.user_id);
+    const isLoggedIn = req.session.user_id !== undefined;
+    const mem_id = req.session.user_id;
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const post_num = req.body.post_num;
-    const cmt_usernum = 7;
-    commentModel.insertComments(
-      post_num,
-      body.cmt_content,
-      cmt_usernum,
-      koreanTime,
-      () => {
-        res.send(` <script>
-          alert("댓글 등록이 완료되었습니다.");
-          history.back();
-        </script>`);
-      }
-    );
-  },
+    if (!isLoggedIn) {
+      return res.send('<script>alert("로그인 후 댓글 등록이 가능합니다."); window.location.href = "/auth/login";</script>');
+    }
+    else {
+      postModel.getMemNumByMemId(mem_id, (error, userNum) => {
+        if (error) {
+          console.error(error);
+        } else {
+          console.log(userNum);
+          commentModel.insertComments(
+            post_num,
+            body.cmt_content,
+            userNum,
+            koreanTime,
+            () => {
+              res.send(`<script>
+              var mem_id = "${mem_id}";
+              alert("댓글 등록이 완료되었습니다.");
+              window.location.href = "/community/show/${post_num}";
+            </script>`);
+            }
+          );
+
+        }
+      });
+    };
+},
+
 }
 
 const noticeController = {
