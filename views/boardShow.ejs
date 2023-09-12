@@ -25,9 +25,6 @@
 </head>
 
 <body>
-<!-- header -->
-<%- include('partials/header')%>
-
     <!-- Section -->
     <section id="section">
         <div id="layout">
@@ -42,28 +39,11 @@
                 </h1>
             </div>
 
-        </div>
-
-        <hr>
-
-        <div id="content">
-            <p>
-                <%= data.post_content %>
-            </p>
-            <p>
-                <img src="<%= data.post_image %>">
-            </p>
-        </div>
-        <hr>
-
-        <div id="comment">
-            <h2> 댓글 </h2>
-
             <div id="detail">
                 <div class="profile"></div>
                 <div>
 
-                    <p class="ninkname" name="mem_nickname">이름:dd <%= data.post_usernum %>
+                    <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %>
                     </p>
                     <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %>
                     </p>
@@ -133,20 +113,8 @@
             }
         </script>
 
-        <div id="comment-input">
-            <p name="mem_nickname"> 정예은 </p>
-            <textarea id="comment-input-Area" placeholder="댓글을 입력하세요."></textarea>
-            <div class="submit">
-                <p> 0 byte </p>
-                <button class="button btnFade btnBlack"> 등록 </button>
-            </div>
-        </div>
-        <a href="/notice">목록</a>
-    </div>
-</section>
-<!-- footer -->
-<%- include('partials/footer')%>
 
+    </section>
 </body>
 
 </html>
