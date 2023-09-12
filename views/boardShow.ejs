@@ -25,22 +25,6 @@
 </head>
 
 <body>
-<!-- header -->
-<%- include('partials/header')%>
-<!-- Section -->
-<section id="section">
-    <div id="layout">
-        <div id="next-list-button">
-            <button> 다음글 </button>
-            <button onclick="location.href='/community'"> 목록 </button>
-        </div>
-        <div id="title">
-            <h4> > 공지사항 </h4>
-            <h1> <%= data.post_title %> </h1>
-        </div>
-
-
-<body>
     <!-- Section -->
     <section id="section">
         <div id="layout">
@@ -54,23 +38,6 @@
                     <%= data.post_title %>
                 </h1>
             </div>
-
-        </div>
-
-        <hr>
-
-        <div id="content">
-            <p>
-                <%= data.post_content %>
-            </p>
-            <p>
-                <img src="<%= data.post_image %>">
-            </p>
-        </div>
-        <hr>
-
-        <div id="comment">
-            <h2> 댓글 </h2>
 
             <div id="detail">
                 <div class="profile"></div>
@@ -146,20 +113,8 @@
             }
         </script>
 
-        <div id="comment-input">
-            <p name="mem_nickname"> 정예은 </p>
-            <textarea id="comment-input-Area" placeholder="댓글을 입력하세요."></textarea>
-            <div class="submit">
-                <p> 0 byte </p>
-                <button class="button btnFade btnBlack"> 등록 </button>
-            </div>
-        </div>
-        <a href="/notice">목록</a>
-    </div>
-</section>
-<!-- footer -->
-<%- include('partials/footer')%>
 
+    </section>
 </body>
 
 </html>
