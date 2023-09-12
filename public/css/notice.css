@@ -80,7 +80,7 @@ section {
 
 #thirdSectionBox {
   width: 80%;
-  height: 800px;
+  height: 650px;
 
   box-shadow: 10px 10px 20px black;
   background-color: white;
@@ -120,32 +120,7 @@ section {
   color: black;
 }
 
-#secondBoxSection {
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-#moreBox {
-  position: absolute;
-
-  width: 70%;
-  height: 60px;
-
-  margin-top: 280px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  background-color: #161616;
-}
-
-.page-numbering {
+.pagination {
   width: auto;
   height: auto;
 

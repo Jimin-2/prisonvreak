@@ -31,16 +31,16 @@
   <section id="section">
     <div id="layout">
 
-      <div id="first">
+      <div id="next-list-button">
         <button> 다음글 </button>
         <button onclick="location.href='/notice'"> 목록 </button>
       </div>
-      <div id="second">
+      <div id="title">
         <h4> > 공지사항 </h4>
         <h1> <%= data.post_title %> </h1>
       </div>
 
-      <div id="third">
+      <div id="detail">
         <div class="profile"></div>
         <div>
 
@@ -53,7 +53,7 @@
 
       <hr>
 
-      <div id="fourth">
+      <div id="content">
         <p>
           <%= data.post_content %>
         </p>
@@ -63,19 +63,19 @@
       </div>
       <hr>
 
-      <div id="fifth">
+      <div id="comment">
         <h2> 댓글 </h2>
 
-        <div class="fifthFifth">
+        <div class="comment-relative">
           <p class="ninkname"> 작성자: <%= data.post_num %> </p>
         </div>
         <div> 댓글! </div>
 
-        <div id="fifthFifthComment"> 답글 </div>
+        <div id="comment-absolute"> 답글 </div>
       </div>
 
-      <div id="fifthComment">
-        <div class="fifthFifth">
+      <div id="comment-01">
+        <div class="comment-relative">
           <p class="ninkname"> 정예은 </p>
           <p><a class=date> 2023/07/27 PM 03:14</a></p>
         </div>
@@ -84,9 +84,9 @@
 
       <hr>
 
-      <div id="sixth">
+      <div id="comment-input">
         <p name="mem_nickname"> 정예은 </p>
-        <textarea id="commentArea" placeholder="댓글을 입력하세요."></textarea>
+        <textarea id="comment-input-Area" placeholder="댓글을 입력하세요."></textarea>
         <div class="submit">
           <p> 0 byte </p>
           <button class="button btnFade btnBlack"> 등록 </button>

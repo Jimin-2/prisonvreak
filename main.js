@@ -7,6 +7,7 @@ const passport = require('./config/passport');
 const authRouter = require('./routes/auth');
 const postRouter = require('./routes/post');
 const imageRouter = require('./routes/img');
+const mainRouter = require('./routes/main');
 
 const app = express();
 const port = 8080;
@@ -16,6 +17,7 @@ app.set('view engine', 'ejs');
 
 app.set("views", './views');
 app.use(express.static(`public`));
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,7 +59,7 @@ app.get('/',(req,res) => {
 app.use('/auth', authRouter);
 app.use('/img',imageRouter);
 app.use('/', postRouter); // 게시판
-app.use('/community', postRouter); // 사진을 s3로
+app.use('/', mainRouter);
 
 // 메인 페이지
 /*app.get('/main', (req, res) => {
@@ -74,7 +76,7 @@ app.use('/community', postRouter); // 사진을 s3로
     `;
     res.send(html);
 });*/
-
+app.use('/module', express.static('src'));
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
