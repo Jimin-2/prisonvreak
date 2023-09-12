@@ -34,22 +34,6 @@ exports.register_process = function (req, res) {
             res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
       document.location.href="/";</script>`);
 
-            // 기본 이미지를 S3에 업로드하고 사용자의 프로필 이미지로 설정합니다.
-            const userImageKey =  `profile/${id}.jpg`; // S3에 저장될 파일 이름
-            const params = {
-                Bucket:BUCKET_NAME, // S3 버킷 이름
-                Key: userImageKey,
-                Body: fs.createReadStream('public/img/profile_default.jpg'), // 로컬 이미지 파일 경로
-                ACL: 'public-read', // 이미지를 공개로 설정합니다.
-            };
-
-            s3.upload(params, (err, data) => {
-                if (err) {
-                    console.error('S3 업로드 오류:', err);
-                } else {
-                    console.log('S3 업로드 성공:', data.Location);
-                }
-            });
         });
     } else {
         res.send(`<script type="text/javascript">alert("입력되지 않은 정보가 있습니다.");
@@ -704,3 +688,4 @@ exports.socialWithdrawal = function (req, res) {
            window.close();</script>`);
     });
 }
+
