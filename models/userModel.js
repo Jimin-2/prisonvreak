@@ -10,6 +10,15 @@ exports.checkIdAvailability = function (id,callback){
   });
 };
 
+exports.checkNicknameAvailability = function (id,callback){
+  db.query('SELECT * FROM member WHERE mem_nickname = ?', [id], function(error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
 
 // 아이디와 비밀번호로 사용자 정보 조회
 exports.loginProcess = function (id, password, callback) {
