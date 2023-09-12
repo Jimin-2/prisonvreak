@@ -5,18 +5,6 @@ const path = require('path'); // 예를 들어, path 모듈을 사용하려면 �
 const nodemailer = require('nodemailer');
 const authCheckMiddleware = require('../middleware/authCheck');
 
-const fs = require('fs');
-const AWS = require('aws-sdk');
-const s3AccessKey = require("../config/s3");
-const BUCKET_NAME = process.env.BUCKET_NAME;
-const { accessKeyId, secretAccessKey, region } = s3AccessKey;
-
-const s3 = new AWS.S3({
-    accessKeyId: accessKeyId,
-    secretAccessKey: secretAccessKey,
-    region: region
-});
-
 // 회원가입 프로세스
 exports.register_process = function (req, res) {
     const name = req.body.name;
@@ -256,6 +244,23 @@ exports.check_id_availability = function (req, res) {
         };
 
         console.log('아이디 사용 가능 여부:', availability.available);
+        res.json(availability);
+    });
+};
+
+// 닉네임 중복 확인
+exports.check_nickname_availability = function (req, res) {
+    const nickname = req.body.nickname;
+    console.log('닉네임 사용 가능 여부 확인:', nickname);
+
+    userModel.checkNicknameAvailability(nickname,function (error,results) {
+        if (error) throw error;
+
+        var availability = {
+            available: results.length === 0
+        };
+
+        console.log('닉네임 사용 가능 여부:', availability.available);
         res.json(availability);
     });
 };

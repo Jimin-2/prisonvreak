@@ -26,6 +26,31 @@
               console.error('Error:', error);
             });
   }
+  function checkNicknameAvailability() {
+    var nickname = document.getElementById('nickname').value;
+    var availabilitySpan = document.getElementById('nicknameAvailability');
+
+    fetch('/auth/check_nickname_availability', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ nickname: nickname })
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.available) {
+                availabilitySpan.textContent = '사용 가능한 닉네임입니다.';
+                availabilitySpan.style.color = 'green';
+              } else {
+                availabilitySpan.textContent = '이미 사용 중인 닉네임입니다.';
+                availabilitySpan.style.color = 'red';
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  }
 
   function checkPasswordMatch() {
     var password = document.getElementById('password').value;
@@ -133,8 +158,12 @@
     var idAvailability = document.getElementById('idAvailability').textContent;
     var passwordMatch = document.getElementById('passwordMatch').textContent;
     var verificationStatus = document.getElementById('verificationStatus').textContent;
+    var nicknameAvailability = document.getElementById('nicknameAvailability').textContent;
 
-    if (idAvailability !== '사용 가능한 아이디입니다.') {
+    if (nicknameAvailability !== '사용 가능한 닉네임입니다.') {
+      alert('닉네임 중복확인을 해주세요.');
+      return false;
+    } else if (idAvailability !== '사용 가능한 아이디입니다.') {
       alert('아이디 중복확인을 해주세요.');
       return false;
     } else if (passwordMatch !== '비밀번호가 일치합니다.') {
@@ -194,10 +223,12 @@
           <input type="text" name="name"  required>
         </div>
 
-        <div class="inputBox" >
+        <div class="inputBox" id="divnickname">
           <p> Nickname </p>
-          <input type="text" name="nickname"  required>
+          <input type="text" name="nickname" id="nickname" required>
+          <button type="button" onclick="checkNicknameAvailability()"> 중복 확인 </button>
         </div>
+        <span id="nicknameAvailability"></span>
 
         <div class="inputBox" id="divid">
           <p> ID </p>

@@ -36,6 +36,9 @@ router.get('/signupsocial', authController.socialregister);
 // 아이디 중복 확인
 router.post('/check_id_availability', authController.check_id_availability);
 
+// 닉네임 중복 확인
+router.post('/check_nickname_availability', authController.check_nickname_availability);
+
 // 이메일 인증 코드 전송
 router.post('/send_verification_email', authController.send_verification_email);
 
