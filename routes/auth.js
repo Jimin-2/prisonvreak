@@ -40,7 +40,7 @@ router.post('/check_id_availability', authController.check_id_availability);
 router.post('/check_nickname_availability', authController.check_nickname_availability);
 
 // 이메일 인증 코드 전송
-router.post('/send_verification_email', authController.send_verification_email);
+router.post('/send_verification_email', authController.sendVerificationEmail);
 
 // 인증 코드 확인
 router.post('/verify_code', authController.verify_code);

@@ -317,42 +317,57 @@ exports.customer = function (req, res) {
 };
 
 // 이메일 인증 코드 전송
-exports.send_verification_email = function (req, res) {
+exports.sendVerificationEmail = function (req, res) {
     const email = req.body.email;
 
-    console.log('Sending verification email to:', email);
-
-    // 무작위 인증 코드 생성 (6자리 숫자)
-    var verificationCode = generateVerificationCode();
-
-    // 이메일과 인증 코드를 세션에 저장
-    req.session.verificationCode = verificationCode;
-
-    // Nodemailer를 사용하여 이메일 전송
-    var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'prisonvreakcan@gmail.com',
-            pass: process.env.EMAIL_PASS
-        }
-    });
-
-    var mailOptions = {
-        from: 'prisonvreakcan@gmail.com',
-        to: email,
-        subject: '이메일 인증 번호',
-        text: '인증 번호는 다음과 같습니다: ' + verificationCode
-    };
-
-    transporter.sendMail(mailOptions, function(error, info){
+    // 이메일 중복 확인
+    userModel.checkEmailAvailability(email, function (error, results) {
         if (error) {
-            console.error('이메일 전송 오류:', error);
+            console.error('데이터베이스 오류:', error);
             res.status(500).send();
         } else {
-            console.log('이메일 전송 성공:', info.response);
-            res.status(200).send();
+            if (results.length > 0) {
+                // 중복된 이메일인 경우
+                res.status(400).json({ message: '중복된 이메일입니다.' });
+            } else {
+                // 중복되지 않은 경우, 이메일 전송 로직 수행
+                console.log('Sending verification email to:', email);
+
+                // 무작위 인증 코드 생성 (6자리 숫자)
+                var verificationCode = generateVerificationCode();
+
+                // 이메일과 인증 코드를 세션에 저장
+                req.session.verificationCode = verificationCode;
+
+                // Nodemailer를 사용하여 이메일 전송
+                var transporter = nodemailer.createTransport({
+                    service: 'Gmail',
+                    auth: {
+                        user: 'prisonvreakcan@gmail.com',
+                        pass: process.env.EMAIL_PASS
+                    }
+                });
+
+                var mailOptions = {
+                    from: 'prisonvreakcan@gmail.com',
+                    to: email,
+                    subject: '이메일 인증 번호',
+                    text: '인증 번호는 다음과 같습니다: ' + verificationCode
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.error('이메일 전송 오류:', error);
+                        res.status(500).send();
+                    } else {
+                        console.log('이메일 전송 성공:', info.response);
+                        res.status(200).send();
+                    }
+                });
+            }
         }
     });
+
     // 인증 코드 생성 함수
     function generateVerificationCode() {
         var code = '';
@@ -362,6 +377,7 @@ exports.send_verification_email = function (req, res) {
         return code;
     }
 };
+
 
 // 인증 코드 확인
 exports.verify_code = function (req, res) {
