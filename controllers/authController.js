@@ -311,10 +311,22 @@ exports.customer_send = function (req, res) {
     }
 };*/
 
-// 고객지원화면
 exports.customer = function (req, res) {
-    res.render('customer');
+    const userId = req.session.user_id;
+    const isLogined = req.session.is_logined;
+    if (!isLogined) {
+        return res.send('<script>alert("로그인이 필요합니다.");  document.location.href="/auth/login";</script>');
+    }
+    userModel.getUserProfile(userId, (error, results) => {
+        if (error) {
+            res.render('error');
+        } else {
+            const userProfile = results[0];
+            res.render('customer', { userProfile: userProfile }); // customer.ejs로 userProfile 데이터 전달
+        }
+    });
 };
+
 
 // 이메일 인증 코드 전송
 exports.sendVerificationEmail = function (req, res) {

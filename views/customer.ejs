@@ -43,15 +43,15 @@
       </div>
 
       <div id="divName">
-        <input class="inputBox" type="text" name="name" placeholder="Your name" required>
+        <input class="inputBox" type="text" name="name" required readonly value="<%= userProfile.mem_name %>">
       </div>
 
       <div id="divEmail">
-        <input class="inputBox" type="text" name="email" placeholder="Your E-mail" required>
+        <input class="inputBox" type="text" name="email" required readonly value="<%= userProfile.mem_email %>">
       </div>
 
       <div id="divNumber">
-        <input class="inputBox" type="text" name="phone" placeholder="Your PhoneNumber" required>
+        <input class="inputBox" type="text" name="phone" required readonly value="<%= userProfile.mem_phone %>">
       </div>
 
       <div class="h5">
