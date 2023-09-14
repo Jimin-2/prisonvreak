@@ -10,8 +10,18 @@ exports.checkIdAvailability = function (id,callback){
   });
 };
 
-exports.checkNicknameAvailability = function (id,callback){
-  db.query('SELECT * FROM member WHERE mem_nickname = ?', [id], function(error, results, fields) {
+exports.checkNicknameAvailability = function (nickname,callback){
+  db.query('SELECT * FROM member WHERE mem_nickname = ?', [nickname], function(error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+exports.checkEmailAvailability = function (email,callback){
+  db.query('SELECT * FROM member WHERE mem_email = ?', [email], function(error, results, fields) {
     if (error) {
       callback(error, null);
     } else {
