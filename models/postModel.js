@@ -111,7 +111,19 @@ const postModel = {
 
 const commentModel = {
   getComments: (post_usernum, callback) => {
-    db.query('SELECT * FROM comment AS c JOIN post AS p ON c.post_num = p.post_num WHERE c.post_num = ?', [post_usernum], (error, results) => {
+    db.query(`
+      SELECT * 
+      FROM comment AS c 
+      JOIN post AS p ON c.post_num = p.post_num 
+      WHERE c.post_num = ?
+      ORDER BY 
+          CASE 
+              WHEN c.cmt_refnum IS NULL THEN c.cmt_num
+              ELSE c.cmt_refnum
+          END ASC,
+          c.cmt_refnum ASC,
+          c.cmt_created_at ASC
+    `, [post_usernum], (error, results) => {
       if (error) {
         callback(error, null);
       } else {
@@ -120,10 +132,10 @@ const commentModel = {
     });
   },
 
-  insertComments: (post_num, cmt_content, cmt_usernum, cmt_created_at, callback) => {
+  insertComments: (post_num, cmt_content, cmt_usernum, cmt_created_at, cmt_refnum, callback) => {
     db.query(
-      'INSERT INTO comment (post_num, cmt_content, cmt_usernum, cmt_created_at) VALUES (?, ?, ?, ?)',
-      [post_num, cmt_content, cmt_usernum, cmt_created_at],
+      'INSERT INTO comment (post_num, cmt_content, cmt_usernum, cmt_created_at, cmt_refnum) VALUES (?, ?, ?, ?, ?)',
+      [post_num, cmt_content, cmt_usernum, cmt_created_at, cmt_refnum],
       () => {
         callback();
       }
