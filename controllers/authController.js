@@ -88,7 +88,7 @@ exports.login_process = function (req, res) {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
                     res.send(`<script type="text/javascript">alert("${authStatusUI}");
-                    document.location.href="/";</script>`);
+                    window.history.go(-2);</script>`);
                 });
             } else {
                 res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); 

@@ -63,19 +63,17 @@
             </thead>
 
             <tbody>
-              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function(post) { %>
+              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
                 <tr>
-                  <!-- 번호 임시 삭게 -->
-                  <!-- <td>
-                                        <%= post.post_num %>
-                                    </td> -->
-
                   <td><a href="/community/show/<%= post.post_num %>">
                       <%= post.post_title %>
                     </a></td>
                   <td>
-                    <i class="fa-solid fa-user"></i>
-                    <%= post.post_usernum %>
+                    <!-- <i class="fa-solid fa-user"></i> -->
+                    <div style="display: flex; align-items: center;">
+                      <p style="margin-right: 10px;"><%= post.userInfo[0] %></p>
+                      <img src="<%= post.userInfo[1] %>" alt="프로필 이미지" width="50">
+                  </div>
                   </td>
                   <td>
                     <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
@@ -85,7 +83,6 @@
                     <%= post.formattedCreatedAt %>
                   </td>
                   <td>
-                    <!-- <i class="fa-solid fa-users"></i><%= post.post_hit %> -->
                     <%= post.post_num %>
                   </td>
                 </tr>

@@ -12,7 +12,7 @@ const boardController = {
     if (!isLoggedIn) { // 로그인 X
       // alert 메시지 이후, 이전 페이지 돌아가기
       console.log(req.session.user);
-      return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+      return res.send('<script>alert("로그인 후 글 작성이 가능합니다."); window.location.href = "/auth/login";</script>');
     }
     // 로그인시
     const userId = req.session.user_id;
@@ -42,7 +42,7 @@ const boardController = {
               if (error) {
                 console.error(error);
               } else {
-                console.log(nickname);
+                // console.log(comments[0].cmt_usernum); 이런 식으로 usernum 가져오면 될듯~
                 res.render('boardShow', { data: result, comments: comments, nickname: nickname, profile: profile });
               }
             });
@@ -52,63 +52,77 @@ const boardController = {
     });
   },
 
-      // 작성자의 닉네임 가져오기
-  getNames: (req, res) => {
-    const post_num = req.params.post_num;
-    postModel.getNicknameByPostId(post_num, (error, nickname) => {
-      if(error) {
-        console.log(error);
-      } else {
-        console.log(nickname);
-        res.render('boardShow', {nickname: nickname});
-      }
-    })
-  },
   showList: (req, res) => {
     postModel.excludedUserNum(1, (error, results) => {
-      if (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
-      const reversedResults = results.reverse();
+        if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
 
-      const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
-      const totalPosts = reversedResults.length;
-      const totalPages = Math.ceil(totalPosts / postsPerPage);
+        const reversedResults = results.reverse();
+        const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
+        const totalPosts = reversedResults.length;
+        const totalPages = Math.ceil(totalPosts / postsPerPage);
+        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+        const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+        let startIndex, endIndex;
 
-      const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+        if (currentPage === totalPages) {
+            endIndex = totalPosts;
+            startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+        } else {
+            startIndex = (currentPage - 1) * postsPerPage;
+            endIndex = startIndex + postsPerPage;
+        }
 
-      const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+        const paginatedResults = reversedResults.slice(startIndex, endIndex);
 
-      let startIndex, endIndex;
-      if (currentPage === totalPages) {
-        endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
-      } else {
-        startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
-      }
+        // 사용자 정보를 가져오는 Promise를 생성하는 함수
+        function getUserInfo(post) {
+            return new Promise((resolve, reject) => {
+                const post_num = post.post_num;
+                postModel.getNicknameByPostId(post_num, (error, nickname, profile) => {
+                    if (error) {
+                        console.error(error);
+                        reject(error); // 에러 처리
+                    } else {
+                        const userInfo = [nickname, profile];
+                        resolve(userInfo); // 사용자 정보를 resolve로 반환
+                    }
+                });
+            });
+        }
 
-      const paginatedResults = reversedResults.slice(startIndex, endIndex);
+        // 모든 게시물의 사용자 정보를 병렬로 가져오는 Promise 배열
+        const userInfoPromises = paginatedResults.map(post => getUserInfo(post));
 
-      const formattedResults = paginatedResults.map(post => ({
-        ...post,
-        formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
-      }));
+        Promise.all(userInfoPromises)
+            .then(userInfos => {
+                const formattedResults = paginatedResults.map((post, index) => ({
+                    ...post,
+                    formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD'),
+                    userInfo: userInfos[index],
+                }));
 
-      res.render('board', {
-        data: formattedResults,
-        search: formattedResults, // 검색 결과를 전달
-        totalPages: totalPages,
-        currentPage: currentPage,
-        prevPage,
-        startPage,
-        endPage,
-        nextPage,
-      });
+                res.render('board', {
+                    data: formattedResults,
+                    search: formattedResults, // 검색 결과를 전달
+                    totalPages: totalPages,
+                    currentPage: currentPage,
+                    prevPage,
+                    startPage,
+                    endPage,
+                    nextPage,
+                });
+            })
+            .catch(error => {
+                console.error(error); // 에러 처리
+                res.status(500).send('Internal Server Error');
+            });
     });
-  },
+},
+
 
   // showBoard: (req, res) => {
   //   noticeController.fetchAndRenderPosts(req, res, 'board', 20);
