@@ -156,6 +156,8 @@ const boardController = {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const post_num = req.body.post_num;
+    const cmt_refnum = req.body.cmt_refnum || null;
+
     if (!isLoggedIn) {
       return res.send('<script>alert("로그인 후 댓글 등록이 가능합니다."); window.location.href = "/auth/login";</script>');
     }
@@ -170,6 +172,7 @@ const boardController = {
             body.cmt_content,
             userNum,
             koreanTime,
+            cmt_refnum,
             () => {
               res.send(`<script>
               var mem_id = "${mem_id}";

@@ -77,19 +77,24 @@
                                 <%= comments.cmt_created_at %>
                             </a>
                         </div>
-                        <div> ㄴㄴ<%= comments.cmt_content %>
+                        <div> 
+                            <%= comments.cmt_content %>
+                            <% if (!comments.cmt_refnum) { %> <!-- 원댓글일 경우에만 답글 버튼 표시 -->
+                                <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
+                            <% } %> 
                         </div> <br>
-                        <% }); %>
-                            <div id="comment-absolute"> 답글 </div>
-                    </div>
+                        <!-- 답글 등록 폼 -->
+                        <form action="/community/show/<%= data.post_num %>" method="POST" class="reply-form" style="display: none;">
+                            <input type="hidden" name="post_num" value="<%= data.post_num %>">
+                            <input type="hidden" name="cmt_refnum" value="<%= comments.cmt_num %>">
+                            <textarea id="comment-input-Area" name="cmt_content" placeholder="답글을 입력하세요." oninput="byteCount(this)"></textarea>
+                            <div class="submit">
+                                <p id="byte-count">0 byte</p>
+                                <button class="button btnFade btnBlack" type="submit"> 등록 </button>
+                            </div>
+                        </form>
 
-                    <div id="comment-01">
-                        <div class="comment-relative">
-                            <p class="ninkname"> 정예은 </p>
-                            <p><a class=date> 2023/07/27 PM 03:14</a></p>
-                        </div>
-                        <div> 답글 내용입니다. </div>
-                    </div>
+                        <% }); %>
 
                     <hr>
                     <form action="/community/show/<%= data.post_num %>" method="POST">
@@ -117,6 +122,16 @@
 
                         // 바이트 수 변화
                         document.getElementById('byte-count').textContent = byteCountText;
+                    }
+
+                    function toggleReplyForm(buttonElement) {
+                        const commentDiv = buttonElement.closest('#comment');
+                        const replyForm = commentDiv.querySelector('.reply-form');
+                        if(replyForm.style.display === 'none' || !replyForm.style.display) {
+                            replyForm.style.display = 'block';
+                        } else {
+                            replyForm.style.display = 'none';
+                        }
                     }
                 </script>
         </section>
