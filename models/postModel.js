@@ -107,6 +107,30 @@ const postModel = {
       callback(null, results);
     });
   },
+
+  // post 작성자의 닉네임 가져오기
+  getNicknameByPostId: (post_num, callback) => {
+    db.query(
+      `SELECT m.mem_nickname, m.mem_profile
+      FROM post p 
+      JOIN member m ON p.post_usernum = m.mem_num 
+      WHERE p.post_num = ?;`,
+      [post_num],
+      (error, results) => {
+        if (error) {
+          console.error(error);
+        } else {
+          if (results.length > 0) {
+            const nickname = results[0].mem_nickname;
+            const profile = results[0].mem_profile;
+            callback(null, nickname, profile);
+          } else {
+            callback(null, null, null); // 결과가 없을 때 
+          }
+        }
+      }
+    );
+  },
 };
 
 const commentModel = {
@@ -141,7 +165,6 @@ const commentModel = {
       }
     );
   },
-
 }
 
 module.exports = { postModel, commentModel };

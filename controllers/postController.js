@@ -20,31 +20,50 @@ const boardController = {
   },
 
   showForm: (req, res) => {
-    const postNum = req.params.post_num;
-
-    postModel.getPostById(postNum, (error, result) => {
+    const post_num = req.params.post_num;
+  
+    postModel.getPostById(post_num, (error, result) => {
       if (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
         return;
       }
-      postModel.incrementPostHit(postNum, (error) => {
+      postModel.incrementPostHit(post_num, (error) => {
         if (error) {
           console.error(error);
         } else {
-          commentModel.getComments(postNum, (commentError, comments) => {
+          commentModel.getComments(post_num, (commentError, comments) => {
             if (commentError) {
               console.error(commentError);
               res.status(500).send('Internal Server Error');
               return;
             }
-            res.render('boardShow', { data: result, comments: comments });
+            postModel.getNicknameByPostId(post_num, (error, nickname, profile) => {
+              if (error) {
+                console.error(error);
+              } else {
+                console.log(nickname);
+                res.render('boardShow', { data: result, comments: comments, nickname: nickname, profile: profile });
+              }
+            });
           });
         }
       });
     });
   },
 
+      // 작성자의 닉네임 가져오기
+  getNames: (req, res) => {
+    const post_num = req.params.post_num;
+    postModel.getNicknameByPostId(post_num, (error, nickname) => {
+      if(error) {
+        console.log(error);
+      } else {
+        console.log(nickname);
+        res.render('boardShow', {nickname: nickname});
+      }
+    })
+  },
   showList: (req, res) => {
     postModel.excludedUserNum(1, (error, results) => {
       if (error) {
