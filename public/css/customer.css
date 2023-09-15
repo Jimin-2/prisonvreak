@@ -164,11 +164,17 @@ textarea::placeholder {
 }
 
 #btnFile {
-  width: 50px;
+  width: 100px;
   height: 18px;
 
   margin-left: 5px;
 
   background-color: #484848;
   color: #ccc;
+}
+
+#selectedFileNameText {
+  color: gainsboro;
+  font-size: 17px;
+  margin-left: 5px;
 }
