@@ -37,7 +37,6 @@
           <ul>
             <li><a href="/auth/mypage"> 내 프로필 </a></li>
             <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
-            <li><a href="#">작성한 게시글</a> </li>
           </ul>
         </div>
 
@@ -71,16 +70,17 @@
 
               </div>
             </div>
-
-            <div id="introduce"> 한 줄 소개 </div>
-            
+          <form action="/auth/updateProfileIntro" method="post">
+            <p id="textCount">0자 / 100자</p>
+            <textarea id="memIntro" name="memIntro" rows="3" oninput="byteCount(this)" placeholder="한 줄 소개"><%= userProfile.mem_intro%></textarea>
+            <button class="button btnFade btnBlack" type="submit"> 수정 </button>
+          </form>
         </div>
 
         <!-- 마이페이지 두 번재 레이아웃 -->
         <div id="second">
-          <h2> Community </h2>
+          <h2> My Post </h2>
           <div id="other">
-            <p> 더 보기 </p>
           </div>
 
           <hr>
@@ -88,7 +88,7 @@
           <div>
             <table>
               <thead>
-                <tr>
+                <tr class="title">
                   <th>번호</th>
                   <th>제목</th>
                   <th>글쓴이</th>
@@ -96,16 +96,57 @@
                   <th>조회수</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="content">
+              <% for (let i=0; i < data.length; i++) { %>
                 <tr>
-                  <td>04</td>
-                  <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
-                  <td>정예은</td>
-                  <td>2023/07/27</td>
-                  <td>0</td>
+                  <td>
+                    <%= data[i].post_num %>
+                  </td>
+                  <td>
+                    <a href="/notice/show/<%= data[i].post_num %>">
+                      <%= data[i].post_title %>
+                    </a>
+                  </td>
+                  <td>
+                    <%= data[i].post_usernum %>
+                  </td>
+                  <td>
+                    <%= data[i].formattedCreatedAt %>
+                  </td>
+                  <td>
+                    <%= data[i].post_hit %>
+                  </td>
                 </tr>
+              <% } %>
               </tbody>
             </table>
+          </div>
+          <div class="pagination">
+            <% if (prevPage !== null) { %>
+              <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
+            <% } else { %>
+              <span class="disabled">&laquo; 이전</span>
+            <% } %>
+
+            <% for (let i = startPage; i <= endPage; i++) { %>
+              <% if (i === currentPage) { %>
+                <span class="active"><%= i %></span>
+              <% } else { %>
+                <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
+              <% } %>
+            <% } %>
+
+            <% if (nextPage !== null) { %>
+              <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
+            <% } else { %>
+              <a href="#" id="disabledNextPage">다음 &raquo;</a>
+              <script>
+                document.getElementById("disabledNextPage").addEventListener("click", function(event) {
+                  event.preventDefault();
+                  alert("더 이상 페이지가 없습니다.");
+                });
+              </script>
+            <% } %>
           </div>
         </div>
 
@@ -115,6 +156,30 @@
 
   <!-- footer -->
   <%- include('partials/footer')%>
+
+  <script>
+    function byteCount(textarea) {
+      let content = textarea.value;
+
+      // 글자수 세기
+      if (content.length === 0 || content === '') {
+        document.querySelector('#textCount').innerText = '0자 / 100자';
+      } else {
+        document.querySelector('#textCount').innerText = content.length + '자 / 100자';
+      }
+
+      // 글자수 제한
+      if (content.length > 100) {
+        // 200자 부터는 타이핑 되지 않도록
+        textarea.value = textarea.value.substring(0, 100);
+        // 200자 넘으면 알림창 뜨도록
+        alert('글자수는 100자까지 입력 가능합니다.');
+        document.querySelector('#textCount').innerText = '100자 / 100자';
+      }
+    };
+
+    byteCount(document.querySelector('#memIntro'));
+  </script>
 
 </body>
 

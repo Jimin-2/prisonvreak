@@ -175,10 +175,10 @@ section {
   font-size: 1.2em;
 }
 
-#introduce {
+#memIntro {
   width: 93%;
   height: 100px;
-
+  resize: none;
   margin-top: 20px;
   margin-left: 10px;
 
@@ -190,6 +190,27 @@ section {
 
   border-radius: 15px;
   border: 1px solid #161616;
+}
+#textCount {
+  display: inline-block;
+  float: right;
+  font-size: 0.7em;
+  color: #161616;
+}
+.button {
+  margin-top: 10px;
+  display: block;
+  float: right;
+  width: 50px;
+  height: 30px;
+  line-height: 3px;
+  color: #161616;
+  border-radius: 5px;
+}
+
+.btnFade.btnBlack:hover {
+  background: #161616;
+  color: white;
 }
 
 /* 마이페이지 두번째 */

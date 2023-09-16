@@ -225,3 +225,14 @@ exports.deleteProfile = function (userId, imageURL, callback ){
     }
   });
 }
+
+// 한줄 소개 수정
+exports.updateProfileIntro = function (userId, newIntro, callback ) {
+  db.query('UPDATE member SET mem_intro = ? WHERE mem_id = ?', [newIntro, userId], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+}
