@@ -671,6 +671,71 @@ exports.mypage = function (req, res) {
     });
 };
 
+// 작성한 게시글 표시
+exports.myPost = function (req, res) {
+    const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    const isLogined = req.session.is_logined;
+    const postsPerPage = 15;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+
+    // userModel을 사용하여 사용자의 프로필 정보 가져오기
+    userModel.getUserProfile(userId, (error, results) => {
+        if (error) {
+            //console.error(error);
+            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else {
+            //console.log('User Profile Results:', results);
+            const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+
+            // 작성한 게시글 가져오는 부분
+            postModel.getPostsByUserNum(userProfile.mem_num,(error, data)=>{
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Internal Server Error');
+                }
+                const reversedResults = data.reverse();
+
+                const totalPosts = reversedResults.length;
+                const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+                const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+
+                const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+
+                let startIndex, endIndex;
+                if (currentPage === totalPages) {
+                    endIndex = totalPosts;
+                    startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+                } else {
+                    startIndex = (currentPage - 1) * postsPerPage;
+                    endIndex = startIndex + postsPerPage;
+                }
+
+                const paginatedResults = reversedResults.slice(startIndex, endIndex);
+                const formattedResults = paginatedResults.map(post => ({
+                    ...post,
+                    formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+                }));
+
+                res.render('myPost', {
+                    userProfile: userProfile,
+                    data: formattedResults,
+                    totalPages: totalPages,
+                    currentPage: currentPage,
+                    keyword: null,
+                    prevPage,
+                    startPage,
+                    endPage,
+                    nextPage
+                });
+            });
+        }
+    });
+};
+
 // 개인 정보 수정 페이지
 exports.myProfileInfo = function (req, res) {
     const isLogined = req.session.is_logined;
