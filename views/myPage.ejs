@@ -37,6 +37,7 @@
           <ul>
             <li><a href="/auth/mypage"> 내 프로필 </a></li>
             <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
+            <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
           </ul>
         </div>
 
@@ -81,6 +82,7 @@
         <div id="second">
           <h2> My Post </h2>
           <div id="other">
+            <a href="/auth/myPost">더보기</a>
           </div>
 
           <hr>
@@ -120,33 +122,6 @@
               <% } %>
               </tbody>
             </table>
-          </div>
-          <div class="pagination">
-            <% if (prevPage !== null) { %>
-              <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
-            <% } else { %>
-              <span class="disabled">&laquo; 이전</span>
-            <% } %>
-
-            <% for (let i = startPage; i <= endPage; i++) { %>
-              <% if (i === currentPage) { %>
-                <span class="active"><%= i %></span>
-              <% } else { %>
-                <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
-              <% } %>
-            <% } %>
-
-            <% if (nextPage !== null) { %>
-              <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
-            <% } else { %>
-              <a href="#" id="disabledNextPage">다음 &raquo;</a>
-              <script>
-                document.getElementById("disabledNextPage").addEventListener("click", function(event) {
-                  event.preventDefault();
-                  alert("더 이상 페이지가 없습니다.");
-                });
-              </script>
-            <% } %>
           </div>
         </div>
 
