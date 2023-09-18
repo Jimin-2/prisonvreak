@@ -125,7 +125,7 @@ const postModel = {
             const profile = results[0].mem_profile;
             callback(null, nickname, profile);
           } else {
-            callback(null, null, null); // 결과가 없을 때 
+            callback(null, null, null);
           }
         }
       }
@@ -165,6 +165,52 @@ const commentModel = {
       }
     );
   },
+
+  // 로그인 한 사람의 닉네임과 프로필 가져오기
+  getMemberById: (mem_id, callback) => {
+    db.query(
+      'SELECT mem_nickname, mem_profile FROM member WHERE mem_id = ?',
+      [mem_id],
+      (error, results) => {
+        if (error) {
+          console.error(error);
+        } else {
+          if (results.length > 0) {
+            const nickname = results[0].mem_nickname;
+            const profile = results[0].mem_profile;
+            callback(null, nickname, profile);
+          } else {
+            callback(null, null, null);
+          }
+        }
+      }
+    );
+  },
+
+  // 댓글 작성자의 닉네임과 프로필 가져오기
+  getMemberByUserNum: (usernum, post_num, callback) => {
+    db.query(`
+      SELECT c.*, m.mem_nickname, m.mem_profile FROM comment c
+      JOIN member m ON c.cmt_usernum = m.mem_num
+      WHERE c.post_num = ? AND c.cmt_usernum = ?;
+    `, [post_num, usernum], (error, results) => {
+        if (error) {
+            console.error(error);
+            callback(error, null, null);
+        } else {
+            const userInfo = results.map(result => ({
+                mem_nickname: result.mem_nickname,
+                mem_profile: result.mem_profile
+            }));
+            if (userInfo.length > 0) {
+                callback(null, userInfo);
+            } else {
+                callback(null, null);
+            }
+        }
+    });
+  },
+
 }
 
 module.exports = { postModel, commentModel };

@@ -45,17 +45,22 @@
                     <div>
                         <div class="profile-info" style="display: flex; align-items: center; margin-bottom: 10px;">
                             <img src="<%= profile %>" alt="프로필 사진" width="35" style="margin-right: 10px;">
-                            <p class="nickname" name="mem_nickname"><%= nickname %></p>
+                            <p class="nickname" name="mem_nickname">
+                                <%= nickname %>
+                            </p>
                         </div>
-                        
+
                         <!-- 작성일, 조회수, 마지막 수정일시를 병렬로 표시 -->
                         <div class="date-info">
-                            <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %></p>
-                            <p class="date">조회수: <%= data.post_hit %></p>
-                            <p class="date">마지막 수정일시: <%= data.post_updated_at %></p>
+                            <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %>
+                            </p>
+                            <p class="date">조회수: <%= data.post_hit %>
+                            </p>
+                            <p class="date">마지막 수정일시: <%= data.post_updated_at %>
+                            </p>
                         </div>
-                        
-                        
+
+
                     </div>
                 </div>
                 <br><br>
@@ -74,71 +79,78 @@
                 <% comments.forEach(function(comments) { %>
                     <div id="comment">
                         <div class="comment-relative">
-                            <p class="ninkname"> 작성자: <%= comments.cmt_usernum %>
+                            
+                                  <p class="nickname">작성자:</p>
+
+                                  <!-- 다른 사용자 정보 출력 -->
                             </p>
                             <a class=date>
                                 <%= comments.cmt_created_at %>
                             </a>
                         </div>
-                        <div> 
+                        <div>
                             <%= comments.cmt_content %>
-                            <% if (!comments.cmt_refnum) { %> <!-- 원댓글일 경우에만 답글 버튼 표시 -->
-                                <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
-                            <% } %> 
+                                <% if (!comments.cmt_refnum) { %> <!-- 원댓글일 경우에만 답글 버튼 표시 -->
+                                    <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
+                                    <% } %>
                         </div> <br>
                         <!-- 답글 등록 폼 -->
-                        <form action="/community/show/<%= data.post_num %>" method="POST" class="reply-form" style="display: none;">
+                        <form action="/community/show/<%= data.post_num %>" method="POST" class="reply-form"
+                            style="display: none;">
                             <input type="hidden" name="post_num" value="<%= data.post_num %>">
                             <input type="hidden" name="cmt_refnum" value="<%= comments.cmt_num %>">
-                            <textarea id="comment-input-Area" name="cmt_content" placeholder="답글을 입력하세요." oninput="byteCount(this)"></textarea>
+                            <textarea id="comment-input-Area" name="cmt_content" placeholder="답글을 입력하세요."
+                                oninput="byteCount(this)"></textarea>
                             <div class="submit">
                                 <p id="byte-count">0 byte</p>
                                 <button class="button btnFade btnBlack" type="submit"> 등록 </button>
                             </div>
                         </form>
-
                         <% }); %>
 
-                    <hr>
-                    <form action="/community/show/<%= data.post_num %>" method="POST">
-                        <input type="hidden" name="post_num" value="<%= data.post_num %>">
-                        <div id="comment-input">
-                            <p name="mem_nickname"> 정예은 </p>
-                            <textarea id="comment-input-Area" name="cmt_content" placeholder="댓글을 입력하세요."
-                                oninput="byteCount(this)"></textarea>
-                            <div class="submit">
-                                <p id="byte-count">0 byte</p>
-                            </div>
-                            <button class="button btnFade btnBlack" type="submit"> 등록 </button>
-                        </div>
-                    </form>
-                    <a href="/community">목록</a>
+                            <hr>
+                            <form action="/community/show/<%= data.post_num %>" method="POST">
+                                <input type="hidden" name="post_num" value="<%= data.post_num %>">
+                                <div id="comment-input">
+                                    <div style="display: flex; flex-direction: row;">
+                                        <img src="<%= login_pro %>" width="30">
+                                        <p style="margin-left: 20px;" name="mem_nickname"><%= login_nick %></p>
+                                    </div>
+                                    <textarea id="comment-input-Area" name="cmt_content" placeholder="댓글을 입력하세요."
+                                        oninput="byteCount(this)"></textarea>
+                                    <div class="submit">
+                                        <p id="byte-count">0 byte</p>
+                                    </div>
+                                    <button class="button btnFade btnBlack" type="submit"> 등록 </button>
+                                </div>
+                            </form>
+                            <a href="/community">목록</a>
+
                     </div>
             </div>
-
-            <!-- footer -->
-            <%- include('partials/footer')%>
-                <script>
-                    function byteCount(textarea) {
-                        const text = textarea.value;
-                        const byteCount = new TextEncoder('utf-8').encode(text).length;
-                        const byteCountText = `${byteCount} byte`;
-
-                        // 바이트 수 변화
-                        document.getElementById('byte-count').textContent = byteCountText;
-                    }
-
-                    function toggleReplyForm(buttonElement) {
-                        const commentDiv = buttonElement.closest('#comment');
-                        const replyForm = commentDiv.querySelector('.reply-form');
-                        if(replyForm.style.display === 'none' || !replyForm.style.display) {
-                            replyForm.style.display = 'block';
-                        } else {
-                            replyForm.style.display = 'none';
-                        }
-                    }
-                </script>
         </section>
+        <!-- footer -->
+        <!-- <%- include('partials/footer')%> -->
+            <script>
+                function byteCount(textarea) {
+                    const text = textarea.value;
+                    const byteCount = new TextEncoder('utf-8').encode(text).length;
+                    const byteCountText = `${byteCount} byte`;
+
+                    // 바이트 수 변화
+                    document.getElementById('byte-count').textContent = byteCountText;
+                }
+
+                function toggleReplyForm(buttonElement) {
+                    const commentDiv = buttonElement.closest('#comment');
+                    const replyForm = commentDiv.querySelector('.reply-form');
+                    if (replyForm.style.display === 'none' || !replyForm.style.display) {
+                        replyForm.style.display = 'block';
+                    } else {
+                        replyForm.style.display = 'none';
+                    }
+                }
+            </script>
 </body>
 
 </html>

@@ -63,19 +63,20 @@
             </thead>
 
             <tbody>
-              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function(post) { %>
+              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
                 <tr>
-                  <!-- 번호 임시 삭게 -->
-                  <!-- <td>
-                                        <%= post.post_num %>
-                                    </td> -->
-
                   <td><a href="/community/show/<%= post.post_num %>">
                       <%= post.post_title %>
                     </a></td>
                   <td>
-                    <i class="fa-solid fa-user"></i>
-                    <%= post.post_usernum %>
+                    <!-- <i class="fa-solid fa-user"></i> -->
+                    <div style="display: flex; align-items: center;">
+                      <img src="<%= post.userInfo[1] %>" alt="프로필 이미지" width="50">
+                      <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= post.userInfo[0] %>')">
+                        <%= post.userInfo[0] %>
+                      </p>
+
+                    </div>
                   </td>
                   <td>
                     <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
@@ -85,7 +86,6 @@
                     <%= post.formattedCreatedAt %>
                   </td>
                   <td>
-                    <!-- <i class="fa-solid fa-users"></i><%= post.post_hit %> -->
                     <%= post.post_num %>
                   </td>
                 </tr>
@@ -132,7 +132,20 @@
 
     <!-- footer -->
     <%- include('partials/footer')%>
+      <script>
+        function showProfile(username) {
+          // 팝업 창을 띄우는 코드
+          const popup = window.open('', 'UserProfile', 'width=400,height=300');
 
+          // 팝업 창 내용 설정
+          popup.document.write('<html><head><title>User Profile</title></head><body>');
+          popup.document.write(`<h1>${username}'s 프로필</h1>`);
+          // 여기에 사용자 프로필 정보를 출력하는 HTML 코드를 추가할 수 있습니다.
+          popup.document.write('</body></html>');
+          popup.document.close();
+        }
+
+      </script>
 </body>
 
 
