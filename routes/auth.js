@@ -86,4 +86,8 @@ router.post('/withdrawal', authController.withdrawal);
 
 router.post('/socialWithdrawal', authController.socialWithdrawal);
 
+router.post('/updateProfileIntro', authController.updateProfileIntro);
+
+router.get('/myPost', authController.myPost);
+
 module.exports = router;

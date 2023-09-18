@@ -35,6 +35,7 @@
     </div>
     <div id="second">
       <form action="/auth/customer_send" method="post">
+
       <h2> Let the various voices of users be heard. </h2>
       <h4> 사용자 여러분의 다양한 목소리를 들려주세요. </h4>
 
@@ -54,11 +55,17 @@
         <input class="inputBox" type="text" name="phone" required readonly value="<%= userProfile.mem_phone %>">
       </div>
 
-      <div class="h5">
-          <h5> | 전달 내용 <button id="btnFile" type="button" onclick="handleFileButtonClick()"> 첨부파일 </button> </h5>
+        <div class="h5">
+          <h5> | 전달 내용
+            <button id="btnFile" type="button" onclick="handleFileButtonClick()"> 첨부파일 </button>
+          </h5>
+          <p id="selectedFileNameText"></p>
         </div>
 
-      <div id="contents">
+        <input type="hidden" name="fileData" id="fileData">
+        <input type="hidden" name="fileName" id="fileName">
+
+        <div id="contents">
         <textarea class="contentsBox" name="contents" placeholder="Content" required></textarea>
       </div>
 
@@ -73,14 +80,32 @@
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.style.display = 'none'; // 화면에 표시하지 않음
+
       fileInput.addEventListener('change', function () {
-        // 파일 선택 이벤트 처리 (이 부분에 파일을 선택했을 때의 동작을 추가)
-        // 예를 들어, 파일 정보를 얻거나 파일 업로드를 처리할 수 있습니다.
-        // 이 부분을 파일 선택 이벤트에 맞게 수정하세요.
+        const selectedFile = fileInput.files[0];
+        const selectedFileNameText = document.getElementById('selectedFileNameText');
+        if (selectedFile) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const fileDataInput = document.getElementById('fileData');
+            fileDataInput.value = e.target.result; // Base64 인코딩된 파일 데이터를 필드에 할당
+          };
+          reader.readAsDataURL(selectedFile); // 파일을 Base64로 인코딩
+          // 선택한 파일명을 표시합니다.
+          selectedFileNameText.textContent = `${selectedFile.name}`;
+          selectedFileNameText.style.display = 'block';
+          // 파일 이름을 서버로 전송할 필드에 설정
+          const fileNameInput = document.getElementById('fileName');
+          fileNameInput.value = selectedFile.name;
+        } else {
+          // 파일을 선택하지 않은 경우 표시를 숨깁니다.
+          selectedFileNameText.style.display = 'none';
+        }
       });
       document.body.appendChild(fileInput);
       fileInput.click(); // 파일 선택 대화상자 열기
     }
+
   </script>
 
   <!-- footer -->

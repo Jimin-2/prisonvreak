@@ -1,9 +1,12 @@
 require('dotenv').config();
 const userModel = require('../models/userModel');
+const { postModel, commentModel } = require('../models/postModel');
 const passport = require('../config/passport');
 const path = require('path'); // 예를 들어, path 모듈을 사용하려면 이와 같이 정의할 수 있습니다.
 const nodemailer = require('nodemailer');
 const authCheckMiddleware = require('../middleware/authCheck');
+const moment = require("moment/moment");
+const { boardController, noticeController } = require('../controllers/postController');
 
 // 회원가입 프로세스
 exports.register_process = function (req, res) {
@@ -265,6 +268,7 @@ exports.check_nickname_availability = function (req, res) {
     });
 };
 
+/*
 // 고객지원프로세스
 exports.customer_send = function (req, res) {
     const name = req.body.name;
@@ -272,6 +276,14 @@ exports.customer_send = function (req, res) {
     const phone = req.body.phone;
     const contents = req.body.contents;
 
+    // 클라이언트에서 전송한 파일 정보
+    const fileName = req.body.selectedFileName;
+    console.log('Received fileName:', fileName); // 파일명 로깅
+    const fileData = req.body.fileData; // 파일 데이터 (Base64 형식)
+    // 파일 데이터를 Buffer로 변환
+    const fileBuffer = Buffer.from(fileData, 'base64');
+
+    // 이메일 발송 설정
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -285,6 +297,12 @@ exports.customer_send = function (req, res) {
         to: 'prisonvreakcan@gmail.com',
         subject: '고객지원문의',
         text: `고객명: ${name}\n이메일: ${email}\n전화번호:${phone}\n문의내용: ${contents}`,
+        attachments: [
+            {
+                filename: fileName,
+                content: fileBuffer,
+            }
+        ],
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -293,12 +311,59 @@ exports.customer_send = function (req, res) {
             res.status(500).send();
         } else {
             console.log('이메일 전송 성공:', info.response);
-            res.status(200).send();
+            res.send('<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");document.location.href="/auth/customer";</script>');
         }
     });
-    res.send(`<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");
-                document.location.href="/auth/customer";</script>`);
 };
+*/
+// 고객지원프로세스
+exports.customer_send = function (req, res) {
+    const name = req.body.name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const contents = req.body.contents;
+
+    // 클라이언트에서 전송한 파일 정보
+    const fileName = req.body.fileName; // 수정된 부분
+    console.log('Received fileName:', req.body); // 파일명 로깅
+    const fileData = req.body.fileData; // 파일 데이터 (Base64 형식)
+    // 파일 데이터를 Buffer로 변환
+    const fileBuffer = Buffer.from(fileData.split(',')[1], 'base64'); // 'data:image/jpeg;base64,' 이 부분 제거
+
+    // 이메일 발송 설정
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'prisonvreakcan@gmail.com',
+            pass: process.env.EMAIL_PASS
+        },
+    });
+
+    const mailOptions = {
+        from: 'prisonvreakcan@gmail.com',
+        to: 'prisonvreakcan@gmail.com',
+        subject: '고객지원문의',
+        text: `고객명: ${name}\n이메일: ${email}\n전화번호:${phone}\n문의내용: ${contents}`,
+        attachments: [
+            {
+                filename: fileName,
+                content: fileBuffer,
+            }
+        ],
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.error('이메일 전송 오류:', error);
+            res.status(500).send();
+        } else {
+            console.log('이메일 전송 성공:', info.response);
+            res.send('<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");document.location.href="/auth/customer";</script>');
+        }
+    });
+};
+
+
 
 // 고객지원화면
 /*exports.customer = function (req, res) {
@@ -541,28 +606,85 @@ exports.myPage = function (req, res) {
     res.render('myPage');
 };*/
 
+// 마이페이지
 exports.mypage = function (req, res) {
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
     const isLogined = req.session.is_logined;
+    const postsPerPage = 5;
+    const link = 'mypage';
     if (!isLogined) { // 로그인 X
         // alert 메시지 이후, 이전 페이지 돌아가기
         return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
     }
-    //console.log('User ID:', userId);
+    myPostList(req, res, userId, postsPerPage, link);
+};
+
+// 작성한 게시글 페이지
+exports.myPost = function (req, res) {
+    const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    const isLogined = req.session.is_logined;
+    const postsPerPage = 15;
+    const link = 'myPost';
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+    myPostList(req, res, userId, postsPerPage, link);
+};
+
+// 작성한 게시글 가져오는 함수
+myPostList = function (req, res, userId, postsPerPage, link){
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
     userModel.getUserProfile(userId, (error, results) => {
         if (error) {
-            //console.error(error);
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
         } else {
-            //console.log('User Profile Results:', results);
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
-            console.log('User Profile:', userProfile); // 프로필 정보 출력
-            res.render('myPage', { userProfile: userProfile }); // myPage 뷰에 userProfile 변수 전달
+
+            // 작성한 게시글 가져오는 부분
+            postModel.getPostsByUserNum(userProfile.mem_num,(error, data)=>{
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Internal Server Error');
+                }
+                const reversedResults = data.reverse();
+                const totalPosts = reversedResults.length;
+                const totalPages = Math.ceil(totalPosts / postsPerPage);
+                const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+                const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+
+                let startIndex, endIndex;
+                if (currentPage === totalPages) {
+                    endIndex = totalPosts;
+                    startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+                } else {
+                    startIndex = (currentPage - 1) * postsPerPage;
+                    endIndex = startIndex + postsPerPage;
+                }
+
+                const paginatedResults = reversedResults.slice(startIndex, endIndex);
+                const formattedResults = paginatedResults.map(post => ({
+                    ...post,
+                    formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+                }));
+
+                res.render(link, {
+                    userProfile: userProfile,
+                    data: formattedResults,
+                    totalPages: totalPages,
+                    currentPage: currentPage,
+                    keyword: null,
+                    prevPage,
+                    startPage,
+                    endPage,
+                    nextPage
+                });
+            });
         }
     });
-};
+}
 
+// 개인 정보 수정 페이지
 exports.myProfileInfo = function (req, res) {
     const isLogined = req.session.is_logined;
     const provider = req.session.provider;
@@ -580,13 +702,13 @@ exports.myProfileInfo = function (req, res) {
                 res.render('error'); // 에러 화면 렌더링 또는 다른 처리
             } else {
                 const myProfile = results[0]; // 프로필 정보를 myProfile 변수로 저장
-                console.log('User Profile:', myProfile); // 프로필 정보 출력
                 res.render('editMyProfile', { myProfile: myProfile }); // editMyProfile 뷰에 myProfile 변수 전달
             }
         });
     }
 };
 
+// 개인 정보 수정 창 들어갈때 비밀번호 확인
 exports.editMyProfile = function (req, res) {
     const isLogined = req.session.is_logined;
     if (!isLogined) { // 로그인 X
@@ -615,6 +737,7 @@ exports.editMyProfile = function (req, res) {
     }
 };
 
+// 프로필 수정(닉네임, 전화번호, 이메일)
 exports.editMyInfo = function (req, res) {
     const isLogined = req.session.is_logined;
     if (!isLogined) { // 로그인 X
@@ -651,6 +774,7 @@ exports.editMyInfo = function (req, res) {
     });
 }
 
+// 비밀번호 수정
 exports.editMyPassword = function (req, res) {
     const isLogined = req.session.is_logined;
     if (!isLogined) { // 로그인 X
@@ -674,6 +798,7 @@ exports.editMyPassword = function (req, res) {
     }
 }
 
+// 회원탈퇴(local 계정)
 exports.withdrawal = function (req, res) {
     const isLogined = req.session.is_logined;
     if (!isLogined) { // 로그인 X
@@ -705,6 +830,7 @@ exports.withdrawal = function (req, res) {
     }
 }
 
+// 회원탈퇴(소셜계정)
 exports.socialWithdrawal = function (req, res) {
     const isLogined = req.session.is_logined;
     if (!isLogined) { // 로그인 X
@@ -722,3 +848,29 @@ exports.socialWithdrawal = function (req, res) {
     });
 }
 
+// 한줄 소개 수정
+exports.updateProfileIntro = function (req, res){
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
+    }
+    const id = req.session.user_id;
+    const newIntro = req.body.memIntro;
+    userModel.getUserProfile(id, function (error, results){
+        if (error) {
+            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else {
+            const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+            if(newIntro==userProfile.mem_intro){
+                res.send(`<script type="text/javascript">
+            alert('수정된 내용이 없습니다.');
+            history.back();</script>`);
+            } else {
+                userModel.updateProfileIntro(id, newIntro, function (error, data) {
+                    if (error) throw error;
+                    console.log(id, newIntro);
+                    res.send(`<script type="text/javascript">alert("한 줄 소개가 수정되었습니다."); location.href="/auth/mypage";</script>`);
+                });
+            }}});
+}
