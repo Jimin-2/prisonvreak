@@ -46,10 +46,9 @@ const boardController = {
                 // 댓글 목록을 순회하여 작성자 정보를 가져오는 함수
                 function fetchUserInfoForComments(comments, post_num) {
                   const userInfoPromises = [];
-                
                   for (let i = 0; i < comments.length; i++) {
                     const cmt_usernum = comments[i].cmt_usernum;
-                
+
                     const promise = new Promise((resolve, reject) => {
                       commentModel.getMemberByUserNum(cmt_usernum, post_num, (error, userInfo) => {
                         if (error) {
@@ -60,10 +59,10 @@ const boardController = {
                         }
                       });
                     });
-                
+
                     userInfoPromises.push(promise);
                   }
-                
+
                   return Promise.all(userInfoPromises);
                 }
                 fetchUserInfoForComments(comments, post_num)
@@ -81,7 +80,7 @@ const boardController = {
                           login_pro: login_pro,
                           //userInfo: userInfos, // 모든 사용자 정보를 전달
                         });
-    
+
                       } else {
                         res.render('boardShow', {
                           data: result,
@@ -105,8 +104,6 @@ const boardController = {
       });
     });
   },
-
-
 
   showList: (req, res) => {
     postModel.excludedUserNum(1, (error, results) => {
