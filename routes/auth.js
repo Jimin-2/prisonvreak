@@ -90,4 +90,6 @@ router.post('/updateProfileIntro', authController.updateProfileIntro);
 
 router.get('/myPost', authController.myPost);
 
+router.get('/userProfile/:username', authController.userProfile);
+
 module.exports = router;

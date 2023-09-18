@@ -874,3 +874,19 @@ exports.updateProfileIntro = function (req, res){
                 });
             }}});
 }
+
+//유저프로필 조회
+exports.userProfile = function (req, res) {
+    console.log(req.params)
+    const username = req.params.username;// 로그인된 사용자의 아이디
+
+    userModel.getUserProfileByUsername(username, (error, results) => {
+        if (error) {
+            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else {
+            console.log(results)
+            const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+            res.render('userProfile', { userProfile: userProfile });
+        }
+    });
+};
