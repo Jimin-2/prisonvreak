@@ -39,8 +39,14 @@ router.post('/check_id_availability', authController.check_id_availability);
 // 닉네임 중복 확인
 router.post('/check_nickname_availability', authController.check_nickname_availability);
 
+// 이메일 중복 확인
+router.post('/check_email_availability', authController.check_email_availability);
+
 // 이메일 인증 코드 전송
 router.post('/send_verification_email', authController.sendVerificationEmail);
+
+// 비밀번호 변경 시 이메일 인증 코드 전송
+router.post('/password_verification_email', authController.passwordVerificationEmail);
 
 // 인증 코드 확인
 router.post('/verify_code', authController.verify_code);
