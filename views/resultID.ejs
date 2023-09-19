@@ -11,39 +11,56 @@
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/login.css">
+  <link rel="stylesheet" type="text/css" href="/css/resultID.css">
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Title-->
-    <title> CAN </title>
+  <!--Title-->
+  <title> CAN </title>
 
 </head>
 
 <body>
 
-<!-- header -->
-<%- include('partials/header')%>
+  <!-- header -->
+  <%- include('partials/header')%>
 
-<!-- Section -->
-<section id="section">
-  <div id="loginTool">
-      <h1> 아이디 찾기 </h1>
+    <!-- Section -->
+    <section id="section">
+      <div id="loginTool">
+        <h1> FIND ID </h1>
 
-      <div class="inputBox">
-        <p>Your ID is: <%= id %></p>
+        <div class="result-box">
+          <div class="your-id">
+            <P> ▶ YOUR ID </P>
+          </div>
+          <div class="result-id">
+            <p>
+              <%= id %>
+            </p>
+          </div>
+        </div>
+
+        <div id="login-div">
+
+          <div class="login-pw">
+            <div id="kor-div"> 찾은 아이디로 로그인 </div>
+            <div id="eng-div"> <a href="/auth/login"> ▶ Click </a> </div>
+          </div>
+
+          <div class="login-pw">
+            <div id="kor-div"> 비밀번호가 기억나지 않는다면? </div>
+            <div id="eng-div"> <a href="/auth/findPW"> ▶ Click </a> </div>
+          </div>
+        </div>
       </div>
+    </section>
 
-
-    <div id="signUp"> <a href="/auth/signup"> sign Up </a> </div>
-    <div id="signin"> <a href="/auth/login"> Sign In </a> </div>
-
-</section>
-
-<!-- footer -->
-<%- include('partials/footer')%>
+    <!-- footer -->
+    <%- include('partials/footer')%>
 </body>
+
 </html>

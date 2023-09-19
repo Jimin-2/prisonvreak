@@ -93,3 +93,10 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+@media screen and (max-width: 900px) {
+  body {
+    background-color: white;
+    background-image: none;
+  }
+}

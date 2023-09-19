@@ -26,3 +26,12 @@
   padding: 10px 10px 10px 10px;
 }
 
+/* 반응형 웹 - 미디어 쿼리 */
+
+@media screen and (max-width: 1300px) {
+
+  #footer {
+    display: none;
+  }
+
+}
