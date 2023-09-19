@@ -21,7 +21,7 @@ section {
     flex-wrap: wrap;
 
     background-color: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 
     margin-top: 55px;
 }
@@ -51,7 +51,7 @@ section {
     justify-content: center
 }
 
-.tab_list li{
+.tab_list li {
     margin: 0 30px;
 }
 
@@ -69,9 +69,11 @@ section {
     border-radius: 5px;
     transition: all 0.2s
 }
+
 .clear {
     clear: both;
 }
+
 .btnGray {
     background: #575757;
 }
@@ -96,15 +98,16 @@ section {
     text-align: center;
     margin-left: 50px;
 }
+
 .myInfo input {
-     width: 300px;
-     height: 60px;
-     padding: 0 20px;
-     box-sizing: border-box;
-     border-radius: 4px;
-     background-color: white;
+    width: 300px;
+    height: 60px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: white;
     margin-left: 50px;
- }
+}
 
 .inputBox input {
     width: 300px;
@@ -115,6 +118,7 @@ section {
     background-color: white;
     margin-left: 50px;
 }
+
 .myInfo {
     height: 60px;
     width: 700px;
@@ -125,6 +129,7 @@ section {
     padding-bottom: 10px;
     padding-top: 10px;
 }
+
 .myProfile {
     width: 700px;
     display: flex;
@@ -145,23 +150,28 @@ section {
     padding-bottom: 10px;
     padding-top: 10px;
 }
-.myInfo h4{
+
+.myInfo h4 {
     display: inline-block;
     margin-left: 110px;
     width: 100px;
 }
-.myProfile h4{
+
+.myProfile h4 {
     display: inline-block;
     width: 100px;
 }
-.inputBox h4{
+
+.inputBox h4 {
     display: inline-block;
     margin-left: 110px;
     width: 100px;
 }
-.btn_div{
+
+.btn_div {
     margin-top: 10px;
 }
+
 .submit {
     width: 80px;
     height: 50px;
@@ -176,6 +186,7 @@ section {
 
     cursor: pointer;
 }
+
 .cancel {
 
     width: 80px;
@@ -198,7 +209,7 @@ section {
     display: flex;
     justify-content: space-between;
 
-    width:100%;
+    width: 100%;
     height: 50px;
 
     /* 상단고정 */
@@ -208,14 +219,14 @@ section {
     color: white;
     background-color: #161616;
 
-    z-index:1
+    z-index: 1
 }
 
 .logo {
     width: 100px;
 }
 
-.logo > img {
+.logo>img {
     width: 60px;
     padding: 8px 10px 20px 20px;
 }
@@ -229,6 +240,7 @@ section {
 
     background-color: #161616;
 }
-.tab_menu .cont_area .cont{
-    display:none;
+
+.tab_menu .cont_area .cont {
+    display: none;
 }

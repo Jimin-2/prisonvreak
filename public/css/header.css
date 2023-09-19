@@ -1,7 +1,3 @@
-/* header의 글자를 반응형 웹으로 수정할 때
-아예 시발 사라지게 하고 싶다... 왜 찾아도
-나오지 않는 걸까? 힘들다... */
-
 .link-1 a {
   color: white;
 }
@@ -10,7 +6,7 @@
   display: flex;
   justify-content: space-between;
 
-  width:100%;
+  width: 100%;
   height: 60px;
 
   /* 상단고정 */
@@ -65,4 +61,31 @@
 .link-1 a:before, .link-1 a:after {
   -webkit-transition: all 0.2s ease;
           transition: all 0.2s ease;
+}
+
+.nav-button {
+  position: absolute;
+
+  top: 10px;
+  right: 0px;
+
+  margin-top: 10px;
+  margin-right: 10px;
+
+  font-size: 18px;
+
+  display: none;
+}
+
+/* 반응형 */
+
+@media screen and (max-width: 1300px) {
+  .nav {
+    display: none;
+  }
+
+  .nav-button {
+    display: block;
+  }
+
 }
