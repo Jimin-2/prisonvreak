@@ -252,6 +252,19 @@ section {
     display: flex;
     align-items: center;
 }
+#withdrawInputBox {
+    height: 60px;
+    margin-left: 20px;
+}
+#withdrawInputBox input{
+    margin-left: 160px;
+}
+#withdrawInputBox p {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    margin-left: 145px;
+}
 #countForm {
     margin-top: 5px;
     font-size: 0.8em;
