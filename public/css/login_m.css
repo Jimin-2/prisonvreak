@@ -1,13 +1,10 @@
 body {
   font-size: 14px;
+  background-color: white;
 }
 
 #section {
-  height: 950px;
-
-  padding: 0;
-  margin: 0;
-  border: none;
+  height: 800px;
 
   background-color: white;
   display: flex;
@@ -21,20 +18,15 @@ body {
   height: 100%;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  background-color: white;
-  border-radius: 3px;
-  box-shadow: 10px 10px 20px #161616;
-
-  box-sizing: border-box;
 }
 
 #loginTool h1{
-  font-size: 32px;
+  font-size: 30px;
   color: #161616;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .inputBox p {
@@ -43,7 +35,7 @@ body {
 }
 
 .inputBox input {
-  width: 400px;
+  width: 330px;
   height: 60px;
   padding: 0 20px;
   box-sizing: border-box;
@@ -56,7 +48,7 @@ body {
 }
 
 #rememberCheck {
-  width: 400px;
+  width: 330px;
   font-size: 10px;
 
   margin-top: 7px;
@@ -81,7 +73,7 @@ body {
 
 .submit button {
 
-  width: 400px;
+  width: 330px;
 	height: 50px;
 
 	justify-content: center;
@@ -103,7 +95,7 @@ body {
 }
 
 #another {
-  width: 400px;
+  width: 330px;
 
   align-items:center; 
   justify-content:center;
@@ -119,7 +111,7 @@ body {
 }
 
 #logo {
-  width: 400px;
+  width: 330px;
   display: flex;
   justify-content: center;
   align-items: center;

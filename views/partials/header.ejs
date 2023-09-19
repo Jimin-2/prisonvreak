@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="/css/header.css">
 <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+<script src="../../public/javascript/header.js"></script>
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -30,8 +31,28 @@
     <% } %>
   </ul>
 
-  <a class="nav-button">
+  <a class="nav-button" href="#">
     <i class="fa-solid fa-bars fa-2xl"></i>
   </a>
 
+</div>
+<div>
+  <ul class="nav-toggle-button">
+    <li class="link-1"><a href="/"> 게임정보 </a></li>
+
+    <li class="link-1"><a href="/notice"> 공지사항 </a></li>
+
+    <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
+
+    <li class="link-1"><a href="/"> 랭킹 </a></li>
+
+    <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
+
+    <% if (is_logined) { %>
+      <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
+      <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
+    <% } else { %>
+      <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
+    <% } %>
+  </ul>
 </div>
