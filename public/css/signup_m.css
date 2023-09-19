@@ -1,0 +1,125 @@
+body {
+  font-size: 14px;
+}
+
+#section {
+  height: 1400px;
+
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  background-image: url("background/bgLogin.png");
+  display: flex;
+  align-items:center; 
+  justify-content:center;
+}
+
+#loginTool {
+  position: relative;
+  margin: 100px auto;
+  width: 500px;
+  height: 1150px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 10px 10px 20px #161616;
+
+  box-sizing: border-box;
+}
+
+#loginTool h1{
+  font-size: 32px;
+  color: #161616;
+  margin-bottom: 50px;
+}
+
+.inputBox p {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-bottom: 3px;
+}
+
+.inputBox input {
+  width: 400px;
+  height: 60px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.submit button {
+
+  width: 400px;
+	height: 50px;
+
+	justify-content: center;
+	display: block;
+
+	color: #fff;
+	background: #161616;
+
+	font-size: 1em;
+	font-weight: bold;
+
+	margin-top: 40px;
+
+	outline: none;
+	border: none;
+	border-radius: 5px;
+
+	cursor: pointer;
+}
+
+#signin {
+  font-size: 12px;
+  color: #bebebe;
+  margin-top: 5px;
+}
+
+#signin a:link {
+  color: #bebebe;
+}
+
+#divemail button {
+
+  margin-top: 30px;
+  margin-bottom: 10px;
+  width: 70px;
+  height: 20px;
+
+  justify-content: center;
+	display: block;
+
+  color: #fff;
+	background: #161616;
+
+  outline: none;
+	border: none;
+
+  cursor: pointer;
+}
+
+#divid button {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  width: 70px;
+  height: 20px;
+
+  justify-content: center;
+	display: block;
+
+  color: #fff;
+	background: #161616;
+
+  outline: none;
+	border: none;
+
+  cursor: pointer;
+}
