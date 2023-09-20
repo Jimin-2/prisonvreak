@@ -1,6 +1,6 @@
 section {
     width: 100%;
-    height: 750px;
+    height: 795px;
 
     display: flex;
     justify-content: center;
@@ -10,7 +10,7 @@ section {
 
 #layout {
     width: 800px;
-    height: 600px;
+    height: 700px;
 
     display: flex;
     justify-content: center;
@@ -23,11 +23,11 @@ section {
     background-color: white;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 
-    margin-top: 55px;
+    margin-top: 50px;
 }
 
 #first {
-    width: 90%;
+    width: 95%;
     height: 90%;
 
     display: flex;
@@ -94,9 +94,10 @@ section {
 }
 
 .inputBox p {
+    display: inline-block;
     width: 300px;
     text-align: center;
-    margin-left: 50px;
+    margin-left: 245px;
 }
 
 .myInfo input {
@@ -107,27 +108,138 @@ section {
     border-radius: 4px;
     background-color: white;
     margin-left: 50px;
+
+ }
+.myInfo button {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    width: 70px;
+    height: 20px;
+
+    justify-content: center;
+    display: block;
+
+    color: #fff;
+    background: #161616;
+
+    outline: none;
+    border: none;
+
+    cursor: pointer;
+}
+#divemail button {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    width: 40px;
+    height: 20px;
+
+    justify-content: center;
+    display: block;
+
+    color: #fff;
+    background: #161616;
+
+    outline: none;
+    border: none;
+
+    cursor: pointer;
+}
+#verificationCode {
+    margin-right: 15px;
+}
+.inputBox button {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    width: 40px;
+    height: 20px;
+
+    justify-content: center;
+    display: block;
+
+    color: #fff;
+    background: #161616;
+
+    outline: none;
+    border: none;
+
+    cursor: pointer;
 }
 
 .inputBox input {
-    width: 300px;
+    width: 290px;
     height: 60px;
     padding: 0 20px;
     box-sizing: border-box;
     border-radius: 4px;
     background-color: white;
-    margin-left: 50px;
+    margin-left: 30px;
+}
+#divemail input {
+    margin-right: 15px;
+}
+.divBorder {
+    border-bottom: 1px solid #bfbfbf;
+    width: 760px;
+
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.divPassword {
+    border-bottom: 1px solid #bfbfbf;
+    height: 90px;
+    width: 760px;
+
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+#nickForm{
+    display: inline-block;
+    width: 500px;
+    margin-left: 60px;
+}
+#nickForm button{
+    float: right;
+    width: 65px;
+    height: 20px;
+
+    justify-content: center;
+    display: block;
+
+    color: #fff;
+    background: #161616;
+
+    outline: none;
+    border: none;
+
+    cursor: pointer;
+}
+#emailForm{
+     display: inline-block;
+     width: 500px;
+     margin-left: 60px;
+ }
+#emailForm button{
+    float: right;
+    width: 65px;
+    height: 20px;
+
+    justify-content: center;
+    display: block;
+
+    color: #fff;
+    background: #161616;
+
+    outline: none;
+    border: none;
+
+    cursor: pointer;
 }
 
 .myInfo {
-    height: 60px;
-    width: 700px;
+    height: 70px;
     display: flex;
-    border-bottom: 1px solid #bfbfbf;
     justify-content: center;
     align-items: center;
-    padding-bottom: 10px;
-    padding-top: 10px;
 }
 
 .myProfile {
@@ -141,14 +253,30 @@ section {
 }
 
 .inputBox {
-    height: 60px;
-    width: 700px;
+    margin-top: 15px;
     display: flex;
-    border-bottom: 1px solid #bfbfbf;
-    justify-content: center;
     align-items: center;
-    padding-bottom: 10px;
-    padding-top: 10px;
+}
+#withdrawInputBox {
+    height: 60px;
+    margin-left: 20px;
+}
+#withdrawInputBox input{
+    margin-left: 160px;
+}
+#withdrawInputBox p {
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+    margin-left: 145px;
+}
+#countForm {
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+#verificationStatus {
+    margin-top: 2px;
+    font-size: 0.8em;
 }
 
 .myInfo h4 {
@@ -164,12 +292,16 @@ section {
 
 .inputBox h4 {
     display: inline-block;
-    margin-left: 110px;
+    margin-left: 145px;
     width: 100px;
 }
 
 .btn_div {
     margin-top: 10px;
+}
+
+#verificationCodeForm .inputBox{
+    margin-top: 0;
 }
 
 .submit {

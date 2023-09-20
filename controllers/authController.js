@@ -91,7 +91,7 @@ exports.login_process = function (req, res) {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
                     res.send(`<script type="text/javascript">alert("${authStatusUI}");
-                    window.history.go(-2);</script>`);
+                    location.href="/";</script>`);
                 });
             } else {
                 res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); 
@@ -268,6 +268,22 @@ exports.check_nickname_availability = function (req, res) {
     });
 };
 
+// 아이디 중복 확인
+exports.check_email_availability = function (req, res) {
+    const email = req.body.email;
+    console.log('이메일 사용 가능 여부 확인:', email);
+
+    userModel.checkEmailAvailability(email,function (error,results) {
+        if (error) throw error;
+
+        var availability = {
+            available: results.length === 0
+        };
+
+        console.log('이메일 사용 가능 여부:', availability.available);
+        res.json(availability);
+    });
+};
 /*
 // 고객지원프로세스
 exports.customer_send = function (req, res) {
@@ -364,18 +380,6 @@ exports.customer_send = function (req, res) {
 };
 
 
-
-// 고객지원화면
-/*exports.customer = function (req, res) {
-    if (authCheckMiddleware.isOwner(req, res)) {
-        res.render('customer');
-    } else {
-        // 인증되지 않은 사용자에게 알림을 띄우고 로그인 페이지로 리디렉션
-        res.send(`<script type="text/javascript">alert("로그인 후 사용 가능합니다.");
-        document.location.href="/auth/login";</script>`);
-    }
-};*/
-
 exports.customer = function (req, res) {
     const userId = req.session.user_id;
     const isLogined = req.session.is_logined;
@@ -392,7 +396,66 @@ exports.customer = function (req, res) {
     });
 };
 
+// 비밀번호 변경 시 이메일 인증 코드 전송
+exports.passwordVerificationEmail = function (req, res) {
+    const email = req.body.email;
 
+    // 이메일 일치 확인
+    userModel.checkEmailAvailability(email, function (error, results) {
+        if (error) {
+            console.error('데이터베이스 오류:', error);
+            res.status(500).send();
+        } else {
+            if (results.length > 0) {
+                // 일치하는 이메일인 경우, 이메일 전송 로직 수행
+                console.log('Sending verification email to:', email);
+
+                // 무작위 인증 코드 생성 (6자리 숫자)
+                var verificationCode = generateVerificationCode();
+
+                // 이메일과 인증 코드를 세션에 저장
+                req.session.verificationCode = verificationCode;
+
+                // Nodemailer를 사용하여 이메일 전송
+                var transporter = nodemailer.createTransport({
+                    service: 'Gmail',
+                    auth: {
+                        user: 'prisonvreakcan@gmail.com',
+                        pass: process.env.EMAIL_PASS
+                    }
+                });
+
+                var mailOptions = {
+                    from: 'prisonvreakcan@gmail.com',
+                    to: email,
+                    subject: '이메일 인증 번호',
+                    text: '인증 번호는 다음과 같습니다: ' + verificationCode
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.error('이메일 전송 오류:', error);
+                        res.status(500).send();
+                    } else {
+                        console.log('이메일 전송 성공:', info.response);
+                        res.status(200).send();
+                    }
+                });
+            } else {
+                // 일치하지 않은 경우
+                res.status(400).json({ message: '이메일이 일치하지 않습니다.' });
+            }
+        }
+    });
+};
+// 인증 코드 생성 함수
+function generateVerificationCode() {
+    var code = '';
+    for (var i = 0; i < 6; i++) {
+        code += Math.floor(Math.random() * 10);
+    }
+    return code;
+}
 // 이메일 인증 코드 전송
 exports.sendVerificationEmail = function (req, res) {
     const email = req.body.email;
@@ -444,15 +507,6 @@ exports.sendVerificationEmail = function (req, res) {
             }
         }
     });
-
-    // 인증 코드 생성 함수
-    function generateVerificationCode() {
-        var code = '';
-        for (var i = 0; i < 6; i++) {
-            code += Math.floor(Math.random() * 10);
-        }
-        return code;
-    }
 };
 
 

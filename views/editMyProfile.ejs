@@ -3,6 +3,61 @@
 
 <head>
     <script>
+        function checkNicknameAvailability() {
+            var nickname = document.getElementById('nickname').value;
+            var availabilitySpan = document.getElementById('nicknameAvailability');
+
+            fetch('/auth/check_nickname_availability', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nickname: nickname })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.available) {
+                        availabilitySpan.textContent = '사용 가능한 닉네임입니다.';
+                        availabilitySpan.style.color = 'green';
+                        availabilitySpan.style.fontSize = '0.9em';
+                    } else {
+                        availabilitySpan.textContent = '이미 사용 중인 닉네임입니다.';
+                        availabilitySpan.style.color = 'red';
+                        availabilitySpan.style.fontSize = '0.9em';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        function checkEmailAvailability() {
+            var email = document.getElementById('editEmail').value;
+            var availabilitySpan = document.getElementById('emailAvailability');
+
+            fetch('/auth/check_email_availability', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.available) {
+                        availabilitySpan.textContent = '사용 가능한 이메일입니다.';
+                        availabilitySpan.style.color = 'green';
+                        availabilitySpan.style.fontSize = '0.9em';
+                    } else {
+                        availabilitySpan.textContent = '이미 등록된 이메일입니다.';
+                        availabilitySpan.style.color = 'red';
+                        availabilitySpan.style.fontSize = '0.9em';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
         function checkPasswordMatch() {
             var password = document.getElementById('password').value;
             var confirmPassword = document.getElementById('confirmPassword').value;
@@ -10,22 +65,133 @@
             if (password === confirmPassword) {
                 matchSpan.textContent = '비밀번호가 일치합니다.';
                 matchSpan.style.color = 'green';
+                matchSpan.style.fontSize = '0.9em';
+                matchSpan.style.marginLeft = '5px';
             } else {
                 matchSpan.textContent = '비밀번호가 일치하지 않습니다.';
                 matchSpan.style.color = 'red';
+                matchSpan.style.fontSize = '0.9em';
+                matchSpan.style.marginLeft = '5px';
             }
         }
 
+        function sendVerificationCode() {
+            var email = document.getElementById('email').value;
+            var verificationCodeForm = document.getElementById('verificationCodeForm');
+
+            var verificationCodeExpiration = 5 * 60; // 인증번호 만료 시간 (5분)
+            // 인증번호 만료 시간 설정
+            var expirationTime = new Date().getTime() + verificationCodeExpiration * 1000;
+            localStorage.setItem('verificationCodeExpiration', expirationTime);
+
+            // 인증 번호 생성 (6자리 숫자)
+            var verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+            // 이메일로 인증 번호 전송
+            fetch('/auth/password_verification_email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email, code: verificationCode })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        verificationCodeForm.style.display = 'block'; // 인증 번호 입력 폼 표시
+                        // 인증 번호 입력 칸 밑에 시간 카운트다운 엘리먼트 추가
+                        updateCountdown(); // 카운트다운 시작
+                    } else {
+                        alert('이메일이 일치하지 않습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function updateCountdown() {
+            var expirationTime = localStorage.getItem('verificationCodeExpiration');
+            if (!expirationTime) return;
+
+            var countdownElement = document.getElementById('countdown');
+
+            // 남은 시간 계산
+            var now = new Date().getTime();
+            var remainingSeconds = Math.max(0, Math.floor((expirationTime - now) / 1000));
+
+            // 분과 초로 변환하여 표시
+            var minutes = Math.floor(remainingSeconds / 60);
+            var seconds = remainingSeconds % 60;
+            countdownElement.textContent = minutes + '분 ' + seconds + '초';
+
+            if (remainingSeconds === 0) {
+                // 시간이 만료되면 인증번호 입력 폼 숨기기
+                document.getElementById('verificationCodeForm').style.display = 'none';
+                localStorage.removeItem('verificationCodeExpiration');
+            } else {
+                // 1초마다 업데이트
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        function verifyCode() {
+            var enteredCode = document.getElementById('verificationCode').value;
+            var verificationStatus = document.getElementById('verificationStatus');
+
+            // 입력된 인증 번호와 생성된 인증 번호 비교
+            fetch('/auth/verify_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code: enteredCode })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.valid) {
+                        verificationStatus.textContent = '인증되었습니다.';
+                        verificationStatus.style.color = 'green';
+                    } else {
+                        verificationStatus.textContent = '인증번호가 잘못되었습니다.';
+                        verificationStatus.style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
         function validateForm() {
-            var passwordMatch = document.getElementById('passwordMatch').textContent;
-            if (passwordMatch !== '비밀번호가 일치합니다.') {
-                alert('비밀번호 일치여부를 확인해주세요.');
+            var emailAvailability = document.getElementById('emailAvailability').textContent;
+            var nicknameAvailability = document.getElementById('nicknameAvailability').textContent;
+
+            if (nicknameAvailability !== '사용 가능한 닉네임입니다.') {
+                alert('닉네임 중복확인을 해주세요.');
+                return false;
+            } else if (emailAvailability !== '사용 가능한 이메일입니다.') {
+                alert('이미 등록된 이메일입니다.');
                 return false;
             }else {
                 return true;
             }
         }
+        function emailValidateForm() {
+            var verificationStatus = document.getElementById('verificationStatus').textContent;
 
+            if (verificationStatus !== '인증되었습니다.') {
+                alert('이메일 인증을 완료해주세요.');
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 세션 초기화 코드를 이곳에 배치합니다.
+            document.getElementById('verificationCodeForm').style.display = 'none';
+            document.getElementById('verificationCode').value = '';
+            document.getElementById('verificationStatus').textContent = '';
+        });
     </script>
 
     <meta charset="UTF-8">
@@ -73,6 +239,7 @@
                             </li>
                             <li>
                                 <a href="#tab_content_3" class="btn btnFade btnGray">프로필 수정</a>
+                                <!-- 프로필 이미지 업로드 필드 추가 -->
                             </li>
                             <li>
                                 <a href="#tab_content_4" class="btn btnFade btnGray">회원 탈퇴</a>
@@ -82,33 +249,45 @@
 
                         <div class="cont_area">
                             <div id="tab_content_1" class="cont">
-                                <form action="/auth/editMyInfo" method="post">
-                                    <!-- 프로필 이미지 업로드 필드 추가 -->
-
-                                    <div class="myInfo">
-                                      <h4> Id </h4>
-                                       <p><%= myProfile.mem_id%></p>
-                                     <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
-                                   </div>
-
-                                    <div class="myInfo">
-                                        <h4> Name </h4>
-                                        <p><%= myProfile.mem_name%></p>
+                                <form action="/auth/editMyInfo" method="post" onsubmit="return validateForm();">
+                                    <div class="divBorder">
+                                        <div class="myInfo">
+                                            <h4> Id </h4>
+                                            <p><%= myProfile.mem_id%></p>
+                                            <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                       </div>
                                     </div>
-
-                                    <div class="myInfo">
-                                        <h4> Nickname </h4>
-                                        <input type="text" name="nickname" value="<%= myProfile.mem_nickname%>" required>
+                                    <div class="divBorder">
+                                        <div class="myInfo">
+                                            <h4> Name </h4>
+                                            <p><%= myProfile.mem_name%></p>
+                                        </div>
                                     </div>
-
-                                    <div class="myInfo">
-                                        <h4> E-mail </h4>
-                                        <input type="text" name="email" value="<%= myProfile.mem_email%>" required>
+                                    <div class="divBorder">
+                                        <div class="myInfo">
+                                            <h4> Nickname </h4>
+                                            <input type="text" id="nickname" name="nickname" value="<%= myProfile.mem_nickname%>" required>
+                                        </div>
+                                        <div id="nickForm">
+                                            <span id="nicknameAvailability"></span>
+                                            <button type="button" onclick="checkNicknameAvailability()"> 중복 확인 </button>
+                                        </div>
                                     </div>
-
-                                    <div class="myInfo">
-                                        <h4> Phone </h4>
-                                        <input type="text" name="phone" value="<%= myProfile.mem_phone%>" required>
+                                    <div class="divBorder">
+                                        <div class="myInfo">
+                                            <h4> E-mail </h4>
+                                            <input type="text" id="editEmail" name="email" value="<%= myProfile.mem_email%>" required>
+                                        </div>
+                                        <div id="emailForm">
+                                            <span id="emailAvailability"></span>
+                                            <button type="button" onclick="checkEmailAvailability()"> 중복 확인 </button>
+                                        </div>
+                                    </div>
+                                    <div class="divBorder">
+                                        <div class="myInfo">
+                                            <h4> Phone </h4>
+                                            <input type="text" name="phone" value="<%= myProfile.mem_phone%>" required>
+                                        </div>
                                     </div>
                                     <div class="btn_div">
                                         <button type="submit" class="submit btnFade btnGray"> 수정 </button>
@@ -118,18 +297,37 @@
                             </div>
 
                             <div id="tab_content_2" class="cont">
-                                <form action="/auth/editMyPassword" method="post">
+                                <form action="/auth/editMyPassword" method="post" onsubmit="return emailValidateForm();">
                                     <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
-                                    <div class="inputBox">
-                                        <h4> New Password </h4>
-                                        <input type="password" name="pwd" id="password" required>
+                                    <div class="divPassword">
+                                        <div class="inputBox">
+                                            <h4> New Password </h4>
+                                            <input type="password" name="pwd" id="password" required>
+                                        </div>
                                     </div>
-
-                                    <div class="inputBox" >
-                                        <h4> Confirm Password </h4>
-                                        <input type="password" name="pwd2" id="confirmPassword" required oninput="checkPasswordMatch()">
+                                    <div class="divPassword">
+                                        <div class="inputBox" >
+                                            <h4> Confirm Password </h4>
+                                            <input type="password" name="pwd2" id="confirmPassword" required oninput="checkPasswordMatch()">
+                                            <div id="passwordMatch"></div>
+                                        </div>
                                     </div>
-                                    <span id="passwordMatch"></span>
+                                    <div class="divPassword">
+                                        <div class="inputBox" id="divemail">
+                                            <h4> E-mail </h4>
+                                            <input type="email" name="email" id="email" required>
+                                            <button type="button" onclick="sendVerificationCode()"> 인증 </button>
+                                        </div>
+                                    </div>
+                                    <div id="verificationCodeForm" class="divPassword" style="display: none">
+                                        <div class="inputBox">
+                                            <h4> 인증번호 확인 </h4>
+                                            <input type="text" placeholder="인증번호 입력" id="verificationCode">
+                                            <button type="button" onclick="verifyCode()"> 확인 </button>
+                                        </div>
+                                        <div id="countForm"> 인증번호 유효 시간: <span id="countdown">5분 0초</span> </div>
+                                        <div id="verificationStatus"> </div> <!-- 유효하지 않습니다. -->
+                                    </div>
                                     <div class="btn_div">
                                         <button type="submit" class="submit btnFade btnGray"> 수정 </button>
                                         <button class="cancel cancle_Fade" onclick="window.close()"> 취소 </button>
@@ -213,15 +411,18 @@
 
                             <div id="tab_content_4" class="cont">
                                 <form action="/auth/withdrawal" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
-                                    <div class="inputBox" >
-                                        <h4> Id </h4>
-                                        <p><%= myProfile.mem_id%></p>
-                                        <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                    <div class="divBorder">
+                                        <div class="inputBox" id="withdrawInputBox">
+                                            <h4> Id </h4>
+                                            <p><%= myProfile.mem_id%></p>
+                                            <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                        </div>
                                     </div>
-
-                                    <div class="inputBox">
-                                        <h4>Password </h4>
-                                        <input type="password" name="pwd" id="password" required>
+                                    <div class="divBorder">
+                                        <div class="inputBox" id="withdrawInputBox">
+                                            <h4>Password </h4>
+                                            <input type="password" name="pwd" id="password" required>
+                                        </div>
                                     </div>
                                     <div class="btn_div">
                                         <button type="submit" class="submit btnFade btnGray"> 회원 탈퇴 </button>
@@ -247,30 +448,47 @@
 
                             <div class="cont_area">
                                 <div id="tab_content_1" class="cont">
-                                    <form action="/auth/editMyInfo" method="post">
-                                        <div class="myInfo">
-                                            <h4> Id </h4>
-                                            <p><%= myProfile.mem_id%></p>
-                                        </div>
+                                    <form action="/auth/editMyInfo" method="post" onsubmit="return validateForm();">
+                                        <!-- 프로필 이미지 업로드 필드 추가 -->
 
-                                        <div class="myInfo">
-                                            <h4> Name </h4>
-                                            <p><%= myProfile.mem_name%></p>
+                                        <div class="divBorder">
+                                            <div class="myInfo">
+                                                <h4> Id </h4>
+                                                <p><%= myProfile.mem_id%></p>
+                                                <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                            </div>
                                         </div>
-
-                                        <div class="myInfo">
-                                            <h4> Nickname </h4>
-                                            <input type="text" value="<%= myProfile.mem_nickname%>" required>
+                                        <div class="divBorder">
+                                            <div class="myInfo">
+                                                <h4> Name </h4>
+                                                <p><%= myProfile.mem_name%></p>
+                                            </div>
                                         </div>
-
-                                        <div class="myInfo">
-                                            <h4> E-mail </h4>
-                                            <input type="text" value="<%= myProfile.mem_email%>" required>
+                                        <div class="divBorder">
+                                            <div class="myInfo">
+                                                <h4> Nickname </h4>
+                                                <input type="text" id="nickname" name="nickname" value="<%= myProfile.mem_nickname%>" required>
+                                            </div>
+                                            <div id="nickForm">
+                                                <span id="nicknameAvailability"></span>
+                                                <button type="button" onclick="checkNicknameAvailability()"> 중복 확인 </button>
+                                            </div>
                                         </div>
-
-                                        <div class="myInfo">
-                                            <h4> Phone </h4>
-                                            <input type="text" value="<%= myProfile.mem_phone%>" required>
+                                        <div class="divBorder">
+                                            <div class="myInfo">
+                                                <h4> E-mail </h4>
+                                                <input type="text" id="editEmail" name="email" value="<%= myProfile.mem_email%>" required>
+                                            </div>
+                                            <div id="emailForm">
+                                                <span id="emailAvailability"></span>
+                                                <button type="button" onclick="checkEmailAvailability()"> 중복 확인 </button>
+                                            </div>
+                                        </div>
+                                        <div class="divBorder">
+                                            <div class="myInfo">
+                                                <h4> Phone </h4>
+                                                <input type="text" name="phone" value="<%= myProfile.mem_phone%>" required>
+                                            </div>
                                         </div>
                                         <div class="btn_div">
                                             <button type="submit" class="submit btnFade btnGray"> 수정 </button>
@@ -316,10 +534,12 @@
 
                                 <div id="tab_content_3" class="cont">
                                     <form action="/auth/socialWithdrawal" method="post" onsubmit="return confirm('정말로 탈퇴하시겠습니까?');">
-                                        <div class="inputBox" >
-                                            <h4> Id </h4>
-                                            <p><%= myProfile.mem_id%></p>
-                                            <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                        <div class="divBorder">
+                                            <div class="inputBox" id="withdrawInputBox">
+                                                <h4> Id </h4>
+                                                <p><%= myProfile.mem_id%></p>
+                                                <input type="text" name="id" value="<%= myProfile.mem_id %>" readonly style="display: none">
+                                            </div>
                                         </div>
                                         <div class="btn_div">
                                             <button type="submit" class="submit btnFade btnGray"> 회원 탈퇴 </button>
