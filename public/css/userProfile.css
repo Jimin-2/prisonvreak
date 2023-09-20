@@ -1,0 +1,65 @@
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* userprofile.ejs의 스타일 수정 */
+#myProfile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* 모달 내용을 세로로 배치 */
+
+    margin: 100px auto;
+    padding: 20px;
+    max-width: 600px;
+
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    text-align: center; /* 모달 내용 가운데 정렬 */
+    position: relative; /* 모달 내용에 대한 상대 위치 설정 */
+}
+
+#profileImg img {
+    border-radius: 50%;
+}
+
+#myProfileInfo {
+    margin-top: 20px; /* 위에 여백 추가 */
+}
+
+#rank {
+    margin-top: 20px;
+}
+
+#rank h4 {
+    margin: 0 0 10px;
+}
+
+#rankPuzzle div {
+    margin-bottom: 5px;
+}
+
+#memIntro {
+    width: 80%;
+    height: 100px;
+    resize: none;
+    margin: 20px auto; /* 가운데 정렬을 위해 수정 */
+    padding: 10px;
+    display: block; /* 가운데 정렬을 위해 수정 */
+    text-align: center; /* 가운데 정렬을 위해 수정 */
+
+    border-radius: 15px;
+    border: 1px solid #161616;
+}
+/* 추가적인 스타일을 원하시면 여기에 추가하세요 */
