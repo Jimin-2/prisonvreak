@@ -6,17 +6,26 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- react -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- babel-->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
   <!--글꼴 Link-->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/login.css">
+  <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/login.css">
+  <link rel="stylesheet" media="(max-width: 900px)" href="/css/login_m.css" >
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- viewport -->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <!--Title-->
     <title> CAN </title>
@@ -79,4 +88,10 @@
 <!-- footer -->
 <%- include('partials/footer')%>
 </body>
+
+<!-- react 실험해보기 -->
+<script type="text/babel">
+
+</script>
+
 </html>

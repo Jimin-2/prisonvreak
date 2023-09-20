@@ -1,0 +1,79 @@
+body {
+  font-size: 14px;
+}
+
+#section {
+  height: 1000px;
+
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  background-image: url("background/bgLogin.png");
+  display: flex;
+  align-items:center; 
+  justify-content:center;
+}
+
+#loginTool {
+  position: relative;
+  margin: 70px auto;
+  width: 500px;
+  height: 600px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 10px 10px 20px #161616;
+
+  box-sizing: border-box;
+}
+
+#loginTool h1{
+  font-size: 32px;
+  color: #161616;
+  margin-bottom: 50px;
+}
+
+.result-box {
+  width: 300px;
+  height: 200px;
+
+  margin-top: 10px;
+}
+
+.your-id {
+  font-size: 24px;
+}
+
+.result-id {
+  margin-top: 20px;
+
+  font-size: 18px;
+  color: #979797;
+}
+
+#kor-div {
+  font-size: 12px;
+  color: #353535;
+
+  margin-top: 5px;
+  margin-right: 100px;
+}
+
+#eng-div {
+  color: #bebebe;
+}
+
+.login-pw {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+
+  margin-top: 7px;
+}
