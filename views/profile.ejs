@@ -10,14 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
   <!--CSS-->
-  <link rel="stylesheet" type="text/css" href="css/main.css">
-  <link rel="stylesheet" type="text/css" href="css/header.css">
-  <link rel="stylesheet" type="text/css" href="css/footer.css">
-
-  <link rel="stylesheet" type="text/css" href="css/profile.css">
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/myPage.css">
 
   <!-- JavaScript -->
-  <script src="javascript/index.js"></script>
+  <script src="/javascript/index.js"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!--Title-->
   <title> CAN </title>
@@ -25,102 +24,128 @@
 </head>
 
 <body>
-  <!-- header -->
-  <div id="header">
-    <div class="logo">
-      <img src="/img/LOGO.png" onclick="location.href='index.html'" style="cursor: pointer;">
+<!-- header -->
+<%- include('partials/header')%>
+
+<!-- Section -->
+<section id="section">
+  <div id="layout">
+    <div id="firstLayout">
+      <div class="myPageList">
+        <h2> 계정 정보 </h2>
+        <hr>
+        <ul>
+          <li><a href=""> <%= userProfile.mem_nickname %>'s 프로필 </a></li>
+        </ul>
+      </div>
+
     </div>
-      <ul class="nav"> 
-        <li class="link-1"><a href="gameinfo.html"> 게임정보 </a></li>
-        <li class="link-1"><a href="info.html"> 공지사항 </a></li>
-        <li class="link-1"><a href="commu.html"> 커뮤니티 </a></li>
-        <li class="link-1"><a href="rank.html"> 랭킹 </a></li>
-        <li class="link-1"><a href="customer.html"> 고객지원 </a></li>
-        <li class="link-1"><a href="login.html"> 로그인 </a></li>
-      </ul>
-  </div>
+    <div id="secondLayout">
 
-  <!-- Section -->
-  <section id="section">
-    <div id="container">
-      <img src="img/cat.png">
+      <!-- 마이페이지 첫 번재 레이아웃 --><!--마이페이지 메인-->
+      <div id="first">
+        <h2> <%= userProfile.mem_nickname %> Profile </h2>
 
-      <div id="profileCon">
-        <h2> 정예은 </h2>
-        <h5> ID yeeunyeeun </h5>
+        <div id="myProfile">
+          <div id="profileImg">
+            <img src="<%= userProfile.mem_profile %>" alt="프로필 이미지" width="200" height="200">
+          </div>
 
-        <a>
-          puzzle 000:000:000
-        </a>
-        <a>
-          total 000:000:000
-        </a>
+          <div id="myProfileInfo">
+            <h3> <%= userProfile.mem_nickname %> </h3>
+            <div>
+              <p class="next"> ID <%= userProfile.mem_id %></p>
+            </div>
 
-        <div id="introduce">
-          <div>
-            <a> 정예은임 </a>
+            <hr>
+
+            <div id="rank">
+              <h4> 최고기록 </h4>
+              <div id="rankPuzzle">
+                <div> puzzle 000:000:000 </div>
+                <div> total 000:000:000 </div>
+              </div>
+            </div>
+
           </div>
         </div>
-
-        <hr>
-
+          <textarea id="memIntro" name="memIntro" rows="3" placeholder="한 줄 소개" readonly><%= userProfile.mem_intro%></textarea>
       </div>
 
-      <div id="commuCon">
-        <h2> 최근 글 </h2>
-        <table>
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>조회수</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>04</td>
-              <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>04</td>
-              <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>04</td>
-              <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
-              <td>0</td>
-            </tr>
-            <tr>
-              <td>04</td>
-              <td><a href="commuForm.html">[ CAN ] 2023/07/27 웹 회의</a></td>
-              <td>0</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- 마이페이지 두 번재 레이아웃 -->
+        <div id="second">
+          <h2> <%= userProfile.mem_nickname %> Post </h2>
+          <hr>
+          <div id="myPostList">
+            <table>
+              <thead>
+              <tr class="title">
+                <th>번호</th>
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th>날짜</th>
+                <th>조회수</th>
+              </tr>
+              </thead>
+              <tbody class="content">
+              <% for (let i=0; i < data.length; i++) { %>
+                <tr>
+                  <td>
+                    <%= data[i].post_num %>
+                  </td>
+                  <td>
+                    <a href="/notice/show/<%= data[i].post_num %>">
+                      <%= data[i].post_title %>
+                    </a>
+                  </td>
+                  <td>
+                    <%= data[i].post_usernum %>
+                  </td>
+                  <td>
+                    <%= data[i].formattedCreatedAt %>
+                  </td>
+                  <td>
+                    <%= data[i].post_hit %>
+                  </td>
+                </tr>
+              <% } %>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <% if (prevPage !== null) { %>
+              <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
+            <% } else { %>
+              <span class="disabled">&laquo; 이전</span>
+            <% } %>
+
+            <% for (let i = startPage; i <= endPage; i++) { %>
+              <% if (i === currentPage) { %>
+                <span class="active"><%= i %></span>
+              <% } else { %>
+                <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
+              <% } %>
+            <% } %>
+
+            <% if (nextPage !== null) { %>
+              <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
+            <% } else { %>
+              <a href="#" id="disabledNextPage">다음 &raquo;</a>
+              <script>
+                document.getElementById("disabledNextPage").addEventListener("click", function(event) {
+                  event.preventDefault();
+                  alert("더 이상 페이지가 없습니다.");
+                });
+              </script>
+            <% } %>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+</section>
 
-  <!-- footer -->
-  <footer id="footer">
-    <div>
-      <div class="can">
-        <img src="/img/CAN.png">
-      </div>
-
-      <a>개인정보 처리방침 | 서비스 이용약관 | 운영정책 | 쿠키 설정</a> <br>
-      <a>2023 Dongyang Computer Software</a> <br>
-
-      <script> document.writeln("한국시간 : " + kr_curr); </script>
-
-      <div id="age15">
-        <img src="/img/15.png">
-      </div>
-    </div>
-  </footer>
+<!-- footer -->
+<%- include('partials/footer')%>
 
 </body>
-
 </html>

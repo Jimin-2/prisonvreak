@@ -75,7 +75,8 @@
                       <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= post.userInfo[0] %>')">
                         <%= post.userInfo[0] %>
                       </p>
-                      <div id="profileModal" class="modal" onclick="closeModal()">
+                      <div id="profileModal" class="modal">
+                        <span class="close" onclick="closeModal()">&times;</span>
                       </div>
 
                     </div>
@@ -160,6 +161,13 @@
           // 모달을 숨김 처리
           modal.style.display = 'none';
         }
+
+        window.addEventListener('click', function (event) {
+          const modal = document.getElementById('profileModal');
+          if (event.target === modal) {
+            closeModal();
+          }
+        });
 
       </script>
 </body>

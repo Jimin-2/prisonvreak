@@ -63,3 +63,19 @@ h1 {
     border: 1px solid #161616;
 }
 /* 추가적인 스타일을 원하시면 여기에 추가하세요 */
+#link {
+    text-align: right;
+    position: absolute;
+    bottom: 10px; /* 하단 여백을 조절하세요 */
+    right: 10px; /* 왼쪽 여백을 조절하세요 */
+}
+
+#link h6 {
+    margin: 0;
+}
+
+#link a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}

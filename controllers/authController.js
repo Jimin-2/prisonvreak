@@ -932,15 +932,81 @@ exports.updateProfileIntro = function (req, res){
 //유저프로필 조회
 exports.userProfile = function (req, res) {
     console.log(req.params)
-    const username = req.params.username;// 로그인된 사용자의 아이디
+    const username = req.params.username;
 
     userModel.getUserProfileByUsername(username, (error, results) => {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
         } else {
-            console.log(results)
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
             res.render('userProfile', { userProfile: userProfile });
+        }
+    });
+};
+
+exports.profile = function (req, res) {
+    console.log(req.params)
+    console.log(req.body)
+    const username = req.params.username;
+    //const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    //const isLogined = req.session.is_logined;
+    const postsPerPage = 5;
+    console.log(username)
+    // userModel을 사용하여 사용자의 프로필 정보 가져오기
+    userModel.getUserProfileByUsername(username, (error, results) => {
+        if (error) {
+            //console.error(error);
+            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else {
+            //console.log('User Profile Results:', results);
+            const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+
+            console.log(results);
+            console.log(userProfile);
+
+
+            // 작성한 게시글 가져오는 부분
+            postModel.getPostsByUserNum(userProfile.mem_num,(error, data)=>{
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Internal Server Error');
+                }
+                const reversedResults = data.reverse();
+
+                const totalPosts = reversedResults.length;
+                const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+                const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+
+                const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+
+                let startIndex, endIndex;
+                if (currentPage === totalPages) {
+                    endIndex = totalPosts;
+                    startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+                } else {
+                    startIndex = (currentPage - 1) * postsPerPage;
+                    endIndex = startIndex + postsPerPage;
+                }
+
+                const paginatedResults = reversedResults.slice(startIndex, endIndex);
+                const formattedResults = paginatedResults.map(post => ({
+                    ...post,
+                    formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
+                }));
+
+                res.render('profile', {
+                    userProfile: userProfile,
+                    data: formattedResults,
+                    totalPages: totalPages,
+                    currentPage: currentPage,
+                    keyword: null,
+                    prevPage,
+                    startPage,
+                    endPage,
+                    nextPage
+                });
+            });
         }
     });
 };

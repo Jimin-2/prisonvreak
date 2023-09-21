@@ -55,9 +55,26 @@
 
     </div>
     <textarea id="memIntro" name="memIntro" rows="3"  placeholder="한 줄 소개"><%= userProfile.mem_intro %></textarea>
+
+    <div id="link">
+        <!--<p onclick="showProfile('<%= userProfile.mem_nickname %>')">-->
+            <a href="/auth/profile/<%= userProfile.mem_nickname %>">>>상세조회</a><!--</p>-->
+    </div>
 </div>
  <!-- mem_intro를 사용합니다 -->
+<!--<script>
+    function showProfile(username) {
 
+        // 모달 내용을 동적으로 로드
+        fetch(`/auth/profile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
+            .then((response) => response.text())
+            .then((html) => {
+            })
+            .catch((error) => {
+                console.error('Error fetching profile:', error);
+            });
+    }
+</script>-->
 </body>
 
 </html>
