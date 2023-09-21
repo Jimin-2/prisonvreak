@@ -12,9 +12,11 @@ let renderstreaming;
 /** @type {boolean} */
 let useWebSocket;
 
+let channel;
+
 const codecPreferences = document.getElementById('codecPreferences');
 const supportsSetCodecPreferences = window.RTCRtpTransceiver &&
-  'setCodecPreferences' in window.RTCRtpTransceiver.prototype;
+    'setCodecPreferences' in window.RTCRtpTransceiver.prototype;
 const messageDiv = document.getElementById('message');
 messageDiv.style.display = 'none';
 
@@ -66,37 +68,36 @@ function onClickPlayButton() {
 
   // add video player
   videoPlayer.createPlayer(playerDiv, lockMouseCheck);
-  videoPlayer.setupConnection(useWebSocket);
   setupRenderStreaming();
 
   const cctv_1 = document.getElementById('CCTV-1');
   // playerDiv.appendChild(cctv_1);
   cctv_1.addEventListener("click", function () {
-    sendClickEvent(videoPlayer, 1);
+    sendClickEvent(channel, videoPlayer, 1);
   });
 
   const cctv_2 = document.getElementById('CCTV-2');
   // playerDiv.appendChild(cctv_2);
   cctv_2.addEventListener("click", function () {
-    sendClickEvent(videoPlayer, 2);
+    sendClickEvent(channel, videoPlayer, 2);
   });
 
   const cctv_3= document.getElementById('CCTV-3');
   // playerDiv.appendChild(cctv_3);
   cctv_3.addEventListener("click", function () {
-    sendClickEvent(videoPlayer, 3);
+    sendClickEvent(channel, videoPlayer, 3);
   });
 
   const cctv_4= document.getElementById('CCTV-4');
   // playerDiv.appendChild(cctv_4);
   cctv_4.addEventListener("click", function () {
-    sendClickEvent(videoPlayer, 4);
+    sendClickEvent(channel, videoPlayer, 4);
   });
 
   const cctv_5= document.getElementById('CCTV-5');
   // playerDiv.appendChild(cctv_5);
   cctv_5.addEventListener("click", function () {
-    sendClickEvent(videoPlayer, 5);
+    sendClickEvent(channel, videoPlayer, 5);
   });
 }
 
@@ -116,7 +117,7 @@ async function setupRenderStreaming() {
 }
 
 function onConnect() {
-  renderstreaming.createDataChannel();
+  channel = renderstreaming.createDataChannel("input");
   showStatsMessage();
 }
 
@@ -127,6 +128,7 @@ async function onDisconnect(connectionId) {
 
   await renderstreaming.stop();
   renderstreaming = null;
+  videoPlayer.deletePlayer();
   if (supportsSetCodecPreferences) {
     codecPreferences.disabled = false;
   }
