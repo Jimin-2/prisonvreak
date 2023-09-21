@@ -98,4 +98,6 @@ router.get('/myPost', authController.myPost);
 
 router.get('/userProfile/:username', authController.userProfile);
 
+router.get('/profile/:username', authController.profile);
+
 module.exports = router;
