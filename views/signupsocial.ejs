@@ -147,7 +147,8 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/signup.css">
+    <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/signup.css">
+    <link rel="stylesheet" media="(max-width: 900px)" href="/css/signup_m.css" >
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
@@ -169,8 +170,8 @@
 <%- include('partials/header')%>
 
 <!-- Section -->
-<section id="section">
-    <div id="loginTool">
+<section id="section-social">
+    <div id="loginTool-social">
         <form action="/auth/socialregister_process" method="post" onsubmit="return validateForm();">
             <h1> SIGN UP </h1>
 

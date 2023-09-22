@@ -131,7 +131,63 @@ const postModel = {
       }
     );
   },
-};
+
+  getPostTitle: (post_num, callback) => {
+    db.query(
+      `
+        SELECT (
+          SELECT post_num FROM post WHERE post_num < ? ORDER BY post_num DESC LIMIT 1
+        ) AS previousPost,
+        (
+          SELECT post_num FROM post WHERE post_num > ? ORDER BY post_num ASC LIMIT 1
+        ) AS nextPost;
+      `,
+      [post_num, post_num],
+      (error, results) => {
+        if (error) {
+          console.error(error);
+          callback(error, null, null);
+        } else {
+          const previousPost = results[0].previousPost;
+          const nextPost = results[0].nextPost;
+  
+          // 서브쿼리로 title.
+          db.query(
+            `
+              SELECT post_title FROM post WHERE post_num = ?;
+            `,
+            [previousPost], // 이전 글 post_title
+            (error, prevResult) => {
+              if (error) {
+                console.error(error);
+                callback(error, null, null);
+              } else {
+                const previousTitle = prevResult[0] ? prevResult[0].post_title : null;
+
+                db.query(
+                  `
+                    SELECT post_title FROM post WHERE post_num = ?;
+                  `,
+                  [nextPost], // 다음 글 post_title
+                  (error, nextResult) => {
+                    if (error) {
+                      console.error(error);
+                      callback(error, null, null);
+                    } else {
+                      const nextTitle = nextResult[0] ? nextResult[0].post_title : null;
+                      callback(null, previousPost, previousTitle, nextPost, nextTitle);
+                    }
+                  }
+                );
+              }
+            }
+          );
+        }
+      }
+    );
+  },
+
+}
 
 const commentModel = {
   getComments: (post_usernum, callback) => {
@@ -151,7 +207,6 @@ const commentModel = {
       if (error) {
         callback(error, null);
       } else {
-        console.log(results);
         callback(null, results);
       }
     });
