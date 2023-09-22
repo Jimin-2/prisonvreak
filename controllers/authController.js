@@ -284,54 +284,7 @@ exports.check_email_availability = function (req, res) {
         res.json(availability);
     });
 };
-/*
-// 고객지원프로세스
-exports.customer_send = function (req, res) {
-    const name = req.body.name;
-    const email = req.body.email;
-    const phone = req.body.phone;
-    const contents = req.body.contents;
 
-    // 클라이언트에서 전송한 파일 정보
-    const fileName = req.body.selectedFileName;
-    console.log('Received fileName:', fileName); // 파일명 로깅
-    const fileData = req.body.fileData; // 파일 데이터 (Base64 형식)
-    // 파일 데이터를 Buffer로 변환
-    const fileBuffer = Buffer.from(fileData, 'base64');
-
-    // 이메일 발송 설정
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'prisonvreakcan@gmail.com',
-            pass: process.env.EMAIL_PASS
-        },
-    });
-
-    const mailOptions = {
-        from: 'prisonvreakcan@gmail.com',
-        to: 'prisonvreakcan@gmail.com',
-        subject: '고객지원문의',
-        text: `고객명: ${name}\n이메일: ${email}\n전화번호:${phone}\n문의내용: ${contents}`,
-        attachments: [
-            {
-                filename: fileName,
-                content: fileBuffer,
-            }
-        ],
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.error('이메일 전송 오류:', error);
-            res.status(500).send();
-        } else {
-            console.log('이메일 전송 성공:', info.response);
-            res.send('<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");document.location.href="/auth/customer";</script>');
-        }
-    });
-};
-*/
 // 고객지원프로세스
 exports.customer_send = function (req, res) {
     const name = req.body.name;
@@ -525,19 +478,6 @@ exports.verify_code = function (req, res) {
     // 구현 내용...
 };
 
-/*
-// 사용자가 인증되었는지 확인하는 미들웨어
-exports.authCheck = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        // 사용자가 인증되었습니다. 다음 미들웨어나 라우트 핸들러로 진행합니다.
-        return next();
-    } else {
-        // 사용자가 인증되지 않았으므로 로그인 페이지로 리디렉션합니다.
-        res.redirect('/auth/login');
-    }
-};
-
-*/
 
 //아이디 찾기 화면
 exports.findID = function (req, res) {
@@ -655,10 +595,6 @@ function generateTemporaryPassword() {
     return password;
 }
 
-/*//마이페이지 화면
-exports.myPage = function (req, res) {
-    res.render('myPage');
-};*/
 
 // 마이페이지
 exports.mypage = function (req, res) {
