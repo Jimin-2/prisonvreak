@@ -44,9 +44,9 @@
                 <div id="detail">
                     <div>
                         <div class="profile-info" style="display: flex; align-items: center; margin-bottom: 10px;">
-                            <img src="<%= profile %>" alt="프로필 사진" width="35" style="margin-right: 10px;">
+                            <img src="<%= post_pro %>" alt="프로필 사진" width="35" style="margin-right: 10px;">
                             <p class="nickname" name="mem_nickname">
-                                <%= nickname %>
+                                <%= post_nick %>
                             </p>
                         </div>
 
@@ -76,38 +76,42 @@
                 </div>
                 <hr>
                 <h2> 댓글 </h2>
-                <% comments.forEach(function(comments) { %>
+                <% for (let i = 0; i < comments.length; i++) { %>
                     <div id="comment">
-                        <div class="comment-relative">
-                            
-                                  <p class="nickname">작성자:</p>
-
-                                  <!-- 다른 사용자 정보 출력 -->
-                            </p>
-                            <a class=date>
-                                <%= comments.cmt_created_at %>
-                            </a>
+                      <div class="comment-relative">
+                        <div>
+                          <div class="comment">
+                            <img src="<%= commentInfo[i].mem_profile %>" width="20" alt="프로필 사진">
+                            <span><%= commentInfo[i].mem_nickname %></span>
+                          </div>
+                          <a class="date">
+                            <%= comments[i].cmt_created_at %>
+                          </a>
                         </div>
                         <div>
-                            <%= comments.cmt_content %>
-                                <% if (!comments.cmt_refnum) { %> <!-- 원댓글일 경우에만 답글 버튼 표시 -->
-                                    <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
-                                    <% } %>
-                        </div> <br>
-                        <!-- 답글 등록 폼 -->
-                        <form action="/community/show/<%= data.post_num %>" method="POST" class="reply-form"
-                            style="display: none;">
-                            <input type="hidden" name="post_num" value="<%= data.post_num %>">
-                            <input type="hidden" name="cmt_refnum" value="<%= comments.cmt_num %>">
-                            <textarea id="comment-input-Area" name="cmt_content" placeholder="답글을 입력하세요."
-                                oninput="byteCount(this)"></textarea>
-                            <div class="submit">
-                                <p id="byte-count">0 byte</p>
-                                <button class="button btnFade btnBlack" type="submit"> 등록 </button>
-                            </div>
-                        </form>
-                        <% }); %>
-
+                          <%= comments[i].cmt_content %>
+                          <% if (!comments[i].cmt_refnum) { %>
+                            <!-- 원댓글일 경우에만 답글 버튼 표시 -->
+                            <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
+                          <% } %>
+                        </div>
+                      </div>
+                      <br>
+                      <!-- 답글 등록 폼 -->
+                      <form action="/community/show/<%= data.post_num %>" method="POST" class="reply-form" style="display: none;">
+                        <input type="hidden" name="post_num" value="<%= data.post_num %>">
+                        <input type="hidden" name="cmt_refnum" value="<%= comments[i].cmt_num %>">
+                        <textarea id="comment-input-Area" name="cmt_content" placeholder="답글을 입력하세요." oninput="byteCount(this)"></textarea>
+                        <div class="submit">
+                          <p id="byte-count">0 byte</p>
+                          <button class="button btnFade btnBlack" type="submit">등록</button>
+                        </div>
+                      </form>
+                    </div>
+                  <% } %>
+                  
+                                   
+                  
                             <hr>
                             <form action="/community/show/<%= data.post_num %>" method="POST">
                                 <input type="hidden" name="post_num" value="<%= data.post_num %>">
