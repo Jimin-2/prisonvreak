@@ -1,6 +1,6 @@
 section {
   width: 100%;
-  height: 2000px;
+  height: 1650px;
 
   position: relative;
 }
@@ -14,10 +14,11 @@ section {
   flex-direction: column;
   flex-wrap: wrap;
 
-  background-image: url("background/info.png");
+  background-image: url("background/info2.png");
   color: white;
-  background-repeat:no-repeat;
-  background-size: contain;
+  background-repeat: no-repeat;
+
+  background-size: 100% 800px;
 }
 
 .container-01 {
@@ -29,8 +30,7 @@ section {
 
 /* 첫 번째 그리드 */
 #notice-logo {
-  width:100%;
-
+  width: 100%;
   margin-top: 150px;
 
   display: flex;
@@ -43,14 +43,52 @@ section {
   margin: 20px 0px 20px 80px;
 }
 
-#search {
+.search {
+  position: relative;
   margin-right: 80px;
 }
 
-#search button {
-  background-color: black;
-  color: white;
+/* 왜 이러는 거임
+
+.search-input {
+  background-color: #fff;
+  color: #161616;
+
+  border: 0;
+  font-size: 18px;
+  padding: 15px;
+  height: 50px;
+  width: 50px;
+  transition: width 0.3s ease;
 }
+
+.search-btn {
+  background-color: #fff;
+  color: #161616;
+  
+  border: 0;
+  cursor: pointer;
+  font-size: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  transition: transform 0.3s ease;
+}
+
+.search-btn:focus,
+.search-input:focus {
+  outline: none;
+}
+
+.search.active .search-input {
+  width: 200px;
+}
+
+.search.active .btn {
+  transform: translateX(198px);
+} */
 
 /* grandopen logo */
 #grandopen-logo {
@@ -79,45 +117,85 @@ section {
 }
 
 #thirdSectionBox {
-  width: 80%;
-  height: 650px;
+  width: 1500px;
+  height: 900px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
   box-shadow: 10px 10px 20px black;
   background-color: white;
-}
-
-.boxSection {
-  display: grid;
-  width: 100%;
-
-  margin-top: 100px;
-  margin-left: 100px;
-
-  grid-template-columns: 25% 60%;
-}
-
-.boxSection h1 {
-  font-size: 2em;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-
-.boxSection p {
-  font-size: 1.3em;
-}
-
-.box {
-  width: 350px;
-  height: 200px;
-  background-color: black;
 }
 
 .title {
   color: black;
 }
 
-.content {
-  color: black;
+.content-div {
+  font-size: 10px;
+  color: #161616;
+}
+
+.content-div {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 80px;
+}
+
+.content-div img {
+  max-width: 100%;
+  height: auto;
+}
+
+.grid-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.grid-content-img-layout {
+  width: 350px;
+  height: 250px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  background-color: #ebebeb;
+}
+
+.grid-content-title {
+  font-size: 2em;
+  font-weight: bold;
+
+  color: #161616;
+}
+
+.grid-container {
+  width: 350px;
+  height: auto;
+
+  margin-top: 10px;
+
+  justify-content: left;
+  text-align: left;
+}
+
+.grid-container div {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.grid-container > .grid-content-num, .grid-content-date {
+  color: #ccc;
 }
 
 .pagination {
@@ -127,36 +205,5 @@ section {
   color: black;
   text-shadow: 10px 10px 20px black;
 
-  margin-top: 30px;
-}
-
-/* 수정된 table 스타일 */
-table.type09 {
-  border-collapse: collapse;
-  text-align: center;
-  line-height: 1.5;
-  width: 100%; /* 테이블 전체 가로 길이를 100%로 설정 */
-}
-
-table.type09 thead th {
-  padding: 10px;
-  font-weight: bold;
-  vertical-align: top;
-  color: #161616;
-  border-bottom: 2px solid #161616;
-}
-
-table.type09 tbody th {
-  padding: 10px;
-  font-weight: bold;
-  vertical-align: top;
-  border-bottom: 1px solid #f3f3f3;
-  background: white;
-}
-
-table.type09 td {
-  width: 300px;
-  padding: 10px;
-  vertical-align: top;
-  border-bottom: 1px solid #f3f3f3;
+  margin-top: 50px;
 }
