@@ -78,7 +78,7 @@
                 <h2> 댓글 </h2>
                 <% for (let i = 0; i < comments.length; i++) { %>
                     <div id="comment">
-                      <div class="comment-relative">
+                        <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>">
                         <div>
                           <div class="comment">
                             <img src="<%= commentInfo[i].mem_profile %>" width="20" alt="프로필 사진">
@@ -87,6 +87,18 @@
                           <a class="date">
                             <%= comments[i].cmt_created_at %>
                           </a>
+                          <div class="more-options">
+                            <button class="more-btn" onclick="toggleOptions(this)">더보기</button>
+                          <div class="options" style="display:none;">
+                                <% if(login_nick && commentInfo[i].mem_nickname === login_nick) { %>
+                                    <button class="update-btn" onclick="toggleUpdateForm(this)">수정</button>
+                                    <form action="/community/show/<%= data.post_num %>/delete/<%= comments[i].cmt_num %>" method="POST" class="delete-form">
+                                        <button type="submit" class="delete-btn">삭제</button>
+                                    </form>
+                                <% } else { %>
+                                    <button class="report-btn" onclick="report(event)">신고</button>
+                                <% } %>
+                            </div>
                         </div>
                         <div>
                           <%= comments[i].cmt_content %>
@@ -108,6 +120,15 @@
                         </div>
                       </form>
                     </div>
+
+                    <!-- 댓글 수정 폼 -->
+                    <form action="/community/show/<%= data.post_num %>/edit/<%= comments[i].cmt_num %>" method="POST" class="update-form" style="display: none;">
+                        <textarea id="comment-input-Area" name="cmt_content" oninput="byteCount(this)"><%= comments[i].cmt_content %></textarea>
+                        <div class="submit">
+                            <p id="byte-count">0 byte</p>
+                            <button class="button btnFade btnBlack" type="submit"> 등록 </button>
+                        </div>
+                    </form>
                   <% } %>
                   
                                    
@@ -154,6 +175,40 @@
                         replyForm.style.display = 'none';
                     }
                 }
+
+                function toggleUpdateForm(button) {
+                    const commentDiv = button.closest('div#comment');
+                    const editForm = commentDiv.querySelector('.update-form');
+                    editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+                }
+
+                function toggleOptions(buttonElement) {
+                    const moreOptionsDiv = buttonElement.closest('.more-options');
+                    const optionsDiv = moreOptionsDiv.querySelector('.options');
+                    if (optionsDiv.style.display === 'none' || !optionsDiv.style.display) {
+                        optionsDiv.style.display = 'block';
+                        event.stopPropagation();
+                    } else {
+                        optionsDiv.style.display = 'none';
+                    }
+                }
+
+                document.addEventListener('click', function(event) {
+                    const allOptions = document.querySelectorAll('.options');
+                    allOptions.forEach(function(options) {
+                        if (!options.contains(event.target) && options !== event.target) {
+                            options.style.display = 'none';
+                        }
+                    });
+                });
+
+                function report(event) {
+                    alert('신고되었습니다.');
+                    const moreOptionsDiv = event.target.closest('.more-options');
+                    const optionsDiv = moreOptionsDiv.querySelector('.options');
+                    optionsDiv.style.display = 'none';
+                }
+
             </script>
 </body>
 

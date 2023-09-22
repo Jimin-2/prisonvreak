@@ -166,6 +166,23 @@ const commentModel = {
       }
     );
   },
+
+  deleteComments: (cmt_num, callback) => {
+    db.query('DELETE FROM comment WHERE cmt_num = ?', [cmt_num], () => {
+      callback();
+    });
+  },
+
+  updateComments: (cmt_content, cmt_updated_at, cmt_num, callback) => {
+    db.query(
+      'UPDATE comment SET cmt_content = ?, cmt_updated_at = ? WHERE cmt_num = ?',
+      [cmt_content, cmt_updated_at, cmt_num],
+      () => {
+        callback();
+      }
+    );
+  },
+
   // 로그인 한 사람의 닉네임과 프로필 가져오기
   getMemberById: (mem_id, callback) => {
     db.query(

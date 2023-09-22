@@ -110,6 +110,11 @@ hr {
   font-size: 1em;
 }
 
+#content img {
+  max-width: 100%;
+  height: auto;
+}
+
 /* 댓글보기 */
 #comment {
   width: 900px;
@@ -148,6 +153,10 @@ hr {
 
   flex-direction: column;
   flex-wrap: wrap;
+}
+
+.reply-relative {
+  padding-left: 40px; /* 또는 padding-left: 20px; */
 }
 
 /* 댓글입력 */
