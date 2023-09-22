@@ -12,19 +12,19 @@
       },
       body: JSON.stringify({ id: id })
     })
-            .then(response => response.json())
-            .then(data => {
-              if (data.available) {
-                availabilitySpan.textContent = '사용 가능한 아이디입니다.';
-                availabilitySpan.style.color = 'green';
-              } else {
-                availabilitySpan.textContent = '이미 사용 중인 아이디입니다.';
-                availabilitySpan.style.color = 'red';
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      .then(response => response.json())
+      .then(data => {
+        if (data.available) {
+          availabilitySpan.textContent = '사용 가능한 아이디입니다.';
+          availabilitySpan.style.color = 'green';
+        } else {
+          availabilitySpan.textContent = '이미 사용 중인 아이디입니다.';
+          availabilitySpan.style.color = 'red';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
   function checkNicknameAvailability() {
     var nickname = document.getElementById('nickname').value;
@@ -37,19 +37,19 @@
       },
       body: JSON.stringify({ nickname: nickname })
     })
-            .then(response => response.json())
-            .then(data => {
-              if (data.available) {
-                availabilitySpan.textContent = '사용 가능한 닉네임입니다.';
-                availabilitySpan.style.color = 'green';
-              } else {
-                availabilitySpan.textContent = '이미 사용 중인 닉네임입니다.';
-                availabilitySpan.style.color = 'red';
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      .then(response => response.json())
+      .then(data => {
+        if (data.available) {
+          availabilitySpan.textContent = '사용 가능한 닉네임입니다.';
+          availabilitySpan.style.color = 'green';
+        } else {
+          availabilitySpan.textContent = '이미 사용 중인 닉네임입니다.';
+          availabilitySpan.style.color = 'red';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
   function checkPasswordMatch() {
@@ -85,21 +85,21 @@
       },
       body: JSON.stringify({ email: email, code: verificationCode })
     })
-            .then(response => {
-              if (response.ok) {
-                verificationCodeForm.style.display = 'block'; // 인증 번호 입력 폼 표시
-                // 인증 번호 입력 칸 밑에 시간 카운트다운 엘리먼트 추가
-                var countdownElement = document.createElement('p');
-                countdownElement.id = 'countdown';
-                verificationCodeForm.appendChild(countdownElement);
-                updateCountdown(); // 카운트다운 시작
-              } else {
-                alert('중복된 이메일입니다.');
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      .then(response => {
+        if (response.ok) {
+          verificationCodeForm.style.display = 'block'; // 인증 번호 입력 폼 표시
+          // 인증 번호 입력 칸 밑에 시간 카운트다운 엘리먼트 추가
+          var countdownElement = document.createElement('p');
+          countdownElement.id = 'countdown';
+          verificationCodeForm.appendChild(countdownElement);
+          updateCountdown(); // 카운트다운 시작
+        } else {
+          alert('중복된 이메일입니다.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
   function updateCountdown() {
@@ -139,19 +139,19 @@
       },
       body: JSON.stringify({ code: enteredCode })
     })
-            .then(response => response.json())
-            .then(data => {
-              if (data.valid) {
-                verificationStatus.textContent = '인증되었습니다.';
-                verificationStatus.style.color = 'green';
-              } else {
-                verificationStatus.textContent = '인증번호가 잘못되었습니다.';
-                verificationStatus.style.color = 'red';
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      .then(response => response.json())
+      .then(data => {
+        if (data.valid) {
+          verificationStatus.textContent = '인증되었습니다.';
+          verificationStatus.style.color = 'green';
+        } else {
+          verificationStatus.textContent = '인증번호가 잘못되었습니다.';
+          verificationStatus.style.color = 'red';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
   function validateForm() {
@@ -177,13 +177,14 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // 세션 초기화 코드를 이곳에 배치합니다.
     document.getElementById('verificationCodeForm').style.display = 'none';
     document.getElementById('verificationCode').value = '';
     document.getElementById('verificationStatus').textContent = '';
   });
 </script>
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -195,90 +196,95 @@
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
   <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/signup.css">
-  <link rel="stylesheet" media="(max-width: 900px)" href="/css/signup_m.css" >
+  <link rel="stylesheet" media="(max-width: 900px)" href="/css/signup_m.css">
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Title-->
-    <title> CAN </title>
+  <!--Title-->
+  <title> CAN </title>
 
 </head>
 
 <body>
 
-<!-- header -->
-<%- include('partials/header')%>
+  <!-- header -->
+  <%- include('partials/header')%>
 
-  <!-- Section -->
-  <section id="section">
-    <div id="loginTool">
-      <form action="/auth/register_process" method="post" onsubmit="return validateForm();">
-      <h1> SIGN UP </h1>
+    <!-- Section -->
+    <section id="section">
+      <div id="loginTool">
+        <form action="/auth/register_process" method="post" onsubmit="return validateForm();">
+          <h1> SIGN UP </h1>
 
-          <!-- ID -->
-        <div class="inputBox">
-          <p> Name </p>
-          <input type="text" name="name"  required>
-        </div>
+          <div class="inputBox">
+            <p> Name </p>
+            <input type="text" name="name" required>
+          </div>
 
-        <div class="inputBox" id="divnickname">
-          <p> Nickname </p>
-          <input type="text" name="nickname" id="nickname" required>
-          <button type="button" onclick="checkNicknameAvailability()"> 중복 확인 </button>
-        </div>
-        <span id="nicknameAvailability"></span>
+          <div class="inputBox" id="divnickname">
+            <p> Nickname </p>
+            <input type="text" name="nickname" id="nickname" required>
+          </div>
+          <div class="check-div">
+            <button type="button" class="check-button" onclick="checkNicknameAvailability()"> 중복 확인 </button>
+            <span id="nicknameAvailability"></span>
+          </div>
 
-        <div class="inputBox" id="divid">
-          <p> ID </p>
-          <input type="text" name="id" id="id" required>
-          <button type="button" onclick="checkIdAvailability()"> 중복 확인 </button>
-        </div>
-        <span id="idAvailability"></span>
+          <div class="inputBox" id="divid">
+            <p> ID </p>
+            <input type="text" name="id" id="id" required>
+          </div>
+          <div class="check-div">
+            <button type="button" class="check-button" onclick="checkIdAvailability()"> 중복 확인 </button>
+            <span id="idAvailability"></span>
+          </div>
 
-        <div class="inputBox">
-          <p> Password </p>
-          <input type="password" name="pwd" id="password" required>
-        </div>
+          <div class="inputBox">
+            <p> Password </p>
+            <input type="password" name="pwd" id="password" required>
+          </div>
 
-        <div class="inputBox" >
-          <p> Password++ </p>
-          <input type="password" name="pwd2" id="confirmPassword" required oninput="checkPasswordMatch()">
-        </div>
-        <span id="passwordMatch"></span>
+          <div class="inputBox">
+            <p> Password++ </p>
+            <input type="password" name="pwd2" id="confirmPassword" required oninput="checkPasswordMatch()">
+          </div>
+          <div class="check-div">
+            <span id="passwordMatch"></span>
+          </div>
 
-        <div class="inputBox" >
-          <p> Phone </p>
-          <input type="tel" name="phone"  required>
-        </div>
+          <div class="inputBox">
+            <p> Phone </p>
+            <input type="tel" name="phone" required>
+          </div>
 
-        <div class="inputBox" id="divemail">
-          <p> E-mail </p>
-          <input type="email" name="email" id="email" required>
-          <button type="button" onclick="sendVerificationCode()"> 인증 </button>
-        </div>
+          <div class="inputBox" id="divemail">
+            <p> E-mail </p>
+            <input type="email" name="email" id="email" required>
+          </div>
+          <button type="button" class="check-button" onclick="sendVerificationCode()"> 인증 </button>
 
-        <div class="inputBox" id="verificationCodeForm" style="display: none;">
-          <input type="number" placeholder="인증번호 입력" id="verificationCode">
-          <button type="button" onclick="verifyCode()"> 확인 </button>
-          <p> 인증번호 유효 시간: <span id="countdown">5분 0초</span> </p>
-          <p id="verificationStatus"> </p> <!-- 유효하지 않습니다. -->
-        </div>
+          <div class="inputBox" id="verificationCodeForm" style="display: none;">
+            <input type="number" placeholder="인증번호 입력" id="verificationCode">
+            <button type="button" class="check-button" onclick="verifyCode()"> 확인 </button>
+            <p> 인증번호 유효 시간: <span id="countdown">5분 0초</span> </p>
+            <p id="verificationStatus"> </p> <!-- 유효하지 않습니다. -->
+          </div>
 
-        <div class="submit">
-          <button> SIGN UP </button>
-        </div>
-      </form>
+          <div class="submit">
+            <button> SIGN UP </button>
+          </div>
+        </form>
 
         <div id="signin"> <a href="/auth/login"> Sign In </a> </div>
 
-    </div>
-  </section>
+      </div>
+    </section>
 
-<!-- footer -->
-<%- include('partials/footer')%>
+    <!-- footer -->
+    <%- include('partials/footer')%>
 </body>
 
 </html>

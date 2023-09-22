@@ -15,6 +15,7 @@
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
+  <script src="/javascript/notice.js"></script>
   <!-- 반응형 웹 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -36,12 +37,14 @@
           <!-- Section -->
           <div id="notice-logo" class="item">
             <img src="/img/logoInfo.png">
-            <div id="search">
-              <form action="/notice/search" method="get">
-                <input type="text" name="keyword" placeholder="검색">
-                <button type="submit">검색</button>
+
+            <div>
+              <form class="search" action="/notice/search" method="get">
+                <input type="text" name="keyword" class="search-input" placeholder="검색">
+                <button class="search-btn" type="submit">검색</button>
               </form>
             </div>
+
           </div>
 
           <!-- Section -->
@@ -54,93 +57,86 @@
         <!-- Section -->
         <div id="thirdSection">
           <div id="thirdSectionBox">
-            <div class="boxSection">
-              <table class="type09">
-                <thead>
-                  <tr class="title">
-                    <th>사진</th>
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>날짜</th>
-                  </tr>
-                </thead>
-                <tbody class="content">
-                  <% if (search && search.length> 0) { %>
-                    <% for (let i=0; i < search.length; i++) { %>
-                      <tr>
-                        <td>
-                          <div>사진</div>
-                        </td>
-                        <td>
-                          <%= search[i].post_num %>
-                        </td>
-                        <td>
-                          <a href="/notice/show/<%= search[i].post_num %>">
-                            <%= search[i].post_title %>
-                          </a>
-                        </td>
-                        <td>
-                          <%= search[i].formattedCreatedAt %>
-                        </td>
-                      </tr>
-                      <% } %>
-                        <% } else if (data && data.length> 0) { %>
-                          <% for (let i=0; i < data.length; i++) { %>
-                            <tr>
-                              <td>
-                                <img src="<%= data[i].post_image %>" style="width: 100%">
-                              </td>
-                              <td>
-                                <%= data[i].post_num %>
-                              </td>
-                              <td>
-                                <a href="/notice/show/<%= data[i].post_num %>">
-                                  <%= data[i].post_title %>
-                                </a>
-                              </td>
-                              <td>
-                                <%= data[i].formattedCreatedAt %>
-                              </td>
-                            </tr>
-                            <% } %>
-                              <% } %>
-                </tbody>
+            <div class="content-div">
+              <% if (search && search.length> 0) { %>
+                <% for (let i=0; i < search.length; i++) { %>
+                  <div>
+                    <%= search[i].post_num %>
+                  </div>
+                  <div>
+                    <a href="/notice/show/<%= search[i].post_num %>">
+                      <%= search[i].post_title %>
+                    </a>
+                  </div>
+                  <div>
+                    <%= search[i].formattedCreatedAt %>
+                  </div>
 
 
-              </table>
+                  <% } %>
+                    <% } else if (data && data.length> 0) { %>
+                      <% for (let i=0; i < data.length; i++) { %>
+                        <div class="grid-content">
+
+                          <div class="grid-content-img-layout">
+                            <img src="<%= data[i].post_image %>">
+                          </div>
+
+                          <div class="grid-container">
+                            <div class="grid-content-num">
+                              <%= data[i].post_num %>
+                            </div>
+                            <div class="grid-content-title">
+                              <a href="/notice/show/<%= data[i].post_num %>">
+                                <%= data[i].post_title %>
+                              </a>
+                            </div>
+                            <div class="grid-content-date">
+                              <%= data[i].formattedCreatedAt %>
+                            </div>
+                          </div>
+                        </div>
+                        <% } %>
+                          <% } %>
             </div>
           </div>
         </div>
 
         <div class="pagination">
-          <% if (prevPage !== null) { %>
-            <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
-          <% } else { %>
-            <span class="disabled">&laquo; 이전</span>
-          <% } %>
-          
-          <% for (let i = startPage; i <= endPage; i++) { %>
-            <% if (i === currentPage) { %>
-              <span class="active"><%= i %></span>
+          <% if (prevPage !==null) { %>
+            <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo;
+              이전</a>
             <% } else { %>
-              <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
-            <% } %>
-          <% } %>
-        
-          <% if (nextPage !== null) { %>
-            <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
-          <% } else { %>
-            <a href="#" id="disabledNextPage">다음 &raquo;</a>
-            <script>
-              document.getElementById("disabledNextPage").addEventListener("click", function(event) {
-                event.preventDefault();
-                alert("더 이상 페이지가 없습니다.");
-              });
-            </script>
-          <% } %>
+              <span class="disabled">&laquo; 이전</span>
+              <% } %>
+
+                <% for (let i=startPage; i <=endPage; i++) { %>
+                  <% if (i===currentPage) { %>
+                    <span class="active">
+                      <%= i %>
+                    </span>
+                    <% } else { %>
+                      <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">
+                        <%= i %>
+                      </a>
+                      <% } %>
+                        <% } %>
+
+                          <% if (nextPage !==null) { %>
+                            <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음
+                              &raquo;</a>
+                            <% } else { %>
+                              <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                              <script>
+                                document.getElementById("disabledNextPage").addEventListener("click", function (event) {
+                                  event.preventDefault();
+                                  alert("더 이상 페이지가 없습니다.");
+                                });
+                              </script>
+                              <% } %>
         </div>
       </div>
-        
+
 
     </section>
 
