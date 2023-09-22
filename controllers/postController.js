@@ -30,7 +30,7 @@ const boardController = {
     }
 
     // postInfo 가져오기
-    postModel.getNicknameByPostId(post_num, async (error, post_Nick, post_pro) => {
+    postModel.getNicknameByPostId(post_num, async (error, post_nick, post_pro) => {
       if (error) {
         console.error(error);
       }
@@ -62,11 +62,12 @@ const boardController = {
                 if (login_nick == null) {
                   console.log("게스트");
                 }
-                console.log(comments.length);
+
                 res.render('boardShow', {
+                  post_num: post_num,
                   data: result,
                   comments: comments,
-                  post_nick: post_Nick,
+                  post_nick: post_nick,
                   post_pro: post_pro,
                   login_nick: login_nick || "게스트",
                   login_pro: login_pro,
@@ -193,7 +194,7 @@ const boardController = {
         console.error(error);
         res.status(500).send('Internal Server Error');
       } else {
-        res.render('boardEdit', { data: result, user_id: userId });
+        res.render('boardEdit', { data: result });
       }
     });
   },
