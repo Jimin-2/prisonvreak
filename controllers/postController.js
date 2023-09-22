@@ -261,6 +261,34 @@ const boardController = {
     };
   },
 
+  deleteComment: (req, res) => {
+    const postNum = req.params.post_num;
+    const cmtNum = req.params.cmt_num;
+      
+    commentModel.deleteComments(cmtNum, () => {
+      res.redirect(`/community/show/${postNum}`);
+    });
+  },
+
+  updateComment: (req, res) => {
+    const body = req.body;
+    const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    const post_num = req.params.post_num;
+    const cmt_num = req.params.cmt_num; 
+    
+    commentModel.updateComments(
+      body.cmt_content,
+      koreanTime,
+      cmt_num,
+      () => { 
+        res.send(`<script>
+          alert("댓글 수정이 완료되었습니다.");
+          window.location.href = "/community/show/${post_num}";
+        </script>`);
+      }
+    );
+  },
+
 }
 
 const noticeController = {
