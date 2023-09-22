@@ -1,58 +1,74 @@
-<link rel="stylesheet" type="text/css" href="/css/header.css">
-<script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
-<script src="../../public/javascript/header.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/header.css">
+  <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+  <style>
+    /* CSS 스타일은 여기에 추가 */
+  </style>
+</head>
+<body>
+  <div id="header">
+    <div class="logo">
+      <img src="/img/LOGO.png" onclick="location.href='/'" style="cursor: pointer;">
+    </div>
 
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- nav : mobile은 X, PC는 O -->
+<ul class="nav">
+  <li class="link-1"><a href="/"> 게임정보 </a></li>
 
-<div id="header">
+  <li class="link-1"><a href="/notice"> 공지사항 </a></li>
 
+  <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
 
-  <div class="logo">
-    <img src="/img/LOGO.png" onclick="location.href='/'" style="cursor: pointer;">
-  </div>
+  <li class="link-1"><a href="/"> 랭킹 </a></li>
 
-  <!-- nav : mobile은 X, PC는 O -->
-  <ul class="nav">
-    <li class="link-1"><a href="/"> 게임정보 </a></li>
+  <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
 
-    <li class="link-1"><a href="/notice"> 공지사항 </a></li>
-
-    <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
-
-    <li class="link-1"><a href="/"> 랭킹 </a></li>
-
-    <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
-
-    <% if (is_logined) { %>
-      <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
-      <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
+  <% if (is_logined) { %>
+    <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
+    <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
     <% } else { %>
       <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
-    <% } %>
-  </ul>
+      <% } %>
+</ul>
 
-  <a class="nav-button" href="#">
-    <i class="fa-solid fa-bars fa-2xl"></i>
-  </a>
+<a class="nav-button" href="#">
+  <i class="fa-solid fa-bars fa-2xl"></i>
+</a>
 
 </div>
-<div>
-  <ul class="nav-toggle-button">
-    <li class="link-1"><a href="/"> 게임정보 </a></li>
 
-    <li class="link-1"><a href="/notice"> 공지사항 </a></li>
+<div class="nav-toggle-button">
+<ul>
+  <li class="link-1"><a href="/"> 게임정보 </a></li>
 
-    <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
+  <li class="link-1"><a href="/notice"> 공지사항 </a></li>
 
-    <li class="link-1"><a href="/"> 랭킹 </a></li>
+  <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
 
-    <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
+  <li class="link-1"><a href="/"> 랭킹 </a></li>
 
-    <% if (is_logined) { %>
-      <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
-      <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
+  <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
+
+  <% if (is_logined) { %>
+    <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
+    <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
     <% } else { %>
       <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
-    <% } %>
-  </ul>
+      <% } %>
+</ul>
 </div>
+
+  <script>
+    const navButton = document.querySelector(".nav-button");
+    const navToggleButton = document.querySelector(".nav-toggle-button");
+
+    navButton.addEventListener("click", () => {
+      navToggleButton.classList.toggle("active"); // active 클래스 토글
+    });
+  </script>
+</body>
+</html>
