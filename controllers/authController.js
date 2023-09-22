@@ -268,7 +268,7 @@ exports.check_nickname_availability = function (req, res) {
     });
 };
 
-// 아이디 중복 확인
+// 이메일 중복 확인
 exports.check_email_availability = function (req, res) {
     const email = req.body.email;
     console.log('이메일 사용 가능 여부 확인:', email);
@@ -282,6 +282,42 @@ exports.check_email_availability = function (req, res) {
 
         console.log('이메일 사용 가능 여부:', availability.available);
         res.json(availability);
+    });
+};
+
+// 닉네임 보유자 확인
+exports.check_nickname = function (req, res) {
+    const nickname = req.body.nickname;
+    const userId = req.session.user_id;
+    console.log('닉네임 주인 확인:', nickname);
+
+    userModel.checkNicknameAvailability(nickname,function (error,results) {
+        if (error) throw error;
+
+        var check = {
+            available: results[0].mem_id === userId
+        };
+
+        console.log('닉네임 주인:', check.available);
+        res.json(check);
+    });
+};
+
+// 이메일 보유자 확인
+exports.check_email = function (req, res) {
+    const email = req.body.email;
+    const userId = req.session.user_id;
+    console.log('이메일 주인 확인:', email);
+
+    userModel.checkEmailAvailability(email,function (error,results) {
+        if (error) throw error;
+
+        var check = {
+            available: results[0].mem_id === userId
+        };
+
+        console.log('이메일 주인:', check.available);
+        res.json(check);
     });
 };
 
@@ -601,7 +637,7 @@ exports.mypage = function (req, res) {
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
     const isLogined = req.session.is_logined;
     const postsPerPage = 5;
-    const link = 'mypage';
+    const link = 'myPage';
     if (!isLogined) { // 로그인 X
         // alert 메시지 이후, 이전 페이지 돌아가기
         return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
@@ -880,6 +916,7 @@ exports.userProfile = function (req, res) {
     });
 };
 
+// 프로필 조회
 exports.profile = function (req, res) {
     console.log(req.params)
     console.log(req.body)
