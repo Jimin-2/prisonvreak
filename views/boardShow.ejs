@@ -153,15 +153,15 @@
                                     <% } else { %>
                                         <p class="no-next-post">다음 글이 없습니다.</p>
                                         <% } %>
-                                <% if (previousPost) { %>
-                                    <div class="previous-post">
-                                        <a href="/community/show/<%= previousPost %>">
-                                            이전 글: <%= previousTitle %>
-                                        </a>
-                                    </div>
-                                    <% } else { %>
-                                        <p class="no-previous-post">이전 글이 없습니다.</p>
-                                        <% } %>
+                                            <% if (previousPost) { %>
+                                                <div class="previous-post">
+                                                    <a href="/community/show/<%= previousPost %>">
+                                                        이전 글: <%= previousTitle %>
+                                                    </a>
+                                                </div>
+                                                <% } else { %>
+                                                    <p class="no-previous-post">이전 글이 없습니다.</p>
+                                                    <% } %>
                                                         <hr>
 
                                                         <style>
@@ -186,8 +186,6 @@
 
                                                         <hr>
                                                         <a href="/community">목록</a>
-
-
 
 
             </div>

@@ -151,25 +151,24 @@ const postModel = {
           const previousPost = results[0].previousPost;
           const nextPost = results[0].nextPost;
   
-          // 이제 별도의 서브쿼리로 post_title을 가져옵니다.
+          // 서브쿼리로 title.
           db.query(
             `
               SELECT post_title FROM post WHERE post_num = ?;
             `,
-            [previousPost], // 이전 글의 post_num을 사용하여 post_title을 가져옴
+            [previousPost], // 이전 글 post_title
             (error, prevResult) => {
               if (error) {
                 console.error(error);
                 callback(error, null, null);
               } else {
                 const previousTitle = prevResult[0] ? prevResult[0].post_title : null;
-                
-                // 다음 글에 대해서도 post_title을 가져옵니다.
+
                 db.query(
                   `
                     SELECT post_title FROM post WHERE post_num = ?;
                   `,
-                  [nextPost], // 다음 글의 post_num을 사용하여 post_title을 가져옴
+                  [nextPost], // 다음 글 post_title
                   (error, nextResult) => {
                     if (error) {
                       console.error(error);
