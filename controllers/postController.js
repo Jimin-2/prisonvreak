@@ -63,6 +63,10 @@ const boardController = {
                   console.log("게스트");
                 }
 
+                postModel.getPostTitle(post_num, (error, previousPost, previousTitle, nextPost, nextTitle) => {
+                  if (error) {
+                    console.error(error);
+                  }
                 res.render('boardShow', {
                   post_num: post_num,
                   data: result,
@@ -72,9 +76,14 @@ const boardController = {
                   login_nick: login_nick || "게스트",
                   login_pro: login_pro,
                   commentInfo: commentInfo,
+                  previousPost: previousPost,
+                  previousTitle: previousTitle,
+                  nextPost: nextPost,
+                  nextTitle: nextTitle,
                 });
               });
             });
+          });
           } catch (error) {
             console.error(error);
           }
