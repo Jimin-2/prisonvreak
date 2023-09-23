@@ -42,6 +42,12 @@ router.post('/check_nickname_availability', authController.check_nickname_availa
 // 이메일 중복 확인
 router.post('/check_email_availability', authController.check_email_availability);
 
+// 닉네임 보유자 확인
+router.post('/check_nickname', authController.check_nickname);
+
+// 이메일 보유자 확인
+router.post('/check_email', authController.check_email);
+
 // 이메일 인증 코드 전송
 router.post('/send_verification_email', authController.sendVerificationEmail);
 

@@ -21,9 +21,28 @@
                         availabilitySpan.style.color = 'green';
                         availabilitySpan.style.fontSize = '0.9em';
                     } else {
-                        availabilitySpan.textContent = '이미 사용 중인 닉네임입니다.';
-                        availabilitySpan.style.color = 'red';
-                        availabilitySpan.style.fontSize = '0.9em';
+                        fetch('/auth/check_nickname', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ nickname: nickname })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.available) {
+                                    availabilitySpan.textContent = '사용 가능한 닉네임입니다.';
+                                    availabilitySpan.style.color = 'green';
+                                    availabilitySpan.style.fontSize = '0.9em';
+                                } else {
+                                    availabilitySpan.textContent = '이미 사용 중인 닉네임입니다.';
+                                    availabilitySpan.style.color = 'red';
+                                    availabilitySpan.style.fontSize = '0.9em';
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
                     }
                 })
                 .catch(error => {
@@ -48,9 +67,28 @@
                         availabilitySpan.style.color = 'green';
                         availabilitySpan.style.fontSize = '0.9em';
                     } else {
-                        availabilitySpan.textContent = '이미 등록된 이메일입니다.';
-                        availabilitySpan.style.color = 'red';
-                        availabilitySpan.style.fontSize = '0.9em';
+                        fetch('/auth/check_email', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ email: email })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.available) {
+                                    availabilitySpan.textContent = '사용 가능한 이메일입니다.';
+                                    availabilitySpan.style.color = 'green';
+                                    availabilitySpan.style.fontSize = '0.9em';
+                                } else {
+                                    availabilitySpan.textContent = '이미 등록된 이메일입니다.';
+                                    availabilitySpan.style.color = 'red';
+                                    availabilitySpan.style.fontSize = '0.9em';
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
                     }
                 })
                 .catch(error => {
@@ -390,7 +428,7 @@
                                                         if (data.message === '프로필 이미지가 삭제되었습니다.') {
                                                             // 이미지 삭제에 성공한 경우
                                                             document.getElementById('profileImagePreview').src = 'public/img/profile_default.jpg'; // 기본 프로필 이미지로 변경
-                                                            alert('삭제되었습니다. 프로필 업데이트에는 약 1분이 소요됩니다^^');
+                                                            alert('삭제되었습니다.');
                                                             opener.parent.location.reload();
                                                             window.close();
                                                         } else {
@@ -552,7 +590,7 @@
                                                             if (data.message === '프로필 이미지가 삭제되었습니다.') {
                                                                 // 이미지 삭제에 성공한 경우
                                                                 document.getElementById('profileImagePreview').src = 'public/img/profile_default.jpg'; // 기본 프로필 이미지로 변경
-                                                                alert('삭제되었습니다. 프로필 업데이트에는 약 1분이 소요됩니다^^');
+                                                                alert('삭제되었습니다.');
                                                                 opener.parent.location.reload();
                                                                 window.close();
                                                             } else {
