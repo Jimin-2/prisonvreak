@@ -136,10 +136,10 @@ const postModel = {
     db.query(
       `
         SELECT (
-          SELECT post_num FROM post WHERE post_num < ? ORDER BY post_num DESC LIMIT 1
+          SELECT post_num FROM post WHERE post_num < ? AND post_usernum <> 1 ORDER BY post_num DESC LIMIT 1
         ) AS previousPost,
         (
-          SELECT post_num FROM post WHERE post_num > ? ORDER BY post_num ASC LIMIT 1
+          SELECT post_num FROM post WHERE post_num > ? AND post_usernum <> 1 ORDER BY post_num ASC LIMIT 1
         ) AS nextPost;
       `,
       [post_num, post_num],
@@ -150,7 +150,7 @@ const postModel = {
         } else {
           const previousPost = results[0].previousPost;
           const nextPost = results[0].nextPost;
-  
+
           // 서브쿼리로 title.
           db.query(
             `
@@ -186,8 +186,7 @@ const postModel = {
       }
     );
   },
-
-}
+};
 
 const commentModel = {
   getComments: (post_usernum, callback) => {
