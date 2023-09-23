@@ -28,7 +28,6 @@ const boardController = {
       res.status(500).send('Internal Server Error');
       return;
     }
-
     // postInfo 가져오기
     postModel.getNicknameByPostId(post_num, async (error, post_nick, post_pro) => {
       if (error) {

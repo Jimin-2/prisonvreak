@@ -30,10 +30,12 @@
         <!-- Section -->
         <section id="section">
             <div id="layout">
-                <div id="next-list-button">
-                    <button> 다음글 </button>
-                    <button onclick="location.href='/community'"> 목록 </button>
-                </div>
+                <% if (post_nick===login_nick) { %>
+                    <div id="next-list-button">
+                        <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack">수정</a>
+                        <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack">삭제</a>
+                    </div>
+                    <% } %>
                 <div id="title">
                     <h4> > 커뮤니티 </h4>
                     <h1>
@@ -109,6 +111,7 @@
                         </div>
                       </div>
                       <br>
+                      
                       <!-- 답글 등록 폼 -->
                       <form action="/community/show/<%= data.post_num %>" method="POST" class="reply-form" style="display: none;">
                         <input type="hidden" name="post_num" value="<%= data.post_num %>">
@@ -149,7 +152,49 @@
                                     <button class="button btnFade btnBlack" type="submit"> 등록 </button>
                                 </div>
                             </form>
-                            <a href="/community">목록</a>
+                            <hr>
+                                <% if (nextPost) { %>
+                                    <div class="next-post">
+                                        <a href="/community/show/<%= nextPost %>">
+                                            다음 글: <%= nextTitle %>
+                                        </a>
+                                    </div>
+                                    <% } else { %>
+                                        <p class="no-next-post">다음 글이 없습니다.</p>
+                                        <% } %>
+                                            <% if (previousPost) { %>
+                                                <div class="previous-post">
+                                                    <a href="/community/show/<%= previousPost %>">
+                                                        이전 글: <%= previousTitle %>
+                                                    </a>
+                                                </div>
+                                                <% } else { %>
+                                                    <p class="no-previous-post">이전 글이 없습니다.</p>
+                                                    <% } %>
+                                                        <hr>
+
+                                                        <style>
+                                                            .previous-post,
+                                                            .next-post {
+                                                                margin: 10px 0;
+                                                            }
+
+                                                            .previous-post a,
+                                                            .next-post a {
+                                                                text-decoration: none;
+                                                                color: #007bff;
+                                                            }
+
+                                                            .no-previous-post,
+                                                            .no-next-post {
+                                                                font-style: italic;
+                                                                color: #777;
+                                                            }
+                                                        </style>
+
+
+                                                        <hr>
+                                                        <a href="/community">목록</a>
 
                     </div>
             </div>
