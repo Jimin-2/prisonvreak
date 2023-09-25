@@ -13,8 +13,6 @@ function getRandom() {
     const max = 9999;
     const length = String(max).length;
     const number = Math.floor(Math.random() * max);
-    console.log('랜덤코드는');
-    console.log((Array(length).join('0') + number).slice(-length));
     return (Array(length).join('0') + number).slice(-length);
 }
 
@@ -45,9 +43,7 @@ exports.register_process = function (req, res) {
     if (name && nickname && id && password && phone && email) {
         while (checkIfUserCodeExists(usercode)){
             usercode = getRandom();
-            console.log(usercode);
         }
-        console.log(usercode);
 
         userModel.registerUserLocal(usercode, name, nickname, id, password, phone, email, function (error, data) {
             if (error) throw error;
@@ -70,13 +66,11 @@ exports.socialregister_process = function (req, res) {
     const kakaoUserId = req.body.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
     const googleUserId = req.body.googleUserId; // 구글 로그인 시 저장한 구글 아이디
     let usercode = getRandom();
-    console.log(req.body)
 
     // 구현 내용...
     if (name && nickname && phone && email) {
         while (checkIfUserCodeExists(usercode)){
             usercode = getRandom();
-            console.log(usercode);
         }
         if (kakaoUserId) {
             // 카카오톡으로 가입한 경우, kakao_id 값을 저장
