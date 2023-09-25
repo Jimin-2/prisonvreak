@@ -41,7 +41,7 @@ exports.uploadImage = (req, res) => {
             // Send a response with the alert message
             const responseHTML = `
                 <script type="text/javascript">
-                    alert('수정되었습니다. 프로필 업데이트에는 약 1분이 소요됩니다^^');
+                    alert('수정되었습니다.');
                     opener.parent.location.reload();
                     window.close();
                 </script>
