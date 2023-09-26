@@ -31,7 +31,7 @@ exports.checkEmailAvailability = function (email,callback){
 };
 
 exports.checkUsercodeAvailability = function (usercode,callback){
-  db.query('SELECT * FROM member WHERE mem_num = ?', [usercode], function(error, results, fields) {
+  db.query('SELECT * FROM member WHERE mem_code = ?', [usercode], function(error, results, fields) {
     if (error) {
       callback(error, null);
     } else {
