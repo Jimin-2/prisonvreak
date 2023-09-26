@@ -41,7 +41,7 @@
     <div id="myProfileInfo">
         <h3> <%= userProfile.mem_nickname %> </h3> <!-- mem_nickname을 사용합니다 -->
         <div>
-            <p class="next"> ID <%= userProfile.mem_id %></p> <!-- mem_id를 사용합니다 -->
+            <p class="next"> # <%= userProfile.mem_code %></p> <!-- mem_code를 사용합니다 -->
         </div>
 
 
@@ -54,7 +54,7 @@
         </div>
 
     </div>
-    <textarea id="memIntro" name="memIntro" rows="3"  placeholder="한 줄 소개"><%= userProfile.mem_intro %></textarea>
+    <textarea id="memIntro" name="memIntro" rows="3"  placeholder="한 줄 소개" readonly><%= userProfile.mem_intro %></textarea>
 
     <div id="link">
         <!--<p onclick="showProfile('<%= userProfile.mem_nickname %>')">-->
