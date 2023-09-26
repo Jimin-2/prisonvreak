@@ -99,7 +99,13 @@ function onClickPlayButton() {
   // playerDiv.appendChild(cctv_5);
   cctv_5.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 5);
-  });}
+  });
+
+  const cctv_6= document.getElementById('CCTV-6');
+  cctv_6.addEventListener("click", function () {
+    sendClickEvent(channel, videoPlayer, 6);
+  });
+}
 
 async function setupRenderStreaming() {
   codecPreferences.disabled = true;

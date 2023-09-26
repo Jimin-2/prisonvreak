@@ -1,5 +1,5 @@
 export async function getServerConfig() {
-  const protocolEndPoint = 'http://13.209.63.39:8081/config';
+  const protocolEndPoint = 'https://13.209.63.39:8081/config';
   const createResponse = await fetch(protocolEndPoint);
   return await createResponse.json();
 }

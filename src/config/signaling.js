@@ -246,7 +246,7 @@ export class WebSocketSignaling extends EventTarget {
     if (location.protocol === "https:") {
       websocketUrl = "wss://13.209.63.39:8081";
     } else {
-      websocketUrl = "ws://13.209.63.39:8081";
+      websocketUrl = "wss://13.209.63.39:8081";
     }
 
     this.websocket = new WebSocket(websocketUrl);
