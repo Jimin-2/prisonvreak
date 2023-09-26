@@ -1,8 +1,9 @@
 section {
   width: 100%;
-  height: 1650px;
+  height: 2400px;
 
   position: relative;
+  background-color: #161616;
 }
 
 .notice-background {
@@ -13,39 +14,36 @@ section {
 
   flex-direction: column;
   flex-wrap: wrap;
-
-  background-image: url("background/info2.png");
-  color: white;
-  background-repeat: no-repeat;
-
-  background-size: 100% 800px;
 }
 
 .container-01 {
+  width: 100%;
+  height: 350px;
+
   display: grid;
   width: 100%;
-
-  grid-template-rows: 200px 350px;
 }
 
 /* 첫 번째 그리드 */
 #notice-logo {
   width: 100%;
-  margin-top: 150px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   text-align: center;
 }
 
 #notice-logo img {
-  margin: 20px 0px 20px 80px;
+  width: 55%;
+  margin-top: 90px;
 }
 
 .search {
   position: relative;
   margin-right: 80px;
+
+  display: none;
 }
 
 /* 왜 이러는 거임
@@ -100,15 +98,13 @@ section {
 }
 
 #grandopen-logo img {
-  width: 1064px;
-  height: 92px;
-
-  margin-top: 100px;
+  display: none;
 }
 
 /* 세 번째 섹션 */
 #thirdSection {
   width: 100%;
+  height: 1800px;
 
   display: flex;
   justify-content: center;
@@ -117,16 +113,14 @@ section {
 }
 
 #thirdSectionBox {
-  width: 1500px;
-  height: 900px;
+  width: 100%;
+  height: 1800px;
 
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-
-  box-shadow: 10px 10px 20px black;
-  background-color: white;
+  background-color: #161616;
 }
 
 .title {
@@ -140,8 +134,8 @@ section {
 
 .content-div {
   display: grid;
-  grid-template-rows: repeat(2, auto);
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, auto);
+  grid-template-columns: repeat(1, 1fr);
   gap: 80px;
 }
 
@@ -161,8 +155,8 @@ section {
 }
 
 .grid-content-img-layout {
-  width: 350px;
-  height: 250px;
+  width: 320px;
+  height: 220px;
 
   display: flex;
   justify-content: center;
@@ -176,7 +170,7 @@ section {
   font-size: 2em;
   font-weight: bold;
 
-  color: #161616;
+  color: #ffffff;
 }
 
 .grid-container {
@@ -191,7 +185,7 @@ section {
 
 .grid-container div {
   margin-top: 5px;
-  margin-left: 10px;
+  margin-left: 25px;
 }
 
 .grid-container > .grid-content-num, .grid-content-date {
@@ -199,24 +193,11 @@ section {
 }
 
 .pagination {
-  width: 100%;
-  height: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* 변경 */
-  text-align: center;
+  width: auto;
+  height: auto;
 
-  margin-top: 40px;
-}
+  color: rgb(255, 255, 255);
+  text-shadow: 10px 10px 20px black;
 
-.pagination a {
-  margin-right: 10px;
-  color: #2c2c2c;
-  filter: drop-shadow(2px 2px 2px #161616);
-}
-
-.pagination span {
-  margin-right: 10px;
-  font-weight: bold;
-  filter: drop-shadow(2px 2px 2px #161616);
+  margin-top: 50px;
 }
