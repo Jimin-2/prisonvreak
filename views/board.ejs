@@ -11,7 +11,8 @@
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/board.css">
+  <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/board.css">
+  <link rel="stylesheet" media="(max-width: 900px)" href="/css/board_m.css" >
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
@@ -40,62 +41,66 @@
         <img src="/img/cmLogo.png">
       </div>
 
-      <!-- 글쓰기 버튼 -->
-      <div class="write-button">
-        <form action="/community/insert" method="GET">
-          <button type="submit">글쓰기</button>
-        </form>
-      </div>
-
       <!-- 보드board -->
       <div class="board-section">
-        <div class="board" class="effect8">
-          <table class="table-template">
-            <thead>
-              <tr>
-                <!-- <th>번호</th> -->
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>추천</th>
-                <th>날짜</th>
-                <th>조회수</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
-                <tr>
-                  <td><a href="/community/show/<%= post.post_num %>">
-                      <%= post.post_title %>
-                    </a></td>
-                  <td>
-                    <!-- <i class="fa-solid fa-user"></i> -->
-                    <div style="display: flex; align-items: center;">
-                      <img src="<%= post.userInfo[1] %>" alt="프로필 이미지" width="50">
-                      <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= post.userInfo[0] %>')">
-                        <%= post.userInfo[0] %>
-                      </p>
-                      <div id="profileModal" class="modal">
-                        <span class="close" onclick="closeModal()">&times;</span>
-                      </div>
-
-                    </div>
-                  </td>
-                  <td>
-                    <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
-                  </td>
-                  <td>
-                    <i class="fa-solid fa-calendar"></i>
-                    <%= post.formattedCreatedAt %>
-                  </td>
-                  <td>
-                    <%= post.post_hit %>
-                  </td>
-                </tr>
-                <% }); %>
-            </tbody>
-          </table>
+        <!-- 글쓰기 버튼 -->
+        <div class="write-button">
+          <form action="/community/insert" method="GET">
+            <button type="submit">글쓰기</button>
+          </form>
         </div>
+        <div class="write-button-m">
+          <form action="/community/insert" method="GET">
+            <button type="submit">+</button>
+          </form>
+        </div>
+          <div class="board" class="effect8">
+            <table class="table-template">
+              <thead>
+                <tr>
+                  <!-- <th>번호</th> -->
+                  <th>제목</th>
+                  <th>글쓴이</th>
+                  <th class="reco-class">추천</th>
+                  <th>날짜</th>
+                  <th>조회수</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
+                  <tr>
+                    <td><a href="/community/show/<%= post.post_num %>">
+                        <%= post.post_title %>
+                      </a></td>
+                    <td>
+                      <!-- <i class="fa-solid fa-user"></i> -->
+                      <div style="display: flex; align-items: center;">
+                        <img src="<%= post.userInfo[1] %>" alt="프로필 이미지">
+                        <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= post.userInfo[0] %>')">
+                          <%= post.userInfo[0] %>
+                        </p>
+                        <div id="profileModal" class="modal">
+                          <span class="close" onclick="closeModal()">&times;</span>
+                        </div>
+
+                      </div>
+                    </td>
+                    <td class="reco-class">
+                      <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
+                    </td>
+                    <td>
+                      <i class="fa-solid fa-calendar"></i>
+                      <%= post.formattedCreatedAt %>
+                    </td>
+                    <td>
+                      <%= post.post_hit %>
+                    </td>
+                  </tr>
+                  <% }); %>
+              </tbody>
+            </table>
+          </div>
       </div>
 
       <div class="pagination">
@@ -142,13 +147,13 @@
 
           // 모달 내용을 동적으로 로드
           fetch(`/auth/userProfile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
-                  .then((response) => response.text())
-                  .then((html) => {
-                    modal.innerHTML = html; // userprofile.ejs의 HTML을 모달 내용에 설정
-                  })
-                  .catch((error) => {
-                    console.error('Error fetching profile:', error);
-                  });
+            .then((response) => response.text())
+            .then((html) => {
+              modal.innerHTML = html; // userprofile.ejs의 HTML을 모달 내용에 설정
+            })
+            .catch((error) => {
+              console.error('Error fetching profile:', error);
+            });
 
           // 모달 표시
           modal.style.display = 'block';

@@ -8,6 +8,29 @@ const authCheckMiddleware = require('../middleware/authCheck');
 const moment = require("moment/moment");
 const { boardController, noticeController } = require('../controllers/postController');
 
+// 랜덤 유저코드 생성
+function getRandom() {
+    const max = 9999;
+    const length = String(max).length;
+    const number = Math.floor(Math.random() * max);
+    return (Array(length).join('0') + number).slice(-length);
+}
+
+// 데이터베이스에서 해당 유저 코드가 이미 존재하는지 확인하는 함수
+function checkIfUserCodeExists(usercode) {
+
+    userModel.checkUsercodeAvailability(usercode, function (error, data){
+        if(error) throw error;
+
+        if(data.length > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    });
+}
+
 // 회원가입 프로세스
 exports.register_process = function (req, res) {
     const name = req.body.name;
@@ -16,15 +39,17 @@ exports.register_process = function (req, res) {
     const password = req.body.pwd;
     const phone = req.body.phone;
     const email = req.body.email;
-
+    let usercode = getRandom();
     if (name && nickname && id && password && phone && email) {
-        userModel.registerUserLocal(name, nickname, id, password, phone, email, function (error, data) {
-            if (error) throw error;
+        while (checkIfUserCodeExists(usercode)){
+            usercode = getRandom();
+        }
 
+        userModel.registerUserLocal(usercode, name, nickname, id, password, phone, email, function (error, data) {
+            if (error) throw error;
             // 회원 가입이 성공한 후 사용자에게 알림을 표시합니다.
             res.send(`<script type="text/javascript">alert("회원가입이 완료되었습니다!");
-      document.location.href="/";</script>`);
-
+            document.location.href="/";</script>`);
         });
     } else {
         res.send(`<script type="text/javascript">alert("입력되지 않은 정보가 있습니다.");
@@ -40,13 +65,16 @@ exports.socialregister_process = function (req, res) {
     const email = req.body.email;
     const kakaoUserId = req.body.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
     const googleUserId = req.body.googleUserId; // 구글 로그인 시 저장한 구글 아이디
-    console.log(req.body)
+    let usercode = getRandom();
 
     // 구현 내용...
     if (name && nickname && phone && email) {
+        while (checkIfUserCodeExists(usercode)){
+            usercode = getRandom();
+        }
         if (kakaoUserId) {
             // 카카오톡으로 가입한 경우, kakao_id 값을 저장
-            userModel.registerUserWithKakao(name, nickname, kakaoUserId, phone, email, function (error, data) {
+            userModel.registerUserWithKakao(usercode, name, nickname, kakaoUserId, phone, email, function (error, data) {
                 if (error) throw error;
                 // 회원가입 완료 후 카카오 아이디 세션 제거
                 delete req.session.kakaoUserId;
@@ -57,7 +85,7 @@ exports.socialregister_process = function (req, res) {
         }
         else if (googleUserId) {
             // 구글로 가입한 경우, google_id 값을 저장
-            userModel.registerUserWithGoogle(name, nickname, googleUserId, phone, email, function (error, data) {
+            userModel.registerUserWithGoogle(usercode, name, nickname, googleUserId, phone, email, function (error, data) {
                 if (error) throw error;
                 // 회원가입 완료 후 구글 아이디 세션 제거
                 delete req.session.googleUserId;
@@ -668,7 +696,7 @@ myPostList = function (req, res, userId, postsPerPage, link){
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
 
             // 작성한 게시글 가져오는 부분
-            postModel.getPostsByUserNum(userProfile.mem_num,(error, data)=>{
+            postModel.getPostsByUserNum(userProfile.mem_code,(error, data)=>{
                 if (error) {
                     console.error(error);
                     res.status(500).send('Internal Server Error');
@@ -939,7 +967,7 @@ exports.profile = function (req, res) {
 
 
             // 작성한 게시글 가져오는 부분
-            postModel.getPostsByUserNum(userProfile.mem_num,(error, data)=>{
+            postModel.getPostsByUserNum(userProfile.mem_code,(error, data)=>{
                 if (error) {
                     console.error(error);
                     res.status(500).send('Internal Server Error');

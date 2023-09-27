@@ -1,3 +1,4 @@
+import { SendVideo } from "./sendvideo.js";
 import { getServerConfig, getRTCConfiguration } from "../config/config.js";
 import { createDisplayStringArray } from "../config/stats.js";
 import { VideoPlayer } from "../config/videoplayer.js";
@@ -12,15 +13,20 @@ let renderstreaming;
 /** @type {boolean} */
 let useWebSocket;
 
+const localVideo = document.getElementById('localVideo');
+const playerDiv = document.getElementById('player');
+
+/** @type {SendVideo} */
+let sendVideo = new SendVideo(localVideo);
 let channel;
+let connectionId;
+let audioDevice;
 
 const codecPreferences = document.getElementById('codecPreferences');
 const supportsSetCodecPreferences = window.RTCRtpTransceiver &&
     'setCodecPreferences' in window.RTCRtpTransceiver.prototype;
 const messageDiv = document.getElementById('message');
 messageDiv.style.display = 'none';
-
-const playerDiv = document.getElementById('player');
 const lockMouseCheck = document.getElementById('lockMouseCheck');
 const videoPlayer = new VideoPlayer();
 
@@ -39,17 +45,12 @@ window.addEventListener('beforeunload', async () => {
 async function setup() {
   const res = await getServerConfig();
   useWebSocket = res.useWebSocket;
-  showWarningIfNeeded(res.startupMode);
+  connectionId = prompt('user code');
+  setUpInputSelect();
+  await sendVideo.startLocalVideo(audioDevice);
   showCodecSelect();
   showPlayButton();
-}
 
-function showWarningIfNeeded(startupMode) {
-  const warningDiv = document.getElementById("warning");
-  if (startupMode === "private") {
-    warningDiv.innerHTML = "<h4>Warning</h4> This sample is not working on Private Mode.";
-    warningDiv.hidden = false;
-  }
 }
 
 function showPlayButton() {
@@ -99,6 +100,11 @@ function onClickPlayButton() {
   cctv_5.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 5);
   });
+
+  const cctv_6= document.getElementById('CCTV-6');
+  cctv_6.addEventListener("click", function () {
+    sendClickEvent(channel, videoPlayer, 6);
+  });
 }
 
 async function setupRenderStreaming() {
@@ -109,15 +115,27 @@ async function setupRenderStreaming() {
   renderstreaming = new RenderStreaming(signaling, config);
   renderstreaming.onConnect = onConnect;
   renderstreaming.onDisconnect = onDisconnect;
-  renderstreaming.onTrackEvent = (data) => videoPlayer.addTrack(data.track);
+  renderstreaming.onTrackEvent = (data) => {
+    const direction = data.transceiver.direction;
+    console.log(direction);
+    if (direction == "sendrecv" || direction == "recvonly") {
+      videoPlayer.addTrack(data.track);
+    }
+  };
   renderstreaming.onGotOffer = setCodecPreferences;
 
   await renderstreaming.start();
-  await renderstreaming.createConnection();
+  await renderstreaming.createConnection(connectionId);
 }
 
 function onConnect() {
-  channel = renderstreaming.createDataChannel("input");
+  channel = renderstreaming.createDataChannel();
+  console.log(channel);
+  const tracks = sendVideo.getLocalTracks();
+  for (const track of tracks) {
+    renderstreaming.addTransceiver(track, { direction: 'sendonly' });
+  }
+
   showStatsMessage();
 }
 
@@ -211,4 +229,16 @@ function clearStatsMessage() {
   intervalId = null;
   messageDiv.style.display = 'none';
   messageDiv.innerHTML = '';
+}
+async function setUpInputSelect() {
+  const deviceInfos = await navigator.mediaDevices.enumerateDevices();
+
+  for (let i = 0; i !== deviceInfos.length; ++i) {
+    const deviceInfo = deviceInfos[i];
+    if (deviceInfo.kind === 'audioinput') {
+      audioDevice = deviceInfo.deviceId;
+      console.log(audioDevice);
+      break;
+    }
+  }
 }

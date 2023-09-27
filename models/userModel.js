@@ -30,6 +30,16 @@ exports.checkEmailAvailability = function (email,callback){
   });
 };
 
+exports.checkUsercodeAvailability = function (usercode,callback){
+  db.query('SELECT * FROM member WHERE mem_code = ?', [usercode], function(error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 // 아이디와 비밀번호로 사용자 정보 조회
 exports.loginProcess = function (id, password, callback) {
   db.query('SELECT * FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
@@ -44,10 +54,10 @@ exports.loginProcess = function (id, password, callback) {
 };
 
 // 회원가입 처리 - 카카오 로그인으로 가입
-exports.registerUserWithKakao = function (name, nickname, kakaoUserId, phone, email, callback) {
+exports.registerUserWithKakao = function (usercode, name, nickname, kakaoUserId, phone, email, callback) {
   const defaultProfileImageUrl = 'https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg'; // S3 기본 이미지 URL
-  db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider,mem_profile) VALUES (?, ?, ?, ?, ?, "kakao",?)',
-      [name, nickname, kakaoUserId, phone, email, defaultProfileImageUrl], function (error, data) {
+  db.query('INSERT INTO member (mem_code, mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider,mem_profile) VALUES (?, ?, ?, ?, ?, ?, "kakao",?)',
+      [usercode, name, nickname, kakaoUserId, phone, email, defaultProfileImageUrl], function (error, data) {
         if (error) {
           callback(error, null);
         } else {
@@ -57,10 +67,10 @@ exports.registerUserWithKakao = function (name, nickname, kakaoUserId, phone, em
 };
 
 // 회원가입 처리 - 구글 로그인으로 가입
-exports.registerUserWithGoogle = function (name, nickname, googleUserId, phone, email, callback) {
+exports.registerUserWithGoogle = function (usercode, name, nickname, googleUserId, phone, email, callback) {
   const defaultProfileImageUrl = 'https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg'; // S3 기본 이미지 URL
-  db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider, mem_profile) VALUES (?, ?, ?, ?, ?, "google",?)',
-      [name, nickname, googleUserId, phone, email, defaultProfileImageUrl], function (error, data) {
+  db.query('INSERT INTO member (mem_code, mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider, mem_profile) VALUES (?, ?, ?, ?, ?, ?, "google",?)',
+      [usercode, name, nickname, googleUserId, phone, email, defaultProfileImageUrl], function (error, data) {
         if (error) {
           callback(error, null);
         } else {
@@ -70,11 +80,11 @@ exports.registerUserWithGoogle = function (name, nickname, googleUserId, phone, 
 };
 
 // 회원가입 처리 - 일반 가입
-exports.registerUserLocal = function (name, nickname, id, password, phone, email, callback) {
+exports.registerUserLocal = function (usercode, name, nickname, id, password, phone, email, callback) {
   const defaultProfileImageUrl = 'https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg'; // S3 기본 이미지 URL
 
-  db.query('INSERT INTO member (mem_name, mem_nickname, mem_id, mem_password, mem_phone, mem_email, mem_provider, mem_profile) VALUES (?, ?, ?, ?, ?, ?, "local", ?)',
-      [name, nickname, id, password, phone, email, defaultProfileImageUrl], function (error, data) {
+  db.query('INSERT INTO member (mem_code, mem_name, mem_nickname, mem_id, mem_password, mem_phone, mem_email, mem_provider, mem_profile) VALUES (?, ?, ?, ?, ?, ?, ?, "local", ?)',
+      [usercode, name, nickname, id, password, phone, email, defaultProfileImageUrl], function (error, data) {
         if (error) {
           callback(error, null);
         } else {
