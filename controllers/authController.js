@@ -358,10 +358,16 @@ exports.customer_send = function (req, res) {
 
     // 클라이언트에서 전송한 파일 정보
     const fileName = req.body.fileName; // 수정된 부분
-    console.log('Received fileName:', req.body); // 파일명 로깅
     const fileData = req.body.fileData; // 파일 데이터 (Base64 형식)
     // 파일 데이터를 Buffer로 변환
     const fileBuffer = Buffer.from(fileData.split(',')[1], 'base64'); // 'data:image/jpeg;base64,' 이 부분 제거
+    const maxFileSizeBytes = 25 * 1024 * 1024; // 25MB를 바이트로 변환
+
+    if (fileBuffer.length > maxFileSizeBytes) {
+        // 파일 크기가 제한을 초과한 경우
+        return res.send('<script type="text/javascript">alert("첨부파일은 25MB 이하만 첨부가능합니다.");history.back();</script>');
+    }
+
 
     // 이메일 발송 설정
     const transporter = nodemailer.createTransport({
@@ -388,7 +394,7 @@ exports.customer_send = function (req, res) {
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.error('이메일 전송 오류:', error);
-            res.status(500).send();
+            res.send('<script type="text/javascript">alert("파일의 크기가 너무 큽니다 (25MB이하만 첨부가능합니다!)");history.back();</script>');
         } else {
             console.log('이메일 전송 성공:', info.response);
             res.send('<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");document.location.href="/auth/customer";</script>');

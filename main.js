@@ -19,8 +19,8 @@ app.set("views", './views');
 app.use(express.static(`public`));
 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 app.use(session({
     secret: 'aaaa@aaaa', // 원하는 문자 입력
@@ -41,6 +41,7 @@ app.use((req, res, next) => {
 // Passport 및 세션 미들웨어 초기화
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 /*app.get('/', (req, res) => {
     if (!authCheck.isOwner(req, res)) {
