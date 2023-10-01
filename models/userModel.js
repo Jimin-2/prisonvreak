@@ -53,11 +53,24 @@ exports.loginProcess = function (id, password, callback) {
   });
 };
 
+// 유저코드와 비밀번호로 사용자 정보 조회
+exports.vrLoginProcess = function (userCode, password, callback) {
+  db.query('SELECT * FROM member WHERE mem_code = ? AND mem_password = ?', [userCode, password], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+
+      console.log(results);
+      callback(null, results);
+    }
+  });
+};
+
 // 회원가입 처리 - 카카오 로그인으로 가입
-exports.registerUserWithKakao = function (usercode, name, nickname, kakaoUserId, phone, email, callback) {
+exports.registerUserWithKakao = function (usercode, pwd, name, nickname, kakaoUserId, phone, email, callback) {
   const defaultProfileImageUrl = 'https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg'; // S3 기본 이미지 URL
-  db.query('INSERT INTO member (mem_code, mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider,mem_profile) VALUES (?, ?, ?, ?, ?, ?, "kakao",?)',
-      [usercode, name, nickname, kakaoUserId, phone, email, defaultProfileImageUrl], function (error, data) {
+  db.query('INSERT INTO member (mem_code, mem_password, mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider,mem_profile) VALUES (?, ?, ?, ?, ?, ?, ?, "kakao",?)',
+      [usercode, pwd, name, nickname, kakaoUserId, phone, email, defaultProfileImageUrl], function (error, data) {
         if (error) {
           callback(error, null);
         } else {
@@ -67,10 +80,10 @@ exports.registerUserWithKakao = function (usercode, name, nickname, kakaoUserId,
 };
 
 // 회원가입 처리 - 구글 로그인으로 가입
-exports.registerUserWithGoogle = function (usercode, name, nickname, googleUserId, phone, email, callback) {
+exports.registerUserWithGoogle = function (usercode, pwd, name, nickname, googleUserId, phone, email, callback) {
   const defaultProfileImageUrl = 'https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg'; // S3 기본 이미지 URL
-  db.query('INSERT INTO member (mem_code, mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider, mem_profile) VALUES (?, ?, ?, ?, ?, ?, "google",?)',
-      [usercode, name, nickname, googleUserId, phone, email, defaultProfileImageUrl], function (error, data) {
+  db.query('INSERT INTO member (mem_code, mem_password, mem_name, mem_nickname, mem_id, mem_phone, mem_email, mem_provider, mem_profile) VALUES (?, ?, ?, ?, ?, ?, ?, "google",?)',
+      [usercode, pwd, name, nickname, googleUserId, phone, email, defaultProfileImageUrl], function (error, data) {
         if (error) {
           callback(error, null);
         } else {
@@ -195,17 +208,6 @@ exports.updateUserPassword = function (id, password, callback) {
 // 회원 탈퇴 처리
 exports.withdrawal = function (id, password, callback){
   db.query('DELETE FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
-    if (error) {
-      callback(error, null);
-    } else {
-      callback(null, results);
-    }
-  });
-}
-
-// 소셜 회원 탈퇴 처리
-exports.socialWithdrawal = function (id, callback){
-  db.query('DELETE FROM member WHERE mem_id = ? ', [id], function (error, results, fields) {
     if (error) {
       callback(error, null);
     } else {
