@@ -62,6 +62,7 @@ exports.socialregister_process = function (req, res) {
     const name = req.body.name;
     const nickname = req.body.nickname;
     const phone = req.body.phone;
+    const pwd = req.body.pwd;
     const email = req.body.email;
     const kakaoUserId = req.body.kakaoUserId; // 카카오톡 로그인 시 저장한 카카오 아이디
     const googleUserId = req.body.googleUserId; // 구글 로그인 시 저장한 구글 아이디
@@ -74,7 +75,7 @@ exports.socialregister_process = function (req, res) {
         }
         if (kakaoUserId) {
             // 카카오톡으로 가입한 경우, kakao_id 값을 저장
-            userModel.registerUserWithKakao(usercode, name, nickname, kakaoUserId, phone, email, function (error, data) {
+            userModel.registerUserWithKakao(usercode, pwd, name, nickname, kakaoUserId, phone, email, function (error, data) {
                 if (error) throw error;
                 // 회원가입 완료 후 카카오 아이디 세션 제거
                 delete req.session.kakaoUserId;
@@ -85,7 +86,7 @@ exports.socialregister_process = function (req, res) {
         }
         else if (googleUserId) {
             // 구글로 가입한 경우, google_id 값을 저장
-            userModel.registerUserWithGoogle(usercode, name, nickname, googleUserId, phone, email, function (error, data) {
+            userModel.registerUserWithGoogle(usercode, pwd, name, nickname, googleUserId, phone, email, function (error, data) {
                 if (error) throw error;
                 // 회원가입 완료 후 구글 아이디 세션 제거
                 delete req.session.googleUserId;
@@ -132,6 +133,29 @@ exports.login_process = function (req, res) {
         document.location.href="/auth/login";</script>`);
     }
 
+};
+
+// VR 로그인 프로세스
+exports.vr_login_process = function (req, res) {
+    const userCode = req.body.userCode;
+    const password = req.body.pwd;
+
+    if (id && password) {             // id와 pw가 입력되었는지 확인
+        userModel.vrLoginProcess(userCode, password, function(error, results, fields) {
+            if (error) throw error;
+            if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
+                const userInfo= {
+                    userCode: results[0].mem_code,
+                    nickname: results[0].mem_nickname,
+                };
+                res.json(userInfo);
+            } else {
+                res.send("로그인 정보가 일치하지 않습니다.");
+            }
+        });
+    } else {
+        res.send("아이디와 비밀번호를 입력하세요.");
+    }
 };
 
 // 로그아웃
@@ -747,25 +771,12 @@ myPostList = function (req, res, userId, postsPerPage, link){
 // 개인 정보 수정 페이지
 exports.myProfileInfo = function (req, res) {
     const isLogined = req.session.is_logined;
-    const provider = req.session.provider;
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
     if (!isLogined) { // 로그인 X
         // alert 메시지 이후, 이전 페이지 돌아가기
         return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
     }
-    if(provider == 'local') {
         res.render('myProfileInfo', {user: req.session});
-    }
-    else{
-        userModel.getUserProfile(userId, (error, results) => {
-            if (error) {
-                res.render('error'); // 에러 화면 렌더링 또는 다른 처리
-            } else {
-                const myProfile = results[0]; // 프로필 정보를 myProfile 변수로 저장
-                res.render('editMyProfile', { myProfile: myProfile }); // editMyProfile 뷰에 myProfile 변수 전달
-            }
-        });
-    }
 };
 
 // 개인 정보 수정 창 들어갈때 비밀번호 확인
@@ -890,23 +901,6 @@ exports.withdrawal = function (req, res) {
     }
 }
 
-// 회원탈퇴(소셜계정)
-exports.socialWithdrawal = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
-    const id = req.body.id;
-            // id와 pw가 입력되었는지 확인
-    userModel.socialWithdrawal(id, function (error, data) {
-        if (error) throw error;
-        req.session.is_logined = false;
-        res.send(`<script type="text/javascript">
-           opener.parent.location='/';
-           window.close();</script>`);
-    });
-}
 
 // 한줄 소개 수정
 exports.updateProfileIntro = function (req, res){

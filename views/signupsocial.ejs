@@ -26,6 +26,18 @@
                 console.error('Error:', error);
             });
     }
+    function checkPasswordMatch() {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var matchSpan = document.getElementById('passwordMatch');
+        if (password === confirmPassword) {
+            matchSpan.textContent = '비밀번호가 일치합니다.';
+            matchSpan.style.color = 'green';
+        } else {
+            matchSpan.textContent = '비밀번호가 일치하지 않습니다.';
+            matchSpan.style.color = 'red';
+        }
+    }
     function sendVerificationCode() {
         var email = document.getElementById('email').value;
         var verificationCodeForm = document.getElementById('verificationCodeForm');
@@ -118,6 +130,7 @@
     function validateForm() {
         var verificationStatus = document.getElementById('verificationStatus').textContent;
         var nicknameAvailability = document.getElementById('nicknameAvailability').textContent;
+        var passwordMatch = document.getElementById('passwordMatch').textContent;
 
         if (verificationStatus !== '인증되었습니다.') {
             alert('이메일 인증을 완료해주세요.');
@@ -125,7 +138,10 @@
         } else if (nicknameAvailability !== '사용 가능한 닉네임입니다.') {
             alert('닉네임 중복확인을 해주세요.');
             return false;
-        } else {
+        } else if (passwordMatch !== '비밀번호가 일치합니다.') {
+            alert('비밀번호 일치여부를 확인해주세요.');
+            return false;
+        }else {
             return true;
         }
     }
@@ -188,6 +204,19 @@
                 <button type="button" onclick="checkNicknameAvailability()"> 중복 확인 </button>
             </div>
             <span id="nicknameAvailability"></span>
+
+            <div class="inputBox">
+                <p> Password </p>
+                <input type="password" name="pwd" id="password" required>
+            </div>
+
+            <div class="inputBox">
+                <p> Password++ </p>
+                <input type="password" name="pwd2" id="confirmPassword" required oninput="checkPasswordMatch()">
+            </div>
+            <div class="check-div">
+                <span id="passwordMatch"></span>
+            </div>
 
             <div class="inputBox" >
                 <p> Phone </p>
