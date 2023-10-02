@@ -78,6 +78,10 @@
                 </div>
                 <hr>
                 <h2> 댓글 </h2>
+                <div id="more-comments-container">
+                    <!-- 더보기 -->
+                    <button id="load-more-comments" data-page="2">더보기</button>
+                  </div>
                 <% for (let i = 0; i < comments.length; i++) { %>
                     <div id="comment">
                         <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>">
@@ -90,7 +94,6 @@
                             <%= comments[i].cmt_created_at %>
                           </a>
                           <div class="more-options">
-                            <button class="more-btn" onclick="toggleOptions(this)">더보기</button>
                           <div class="options" style="display:none;">
                                 <% if(login_nick && commentInfo[i].mem_nickname === login_nick) { %>
                                     <button class="update-btn" onclick="toggleUpdateForm(this)">수정</button>
@@ -133,9 +136,7 @@
                         </div>
                     </form>
                   <% } %>
-                  
-                                   
-                  
+
                             <hr>
                             <form action="/community/show/<%= data.post_num %>" method="POST">
                                 <input type="hidden" name="post_num" value="<%= data.post_num %>">

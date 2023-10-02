@@ -20,77 +20,81 @@ const boardController = {
   },
 
   showForm: (req, res) => {
-  const post_num = req.params.post_num;
-
-  postModel.getPostById(post_num, (error, result) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    // postInfo 가져오기
-    postModel.getNicknameByPostId(post_num, async (error, post_nick, post_pro) => {
+    const post_num = req.params.post_num;
+  
+    postModel.getPostById(post_num, (error, result) => {
       if (error) {
         console.error(error);
+        res.status(500).send('Internal Server Error');
+        return;
       }
-
-      // 조회수
-      postModel.incrementPostHit(post_num, (error) => {
+      
+      // postInfo 가져오기
+      postModel.getNicknameByPostId(post_num, async (error, post_nick, post_pro) => {
         if (error) {
           console.error(error);
         }
-
-        // 댓글
-        commentModel.getComments(post_num, async (error, comments) => {
+  
+        // 조회수
+        postModel.incrementPostHit(post_num, (error) => {
           if (error) {
             console.error(error);
-            res.status(500).send('Internal Server Error');
-            return;
           }
-          try {
-            // 중복된 cmt_usernum을 허용한 배열을 생성
-            const usernums = comments.map(comment => comment.cmt_usernum);
-            commentModel.getMemberByUserNum(usernums, post_num, (error, commentInfo) => {
-              if (error) {
-                console.error(error);
-                res.status(500).send('Internal Server Error');
-                return;
-              }
-
-              commentModel.getMemberById(req.session.user_id, (error, login_nick, login_pro) => {
-                if (login_nick == null) {
-                  console.log("게스트");
+  
+          // 댓글
+          commentModel.getComments(post_num, async (error, comments) => {
+            if (error) {
+              console.error(error);
+              res.status(500).send('Internal Server Error');
+              return;
+            }
+  
+            try {
+              // 중복된 cmt_usernum을 허용한 배열을 생성
+              const usernums = comments.map(comment => comment.cmt_usernum);
+              commentModel.getMemberByUserNum(usernums, post_num, (error, commentInfo) => {
+                if (error) {
+                  console.error(error);
+                  res.status(500).send('Internal Server Error');
+                  return;
                 }
-
-                postModel.getPostTitle(post_num, (error, previousPost, previousTitle, nextPost, nextTitle) => {
-                  if (error) {
-                    console.error(error);
+  
+                commentModel.getMemberById(req.session.user_id, (error, login_nick, login_pro) => {
+                  if (login_nick == null) {
+                    console.log("게스트");
                   }
-                res.render('boardShow', {
-                  post_num: post_num,
-                  data: result,
-                  comments: comments,
-                  post_nick: post_nick,
-                  post_pro: post_pro,
-                  login_nick: login_nick || "게스트",
-                  login_pro: login_pro,
-                  commentInfo: commentInfo,
-                  previousPost: previousPost,
-                  previousTitle: previousTitle,
-                  nextPost: nextPost,
-                  nextTitle: nextTitle,
+  
+                  postModel.getPostTitle(post_num, (error, previousPost, previousTitle, nextPost, nextTitle) => {
+                    if (error) {
+                      console.error(error);
+                    }
+
+                    res.render('boardShow', {
+                      post_num: post_num,
+                      data: result,
+                      comments: comments,
+                      post_nick: post_nick,
+                      post_pro: post_pro,
+                      login_nick: login_nick || "게스트",
+                      login_pro: login_pro,
+                      commentInfo: commentInfo,
+                      previousPost: previousPost,
+                      previousTitle: previousTitle,
+                      nextPost: nextPost,
+                      nextTitle: nextTitle,
+                    });
+                  });
                 });
               });
-            });
+            } catch (error) {
+              console.error(error);
+            }
           });
-          } catch (error) {
-            console.error(error);
-          }
         });
       });
     });
-  });
-},
+  },
+  
 
   showList: (req, res) => {
     postModel.excludedUserNum(1, (error, results) => {
@@ -162,11 +166,6 @@ const boardController = {
         });
     });
   },
-
-
-  // showBoard: (req, res) => {
-  //   noticeController.fetchAndRenderPosts(req, res, 'board', 20);
-  // },
 
   deletePost: (req, res) => {
     const postNum = req.params.post_num;

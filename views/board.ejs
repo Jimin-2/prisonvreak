@@ -71,7 +71,7 @@
               <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
                 <tr>
                   <td><a href="/community/show/<%= post.post_num %>">
-                      <%= post.post_title %>
+                      <%= post.post_title %><span style="color: red;"> [<%= post.comment_count %>]</span>
                     </a></td>
                   <td>
                     <!-- <i class="fa-solid fa-user"></i> -->
