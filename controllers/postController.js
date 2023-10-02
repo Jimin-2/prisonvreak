@@ -371,7 +371,7 @@ const noticeController = {
 
 
   showManagerPosts: (req, res) => {
-    noticeController.fetchAndRenderPosts(req, res, 'notice', 5);
+    noticeController.fetchAndRenderPosts(req, res, 'notice', 6);
   },
 
   searchKeyword: (req, res) => {
@@ -397,7 +397,7 @@ const noticeController = {
       console.log(keyword);
       const reversedResults = results.reverse();
 
-      const postsPerPage = 5; // 한 페이지당 표시되는 게시물 수
+      const postsPerPage = 6; // 한 페이지당 표시되는 게시물 수
       const totalPosts = reversedResults.length;
       const totalPages = Math.ceil(totalPosts / postsPerPage);
 
