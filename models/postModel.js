@@ -99,7 +99,12 @@ const postModel = {
   },
 
   excludedUserNum: (post_usernum, callback) => {
-    db.query('SELECT * FROM post WHERE post_usernum <> ?', [post_usernum], (error, results) => {
+    db.query(
+      `SELECT post.*, COALESCE(comment.comment_count, 0) AS comment_count
+      FROM post LEFT JOIN (
+        SELECT post_num, COUNT(*) AS comment_count FROM comment
+        GROUP BY post_num) AS comment ON post.post_num = comment.post_num
+        WHERE post.post_usernum <> ?`, [post_usernum], (error, results) => {
       if (error) {
         console.error('Error getPostsExcludingUserNum', null);
         callback(error, null);
