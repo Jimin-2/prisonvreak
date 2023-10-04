@@ -24,6 +24,9 @@ router.get('/login', authController.login);
 // 로그인 프로세스
 router.post('/login_process', authController.login_process);
 
+// VR 로그인 프로세스
+router.post('/vr_login_process', authController.vr_login_process);
+
 // 로그아웃
 router.get('/logout', authController.logout);
 
@@ -95,8 +98,6 @@ router.post('/editMyInfo', authController.editMyInfo);
 router.post('/editMyPassword', authController.editMyPassword);
 
 router.post('/withdrawal', authController.withdrawal);
-
-router.post('/socialWithdrawal', authController.socialWithdrawal);
 
 router.post('/updateProfileIntro', authController.updateProfileIntro);
 

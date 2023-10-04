@@ -12,7 +12,7 @@
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
   <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/board.css">
-  <link rel="stylesheet" media="(max-width: 900px)" href="/css/board_m.css" >
+  <link rel="stylesheet" media="(max-width: 900px)" href="/css/board_m.css">
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
@@ -54,53 +54,53 @@
             <button type="submit">+</button>
           </form>
         </div>
-          <div class="board" class="effect8">
-            <table class="table-template">
-              <thead>
+        <div class="board" class="effect8">
+          <table class="table-template">
+            <thead>
+              <tr>
+                <!-- <th>번호</th> -->
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th class="reco-class">추천</th>
+                <th>날짜</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
                 <tr>
-                  <!-- <th>번호</th> -->
-                  <th>제목</th>
-                  <th>글쓴이</th>
-                  <th class="reco-class">추천</th>
-                  <th>날짜</th>
-                  <th>조회수</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
-                  <tr>
-                    <td><a href="/community/show/<%= post.post_num %>">
-                        <%= post.post_title %>
-                      </a></td>
-                    <td>
-                      <!-- <i class="fa-solid fa-user"></i> -->
-                      <div style="display: flex; align-items: center;">
-                        <img src="<%= post.userInfo[1] %>" alt="프로필 이미지">
-                        <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= post.userInfo[0] %>')">
-                          <%= post.userInfo[0] %>
-                        </p>
-                        <div id="profileModal" class="modal">
-                          <span class="close" onclick="closeModal()">&times;</span>
-                        </div>
-
+                  <td><a href="/community/show/<%= post.post_num %>">
+                      <%= post.post_title %><span style="color: red;"> [<%= post.comment_count %>]</span>
+                    </a></td>
+                  <td>
+                    <!-- <i class="fa-solid fa-user"></i> -->
+                    <div style="display: flex; align-items: center;">
+                      <img src="<%= post.userInfo[1] %>" alt="프로필 이미지">
+                      <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= post.userInfo[0] %>')">
+                        <%= post.userInfo[0] %>
+                      </p>
+                      <div id="profileModal" class="modal">
+                        <span class="close" onclick="closeModal()">&times;</span>
                       </div>
-                    </td>
-                    <td class="reco-class">
-                      <a><i class="fa-solid fa-thumbs-up"></i> 0</a>
-                    </td>
-                    <td>
-                      <i class="fa-solid fa-calendar"></i>
-                      <%= post.formattedCreatedAt %>
-                    </td>
-                    <td>
-                      <%= post.post_hit %>
-                    </td>
-                  </tr>
-                  <% }); %>
-              </tbody>
-            </table>
-          </div>
+
+                    </div>
+                  </td>
+                  <td class="reco-class">
+                    <a><i class="fa-solid fa-thumbs-up"></i><%= post.post_like %></a>
+                  </td>
+                  <td>
+                    <i class="fa-solid fa-calendar"></i>
+                    <%= post.formattedCreatedAt %>
+                  </td>
+                  <td>
+                    <%= post.post_hit %>
+                  </td>
+                </tr>
+                <% }); %>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="pagination">
@@ -140,6 +140,7 @@
 
     <!-- footer -->
     <%- include('partials/footer')%>
+
       <script>
         function showProfile(username) {
           // 모달 요소 가져오기
