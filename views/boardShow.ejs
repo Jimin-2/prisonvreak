@@ -158,10 +158,10 @@
                                         style="display: none;">
                                         <input type="hidden" name="post_num" value="<%= data.post_num %>">
                                         <input type="hidden" name="cmt_refnum" value="<%= comments[i].cmt_num %>">
-                                        <textarea id="comment-input-Area" name="cmt_content" placeholder="답글을 입력하세요."
-                                            oninput="byteCount(this)"></textarea>
+                                        <textarea id="comment-input-Area<%= i %>" name="cmt_content" placeholder="답글을 입력하세요."
+                                            oninput="byteCount(this, 'byte-count<%= i %>')"></textarea>
                                         <div class="submit">
-                                            <p id="byte-count">0 byte</p>
+                                            <p id="byte-count<%= i %>">0 byte</p>
                                             <button class="button btnFade btnBlack" type="submit">등록</button>
                                         </div>
                                     </form>
@@ -170,10 +170,10 @@
                                 <!-- 댓글 수정 폼 -->
                                 <form action="/community/show/<%= data.post_num %>/edit/<%= comments[i].cmt_num %>"
                                     method="POST" class="update-form" style="display: none;">
-                                    <textarea id="comment-input-Area" name="cmt_content"
-                                        oninput="byteCount(this)"><%= comments[i].cmt_content %></textarea>
+                                    <textarea id="comment-input-Area2" name="cmt_content"
+                                        oninput="byteCount(this, 'byte-counta')"><%= comments[i].cmt_content %></textarea>
                                     <div class="submit">
-                                        <p id="byte-count">0 byte</p>
+                                        <p id="byte-counta">0 byte</p>
                                         <button class="button btnFade btnBlack" type="submit"> 등록 </button>
                                     </div>
                                 </form>
@@ -189,10 +189,10 @@
                                                     <%= login_nick %>
                                                 </p>
                                             </div>
-                                            <textarea id="comment-input-Area" name="cmt_content"
-                                                placeholder="댓글을 입력하세요." oninput="byteCount(this)"></textarea>
+                                            <textarea id="comment-input-Area3" name="cmt_content"
+                                                placeholder="댓글을 입력하세요." oninput="byteCount(this, 'byte-countb')"></textarea>
                                             <div class="submit">
-                                                <p id="byte-count">0 byte</p>
+                                                <p id="byte-countb">0 byte</p>
                                             </div>
                                             <button class="button btnFade btnBlack" type="submit"> 등록 </button>
                                         </div>
@@ -247,13 +247,13 @@
         <!-- footer -->
         <!-- <%- include('partials/footer')%> -->
         <script>
-            function byteCount(textarea) {
+            function byteCount(textarea, byteCountId) {
                 const text = textarea.value;
                 const byteCount = new TextEncoder('utf-8').encode(text).length;
                 const byteCountText = `${byteCount} byte`;
 
                 // 바이트 수 변화
-                document.getElementById('byte-count').textContent = byteCountText;
+                document.getElementById(byteCountId).textContent = byteCountText;
             }
 
             function toggleReplyForm(buttonElement) {
