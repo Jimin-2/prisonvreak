@@ -1,10 +1,9 @@
 /* 왜 commuForm 이름을 boardForm 으로 바꾸면 css 적용이 안되는 거지?*/
 
 hr {
-  width: 100%;
-  color: #cccccc;
-
-  margin-bottom: 20px;
+  background: #cccccc;
+  height:1px;
+  border:0;
 }
 
 #section {
@@ -22,8 +21,8 @@ hr {
 
 #layout {
   width: 1000px;
-  margin-top:10%;
-  margin-bottom:10%;
+  margin-top: 7%;
+  margin-bottom: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,7 +34,7 @@ hr {
   height: auto; /* 변경 */
 }
 
-/* 다음글, 목록 */
+/* 이게 지금 수정 삭제로 되어있는데 문제가 많음 */
 #next-list-button {
   width: 900px;
   height: 50px;
@@ -53,20 +52,20 @@ hr {
 /* 제목 */
 #title {
   width: 900px;
-  height: 60px;
-  margin-top: 30px;
+  height: 140px;
   margin-bottom: 30px;
 }
 
 #title h1 {
-  font-size: 1.5em;
+  font-size: 1.8em;
   color: #161616;
 }
 
 #title h4 {
   font-size: 0.8em;
   color: gray;
-
+  
+  margin-top: 90px;
   margin-bottom: 10px;
 }
 
@@ -85,51 +84,149 @@ hr {
   margin-bottom: 20px;
 }
 
-.ninkname {
-  font-size: 1em;
+.nickname {
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
-.date {
-  font-size: 0.5em;
+.date-info {
+  width: auto;
+  height: auto;
+
+  margin-top: 15px;
 }
 
-.commentEdit {
-  font-size: 0.5em;
+.date-info p {
+  font-size: 0.9em;
+  margin-top: 5px;
+
+  color: #808080;
 }
 
 /* 내용 */
 #content {
   width: 900px;
-  height: 600px;
+  height: auto;
+
+  margin-top: 40px;
+  margin-bottom: 200px;
 }
 
 #content p {
-  font-size: 1em;
+  font-size: 1.1em;
 }
 
 #content img {
   max-width: 100%;
+  margin-top: 30px;
   height: auto;
 }
 
 /* 댓글보기 */
-#comment {
-  width: 900px;
-  min-height: 150px; /* 최소 높이 설정 */
-  flex-grow: 1; /* 자동으로 늘어나도록 설정 */
-  margin-bottom: 20px;
+.comment-h2 {
+  height: 100%;
+  width: auto;
+
+  margin-bottom: 40px;
 }
 
+#comment {
+  width: 900px;
+  min-height: 400px; /* 최소 높이 설정 */
+  flex-grow: 1; /* 자동으로 늘어나도록 설정 */
+  margin-bottom: 10px;
+}
+
+#comment-layout {
+  width: auto;
+  height: auto;
+
+  min-height: 100px;
+}
 
 #comment h2 {
   margin-bottom: 10px;
+}
+
+.comment {
+  width: auto;
+  height: auto;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: center;
+}
+
+.comment img {
+  width: 30px;
+  margin-right: 8px;
+}
+
+.comment hr {
+  background: #cccccc;
+  height:1px;
+  border:0;
+}
+
+.comment-between-section {
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-top: 2px;
+}
+
+.comment-between-section .date {
+  font-size: 0.5em;
+  color: #808080;
+}
+
+.more-options {
+  display: flex;
+}
+
+.more-options button {
+  border: 0;
+  outline: 0;
+  background-color: #fff;
+}
+
+.options {
+  width: auto;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.comments-content {
+  width: auto;
+  height: auto;
+
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-bottom: 30px;
+}
+
+.comments-content button {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+
+  border: 0;
+  outline: 0;
+  background-color: #fff;
+
+  margin-top: 10px;
 }
 
 .comment-relative {
   width: 100%;
   height: auto;
 
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 #comment-absolute {
@@ -166,11 +263,60 @@ hr {
   flex-grow: 1; /* 자동으로 늘어나도록 설정 */
 }
 
-#comment-input-Area {
+#comment-input-Area0 {
   width: 900px;
   height: 80px;
 
+  padding: 5px 5px 5px 5px;
+  font-size: 1em;
+
+  border-radius: 5px;
+  border-color: #cccccc;
   margin-top: 10px;
+
+  resize: none;
+}
+
+#comment-input-Area1 {
+  width: 900px;
+  height: 80px;
+
+  padding: 5px 5px 5px 5px;
+  font-size: 1em;
+
+  border-radius: 5px;
+  border-color: #cccccc;
+  margin-top: 10px;
+
+  resize: none;
+}
+
+#comment-input-Area2 {
+  width: 900px;
+  height: 80px;
+
+  padding: 5px 5px 5px 5px;
+  font-size: 1em;
+
+  border-radius: 5px;
+  border-color: #cccccc;
+  margin-top: 10px;
+
+  resize: none;
+}
+
+#comment-input-Area3 {
+  width: 900px;
+  height: 80px;
+
+  padding: 5px 5px 5px 5px;
+  font-size: 1em;
+
+  border-radius: 5px;
+  border-color: #cccccc;
+  margin-top: 10px;
+
+  resize: none;
 }
 
 .submit {
@@ -179,12 +325,7 @@ hr {
   
   display: flex;
   justify-content: right;
-  align-items: flex-end;
-}
-
-.submit button {
-  margin-top: 10px;
-  margin-left: 10px;
+  align-items: center;
 }
 
 .submit p {
@@ -194,15 +335,57 @@ hr {
 
 .button {
   display: block;
-  float: left;
+  float: right;
   width: 50px;
   height: 30px;
-  line-height: 3px;
-  color: #161616;
-  border-radius: 5px;
+
+  color: #808080;
+  background-color: #fff;
+
+  border: 0;
+  outline: 0;
+
+  font-size: 1em;
+  font-weight: bold;
+  margin-left: 10px;
 }
 
 .btnFade.btnBlack:hover {
-  background: #161616;
-  color: white;
+  color: #000000;
+
+  box-shadow: none;
+}
+
+.next-pre-post {
+  width: 900px;
+  height: auto;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  font-size: 1.2em;
+  color: #808080;
+
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.next-pre-post .next-post, .previous-post {
+  margin-top: 10px;
+}
+
+.no-previous-post,
+.no-next-post {
+    font-style: italic;
+    color: #777;
+}
+
+.post-list {
+  margin-top: 50px;
+  color: #161616;
 }
