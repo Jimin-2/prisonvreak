@@ -222,8 +222,19 @@ const commentModel = {
   },
 
   deleteComments: (cmt_num, callback) => {
-    db.query('DELETE FROM comment WHERE cmt_num = ?', [cmt_num], () => {
-      callback();
+    db.query('SELECT COUNT(*) as count FROM comment WHERE cmt_refnum = ?', [cmt_num], (error, results) => {
+        if (error) {
+            throw error;
+        }
+        if (results[0].count == 0) {
+            db.query('DELETE FROM comment WHERE cmt_num = ?', [cmt_num], () => {
+                callback();
+            });
+        } else {
+            db.query('UPDATE comment SET is_deleted = 1 WHERE cmt_num = ?', [cmt_num], () => {
+                callback();
+            });
+        }
     });
   },
 
