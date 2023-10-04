@@ -41,6 +41,7 @@
                     <h1>
                         <%= data.post_title %>
                     </h1>
+                    <br><form action="/" method="get"><input type="submit" value="추천"></form>
                 </div>
 
                 <div id="detail">
@@ -94,6 +95,7 @@
                             <%= comments[i].cmt_created_at %>
                           </a>
                           <div class="more-options">
+                            <button class="more-btn" onclick="toggleOptions(this)">더보기</button>
                           <div class="options" style="display:none;">
                                 <% if(login_nick && commentInfo[i].mem_nickname === login_nick) { %>
                                     <button class="update-btn" onclick="toggleUpdateForm(this)">수정</button>

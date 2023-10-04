@@ -58,7 +58,7 @@ const boardController = {
                   res.status(500).send('Internal Server Error');
                   return;
                 }
-  
+
                 commentModel.getMemberById(req.session.user_id, (error, login_nick, login_pro) => {
                   if (login_nick == null) {
                     console.log("게스트");

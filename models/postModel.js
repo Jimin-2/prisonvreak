@@ -191,6 +191,20 @@ const postModel = {
       }
     );
   },
+  
+  postLike: (post_num) => {
+    return new Promise((resolve, reject) => {
+        db.query('UPDATE post SET post_like = post_like + 1 WHERE post_num = ?', [post_num], (error, result) => {
+            if (error) {
+                console.error('좋아요 실패:', error);
+                reject(error);
+            } else {
+                console.log('좋아요 누르기 성공!');
+                resolve(result);
+            }
+        });
+    });
+  },
 };
 
 const commentModel = {
@@ -205,8 +219,7 @@ const commentModel = {
               WHEN c.cmt_refnum IS NULL THEN c.cmt_num
               ELSE c.cmt_refnum
           END ASC,
-          c.cmt_refnum ASC,
-          c.cmt_created_at ASC
+          c.cmt_refnum ASC
     `, [post_usernum], (error, results) => {
       if (error) {
         callback(error, null);
@@ -267,9 +280,17 @@ const commentModel = {
   getMemberByUserNum: (usernums, post_num, callback) => {
     const placeholders = new Array(usernums.length).fill('?').join(', '); // ?을 usernums 배열의 길이만큼 반복해서 생성
     const query = `
-      SELECT c.*, m.mem_nickname, m.mem_profile FROM comment c
+      SELECT c.*, m.mem_nickname, m.mem_profile 
+      FROM comment AS c 
       JOIN member m ON c.cmt_usernum = m.mem_code
-      WHERE c.post_num = ? AND c.cmt_usernum IN (${placeholders});
+      WHERE c.post_num = ? AND c.cmt_usernum IN (${placeholders})
+      ORDER BY 
+          CASE 
+              WHEN c.cmt_refnum IS NULL THEN c.cmt_num
+              ELSE c.cmt_refnum
+          END ASC,
+          c.cmt_refnum ASC,
+          c.cmt_created_at ASC;
     `;
     const params = [post_num, ...usernums]; // post_num과 usernums 배열을 합친 매개변수 배열
 
