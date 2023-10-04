@@ -263,7 +263,51 @@ hr {
   flex-grow: 1; /* 자동으로 늘어나도록 설정 */
 }
 
-#comment-input-Area {
+#comment-input-Area0 {
+  width: 900px;
+  height: 80px;
+
+  padding: 5px 5px 5px 5px;
+  font-size: 1em;
+
+  border-radius: 5px;
+  border-color: #cccccc;
+
+  margin-top: 10px;
+
+  resize: none;
+
+}
+
+#comment-input-Area1 {
+  width: 900px;
+  height: 80px;
+
+  padding: 5px 5px 5px 5px;
+  font-size: 1em;
+
+  border-radius: 5px;
+  border-color: #cccccc;
+  margin-top: 10px;
+
+  resize: none;
+}
+
+#comment-input-Area2 {
+  width: 900px;
+  height: 80px;
+
+  padding: 5px 5px 5px 5px;
+  font-size: 1em;
+
+  border-radius: 5px;
+  border-color: #cccccc;
+  margin-top: 10px;
+
+  resize: none;
+}
+
+#comment-input-Area3 {
   width: 900px;
   height: 80px;
 
@@ -312,6 +356,7 @@ hr {
   color: #000000;
 
   box-shadow: none;
+
 }
 
 .next-pre-post {
@@ -336,6 +381,7 @@ hr {
 .next-pre-post .next-post, .previous-post {
   margin-top: 10px;
 }
+
 
 .no-previous-post,
 .no-next-post {
