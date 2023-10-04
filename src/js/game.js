@@ -66,6 +66,7 @@ function showPlayButton() {
 
 function onClickPlayButton() {
   playButton.style.display = 'none';
+  createOrJoinRoom(connectionId);
 
   // add video player
   videoPlayer.createPlayer(playerDiv, lockMouseCheck);
@@ -241,4 +242,14 @@ async function setUpInputSelect() {
       break;
     }
   }
+}
+
+function createOrJoinRoom(connectionId){
+  fetch('/auth/webCreateOrJoinRoom', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ connectionId: connectionId })
+  })
 }

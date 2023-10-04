@@ -116,6 +116,7 @@ exports.login_process = function (req, res) {
                 req.session.nickname = results[0].mem_nickname;
                 req.session.user_id = results[0].mem_id;
                 req.session.provider = results[0].mem_provider;
+                req.session.user_code = results[0].mem_code;
                 req.session.save(function () {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
@@ -286,6 +287,14 @@ exports.login = function (req, res) {
     };
 };
 
+function isLogined (req, res) {
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); location.href="/auth/login";</script>');
+    }
+}
+
 // 아이디 중복 확인
 exports.check_id_availability = function (req, res) {
     const id = req.body.id;
@@ -428,11 +437,8 @@ exports.customer_send = function (req, res) {
 
 
 exports.customer = function (req, res) {
+    isLogined(req, res);
     const userId = req.session.user_id;
-    const isLogined = req.session.is_logined;
-    if (!isLogined) {
-        return res.send('<script>alert("로그인이 필요합니다.");  document.location.href="/auth/login";</script>');
-    }
     userModel.getUserProfile(userId, (error, results) => {
         if (error) {
             res.render('error');
@@ -692,27 +698,20 @@ function generateTemporaryPassword() {
 
 // 마이페이지
 exports.mypage = function (req, res) {
+    isLogined(req, res);
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    const isLogined = req.session.is_logined;
     const postsPerPage = 5;
     const link = 'myPage';
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
     myPostList(req, res, userId, postsPerPage, link);
 };
 
 // 작성한 게시글 페이지
 exports.myPost = function (req, res) {
+    isLogined(req, res);
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    const isLogined = req.session.is_logined;
     const postsPerPage = 15;
     const link = 'myPost';
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+
     myPostList(req, res, userId, postsPerPage, link);
 };
 
@@ -770,22 +769,16 @@ myPostList = function (req, res, userId, postsPerPage, link){
 
 // 개인 정보 수정 페이지
 exports.myProfileInfo = function (req, res) {
-    const isLogined = req.session.is_logined;
+    isLogined(req, res);
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
-        res.render('myProfileInfo', {user: req.session});
+
+    res.render('myProfileInfo', {user: req.session});
 };
 
 // 개인 정보 수정 창 들어갈때 비밀번호 확인
 exports.editMyProfile = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
 
     const id = req.body.id;
     const password = req.body.pwd;
@@ -810,11 +803,8 @@ exports.editMyProfile = function (req, res) {
 
 // 프로필 수정(닉네임, 전화번호, 이메일)
 exports.editMyInfo = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.body.id;
     const nickname = req.body.nickname;
     const email = req.body.email;
@@ -847,11 +837,8 @@ exports.editMyInfo = function (req, res) {
 
 // 비밀번호 수정
 exports.editMyPassword = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.body.id;
     const password = req.body.pwd;
 
@@ -871,11 +858,8 @@ exports.editMyPassword = function (req, res) {
 
 // 회원탈퇴(local 계정)
 exports.withdrawal = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.body.id;
     const password = req.body.pwd;
 
@@ -904,11 +888,8 @@ exports.withdrawal = function (req, res) {
 
 // 한줄 소개 수정
 exports.updateProfileIntro = function (req, res){
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.session.user_id;
     const newIntro = req.body.memIntro;
     userModel.getUserProfile(id, function (error, results){
@@ -949,8 +930,6 @@ exports.profile = function (req, res) {
     console.log(req.params)
     console.log(req.body)
     const username = req.params.username;
-    //const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    //const isLogined = req.session.is_logined;
     const postsPerPage = 5;
     console.log(username)
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
@@ -1009,5 +988,41 @@ exports.profile = function (req, res) {
                 });
             });
         }
+    });
+};
+
+// web 게임 room 생성 or 참가
+exports.webCreateOrJoinRoom = function (req, res){
+    const web_userCode = req.session.user_code;
+    let vr_userCode = req.body.connectionId;
+    const device = 'web'
+
+    userModel.checkUsercodeAvailability(vr_userCode, (error, results) =>{
+       if(error) throw error;
+
+       if(results.length <= 0){
+           res.send('<script>alert("존재하지 않는 유저코드입니다."); location.href="/";</script>');
+       }
+       else{
+           userModel.checkRoom(web_userCode, vr_userCode,(error, results)=>{
+               if(error) throw ('error');
+
+               // 방이 있으면 참가
+               if(results[0].web_user === web_userCode && results[0].web_state !== 'ready' && results[0].vr_user === vr_userCode){
+                   userModel.joinRoom(web_userCode, vr_userCode, device, (error,results) =>{
+                       if(error) throw ('error');
+                   });
+               }
+               // 방이 없으면 생성
+               else if(results.length <= 0) {
+                   userModel.createRoom(web_userCode, vr_userCode, device, (error, results) =>{
+                       if(error) throw ('error');
+                   });
+               }
+               else{
+                   res.send('<script>alert("방 정보가 올바르지 않습니다."); location.href="/auth/login";</script>');
+               }
+           });
+       }
     });
 };

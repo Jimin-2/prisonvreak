@@ -107,4 +107,6 @@ router.get('/userProfile/:username', authController.userProfile);
 
 router.get('/profile/:username', authController.profile);
 
+router.post('/webCreateOrJoinRoom', authController.webCreateOrJoinRoom);
+
 module.exports = router;
