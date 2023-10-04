@@ -272,10 +272,11 @@ hr {
 
   border-radius: 5px;
   border-color: #cccccc;
+
   margin-top: 10px;
 
   resize: none;
-<<<<<<< Updated upstream
+
 }
 
 #comment-input-Area1 {
@@ -318,8 +319,6 @@ hr {
   margin-top: 10px;
 
   resize: none;
-=======
->>>>>>> Stashed changes
 }
 
 .submit {
@@ -357,6 +356,7 @@ hr {
   color: #000000;
 
   box-shadow: none;
+
 }
 
 .next-pre-post {
@@ -381,6 +381,7 @@ hr {
 .next-pre-post .next-post, .previous-post {
   margin-top: 10px;
 }
+
 
 .no-previous-post,
 .no-next-post {
