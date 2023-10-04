@@ -39,21 +39,21 @@
                 <form action="/community/insert" method="post" enctype="multipart/form-data">
                     <div id="titleForm" class="form">
                         <!-- <label for="post_title">Title:</label> -->
-                        <div id="contentForm" class="form">
+                        <div id="userID-form">
                             <p>작성자: <%= userId %> </p>
-                            </div>
+                        </div>
                         <h4> 제목 </h4>
                         <input type="text" name="post_title" id="post_title" class="form-control"
                             placeholder="제목을 입력해 주세요" required>
                     </div>
                                         
-                    <div id="contentForm" class="form">
+                    <div class="form">
                         <h4> 첨부파일 </h4>
-                        <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*">
+                        <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*" style="font-size: 1em;">
                         <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px;">
                     </div>
 
-                    <div id="contentForm" class="form">
+                    <div class="form">
                         <!-- <label for="post_content">Content:</label> -->
                         <h4> 내용 </h4>
                         <textarea name="post_content" id="post_content" class="form-control" rows="5"
@@ -68,11 +68,6 @@
                     <textarea name="post_hit" id="post_hit" required></textarea>
                 </div>
                 <br> -->
-
-                    <div id="tagForm" class="form">
-                        <h4> 태그 </h4>
-                        <input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
-                    </div>
 
                     <div id="btn">
                         <input type="submit" value="글쓰기" class="custom-btn btn-16">
