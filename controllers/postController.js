@@ -287,7 +287,13 @@ const boardController = {
     );
   },
 
-}
+  postLike: (req, res) => {
+    const post_num = req.params.post_num;
+    postModel.postLike(post_num, (err, res) => {
+      res.render('boardShow', { like : res })
+    })
+  }
+};
 
 const noticeController = {
   calculatePagination: (currentPage, totalPages) => {

@@ -93,6 +93,7 @@ const postModel = {
         console.error(error);
         callback(error, null);
       } else {
+        console.log('adfasdf')
         callback(null, results);
       }
     });
@@ -199,12 +200,21 @@ const postModel = {
                 console.error('좋아요 실패:', error);
                 reject(error);
             } else {
-                console.log('좋아요 누르기 성공!');
-                resolve(result);
+                // post_like 값 재조회
+                db.query('SELECT post_like FROM post WHERE post_num = ?', [post_num], (error, rows) => {
+                    if (error) {
+                        console.error('post_like 조회 실패:', error);
+                        reject(error);
+                    } else {
+                        const Like = rows[0].post_like;
+                        resolve(Like);
+                    }
+                });
             }
         });
     });
-  },
+},
+
 };
 
 const commentModel = {
