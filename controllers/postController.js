@@ -28,14 +28,14 @@ const boardController = {
         res.status(500).send('Internal Server Error');
         return;
       }
-      
+  
       // postInfo 가져오기
       postModel.getNicknameByPostId(post_num, async (error, post_nick, post_pro) => {
         if (error) {
           console.error(error);
         }
   
-        // 조회수
+        // 조회수 증가
         postModel.incrementPostHit(post_num, (error) => {
           if (error) {
             console.error(error);
@@ -58,7 +58,7 @@ const boardController = {
                   res.status(500).send('Internal Server Error');
                   return;
                 }
-
+  
                 commentModel.getMemberById(req.session.user_id, (error, login_nick, login_pro) => {
                   if (login_nick == null) {
                     console.log("게스트");
@@ -68,7 +68,12 @@ const boardController = {
                     if (error) {
                       console.error(error);
                     }
-
+  
+                    const formattedComments = comments.map(comment => ({
+                      ...comment,
+                      cmt_created_at: moment(comment.cmt_created_at).format('YY.MM.DD HH:mm:ss'),
+                    }));
+  
                     res.render('boardShow', {
                       post_num: post_num,
                       data: result,
@@ -82,6 +87,7 @@ const boardController = {
                       previousTitle: previousTitle,
                       nextPost: nextPost,
                       nextTitle: nextTitle,
+                      formattedComments: formattedComments,
                     });
                   });
                 });
@@ -93,79 +99,78 @@ const boardController = {
         });
       });
     });
-  },
-  
+  },  
 
-  showList: (req, res) => {
-    postModel.excludedUserNum(1, (error, results) => {
-      if (error) {
-        console.error(error);
+showList: (req, res) => {
+  postModel.excludedUserNum(1, (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    const reversedResults = results.reverse();
+    const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
+    const totalPosts = reversedResults.length;
+    const totalPages = Math.ceil(totalPosts / postsPerPage);
+    const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+    const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+    let startIndex, endIndex;
+
+    if (currentPage === totalPages) {
+      endIndex = totalPosts;
+      startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+    } else {
+      startIndex = (currentPage - 1) * postsPerPage;
+      endIndex = startIndex + postsPerPage;
+    }
+
+    const paginatedResults = reversedResults.slice(startIndex, endIndex);
+
+    // 사용자 정보를 가져오는 Promise를 생성하는 함수
+    function getUserInfo(post) {
+      return new Promise((resolve, reject) => {
+        const post_num = post.post_num;
+        postModel.getNicknameByPostId(post_num, (error, nickname, profile) => {
+          if (error) {
+            console.error(error);
+            reject(error);
+          } else {
+            const userInfo = [nickname, profile];
+            resolve(userInfo); // 사용자 정보를 resolve로 반환
+          }
+        });
+      });
+    }
+
+    // 모든 게시물의 사용자 정보를 병렬로 가져오는 Promise 배열
+    const userInfoPromises = paginatedResults.map(post => getUserInfo(post));
+
+    Promise.all(userInfoPromises)
+      .then(userInfos => {
+        const formattedResults = paginatedResults.map((post, index) => ({
+          ...post,
+          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD'),
+          userInfo: userInfos[index],
+        }));
+
+        res.render('board', {
+          data: formattedResults,
+          search: formattedResults, // 검색 결과를 전달
+          totalPages: totalPages,
+          currentPage: currentPage,
+          prevPage,
+          startPage,
+          endPage,
+          nextPage,
+        });
+      })
+      .catch(error => {
+        console.error(error); // 에러 처리
         res.status(500).send('Internal Server Error');
-        return;
-      }
-
-      const reversedResults = results.reverse();
-      const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
-      const totalPosts = reversedResults.length;
-      const totalPages = Math.ceil(totalPosts / postsPerPage);
-      const currentPage = req.query.page ? parseInt(req.query.page) : 1;
-      const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
-      let startIndex, endIndex;
-
-      if (currentPage === totalPages) {
-        endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
-      } else {
-        startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
-      }
-
-      const paginatedResults = reversedResults.slice(startIndex, endIndex);
-
-      // 사용자 정보를 가져오는 Promise를 생성하는 함수
-      function getUserInfo(post) {
-        return new Promise((resolve, reject) => {
-          const post_num = post.post_num;
-          postModel.getNicknameByPostId(post_num, (error, nickname, profile) => {
-            if (error) {
-              console.error(error);
-              reject(error);
-            } else {
-              const userInfo = [nickname, profile];
-              resolve(userInfo); // 사용자 정보를 resolve로 반환
-            }
-          });
-        });
-      }
-
-      // 모든 게시물의 사용자 정보를 병렬로 가져오는 Promise 배열
-      const userInfoPromises = paginatedResults.map(post => getUserInfo(post));
-
-      Promise.all(userInfoPromises)
-        .then(userInfos => {
-          const formattedResults = paginatedResults.map((post, index) => ({
-            ...post,
-            formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD'),
-            userInfo: userInfos[index],
-          }));
-
-          res.render('board', {
-            data: formattedResults,
-            search: formattedResults, // 검색 결과를 전달
-            totalPages: totalPages,
-            currentPage: currentPage,
-            prevPage,
-            startPage,
-            endPage,
-            nextPage,
-          });
-        })
-        .catch(error => {
-          console.error(error); // 에러 처리
-          res.status(500).send('Internal Server Error');
-        });
-    });
-  },
+      });
+  });
+},
 
   deletePost: (req, res) => {
     const postNum = req.params.post_num;
@@ -175,124 +180,124 @@ const boardController = {
   },
 
 
-  insertPost: (req, res) => {
-    const userId = req.session.user_id;
-    const body = req.body;
-    const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const imageUrl = req.file ? req.file.location : null;
-    postModel.getMemNumByMemId(userId, (error, memnum) => {
-      postModel.insertPost(
-        body.post_title,
-        imageUrl,
-        body.post_content,
-        memnum,
-        koreanTime,
-        () => {
-          res.redirect('/community');
-        }
-      );
-    })
-  },
+    insertPost: (req, res) => {
+      const userId = req.session.user_id;
+      const body = req.body;
+      const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
+      const imageUrl = req.file ? req.file.location : null;
+      postModel.getMemNumByMemId(userId, (error, memnum) => {
+        postModel.insertPost(
+          body.post_title,
+          imageUrl,
+          body.post_content,
+          memnum,
+          koreanTime,
+          () => {
+            res.redirect('/community');
+          }
+        );
+      })
+    },
 
-  showEditForm: (req, res) => {
-    const postNum = req.params.post_num;
-    postModel.getPostById(postNum, (error, result) => {
-      if (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-      } else {
-        res.render('boardEdit', { data: result });
-      }
-    });
-  },
+      showEditForm: (req, res) => {
+        const postNum = req.params.post_num;
+        postModel.getPostById(postNum, (error, result) => {
+          if (error) {
+            console.error(error);
+            res.status(500).send('Internal Server Error');
+          } else {
+            res.render('boardEdit', { data: result });
+          }
+        });
+      },
 
-  updatePost: (req, res) => {
-    const body = req.body;
-    const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const postNum = req.params.post_num;
-    postModel.updatePost(
-      body.post_title,
-      body.post_content,
-      koreanTime,
-      postNum,
-      () => {
-        res.redirect('/community');
-      }
-    );
-  },
-
-  addComment: (req, res) => {
-    console.log(req.session.user_id);
-    const isLoggedIn = req.session.user_id !== undefined;
-    const mem_id = req.session.user_id;
-    const body = req.body;
-    const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const post_num = req.body.post_num;
-    const cmt_refnum = req.body.cmt_refnum || null;
-
-    if (!isLoggedIn) {
-      return res.send('<script>alert("로그인 후 댓글 등록이 가능합니다."); window.location.href = "/auth/login";</script>');
-    }
-    else {
-      postModel.getMemNumByMemId(mem_id, (error, userNum) => {
-        if (error) {
-          console.error(error);
-        } else {
-          console.log(userNum);
-          commentModel.insertComments(
-            post_num,
-            body.cmt_content,
-            userNum,
+        updatePost: (req, res) => {
+          const body = req.body;
+          const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
+          const postNum = req.params.post_num;
+          postModel.updatePost(
+            body.post_title,
+            body.post_content,
             koreanTime,
-            cmt_refnum,
+            postNum,
             () => {
-              res.send(`<script>
+              res.redirect('/community');
+            }
+          );
+        },
+
+          addComment: (req, res) => {
+            console.log(req.session.user_id);
+            const isLoggedIn = req.session.user_id !== undefined;
+            const mem_id = req.session.user_id;
+            const body = req.body;
+            const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
+            const post_num = req.body.post_num;
+            const cmt_refnum = req.body.cmt_refnum || null;
+
+            if (!isLoggedIn) {
+              return res.send('<script>alert("로그인 후 댓글 등록이 가능합니다."); window.location.href = "/auth/login";</script>');
+            }
+            else {
+              postModel.getMemNumByMemId(mem_id, (error, userNum) => {
+                if (error) {
+                  console.error(error);
+                } else {
+                  console.log(userNum);
+                  commentModel.insertComments(
+                    post_num,
+                    body.cmt_content,
+                    userNum,
+                    koreanTime,
+                    cmt_refnum,
+                    () => {
+                      res.send(`<script>
               var mem_id = "${mem_id}";
               alert("댓글 등록이 완료되었습니다.");
               window.location.href = "/community/show/${post_num}";
             </script>`);
-            }
-          );
+                    }
+                  );
 
-        }
-      });
-    };
-  },
+                }
+              });
+            };
+          },
 
-  deleteComment: (req, res) => {
-    const postNum = req.params.post_num;
-    const cmtNum = req.params.cmt_num;
-      
-    commentModel.deleteComments(cmtNum, () => {
-      res.redirect(`/community/show/${postNum}`);
-    });
-  },
+            deleteComment: (req, res) => {
+              const postNum = req.params.post_num;
+              const cmtNum = req.params.cmt_num;
 
-  updateComment: (req, res) => {
-    const body = req.body;
-    const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const post_num = req.params.post_num;
-    const cmt_num = req.params.cmt_num; 
-    
-    commentModel.updateComments(
-      body.cmt_content,
-      koreanTime,
-      cmt_num,
-      () => { 
-        res.send(`<script>
+              commentModel.deleteComments(cmtNum, () => {
+                res.redirect(`/community/show/${postNum}`);
+              });
+            },
+
+              updateComment: (req, res) => {
+                const body = req.body;
+                const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
+                const post_num = req.params.post_num;
+                const cmt_num = req.params.cmt_num;
+
+                commentModel.updateComments(
+                  body.cmt_content,
+                  koreanTime,
+                  cmt_num,
+                  () => {
+                    res.send(`<script>
           alert("댓글 수정이 완료되었습니다.");
           window.location.href = "/community/show/${post_num}";
         </script>`);
-      }
-    );
-  },
+                  }
+                );
+              },
 
-  postLike: (req, res) => {
-    const post_num = req.params.post_num;
-    postModel.postLike(post_num, (err, res) => {
-      res.render('boardShow', { like : res })
-    })
-  }
+                postLike: (req, res) => {
+                  const post_num = req.params.post_num;
+                  postModel.postLike(post_num, (err, res) => {
+                    res.render('boardShow', { like: res })
+                  })
+                }
 };
 
 const noticeController = {

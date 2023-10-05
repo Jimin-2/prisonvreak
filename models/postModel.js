@@ -288,6 +288,12 @@ const commentModel = {
 
   // 댓글 작성자의 닉네임과 프로필 가져오기
   getMemberByUserNum: (usernums, post_num, callback) => {
+    // usernums가 null이거나 빈 배열인 경우에 대한 처리
+    if (!usernums || usernums.length === 0) {
+      callback(null, null); // 댓글 없을 때 null값 주기
+      return;
+    }
+  
     const placeholders = new Array(usernums.length).fill('?').join(', '); // ?을 usernums 배열의 길이만큼 반복해서 생성
     const query = `
       SELECT c.*, m.mem_nickname, m.mem_profile 
@@ -303,7 +309,7 @@ const commentModel = {
           c.cmt_created_at ASC;
     `;
     const params = [post_num, ...usernums]; // post_num과 usernums 배열을 합친 매개변수 배열
-
+  
     db.query(query, params, (error, results) => {
       if (error) {
         callback(null, null); // 댓글 없을 때 null값 주기 error
@@ -320,6 +326,7 @@ const commentModel = {
       }
     });
   },
+  
 }
 
 module.exports = { postModel, commentModel };
