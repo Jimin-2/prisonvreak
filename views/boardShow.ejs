@@ -111,6 +111,45 @@
                                         <img src="<%= data.post_image %>">
                                     </p>
                             </p>
+                    </p>
+                </div>
+                <hr>
+                <h2> 댓글 </h2>
+                <% for (let i = 0; i < comments.length; i++) { %>
+                    <div id="comment">
+                        <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>">
+                        <div>
+                          <div class="comment">
+                            <% if (!comments[i].is_deleted) { %>
+                                <img src="<%= commentInfo[i].mem_profile %>" width="20" alt="프로필 사진">
+                                <span><%= commentInfo[i].mem_nickname %></span>
+                                </div>
+                                <a class="date">
+                                    <%= comments[i].cmt_created_at %>
+                                </a>
+                                <div class="more-options">
+                                <button class="more-btn" onclick="toggleOptions(this)">더보기</button>
+                            <% } %>
+                          <div class="options" style="display:none;">
+                                <% if(login_nick && commentInfo[i].mem_nickname === login_nick) { %>
+                                    <button class="update-btn" onclick="toggleUpdateForm(this)">수정</button>
+                                    <form action="/community/show/<%= data.post_num %>/delete/<%= comments[i].cmt_num %>" method="POST" class="delete-form">
+                                        <button type="submit" class="delete-btn">삭제</button>
+                                    </form>
+                                <% } else { %>
+                                    <button class="report-btn" onclick="report(event)">신고</button>
+                                <% } %>
+                            </div>
+                        </div>
+                        <div>
+                            <% if (comments[i].is_deleted) { %>
+                                삭제된 댓글입니다.
+                            <% } else { %>
+                                <%= comments[i].cmt_content %>
+                                <% if (!comments[i].cmt_refnum) { %>
+                                    <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
+                                <% } %>
+                            <% } %>
                         </div>
 
                         <div class="comment-h2">
