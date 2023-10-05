@@ -42,12 +42,12 @@
                                 <%= data.post_title %>
                             </h1>
                             <br><button id="likeButton"> 추천 <%= data.post_like %> </button>
-                            
+
                             <script>
                                 const likeButton = document.getElementById("likeButton");
                                 let postLike = <%= data.post_like %>;
                                 let isLiked = false;
-                            
+
                                 likeButton.addEventListener("click", () => {
                                     if (!isLiked) {
                                         alert("추천되었습니다.");
@@ -56,14 +56,14 @@
                                         fetch(`/post-like/<%= post_num %>`, {
                                             method: 'POST',
                                         })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            isLiked = true; // 클릭이 완료
-                                        })
-                                        .catch(error => {
-                                            console.error('오류:', error);
-                                            isLiked = false;
-                                        });
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                isLiked = true; // 클릭이 완료
+                                            })
+                                            .catch(error => {
+                                                console.error('오류:', error);
+                                                isLiked = false;
+                                            });
                                     }
                                     else {
                                         alert("이미 추천 버튼을 눌렀습니다.");
@@ -108,7 +108,8 @@
                             </p>
                         </div>
                         <hr>
-                        <h2> 댓글 </h2>
+                        <h2> 댓글 <%= comments.length %>
+                        </h2>
                         <div id="more-comments-container">
                             <!-- 더보기 -->
                             <button id="load-more-comments" data-page="2">더보기</button>
@@ -158,7 +159,8 @@
                                         style="display: none;">
                                         <input type="hidden" name="post_num" value="<%= data.post_num %>">
                                         <input type="hidden" name="cmt_refnum" value="<%= comments[i].cmt_num %>">
-                                        <textarea id="comment-input-Area<%= i %>" name="cmt_content" placeholder="답글을 입력하세요."
+                                        <textarea id="comment-input-Area<%= i %>" name="cmt_content"
+                                            placeholder="답글을 입력하세요."
                                             oninput="byteCount(this, 'byte-count<%= i %>')"></textarea>
                                         <div class="submit">
                                             <p id="byte-count<%= i %>">0 byte</p>
@@ -180,7 +182,7 @@
                                 <% } %>
 
                                     <hr>
-                                    <form action="/community/show/<%= data.post_num %>" method="POST">
+                                    <form action="/community/show/<%= data.post_num %>" method="POST" autocomplete="off">
                                         <input type="hidden" name="post_num" value="<%= data.post_num %>">
                                         <div id="comment-input">
                                             <div style="display: flex; flex-direction: row;">
@@ -190,7 +192,8 @@
                                                 </p>
                                             </div>
                                             <textarea id="comment-input-Area3" name="cmt_content"
-                                                placeholder="댓글을 입력하세요." oninput="byteCount(this, 'byte-countb')"></textarea>
+                                                placeholder="댓글을 입력하세요."
+                                                oninput="byteCount(this, 'byte-countb')"></textarea>
                                             <div class="submit">
                                                 <p id="byte-countb">0 byte</p>
                                             </div>
@@ -298,6 +301,13 @@
                 const optionsDiv = moreOptionsDiv.querySelector('.options');
                 optionsDiv.style.display = 'none';
             }
+
+            window.addEventListener('load', function (event) {
+                var commentTextArea = document.getElementById('comment-input-Area3');
+                if (commentTextArea) {
+                    commentTextArea.value = ''; // textarea 비우기
+                }
+            });
 
         </script>
 </body>
