@@ -18,5 +18,6 @@ router.post('/community/show/:post_num/edit/:cmt_num', boardController.updateCom
 router.get('/notice', noticeController.showManagerPosts);
 router.get('/notice/show/:post_num', noticeController.showForm);
 router.get('/notice/search', noticeController.searchKeyword);
+router.post('/post-like/:post_num', boardController.postLike);
 
 module.exports = router;
