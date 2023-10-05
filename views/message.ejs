@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/myPage.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--Title-->
+  <title> CAN </title>
+
+</head>
+
+<body>
+  <!-- header -->
+  <%- include('partials/header')%>
+
+  <!-- Section -->
+  <section id="section">
+    <div id="layout">
+      <div id="firstLayout">
+        <div class="myPageList">
+          <h2> 쪽지함
+          </h2>
+          <hr>
+          <ul>
+            <li></li>
+            <!--여기에 쪽지 목록(사용자)!-->
+          </ul>
+        </div>
+
+      </div>
+      <div id="secondLayout">
+        <div id="first">
+          <h2> Message </h2>
+        </div>
+        <!--여기에서 이제 1대1 쪽지 보낼수있도록,,,,시발,,,할수있너?!-->
+    </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <%- include('partials/footer')%>
+
+</body>
+
+</html>

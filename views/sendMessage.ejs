@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/sendMessage.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--Title-->
+  <title> CAN </title>
+
+</head>
+
+<body>
+
+  <!-- Section -->
+  <section id="section">
+
+      <div id="secondLayout">
+        <div id="first">
+
+          <form action="/msg/sendMessage/<%= chatroomId %>" method="POST">
+            <input type="hidden" name="receiverid" value="<%= user2_id %>">
+          <div class="chat-container">
+            <div class="chat-header">
+              <h2>1:1 쪽지 보내기</h2>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+              <!-- 쪽지 내용을 표시할 영역 -->
+            </div>
+            <div id="chat-input">
+              <input type="text" id="message-input" name="message" placeholder="쪽지를 입력하세요">
+              <button id="send-button" type="submit">전송</button>
+            </div>
+
+          </div>
+          </form>
+
+        </div>
+        <!--여기에서 이제 1대1 쪽지 보낼수있도록,,,,시발,,,할수있너?!-->
+    </div>
+
+  </section>
+
+</body>
+<script>
+/*  document.addEventListener('DOMContentLoaded', function () {
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const chatMessages = document.getElementById('chat-messages');
+
+    // 전송 버튼 클릭 이벤트 처리
+    sendButton.addEventListener('click', function () {
+      const message = messageInput.value; // 입력된 메시지 가져오기
+      if (message.trim() !== '') {
+        // 입력된 메시지가 비어 있지 않은 경우
+        appendMessageToChat(message); // 메시지를 채팅창에 추가
+        messageInput.value = ''; // 입력 창 비우기
+      }
+    });
+
+// 메시지를 채팅창에 추가하는 함수
+    function appendMessageToChat(message) {
+      const messageElement = document.createElement('div');
+      messageElement.textContent = message;
+      chatMessages.appendChild(messageElement);
+    }
+  });*/
+/*  document.addEventListener('DOMContentLoaded', function () {
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const chatMessages = document.getElementById('chat-messages');
+
+    // 전송 버튼 클릭 이벤트 처리
+    sendButton.addEventListener('click', function (event) {
+      event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
+
+      const message = messageInput.value.trim(); // 입력된 메시지 가져오기
+
+      if (message !== '') {
+        // 입력된 메시지가 비어 있지 않은 경우
+        appendMessageToChat(message); // 메시지를 채팅창에 추가
+        messageInput.value = ''; // 입력 창 비우기
+
+        // 서버로 메시지 전송 (fetch 또는 XMLHttpRequest 사용)
+        sendMessageToServer(chatroomId, senderId, receiverId, message);
+      }
+    });
+
+    // 메시지를 채팅창에 추가하는 함수
+    function appendMessageToChat(message) {
+      const messageElement = document.createElement('div');
+      messageElement.textContent = message;
+      chatMessages.appendChild(messageElement);
+    }
+
+    // 서버로 메시지 전송하는 함수 (fetch 사용)
+    function sendMessageToServer(chatroomId, senderId, receiverId, message) {
+      fetch(`/sendMessage/${chatroomId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          senderId: senderId,
+          receiverId: receiverId,
+          message: message
+        })
+      })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(data => {
+                // 서버에서의 응답에 따른 처리 (예: 성공 시 메시지 추가, 실패 시 에러 처리)
+              })
+              .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+              });
+    }
+  });*/
+
+</script>
+
+</html>
