@@ -122,10 +122,13 @@
             </div>
 
             <% for (let i=0; i < comments.length; i++) { %>
+            <% let displayDeletedComment = comments[i].is_deleted && comments.some(comment => comment.cmt_refnum === comments[i].cmt_num); %>
+            <% if (!comments[i].is_deleted || displayDeletedComment) { %>
               <div id="comment">
                 <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>" id="comment-layout">
                   <div class="comment-layout">
                     <div class="comment">
+                    <% if (!comments[i].is_deleted) { %>
                       <img src="<%= commentInfo[i].mem_profile %>" width="20" alt="프로필 사진">
                       <div class="comment-nickname">
                         <%= commentInfo[i].mem_nickname %>
@@ -141,6 +144,7 @@
 
                       <div class="more-options">
                         <button class="more-btn" onclick="toggleOptions(this)">더보기</button>
+                    <% } %>
                         <div class="options" style="display:none;">
                           <% if(login_nick && commentInfo[i].mem_nickname===login_nick) { %>
                             <button class="update-btn" onclick="toggleUpdateForm(this)">수정</button>
@@ -155,12 +159,17 @@
                       </div>
                     </div>
                     <div class="comments-content">
-                      <%= comments[i].cmt_content %>
-                        <% if (!comments[i].cmt_refnum) { %>
-                          <!-- 원댓글일 경우에만 답글 버튼 표시 -->
-                          <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
+                        <% if (comments[i].is_deleted && displayDeletedComment) { %>
+                          삭제된 댓글입니다.
+                        <% } else { %>
+                          <%= comments[i].cmt_content %>
+                          <% if (!comments[i].cmt_refnum) { %>
+                            <button class="reply-btn" onclick="toggleReplyForm(this)">답글</button>
                           <% } %>
-                    </div>
+                        <% } %>
+                      </div>
+                      <% } %>
+
 
                     <hr style="background: #e9e9e9; height:1px; border:0;">
                   </div>

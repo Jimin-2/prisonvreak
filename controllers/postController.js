@@ -263,8 +263,13 @@ const boardController = {
     const postNum = req.params.post_num;
     const cmtNum = req.params.cmt_num;
       
-    commentModel.deleteComments(cmtNum, () => {
-      res.redirect(`/community/show/${postNum}`);
+    commentModel.deleteComments(cmtNum, (err) => {
+      if (err) {
+        console.error('Error deleting comment:', err);
+        res.redirect(`/community/show/${postNum}?error=FailedToDeleteComment`);
+      } else {
+        res.redirect(`/community/show/${postNum}`);
+      }
     });
   },
 
