@@ -252,15 +252,21 @@ const commentModel = {
   deleteComments: (cmt_num, callback) => {
     db.query('SELECT COUNT(*) as count FROM comment WHERE cmt_refnum = ?', [cmt_num], (error, results) => {
         if (error) {
-            throw error;
+            return callback(error);
         }
         if (results[0].count == 0) {
-            db.query('DELETE FROM comment WHERE cmt_num = ?', [cmt_num], () => {
-                callback();
+            db.query('DELETE FROM comment WHERE cmt_num = ? OR cmt_refnum = ?', [cmt_num, cmt_num], (err) => {
+                if(err) {
+                    return callback(err);
+                }
+                callback(null);
             });
         } else {
-            db.query('UPDATE comment SET is_deleted = 1 WHERE cmt_num = ?', [cmt_num], () => {
-                callback();
+            db.query('UPDATE comment SET is_deleted = 1 WHERE cmt_num = ?', [cmt_num], (err) => {
+                if(err) {
+                    return callback(err);
+                }
+                callback(null);
             });
         }
     });
@@ -328,6 +334,16 @@ const commentModel = {
         } else {
           callback(null, null);
         }
+      }
+    });
+  },
+
+  checkRepliesDeleted: (cmt_refnum, callback) => {
+    db.query('SELECT * FROM comment WHERE cmt_refnum = ? AND is_deleted = 0', [cmt_refnum], (error, results) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, results.length === 0);
       }
     });
   },
