@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth');
 const postRouter = require('./routes/post');
 const imageRouter = require('./routes/img');
 const mainRouter = require('./routes/main');
+const msgRouter = require('./routes/message');
 
 const app = express();
 const port = 8080;
@@ -61,6 +62,7 @@ app.use('/auth', authRouter);
 app.use('/img',imageRouter);
 app.use('/', postRouter); // 게시판
 app.use('/', mainRouter);
+app.use('/msg', msgRouter);
 
 // 메인 페이지
 /*app.get('/main', (req, res) => {
