@@ -102,10 +102,14 @@ const postModel = {
   excludedUserNum: (post_usernum, callback) => {
     db.query(
       `SELECT post.*, COALESCE(comment.comment_count, 0) AS comment_count
-      FROM post LEFT JOIN (
-        SELECT post_num, COUNT(*) AS comment_count FROM comment
-        GROUP BY post_num) AS comment ON post.post_num = comment.post_num
-        WHERE post.post_usernum <> ?`, [post_usernum], (error, results) => {
+      FROM post
+      LEFT JOIN (
+        SELECT post_num, COUNT(*) AS comment_count
+        FROM comment
+        WHERE is_deleted = 0
+        GROUP BY post_num
+      ) AS comment ON post.post_num = comment.post_num
+      WHERE post.post_usernum <> ?`, [post_usernum], (error, results) => {
       if (error) {
         console.error('Error getPostsExcludingUserNum', null);
         callback(error, null);
@@ -192,28 +196,28 @@ const postModel = {
       }
     );
   },
-  
+
   postLike: (post_num) => {
     return new Promise((resolve, reject) => {
-        db.query('UPDATE post SET post_like = post_like + 1 WHERE post_num = ?', [post_num], (error, result) => {
+      db.query('UPDATE post SET post_like = post_like + 1 WHERE post_num = ?', [post_num], (error, result) => {
+        if (error) {
+          console.error('좋아요 실패:', error);
+          reject(error);
+        } else {
+          // post_like 값 재조회
+          db.query('SELECT post_like FROM post WHERE post_num = ?', [post_num], (error, rows) => {
             if (error) {
-                console.error('좋아요 실패:', error);
-                reject(error);
+              console.error('post_like 조회 실패:', error);
+              reject(error);
             } else {
-                // post_like 값 재조회
-                db.query('SELECT post_like FROM post WHERE post_num = ?', [post_num], (error, rows) => {
-                    if (error) {
-                        console.error('post_like 조회 실패:', error);
-                        reject(error);
-                    } else {
-                        const Like = rows[0].post_like;
-                        resolve(Like);
-                    }
-                });
+              const Like = rows[0].post_like;
+              resolve(Like);
             }
-        });
+          });
+        }
+      });
     });
-},
+  },
 
 };
 
@@ -251,24 +255,24 @@ const commentModel = {
 
   deleteComments: (cmt_num, callback) => {
     db.query('SELECT COUNT(*) as count FROM comment WHERE cmt_refnum = ?', [cmt_num], (error, results) => {
-        if (error) {
-            return callback(error);
-        }
-        if (results[0].count == 0) {
-            db.query('DELETE FROM comment WHERE cmt_num = ? OR cmt_refnum = ?', [cmt_num, cmt_num], (err) => {
-                if(err) {
-                    return callback(err);
-                }
-                callback(null);
-            });
-        } else {
-            db.query('UPDATE comment SET is_deleted = 1 WHERE cmt_num = ?', [cmt_num], (err) => {
-                if(err) {
-                    return callback(err);
-                }
-                callback(null);
-            });
-        }
+      if (error) {
+        return callback(error);
+      }
+      if (results[0].count == 0) {
+        db.query('DELETE FROM comment WHERE cmt_num = ? OR cmt_refnum = ?', [cmt_num, cmt_num], (err) => {
+          if (err) {
+            return callback(err);
+          }
+          callback(null);
+        });
+      } else {
+        db.query('UPDATE comment SET is_deleted = 1 WHERE cmt_num = ?', [cmt_num], (err) => {
+          if (err) {
+            return callback(err);
+          }
+          callback(null);
+        });
+      }
     });
   },
 
