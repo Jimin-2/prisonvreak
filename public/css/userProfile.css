@@ -1,15 +1,13 @@
-
 body {
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: #f5f5f5;
+    background-color: #161616;
     margin: 0;
     padding: 0;
 }
 
 h1 {
-    margin-top: 20px;
     text-align: center;
-    color: #333;
+    color: #fff;
 }
 
 /* userprofile.ejs의 스타일 수정 */
@@ -19,27 +17,40 @@ h1 {
     align-items: center;
     flex-direction: column; /* 모달 내용을 세로로 배치 */
 
-    margin: 100px auto;
+    margin: 80px auto;
     padding: 20px;
-    max-width: 600px;
+    max-width: 400px;
+    min-height: 800px;
 
-    background-color: #fff;
+    background-color: #161616;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
     text-align: center; /* 모달 내용 가운데 정렬 */
     position: relative; /* 모달 내용에 대한 상대 위치 설정 */
+
+    border-radius: 20px;
+    color: #fff;
+
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#profileImg {
+    margin-top: 30px;
 }
 
 #profileImg img {
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
 }
 
 #myProfileInfo {
-    margin-top: 20px; /* 위에 여백 추가 */
+    margin-top: 5px; /* 위에 여백 추가 */
 }
 
 #rank {
-    margin-top: 20px;
+    margin-top: 40px;
+    margin-bottom: 30px;
 }
 
 #rank h4 {
@@ -52,22 +63,26 @@ h1 {
 
 #memIntro {
     width: 80%;
-    height: 100px;
+    height: 150px;
     resize: none;
     margin: 20px auto; /* 가운데 정렬을 위해 수정 */
     padding: 10px;
     display: block; /* 가운데 정렬을 위해 수정 */
     text-align: center; /* 가운데 정렬을 위해 수정 */
 
+    background-color: #161616;
+
     border-radius: 15px;
-    border: 1px solid #161616;
+    border: 1px solid #fff;
+
+    font-size: 1.2em;
 }
 /* 추가적인 스타일을 원하시면 여기에 추가하세요 */
 #link {
     text-align: right;
     position: absolute;
-    bottom: 10px; /* 하단 여백을 조절하세요 */
-    right: 10px; /* 왼쪽 여백을 조절하세요 */
+    bottom: 20px; /* 하단 여백을 조절하세요 */
+    right: 20px; /* 왼쪽 여백을 조절하세요 */
 }
 
 #link h6 {
@@ -76,6 +91,6 @@ h1 {
 
 #link a {
     text-decoration: none;
-    color: #333;
+    color: #fff;
     font-weight: bold;
 }

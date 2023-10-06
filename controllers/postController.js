@@ -58,7 +58,7 @@ const boardController = {
                   res.status(500).send('Internal Server Error');
                   return;
                 }
-  
+
                 commentModel.getMemberById(req.session.user_id, (error, login_nick, login_pro) => {
                   if (login_nick == null) {
                     console.log("게스트");
@@ -263,8 +263,13 @@ const boardController = {
     const postNum = req.params.post_num;
     const cmtNum = req.params.cmt_num;
       
-    commentModel.deleteComments(cmtNum, () => {
-      res.redirect(`/community/show/${postNum}`);
+    commentModel.deleteComments(cmtNum, (err) => {
+      if (err) {
+        console.error('Error deleting comment:', err);
+        res.redirect(`/community/show/${postNum}?error=FailedToDeleteComment`);
+      } else {
+        res.redirect(`/community/show/${postNum}`);
+      }
     });
   },
 
@@ -287,7 +292,13 @@ const boardController = {
     );
   },
 
-}
+  postLike: (req, res) => {
+    const post_num = req.params.post_num;
+    postModel.postLike(post_num, (err, res) => {
+      res.render('boardShow', { like : res })
+    })
+  }
+};
 
 const noticeController = {
   calculatePagination: (currentPage, totalPages) => {
