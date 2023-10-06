@@ -991,38 +991,3 @@ exports.profile = function (req, res) {
     });
 };
 
-// web 게임 room 생성 or 참가
-exports.webCreateOrJoinRoom = function (req, res){
-    const web_userCode = req.session.user_code;
-    let vr_userCode = req.body.connectionId;
-    const device = 'web'
-
-    userModel.checkUsercodeAvailability(vr_userCode, (error, results) =>{
-       if(error) throw error;
-
-       if(results.length <= 0){
-           res.send('<script>alert("존재하지 않는 유저코드입니다."); location.href="/";</script>');
-       }
-       else{
-           userModel.checkRoom(web_userCode, vr_userCode,(error, results)=>{
-               if(error) throw ('error');
-
-               // 방이 있으면 참가
-               if(results[0].web_user === web_userCode && results[0].web_state !== 'ready' && results[0].vr_user === vr_userCode){
-                   userModel.joinRoom(web_userCode, vr_userCode, device, (error,results) =>{
-                       if(error) throw ('error');
-                   });
-               }
-               // 방이 없으면 생성
-               else if(results.length <= 0) {
-                   userModel.createRoom(web_userCode, vr_userCode, device, (error, results) =>{
-                       if(error) throw ('error');
-                   });
-               }
-               else{
-                   res.send('<script>alert("방 정보가 올바르지 않습니다."); location.href="/auth/login";</script>');
-               }
-           });
-       }
-    });
-};

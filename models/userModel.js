@@ -204,25 +204,15 @@ exports.updateUserPassword = function (id, password, callback) {
   });
 };
 
-// // 회원 탈퇴 처리
-// exports.withdrawal = function (id, password, callback){
-//   db.query('DELETE FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
-//     if (error) {
-//       callback(error, null);
-//     } else {
-//       callback(null, results);
-//     }
-//   });
-// }
-
-exports.withdrawal = function (id, password, callback) {
-  db.query('UPDATE member SET is_withdrawn = 1 WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results) {
-      if (error) {
-          callback(error, null);
-      } else {
-          callback(null, results);
-      }
-  });
+// 회원 탈퇴 처리
+exports.withdrawal = function (id, password, callback){
+   db.query('DELETE FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
+     if (error) {
+       callback(error, null);
+     } else {
+       callback(null, results);
+     }
+   });
 }
 
 //프로필 업데이트
@@ -323,4 +313,15 @@ exports.joinRoom = function (web_userCode, vr_userCode, device, callback ) {
       }
     });
   }
+}
+
+// 게임 room 삭제
+exports.deleteRoom = function (web_userCode, vr_userCode, callback){
+  db.query('DELETE FROM room WHERE web_user = ? AND vr_user = ?', [web_userCode, vr_userCode], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
 }
