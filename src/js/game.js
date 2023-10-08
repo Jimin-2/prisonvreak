@@ -106,6 +106,17 @@ function onClickPlayButton() {
   cctv_6.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 6);
   });
+
+  const sabotage= document.getElementById('sabotage');
+  sabotage.addEventListener("click", function () {
+    sendClickEvent(channel, videoPlayer, 7);
+  });
+
+  const opendoor= document.getElementById('opendoor');
+  opendoor.addEventListener("click", function () {
+    sendClickEvent(channel, videoPlayer, 8);
+  });
+
 }
 
 async function setupRenderStreaming() {

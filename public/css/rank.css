@@ -1,6 +1,6 @@
 #section {
   width: 100%;
-  height: 1800px;
+  height: 1000px;
 
   display: flex;
   justify-content: center;
@@ -26,7 +26,7 @@
 }
 
 .number {
-  width: 150px;
+  min-width: 100px;
   height: 80px;
 
   display: flex;
@@ -37,22 +37,147 @@
   background-color: #161616;
 }
 
-.content {
+.board-section {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 변경 */
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  margin-top: 10px;
+}
+
+.board {
+  width: 85%;
+  height: auto;
+
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 
-  color: black;
+  background-color: white;
+
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-.content div {
-  font-size: 1em;
-  margin: 0px 200px 0px 200px;
+table.table-template {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  line-height: 1.5;
+  color: #161616;
+}
+table.table-template thead th {
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  color: #161616;
+  border-bottom: 2px solid #161616;
+}
+table.table-template tbody th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+  border-bottom: 1px solid #f3f3f3;
+  white-space: nowrap; /* 긴 내용을 한 줄로 표시 */
+  overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
+  text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
+  background: white;
+}
+table.table-template td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #f3f3f3;
+  white-space: nowrap; /* 긴 내용을 한 줄로 표시 */
+  overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
+  text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
 }
 
-#date {
+.pagination {
+  width: 100%;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 변경 */
+  text-align: center;
+
+  margin-top: 40px;
+}
+
+.pagination a {
+  margin-right: 10px;
+  color: #2c2c2c;
+  filter: drop-shadow(2px 2px 2px #161616);
+}
+
+.pagination span {
+  margin-right: 10px;
+  font-weight: bold;
+  filter: drop-shadow(2px 2px 2px #161616);
+}
+
+tbody i {
+  margin-right: 5px;
+}
+
+tbody img {
+  width: 10%;
+}
+
+/* 각 셀의 너비 조정 */
+table.table-template tbody th:nth-child(1),
+table.table-template td:nth-child(1) {
+  width: 10%; /* 첫 번째 열의 너비를 30%로 설정 */
+}
+
+table.table-template tbody th:nth-child(2),
+table.table-template td:nth-child(2) {
+  width: 10%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+table.table-template tbody th:nth-child(3),
+table.table-template td:nth-child(3) {
+  width: 10%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+table.table-template tbody th:nth-child(4),
+table.table-template td:nth-child(4) {
+  width: 20%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+/* 모달 스타일 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* 배경을 블랙으로 투명하게 설정 */
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff; /* 모달 내용 배경색 */
+  max-width: 400px; /* 모달의 최대 너비 설정 */
+  width: 100%; /* 너비를 100%로 설정하여 모달 내용이 너비에 맞게 조절됩니다. */
+  height: auto; /* 모달의 높이를 300px로 설정 (원하는 크기로 조절) */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
   position: absolute;
-  font-size: 1.3em;
-  margin-bottom: 800px;
+  top: 100%; /* 상단에서 50% 위치에 위치 */
+  left: 50%; /* 좌측에서 50% 위치에 위치 */
+  transform: translate(-50%, -50%); /* 가운데로 정렬 */
 }

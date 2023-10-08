@@ -141,21 +141,17 @@ exports.vr_login_process = function (req, res) {
     const userCode = req.body.userCode;
     const password = req.body.pwd;
 
-    if (id && password) {             // id와 pw가 입력되었는지 확인
+    if (userCode && password) {             // id와 pw가 입력되었는지 확인
         userModel.vrLoginProcess(userCode, password, function(error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
-                const userInfo= {
-                    userCode: results[0].mem_code,
-                    nickname: results[0].mem_nickname,
-                };
-                res.json(userInfo);
+                res.send('로그인 성공');
             } else {
-                res.send("로그인 정보가 일치하지 않습니다.");
+                res.send('로그인 정보가 일치하지 않습니다.');
             }
         });
     } else {
-        res.send("아이디와 비밀번호를 입력하세요.");
+        res.send('아이디와 비밀번호를 입력하세요.');
     }
 };
 
