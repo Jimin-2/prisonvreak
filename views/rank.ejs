@@ -54,6 +54,12 @@
             <td>
               <!-- <i class="fa-solid fa-user"></i> -->
               <div style="display: flex; align-items: center;">
+                <% if(data[i].vr_profile == null) { %>
+                  <img src="https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg" alt="프로필 이미지">
+                  <p style="margin-left: 10px; cursor: pointer;">
+                    (알 수 없음)
+                  </p>
+                <% } else { %>
                 <img src="<%= data[i].vr_profile %>" alt="프로필 이미지">
                 <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].vr_nickname %>')">
                   <%= data[i].vr_nickname %>
@@ -61,12 +67,19 @@
                 <div id="profileModal" class="modal">
                   <span class="close" onclick="closeModal()">&times;</span>
                 </div>
+                  <% } %>
 
               </div>
             </td>
             <td>
               <!-- <i class="fa-solid fa-user"></i> -->
               <div style="display: flex; align-items: center;">
+                <% if(data[i].web_profile == null) { %>
+                  <img src="https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg" alt="프로필 이미지">
+                  <p style="margin-left: 10px; cursor: pointer;">
+                    (알 수 없음)
+                  </p>
+                <% } else { %>
                 <img src="<%= data[i].web_profile %>" alt="프로필 이미지">
                 <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].web_nickname %>')">
                   <%= data[i].web_nickname %>
@@ -74,6 +87,7 @@
                 <div id="profileModal" class="modal">
                   <span class="close" onclick="closeModal()">&times;</span>
                 </div>
+                  <% } %>
 
               </div>
             </td>

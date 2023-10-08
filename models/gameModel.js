@@ -89,8 +89,8 @@ exports.getRank = function (callback){
      mVR.mem_nickname AS vr_nickname,
      mWeb.mem_profile AS web_profile,
      mWeb.mem_nickname AS web_nickname FROM prisonvreak.game_rank AS r
-     INNER JOIN prisonvreak.member AS mVR ON r.vr_user = mVR.mem_code
-     INNER JOIN prisonvreak.member AS mWeb ON r.web_user = mWeb.mem_code
+     LEFT JOIN prisonvreak.member AS mVR ON r.vr_user = mVR.mem_code
+     LEFT JOIN prisonvreak.member AS mWeb ON r.web_user = mWeb.mem_code
      ORDER BY game_clear_time;`,function(error, results){
         if(error){
             callback(error, null);

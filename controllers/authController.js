@@ -695,26 +695,26 @@ function generateTemporaryPassword() {
 // 마이페이지
 exports.mypage = function (req, res) {
     isLogined(req, res);
-    const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    const nickname = req.session.nickname;// 로그인된 사용자의 아이디
     const postsPerPage = 5;
     const link = 'myPage';
-    myPostList(req, res, userId, postsPerPage, link);
+    myPostList(req, res, nickname, postsPerPage, link);
 };
 
 // 작성한 게시글 페이지
 exports.myPost = function (req, res) {
     isLogined(req, res);
-    const userId = req.session.user_id;// 로그인된 사용자의 아이디
+    const nickname = req.session.nickname;// 로그인된 사용자의 아이디
     const postsPerPage = 15;
     const link = 'myPost';
 
-    myPostList(req, res, userId, postsPerPage, link);
+    myPostList(req, res, nickname, postsPerPage, link);
 };
 
 // 작성한 게시글 가져오는 함수
-myPostList = function (req, res, userId, postsPerPage, link){
+myPostList = function (req, res, nickname, postsPerPage, link){
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
-    userModel.getUserProfile(userId, (error, results) => {
+    userModel.getUserProfileByUsername(nickname, (error, results) => {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
         } else {
@@ -852,7 +852,7 @@ exports.editMyPassword = function (req, res) {
     }
 }
 
-// 회원탈퇴(local 계정)
+// 회원탈퇴
 exports.withdrawal = function (req, res) {
     isLogined(req, res);
 
