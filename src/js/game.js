@@ -66,6 +66,7 @@ function showPlayButton() {
 
 function onClickPlayButton() {
   playButton.style.display = 'none';
+  createOrJoinRoom(connectionId);
 
   // add video player
   videoPlayer.createPlayer(playerDiv, lockMouseCheck);
@@ -105,6 +106,17 @@ function onClickPlayButton() {
   cctv_6.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 6);
   });
+
+  const sabotage= document.getElementById('sabotage');
+  sabotage.addEventListener("click", function () {
+    sendClickEvent(channel, videoPlayer, 7);
+  });
+
+  const opendoor= document.getElementById('opendoor');
+  opendoor.addEventListener("click", function () {
+    sendClickEvent(channel, videoPlayer, 8);
+  });
+
 }
 
 async function setupRenderStreaming() {
@@ -150,6 +162,7 @@ async function onDisconnect(connectionId) {
   if (supportsSetCodecPreferences) {
     codecPreferences.disabled = false;
   }
+  deleteRoom(connectionId);
   showPlayButton();
 }
 
@@ -241,4 +254,36 @@ async function setUpInputSelect() {
       break;
     }
   }
+}
+
+function createOrJoinRoom(connectionId){
+  fetch('/webCreateOrJoinRoom', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ connectionId: connectionId })
+  });
+}
+
+function deleteRoom(connectionId){
+  fetch('/deleteRoom', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ connectionId: connectionId })
+  });
+}
+
+window.onbeforeunload = function () {
+  fetch('/deleteRoom', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ connectionId: connectionId }),
+    keepalive : true
+  });
+  return '';
 }
