@@ -182,3 +182,6 @@ exports.rankpage = function (req, res){
         });
     });
 }
+exports.manual = function (req, res) {
+    res.render('manual');
+};
