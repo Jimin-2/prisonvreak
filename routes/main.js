@@ -16,4 +16,6 @@ router.post('/checkMatching', mainController.checkMatching);
 
 router.post('/createRank', mainController.createRank);
 
+router.get('/manual', mainController.manual)
+
 module.exports = router;

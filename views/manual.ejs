@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANUAL</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="/javascript/modernizr.2.5.3.min.js"></script>
+    <script type="text/javascript" src="/javascript/hash.js"></script>
+    <script type="text/javascript" src="/javascript/turn.js"></script>
+    <script type="text/javascript" src="/javascript/docs.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="/css/manual.css">
+
+</head>
+<body>
+
+<div id="canvas">
+    <div id="book-zoom">
+        <div class="tabs"><div class="tab"></div></div>
+        <div class="sample-docs">
+
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    function loadApp() {
+        var flipbook = $('.sample-docs');
+        // Check if the CSS was already loaded
+        if (flipbook.width()==0 || flipbook.height()==0) {
+            setTimeout(loadApp, 10);
+            return;
+        }
+        // URIs
+        Hash.on('^page\/([0-9]*)$', {
+            yep: function(path, parts) {
+                var page = parts[1];
+                if (page!==undefined) {
+                    if ($('.sample-docs').turn('is'))
+                        $('.sample-docs').turn('page', page);
+                }
+            },
+            nop: function(path) {
+                if ($('.sample-docs').turn('is'))
+                    $('.sample-docs').turn('page', 1);
+            }
+        });
+
+        // Create the flipbook
+        flipbook.turn({
+            elevation: 50,
+            acceleration: false,
+            gradients: true,
+            autoCenter: true,
+            duration: 1000,
+            pages: 7,
+            display: "single",
+            when: {
+                turning: function(e, page, view) {
+                    var book = $(this),
+                        currentPage = book.turn('page'),
+                        pages = book.turn('pages');
+                    if (currentPage>3 && currentPage<pages-3) {
+                        if (page==1) {
+                            book.turn('page', 2).turn('stop').turn('page', page);
+                            e.preventDefault();
+                            return;
+                        } else if (page==pages) {
+                            book.turn('page', pages-1).turn('stop').turn('page', page);
+                            e.preventDefault();
+                            return;
+                        }
+                    } else if (page>3 && page<pages-3) {
+                        if (currentPage==1) {
+                            book.turn('page', 2).turn('stop').turn('page', page);
+                            e.preventDefault();
+                            return;
+                        } else if (currentPage==pages) {
+                            book.turn('page', pages-1).turn('stop').turn('page', page);
+                            e.preventDefault();
+                            return;
+                        }
+                    }
+                    Hash.go('page/'+page).update();
+                },
+                turned: function(e, page, view) {
+                    var book = $(this);
+                        $('.sample-docs .tabs').fadeIn(500);
+                    updateTabs();
+                },
+                missing: function (e, pages) {
+                    for (var i = 0; i < pages.length; i++)
+                        addPage(pages[i], $(this));
+                }
+            }
+        });
+        flipbook.addClass('animated');
+        // Show canvas
+        $('#canvas').css({visibility: 'visible'});
+    }
+    loadApp();
+</script>
+
+</body>
+</html>
