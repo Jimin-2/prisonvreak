@@ -79,19 +79,27 @@ exports.createRank = function (room_num, cleartime, vr_userCode, web_userCode, c
 }
 
 exports.getRank = function (callback){
-    db.query(`SELECT r.room_num, 
-    CONCAT(
-            LPAD(FLOOR((r.game_clear_time / 60000) % 60), 2, '0'), ':', -- 분
-            LPAD(FLOOR((r.game_clear_time / 1000) % 60), 2, '0'), '.', -- 초
-            LPAD(r.game_clear_time % 1000, 3, '0') -- 밀리초
+    db.query(`SELECT 
+        r.room_num, 
+        CONCAT(
+        LPAD(FLOOR((r.game_clear_time / 60000) % 60), 2, '0'), ':',
+        LPAD(FLOOR((r.game_clear_time / 1000) % 60), 2, '0'), '.',
+        LPAD(r.game_clear_time % 1000, 3, '0')
         ) AS formatted_game_clear_time, 
-     mVR.mem_profile AS vr_profile,
-     mVR.mem_nickname AS vr_nickname,
-     mWeb.mem_profile AS web_profile,
-     mWeb.mem_nickname AS web_nickname FROM prisonvreak.game_rank AS r
-     INNER JOIN prisonvreak.member AS mVR ON r.vr_user = mVR.mem_code
-     INNER JOIN prisonvreak.member AS mWeb ON r.web_user = mWeb.mem_code
-     ORDER BY game_clear_time;`,function(error, results){
+        mVR.mem_profile AS vr_profile,
+        mVR.mem_nickname AS vr_nickname,
+        mWeb.mem_profile AS web_profile,
+        mWeb.mem_nickname AS web_nickname,
+        (
+            SELECT COUNT(*) + 1
+            FROM prisonvreak.game_rank AS r2
+            WHERE r2.game_clear_time < r.game_clear_time
+        ) AS \`rank\`
+        FROM prisonvreak.game_rank AS r
+        LEFT JOIN prisonvreak.member AS mVR ON r.vr_user = mVR.mem_code
+        LEFT JOIN prisonvreak.member AS mWeb ON r.web_user = mWeb.mem_code
+        ORDER BY game_clear_time
+        LIMIT 0, 1000;`,function(error, results){
         if(error){
             callback(error, null);
         } else{
