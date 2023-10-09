@@ -6,21 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!--
-
-    ** index 해결해야할 점 **
-    #1. 유튜브, VR Download 컨텐츠 화면 비율이 줄어들어도 픽스되게. absolute 때문에 그러는 거 같은데 다른 방법 찾는 게 나을 듯
-
-    #2. VR Download를 다른 컨텐츠로 바꿔야 함. (Download 창 안 만든다고 했으니까...)
-    #3. index의 공지사항, 커뮤니티가 꽤나 비루함. 레이아웃 새로 설정해야할 거 같음. (새 디자인) --일단 보류--
-
-    #4. 애니메이션, 세부적인 요소는 추후 추가하는 것으로
-    #5. logo를 바꿔야겠다.
-
-  -->
-
   <!--글꼴 Link-->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+  <link href="https://db.onlinewebfonts.com/c/1db29588408eadbd4406aae9238555eb?family=Consolas" rel="stylesheet">
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
@@ -38,66 +26,188 @@
 </head>
 
 <body>
+  <section>
+    <div id="cursor">
+    </div>
 
-  <!-- header -->
-  <%- include('partials/header')%>
-  <!-- 전체 Section -->`
-  <section id="section">
+    <!-- loading Page -->
+    <div id="loading">
+      <div id="loader">
+        <h2> LOADING... </h2>
+      </div>
+    </div>
 
-    <!-- 첫 번째 그리드 -->
-    <div id="firstSection">
-      <div id="firstGrid">
-          <img id="pvLogo" src="/img/prisonVreak.png">
-          <button class="btn" onclick="location.href='/game'"> PLAY </button>
+    <!-- main Page -->
+    <div id="main-home">
+      <div id="grid-01" class="item">
 
-            <!-- youtube -->
-            <iframe id="youtube" width="860" height="420" src="https://www.youtube.com/embed/5R9245kbwMs"
-              title="YouTube video player"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-              style="box-shadow: 10px 10px 10px #000;"
-            ></iframe>
+        <div id="main-home-logo">
+
+          <h5> made by CAN</h5>
+
+          <h1> Prison VReak </h1>
+          <div id="play-content">
+            <p> Prison VReak는 죄수와 해커가 협동하여 감옥에서 빠져나가는 게임입니다.</p>
+            <p> 퍼즐을 풀고, 교도관들을 피해 감옥에서 빠져나가십시오. </p>
+          </div>
+
+          <div id="play-button">
+            <button id="play-button-01" onclick="location.href='/game'"> Game Play </button> <button id="play-button-02"> Guide </button>
+          </div>
 
         </div>
+
+      </div>
+
+      <div id="grid-02" class="item">
+
+        <div id="menu" class="item03">
+          <ul>
+            <li onclick="location.href='/'"><a>Game Info</a></li>
+            <li onclick="location.href='/notice'"><a>Notice</a></li>
+            <li onclick="location.href='/community'"><a>Community</a></li>
+            <li onclick="location.href='/rank'"><a>Ranking</a></li>
+            <li onclick="location.href='/auth/customer'"><a>Customer</a></li>
+            <% if (is_logined) { %>
+              <li onclick="location.href='/auth/logout'"><a>Log out</a></li>
+              <% } else { %>
+                <li onclick="location.href='/auth/login'"><a>Log in</a></li>
+                <% } %>
+            <div id="cursor2"></div>
+          </ul>
+        </div>
+
+        <div id="profile-grid" class="item03">
+          <div id="profile">
+            <div class="info">
+
+              <div id="info-01" class="item02">
+                <h2> COLLABORATOR </h2>
+                <br>
+                <% if (is_logined) { %>
+                  <p> Nickname님 환영합니다. </p>
+                  
+                  <div>
+                    <p> Code :  </p>
+                    <p> Name :  </p>
+                    <br>
+                    <p> VR :  </p>
+                    <p> WEB :  </p>
+                  </div>
+                  <% } else { %>
+                    <div>
+                      로그인 후 이용해주세요.
+                    </div>
+                    <% } %>
+
+              </div>
+
+              <div id="info-02" class="item02">
+                <div id="item02-box"></div>
+              </div>
+
+            </div>
+
+            <% if (is_logined) { %>
+              <div>
+                <div id="go-my-page">
+                  <p><a> > My Page </a></p>
+                </div>
+              </div>
+              <% } else { %>
+
+                <% } %>
+
+          </div>
+        </div>
+        
+      </div>
     </div>
-
-    <!-- 두 번째 그리드 -->
-    <div id="secondSection">
-      <div id="secondGrid">
-        <img class="gameInfo" src="/img/gameInfo.png">
-        <img class="gameInfo" src="/img/gameInfo.png">
-        <img class="gameInfo" src="/img/gameInfo.png">
-      </div>
-
-      <!-- vrVersion IMG -->
-      <div id="vrVersion">
-        <img src="/img/vrVersion.png">
-      </div>
-      <div class="vrVersion">
-        <!-- vrVersion img 시험 중 -->
-      </div>
-    </div>
-
-    <!-- 세 번째 그리드 -->
-    <div id="thirdSection">
-
-      <div class="thirdGrid" id="thFirst">
-        <h1> 공지사항 </h1>
-        <img src="/img/gameInfo.png">
-      </div>
-
-      <div class="thirdGrid" id="thSecond">
-        <h1> 커뮤니티 </h1>
-        <img src="/img/gameInfo.png">
-      </div>
-
-    </div>
-
   </section>
 
-  <!-- footer -->
-  <%- include('partials/footer')%>
+  <script>
+    // loading, main-home
+    var delayInMilliseconds = 8000;
+
+    setTimeout(function () {
+      var loadingElement = document.getElementById("loading");
+      var mainhomeElement = document.getElementById("main-home");
+
+      // <div> 요소를 숨깁니다.
+      loadingElement.style.display = "none";
+      mainhomeElement.style.display = "grid";
+    }, delayInMilliseconds);
+
+    // cursor
+    let cursor = document.querySelector('#cursor');
+    let body = document.querySelector('body');
+    document.onmousemove = function (e) {
+      // move cursor
+      cursor.style.top = e.pageY + 'px';
+      cursor.style.left = e.pageX + 'px';
+
+      // add elements to body
+      let element = document.createElement('div');
+      element.className = 'element';
+      body.prepend(element);
+
+      // move elements randomly across x and y axis
+      element.style.left = cursor.getBoundingClientRect().x + 'px';
+      element.style.top = cursor.getBoundingClientRect().y - 20 + 'px';
+
+      setTimeout(function () {
+        let text = document.querySelectorAll('.element')[0],
+          directionX = Math.random(),
+          directionY = Math.random()
+
+        text.style.left = parseInt(text.style.left) - (directionX * (Math.random() * 250)) + 'px';
+        text.style.top = parseInt(text.style.top) - (directionY * (Math.random() * 250)) + 'px';
+        text.style.opacity = 0;
+        text.style.transform = 'scale(0.25)';
+        text.innerHTML = randomText();
+
+        // remove element
+        setTimeout(function () {
+          element.remove()
+        }, 1000)
+
+      }, 10)
+    }
+
+    // add random text on numbers
+    function randomText() {
+      var text = ("PRIZONVREAKCANprisonvreakcan").split("");
+      letter = text[Math.floor(Math.random() * text.length)];
+      return letter;
+    }
+
+    function lines() {
+      let sizeW = Math.random() * 12;
+      let duration = Math.random() * 3;
+      let e = document.createElement('div');
+      e.setAttribute('class', 'circle');
+      document.body.appendChild(e);
+      e.style.width = 2 + sizeW + 'px';
+      e.style.left = Math.random() * + innerWidth + 'px';
+      e.style.animationDuration = 2 + duration + 's';
+      setTimeout(function () {
+        document.body.removeChild(e)
+      }, 5000);
+    }
+    setInterval(function () {
+      lines();
+    }, 100);
+
+    let text = document.querySelectorAll('ul li a').forEach(text => {
+			text.innerHTML = text.innerText.split('').map((letters,i) => `<span style="transition-delay:${i*40}ms;">${letters}</span>`).join('');
+		})
+
+		let cursor2 = document.querySelector('#cursor2');
+		document.addEventListener('mousemove', (e) => {
+			cursor2.style.top = e.pageY + 'px';
+			cursor2.style.left = e.pageX + 'px';
+		})
+  </script>
 </body>
 
 </html>
