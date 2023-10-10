@@ -15,6 +15,7 @@
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
+  <script src="/javascript/board.js"></script>
     <!-- 반응형 웹 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -30,147 +31,143 @@
 
   <!-- Section -->
   <section id="section">
-    <img src="/img/rankLogo.png" style="margin-bottom: 80px;">
+    <img src="/img/rankLogo.png" style="width: 700px;">
 
-    <div id="date">
-      <p>2023.07.24</p>
-      <p>Prison VReak</p>
+    <div class="board-section">
+    <div class="board" class="effect8">
+      <table class="table-template">
+        <thead>
+          <tr>
+            <th>순위</th>
+            <th>죄수</th>
+            <th>해커</th>
+            <th>기록</th>
+          </tr>
+        </thead>
+
+        <tbody class="content">
+        <% for (let i=0; i < data.length; i++) { %>
+          <tr>
+            <td>
+              <%= data[i].rank %>
+            </td>
+            <td>
+              <!-- <i class="fa-solid fa-user"></i> -->
+              <div style="display: flex; align-items: center;">
+                <% if(data[i].vr_profile == null) { %>
+                  <img src="https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg" alt="프로필 이미지">
+                  <p style="margin-left: 10px; cursor: pointer;">
+                    (알 수 없음)
+                  </p>
+                <% } else { %>
+                <img src="<%= data[i].vr_profile %>" alt="프로필 이미지">
+                <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].vr_nickname %>')">
+                  <%= data[i].vr_nickname %>
+                </p>
+                <div id="profileModal" class="modal">
+                  <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                  <% } %>
+
+              </div>
+            </td>
+            <td>
+              <!-- <i class="fa-solid fa-user"></i> -->
+              <div style="display: flex; align-items: center;">
+                <% if(data[i].web_profile == null) { %>
+                  <img src="https://prisonvreak.s3.ap-northeast-2.amazonaws.com/profile/default-profile.jpg" alt="프로필 이미지">
+                  <p style="margin-left: 10px; cursor: pointer;">
+                    (알 수 없음)
+                  </p>
+                <% } else { %>
+                <img src="<%= data[i].web_profile %>" alt="프로필 이미지">
+                <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].web_nickname %>')">
+                  <%= data[i].web_nickname %>
+                </p>
+                <div id="profileModal" class="modal">
+                  <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                  <% } %>
+
+              </div>
+            </td>
+            <td>
+              <%= data[i].formatted_game_clear_time %>
+            </td>
+          </tr>
+        <% } %>
+        </tbody>
+      </table>
     </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberOne.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
     </div>
+    <div class="pagination">
+      <% if (prevPage !== null) { %>
+        <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
+      <% } else { %>
+        <span class="disabled">&laquo; 이전</span>
+      <% } %>
 
-        <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberTwo.png">
-      </div>
+      <% for (let i = startPage; i <= endPage; i++) { %>
+        <% if (i === currentPage) { %>
+          <span class="active"><%= i %></span>
+        <% } else { %>
+          <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
+        <% } %>
+      <% } %>
 
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberThree.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberFour.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberFive.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberSix.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberSeven.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberEight.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberNine.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
-    </div>
-
-    <!-- 첫번째 -->
-    <div class="box">
-      <div class="number">
-        <img src="/img/numberTen.png">
-      </div>
-
-      <div class="content">
-        <div id="name"> NAME </div>
-        <div id="puzzlePlayTime"> PUZZLE PLAY TIME </div>
-        <div id="totalPlayTime"> TOTAL PLAY TIME </div>
-      </div>
+      <% if (nextPage !== null) { %>
+        <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
+      <% } else { %>
+        <a href="#" id="disabledNextPage">다음 &raquo;</a>
+        <script>
+          document.getElementById("disabledNextPage").addEventListener("click", function(event) {
+            event.preventDefault();
+            alert("더 이상 페이지가 없습니다.");
+          });
+        </script>
+      <% } %>
     </div>
 
   </section>
 
 <!-- footer -->
 <%- include('partials/footer')%>
+
+  <script>
+    function showProfile(username) {
+      // 모달 요소 가져오기
+      const modal = document.getElementById('profileModal');
+
+      // 모달 내용을 동적으로 로드
+      fetch(`/auth/userProfile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
+              .then((response) => response.text())
+              .then((html) => {
+                modal.innerHTML = html; // userprofile.ejs의 HTML을 모달 내용에 설정
+              })
+              .catch((error) => {
+                console.error('Error fetching profile:', error);
+              });
+
+      // 모달 표시
+      modal.style.display = 'block';
+    }
+
+    // 모달 닫기 함수
+    function closeModal() {
+      const modal = document.getElementById('profileModal');
+
+      // 모달을 숨김 처리
+      modal.style.display = 'none';
+    }
+
+    window.addEventListener('click', function (event) {
+      const modal = document.getElementById('profileModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+  </script>
 </body>
 
 </html>
