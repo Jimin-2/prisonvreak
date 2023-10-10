@@ -53,6 +53,7 @@ const postModel = {
       if (error) {
         callback(error, null);
       } else {
+        console.log(result[0]);
         callback(null, result[0]);
       }
     });
@@ -86,6 +87,19 @@ const postModel = {
     })
   },
 
+  communitySearch: (keyword, callback) => { //커뮤니티 search
+    const searchKeyword = `%${keyword}%`;
+    db.query('SELECT * FROM post WHERE post_title LIKE ? AND post_usernum <> 1', [searchKeyword], (error, results) => {
+      if (error) {
+        console.error(error);
+        callback(error, null);
+      } else {
+        console.log(results);
+        callback(null, results);
+      }
+    });
+  },
+
   searchKeyword: (keyword, post_usernum, callback) => { // 검색 기능
     const searchKeyword = `%${keyword}%`;
     db.query('SELECT * FROM post WHERE post_title LIKE ? AND post_usernum = ?', [searchKeyword, post_usernum], (error, results) => {
@@ -93,7 +107,6 @@ const postModel = {
         console.error(error);
         callback(error, null);
       } else {
-        console.log('adfasdf')
         callback(null, results);
       }
     });
@@ -224,16 +237,17 @@ const postModel = {
 const commentModel = {
   getComments: (post_usernum, callback) => {
     db.query(`
-      SELECT * 
-      FROM comment AS c 
-      JOIN post AS p ON c.post_num = p.post_num 
-      WHERE c.post_num = ?
-      ORDER BY 
-          CASE 
-              WHEN c.cmt_refnum IS NULL THEN c.cmt_num
-              ELSE c.cmt_refnum
-          END ASC,
-          c.cmt_refnum ASC
+    SELECT * 
+    FROM comment AS c 
+    JOIN post AS p ON c.post_num = p.post_num 
+    WHERE c.post_num = ? 
+    ORDER BY 
+        CASE 
+            WHEN c.cmt_refnum IS NULL THEN c.cmt_num
+            ELSE c.cmt_refnum
+        END ASC,
+        c.cmt_refnum ASC
+    
     `, [post_usernum], (error, results) => {
       if (error) {
         callback(error, null);

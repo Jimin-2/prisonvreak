@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { boardController, noticeController } = require('../controllers/postController');
 const { postUpload } = require('../modules/multer');
-
 // 라우트 수행
 router.get('/community', boardController.showList);
 router.get('/community/delete/:post_num', boardController.deletePost);
@@ -18,6 +17,6 @@ router.post('/community/show/:post_num/edit/:cmt_num', boardController.updateCom
 router.get('/notice', noticeController.showManagerPosts);
 router.get('/notice/show/:post_num', noticeController.showForm);
 router.get('/notice/search', noticeController.searchKeyword);
-router.post('/post-like/:post_num', boardController.postLike);
-
+router.get('/community/search', noticeController.communitySearch);
+router.post('/post-like/:post_num', boardController.postLike); // 추천 버튼
 module.exports = router;

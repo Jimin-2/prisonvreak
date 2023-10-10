@@ -90,7 +90,7 @@
                                 <!-- 작성일, 조회수, 마지막 수정일시를 병렬로 표시 -->
                                 <div class="date-info">
 
-                                    <p>작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %>
+                                    <p>작성일: <%= data.post_created_at %>
                                     </p>
                                     <p>조회수: <%= data.post_hit %>
                                     </p>
@@ -114,19 +114,15 @@
                         </div>
 
                         <div class="comment-h2">
-                            <h2> 댓글 </h2>
+                            <h2> 댓글 <%= commentCount %>
+                            </h2>
                         </div>
 
-                        <div id="more-comments-container">
-                            <!-- 더보기 -->
-                            <button id="load-more-comments" data-page="2">더보기</button>
-                        </div>
-
-                        <% for (let i=0; i < comments.length; i++) { %>
-                            <% let displayDeletedComment=comments[i].is_deleted && comments.some(comment=>
+                        <% for (let i = 0; i < moreComments.length; i++) { %>
+                            <% let displayDeletedComment = comments[i].is_deleted && comments.some(comment =>
                                 comment.cmt_refnum === comments[i].cmt_num); %>
-                                <% if (!comments[i].is_deleted || displayDeletedComment) { %>
-                                    <div id="comment">
+                            <% if (!comments[i].is_deleted || displayDeletedComment) { %>
+                              <div id="comment">
                                         <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
                                             id="comment-layout">
                                             <div class="comment-layout">
@@ -141,7 +137,7 @@
                                                 <div class="comment-between-section">
                                                     <div>
                                                         <a class="date">
-                                                            <%= formattedComments[i].cmt_created_at %>
+                                                            <%= moreComments[i].cmt_created_at %>
                                                         </a>
                                                     </div>
 
@@ -169,10 +165,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="comments-content">
-                                                    <% if (comments[i].is_deleted && displayDeletedComment) { %>
+                                                    <% if (moreComments[i].is_deleted && displayDeletedComment) { %>
                                                         삭제된 댓글입니다.
                                                         <% } else { %>
-                                                            <%= comments[i].cmt_content %>
+                                                            <%= moreComments[i].cmt_content %>
                                                                 <% if (!comments[i].cmt_refnum) { %>
                                                                     <button class="reply-btn"
                                                                         onclick="toggleReplyForm(this)">답글</button>
@@ -187,8 +183,8 @@
                                             <br>
 
                                             <!-- 답글 등록 폼 -->
-                                            <form action="/community/show/<%= data.post_num %>" method="POST" autocomplete="off"
-                                                class="reply-form" style="display: none;">
+                                            <form action="/community/show/<%= data.post_num %>" method="POST"
+                                                autocomplete="off" class="reply-form" style="display: none;">
                                                 <input type="hidden" name="post_num" value="<%= data.post_num %>">
                                                 <input type="hidden" name="cmt_refnum"
                                                     value="<%= comments[i].cmt_num %>">
@@ -201,7 +197,6 @@
                                                 </div>
                                             </form>
                                         </div>
-
                                         <!-- 댓글 수정 폼 -->
                                         <form
                                             action="/community/show/<%= data.post_num %>/edit/<%= comments[i].cmt_num %>"
@@ -214,6 +209,16 @@
                                             </div>
                                         </form>
                                         <% } %>
+
+                                        <div class="pagination">
+                                            <% if (currentComments > 1) { %>
+                                              <a href="?page=<%= currentComments - 1 %>">이전 페이지</a>
+                                            <% } %>
+                                            <% if (moreComments.length === perPage) { %>
+                                              <a href="?page=<%= currentComments + 1 %>">댓글 더보기</a>
+                                            <% } %>
+                                          </div>
+                                          
 
                                             <hr>
                                             <form action="/community/show/<%= data.post_num %>" method="POST"
@@ -262,6 +267,10 @@
 
                                             </div>
 
+                                    </div>
+
+                                    <div id="commentsList">
+                                        <!-- 여기에 댓글을 추가합니다. -->
                                     </div>
             </div>
         </section>
@@ -329,7 +338,6 @@
                 });
             });
             
-
         </script>
 </body>
 

@@ -43,6 +43,11 @@
 
       <!-- 보드board -->
       <div class="board-section">
+        <form action="/community/search" method="GET">
+          <label for="검색어">검색어:</label>
+          <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요">
+          <input type="submit" value="검색">
+      </form>
         <!-- 글쓰기 버튼 -->
         <div class="write-button">
           <form action="/community/insert" method="GET">
