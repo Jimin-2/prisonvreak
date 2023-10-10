@@ -28,14 +28,14 @@ const boardController = {
         res.status(500).send('Internal Server Error');
         return;
       }
-      
+  
       // postInfo 가져오기
       postModel.getNicknameByPostId(post_num, async (error, post_nick, post_pro) => {
         if (error) {
           console.error(error);
         }
   
-        // 조회수
+        // 조회수 증가
         postModel.incrementPostHit(post_num, (error) => {
           if (error) {
             console.error(error);
@@ -58,7 +58,7 @@ const boardController = {
                   res.status(500).send('Internal Server Error');
                   return;
                 }
-
+  
                 commentModel.getMemberById(req.session.user_id, (error, login_nick, login_pro) => {
                   if (login_nick == null) {
                     console.log("게스트");
@@ -68,7 +68,12 @@ const boardController = {
                     if (error) {
                       console.error(error);
                     }
-
+  
+                    const formattedComments = comments.map(comment => ({
+                      ...comment,
+                      cmt_created_at: moment(comment.cmt_created_at).format('YY.MM.DD HH:mm:ss'),
+                    }));
+                    
                     res.render('boardShow', {
                       post_num: post_num,
                       data: result,
@@ -82,6 +87,7 @@ const boardController = {
                       previousTitle: previousTitle,
                       nextPost: nextPost,
                       nextTitle: nextTitle,
+                      formattedComments: formattedComments,
                     });
                   });
                 });
@@ -94,6 +100,7 @@ const boardController = {
       });
     });
   },
+  
   
 
   showList: (req, res) => {

@@ -17,21 +17,21 @@
 
 <!-- nav : mobile은 X, PC는 O -->
 <ul class="nav">
-  <li class="link-1"><a href="/"> 게임정보 </a></li>
+  <li class="link-1" onclick="location.href='/'">게임정보</li>
 
-  <li class="link-1"><a href="/notice"> 공지사항 </a></li>
+  <li class="link-1" onclick="location.href='/notice'">공지사항</li>
 
-  <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
+  <li class="link-1" onclick="location.href='/community'">커뮤니티</li>
 
-  <li class="link-1"><a href="/"> 랭킹 </a></li>
+  <li class="link-1" onclick="location.href='/rank'">랭킹</li>
 
-  <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
+  <li class="link-1" onclick="location.href='/auth/customer'">고객지원</li>
 
   <% if (is_logined) { %>
-    <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
-    <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
+    <li class="link-1" onclick="location.href='/auth/mypage'"> 마이페이지 </li>
+    <li class="link-1" onclick="location.href='/auth/logout'">로그아웃</li>
     <% } else { %>
-      <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
+      <li class="link-1" onclick="location.href='/auth/login'">로그인</li>
       <% } %>
 </ul>
 
@@ -42,24 +42,24 @@
 </div>
 
 <div class="nav-toggle-button">
-<ul>
-  <li class="link-1"><a href="/"> 게임정보 </a></li>
+  <ul>
+    <li class="link-1" onclick="location.href='/'">게임정보</li>
 
-  <li class="link-1"><a href="/notice"> 공지사항 </a></li>
+    <li class="link-1" onclick="location.href='/notice'">공지사항</li>
 
-  <li class="link-1"><a href="/community"> 커뮤니티 </a></li>
+    <li class="link-1" onclick="location.href='/community'">커뮤니티</li>
 
-  <li class="link-1"><a href="/"> 랭킹 </a></li>
+    <li class="link-1" onclick="location.href='/rank'">랭킹</li>
 
-  <li class="link-1"><a href="/auth/customer"> 고객지원 </a></li>
+    <li class="link-1" onclick="location.href='/auth/customer'">고객지원</li>
 
-  <% if (is_logined) { %>
-    <li class="link-1"><a href="/auth/mypage"> 마이페이지 </a></li>
-    <li class="link-1"><a href="/auth/logout"> 로그아웃 </a></li>
+    <% if (is_logined) { %>
+      <li class="link-1" onclick="location.href='/auth/mypage'"> 마이페이지 </li>
+      <li class="link-1" onclick="location.href='/auth/logout'">로그아웃</li>
     <% } else { %>
-      <li class="link-1"><a href="/auth/login"> 로그인 </a></li>
-      <% } %>
-</ul>
+      <li class="link-1" onclick="location.href='/auth/login'">로그인</li>
+    <% } %>
+  </ul>
 </div>
 
   <script>
