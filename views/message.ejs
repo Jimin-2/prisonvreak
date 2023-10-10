@@ -32,12 +32,18 @@
     <div id="layout">
       <div id="firstLayout">
         <div class="myPageList">
-          <h2> 쪽지함
-          </h2>
+          <h2> 쪽지함 </h2>
           <hr>
           <ul>
-            <li></li>
-            <!--여기에 쪽지 목록(사용자)!-->
+            <% for (const chatroom of chatroomList) { %>
+              <li>
+                <!-- 각 쪽지함 항목 -->
+                <a href="#" class="open-popup" data-receiver-name="<%= chatroom.receiverName %>">
+                  <img src="<%= chatroom.receiverProfile %>" width="100px" height="100px" alt="<%= chatroom.receiverName %>">
+                  <span><%= chatroom.receiverName %></span>
+                </a>
+              </li>
+            <% } %>
           </ul>
         </div>
 
@@ -55,5 +61,24 @@
   <%- include('partials/footer')%>
 
 </body>
+<script>
+  // 팝업 열기 함수
+  function openPopup(user2_id) {
+    const url = `/msg/sendMessage/${user2_id}`;
+    // 팝업 창 열기
+    const popup = window.open(url, 'popup', 'width=500,height=600,top=300,left=600,resizable=no');
+    if (popup) {
+      popup.focus();
+    }
+  }
 
+  // 각 쪽지함 항목의 팝업 열기 버튼에 이벤트 리스너 추가
+  document.querySelectorAll('.open-popup').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      const receiverName = link.getAttribute('data-receiver-name');
+      openPopup(receiverName);
+    });
+  });
+</script>
 </html>
