@@ -109,7 +109,7 @@ const postModel = {
         WHERE is_deleted = 0
         GROUP BY post_num
       ) AS comment ON post.post_num = comment.post_num
-      WHERE post.post_usernum <> ?`, [post_usernum], (error, results) => {
+      WHERE post.post_usernum <> ? OR post.post_usernum IS NULL`, [post_usernum], (error, results) => {
       if (error) {
         console.error('Error getPostsExcludingUserNum', null);
         callback(error, null);
@@ -118,29 +118,32 @@ const postModel = {
     });
   },
 
-  // post 작성자의 닉네임 가져오기
-  getNicknameByPostId: (post_num, callback) => {
-    db.query(
-      `SELECT m.mem_nickname, m.mem_profile
-      FROM post p 
-      JOIN member m ON p.post_usernum = m.mem_code 
-      WHERE p.post_num = ?;`,
-      [post_num],
-      (error, results) => {
-        if (error) {
-          console.error(error);
+// post 작성자의 닉네임 가져오기
+getNicknameByPostId: (post_num, callback) => {
+  db.query(
+    `SELECT m.mem_nickname, m.mem_profile
+    FROM post p 
+    LEFT JOIN member m ON p.post_usernum = m.mem_code 
+    WHERE p.post_num = ?;`,
+    [post_num],
+    (error, results) => {
+      if (error) {
+        console.error(error);
+      } else {
+        let nickname, profile;
+        if (results.length > 0 && results[0].mem_nickname) {
+          nickname = results[0].mem_nickname;
+          profile = results[0].mem_profile;
         } else {
-          if (results.length > 0) {
-            const nickname = results[0].mem_nickname;
-            const profile = results[0].mem_profile;
-            callback(null, nickname, profile);
-          } else {
-            callback(null, null, null);
-          }
+          // post_usernum이 NULL이거나 해당 사용자가 없는 경우
+          nickname = "(알 수 없음)";
+          profile = '/img/profile_default.jpg';
         }
+        callback(null, nickname, profile);
       }
-    );
-  },
+    }
+  );
+},
 
   getPostTitle: (post_num, callback) => {
     db.query(
@@ -226,7 +229,7 @@ const commentModel = {
     db.query(`
       SELECT * 
       FROM comment AS c 
-      JOIN post AS p ON c.post_num = p.post_num 
+      LEFT JOIN post AS p ON c.post_num = p.post_num 
       WHERE c.post_num = ?
       ORDER BY 
           CASE 
@@ -242,7 +245,7 @@ const commentModel = {
       }
     });
   },
-
+  
   insertComments: (post_num, cmt_content, cmt_usernum, cmt_created_at, cmt_refnum, callback) => {
     db.query(
       'INSERT INTO comment (post_num, cmt_content, cmt_usernum, cmt_created_at, cmt_refnum) VALUES (?, ?, ?, ?, ?)',

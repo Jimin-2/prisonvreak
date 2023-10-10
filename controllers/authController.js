@@ -937,6 +937,8 @@ exports.userProfile = function (req, res) {
     userModel.getUserProfileByUsername(username, (error, results) => {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else if (results.length === 0) { // 사용자가 없는 경우
+            res.render('userProfile', { userProfile: { mem_nickname: "Former User", mem_intro: "탈퇴한 사용자입니다."} });
         } else {
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
             res.render('userProfile', { userProfile: userProfile });
