@@ -7,38 +7,6 @@
     text-align: center;
 }
 
-/*#container {
-    display: grid;
-
-    width: 1500px;
-
-    grid-template-columns: 55% 45%;
-    grid-template-rows: 580px 310px;
-}*/
-
-
-/* 탭메뉴 버튼 */
-.tab_menu {
-    display:table;
-    table-layout:fixed;
-    width: 100%;
-}
-.tab_menu li{
-
-    display:table-cell;
-    padding:20px 0;
-    cursor:pointer;
-    width: 180px;
-    margin: 0;}
-
-.tab_menu li+li{
-    border-left:none
-}
-
-/* 탭메뉴 컨텐츠 */
-.tab_content li{display:none;min-height:300px}
-.tab_content li.on{display:block}
-
 #container{
     position: relative;
     width:100%;
@@ -51,6 +19,11 @@
     margin-left: 10px;
     float: right;
     min-height: 800px;
+}
+.manual{
+    width: 720px;
+    height: 1100px;
+    display: inline-block;
 }
 #wrap{
     min-width: 1700px;
