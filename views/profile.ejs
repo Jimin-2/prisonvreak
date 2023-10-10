@@ -62,16 +62,8 @@
             <div id="rank">
               <h4> 최고기록 </h4>
               <div id="rankPuzzle">
-                <% if(userProfile.vr_clear_time == null && userProfile.web_clear_time == null) { %>
-                  <div> 클리어 기록이 없습니다 </div>
-                <% } else { %>
-                  <% if(userProfile.vr_clear_time != null) { %>
-                    <div> VR <%= userProfile.vr_clear_time %> </div>
-                  <% } %>
-                  <% if(userProfile.web_clear_time != null) { %>
-                    <div> WEB <%= userProfile.web_clear_time %> </div>
-                  <% } %>
-                <% } %>
+                <div> puzzle 000:000:000 </div>
+                <div> total 000:000:000 </div>
               </div>
             </div>
 
@@ -102,7 +94,7 @@
                     <%= data[i].post_num %>
                   </td>
                   <td>
-                    <a href="/community/show/<%= data[i].post_num %>">
+                    <a href="/notice/show/<%= data[i].post_num %>">
                       <%= data[i].post_title %>
                     </a>
                   </td>
@@ -155,6 +147,7 @@
 <!-- footer -->
 <%- include('partials/footer')%>
 <script>
+
   // 팝업 창을 열기 위한 함수
   function openPopup() {
     // 현재 호스트와 프로토콜을 가져와서 URL을 생성
