@@ -42,7 +42,7 @@ exports.checkUsercodeAvailability = function (usercode,callback){
 
 // 아이디와 비밀번호로 사용자 정보 조회
 exports.loginProcess = function (id, password, callback) {
-  db.query('SELECT * FROM member WHERE mem_id = ? AND mem_password = ? AND is_withdrawn = 0', [id, password], function (error, results, fields) {
+  db.query('SELECT * FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
     if (error) {
       callback(error, null);
     } else {
@@ -130,7 +130,7 @@ exports.getUserByGoogleId = function (googleUserId, callback) {
 
 //아이디 찾기
 exports.findUserId = function (name, email, callback) {
-  db.query('SELECT mem_id FROM member WHERE mem_name = ? AND mem_email = ? AND is_withdrawn = 0', [name, email], function (error, results, fields) {
+  db.query('SELECT mem_id FROM member WHERE mem_name = ? AND mem_email = ?', [name, email], function (error, results, fields) {
     if (error) {
       callback(error, null);
     } else {
