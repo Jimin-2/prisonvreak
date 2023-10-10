@@ -132,11 +132,21 @@
                                             <div class="comment-layout">
                                                 <div class="comment">
                                                     <% if (!comments[i].is_deleted) { %>
+                                                        <% if(commentInfo[i].mem_profile != null) { %> 
                                                         <img src="<%= commentInfo[i].mem_profile %>" width="20"
                                                             alt="프로필 사진">
+                                                            <% } else { %>
+                                                                <img src="/img/profile_default.jpg" width="20" alt="프로필 사진">
+                                                                <% } %>
+                                                        <% if(commentInfo[i].mem_nickname != null) { %>   
                                                         <div class="comment-nickname">
                                                             <%= commentInfo[i].mem_nickname %>
                                                         </div>
+                                                        <% } else { %>
+                                                            <div class="comment-nickname">
+                                                                (알 수 없음)
+                                                            </div>
+                                                            <% } %>
                                                 </div>
                                                 <div class="comment-between-section">
                                                     <div>

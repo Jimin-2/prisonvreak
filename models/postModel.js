@@ -245,7 +245,7 @@ const commentModel = {
       }
     });
   },
-  
+
   insertComments: (post_num, cmt_content, cmt_usernum, cmt_created_at, cmt_refnum, callback) => {
     db.query(
       'INSERT INTO comment (post_num, cmt_content, cmt_usernum, cmt_created_at, cmt_refnum) VALUES (?, ?, ?, ?, ?)',
@@ -315,9 +315,9 @@ const commentModel = {
     const placeholders = new Array(usernums.length).fill('?').join(', '); // ?을 usernums 배열의 길이만큼 반복해서 생성
     const query = `
       SELECT c.*, m.mem_nickname, m.mem_profile 
-      FROM comment AS c 
-      JOIN member m ON c.cmt_usernum = m.mem_code
-      WHERE c.post_num = ? AND c.cmt_usernum IN (${placeholders})
+      FROM prisonvreak.comment AS c 
+      LEFT JOIN prisonvreak.member m ON c.cmt_usernum = m.mem_code
+      WHERE c.post_num = ? 
       ORDER BY 
           CASE 
               WHEN c.cmt_refnum IS NULL THEN c.cmt_num
@@ -326,24 +326,17 @@ const commentModel = {
           c.cmt_refnum ASC,
           c.cmt_created_at ASC;
     `;
-    const params = [post_num, ...usernums]; // post_num과 usernums 배열을 합친 매개변수 배열
+    const params = [post_num]; // post_num과 usernums 배열을 합친 매개변수 배열
 
     db.query(query, params, (error, results) => {
-      if (error) {
-        callback(null, null); // 댓글 없을 때 null값 주기 error
-      } else {
-        const userInfo = results.map(result => ({
-          mem_nickname: result.mem_nickname,
-          mem_profile: result.mem_profile
-        }));
-        if (userInfo.length > 0) {
-          callback(null, userInfo);
-        } else {
-          callback(null, null);
-        }
-      }
-    });
-  },
+    if (error) {
+      callback(null, null); 
+    } else {
+        callback(null, results);
+    }
+  });
+ },
+
 
   checkRepliesDeleted: (cmt_refnum, callback) => {
     db.query('SELECT * FROM comment WHERE cmt_refnum = ? AND is_deleted = 0', [cmt_refnum], (error, results) => {
