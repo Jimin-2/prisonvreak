@@ -1,18 +1,17 @@
 body {
   width: 100%;
-  height: 1000px;
+  height: 2000px;
 
   overflow: hidden;
   background-image: linear-gradient(#1d1d1d, black);
-  cursor: none;
 }
 
 section {
   width: 100%;
-  height: 1000px;
+  height: 100%;
 }
 
-#cursor {
+/*#cursor {
   position: fixed;
   width: 10px;
   height: 10px;
@@ -26,7 +25,7 @@ section {
 
 body:hover #cursor {
   transform: translate(-1px, 5px) rotate(15deg) scale(1);
-}
+}*/
 
 .element {
   position: absolute;
@@ -65,7 +64,9 @@ body:hover #cursor {
   font-size: 4em;
   text-transform: uppercase;
   overflow: hidden;
-  animation: typing 3s steps(10) infinite;
+
+  animation: typing 2s steps(10) infinite;
+
   -webkit-box-reflect: below -30px linear-gradient(transparent, #0002);
   filter: drop-shadow(0 0 10px #fff) hue-rotate(60deg);
 }
@@ -80,7 +81,7 @@ body:hover #cursor {
 
   30%,
   60% {
-    width: 331.84px;
+    width: 390px;
   }
 }
 
@@ -93,7 +94,7 @@ body:hover #cursor {
   height: 100%;
   background: #ffffff;
   -webkit-box-reflect: below -30px linear-gradient(transparent, #0002);
-  animation: blinkCursor 0.8s steps(3) infinite;
+  animation: blinkCursor 0.6s steps(3) infinite;
 }
 
 @keyframes blinkCursor {
@@ -184,7 +185,7 @@ body:hover #cursor {
   font-weight: bold;
 
   margin-right: 15px;
-  cursor: none;
+  cursor: pointer;
 }
 
 #play-button button:hover {
@@ -232,9 +233,10 @@ ul li
 }
 ul li a 
 {
+    font-weight: bold;
 	text-decoration: none;
-	color: #555;
-	cursor: none;
+	color: #bebebe;
+	cursor: pointer;
 }
 ul li a span 
 {
@@ -266,7 +268,7 @@ ul li:hover a span
 	transform: translate(-50%,-50%);
 	pointer-events: none;
 	opacity: 0;
-	transition: opacity 0.5s;
+	transition: opacity 0.1s;
 }
 body:hover #cursor2
 {
@@ -361,6 +363,7 @@ body:hover #cursor2
 	0 0 20px rgb(255, 255, 255),
 	0 0 30px rgb(255, 255, 255),
 	0 0 50px rgb(255, 255, 255);
+    z-index: -1;
 	border-radius: 50%;
 	animation: animate 5s linear forwards;
 }

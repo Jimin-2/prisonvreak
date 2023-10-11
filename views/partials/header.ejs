@@ -28,7 +28,7 @@
   <li class="link-1" onclick="location.href='/auth/customer'">고객지원</li>
 
   <% if (is_logined) { %>
-    <li class="link-1" onclick="location.href='/auth/mypage'"> 마이페이지 </li>
+    <li class="link-1" onclick="location.href='/auth/mypage'"><%= nickname %> 님 </li>
     <li class="link-1" onclick="location.href='/auth/logout'">로그아웃</li>
     <% } else { %>
       <li class="link-1" onclick="location.href='/auth/login'">로그인</li>

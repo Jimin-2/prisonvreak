@@ -3,13 +3,32 @@ const gameModel = require("../models/gameModel");
 const {noticeController} = require("./postController");
 const moment = require("moment");
 
+exports.indexpage = function (req,res){
+    const isLogined = req.session.is_logined;
+    if(isLogined){
+        const username = req.session.nickname;
+        userModel.getUserProfileByUsername(username, (error, results) => {
+            if (error) {
+                res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+            } else {
+                const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+                res.render('index', { userProfile: userProfile });
+            }
+        });
+    }
+    else res.render('index');
+}
+
 exports.gamepage = function (req, res) {
     const isLogined = req.session.is_logined;
     if (!isLogined) { // 로그인 X
         // alert 메시지 이후, 이전 페이지 돌아가기
         return res.send('<script>alert("로그인이 필요합니다."); location.href="/auth/login";</script>');
     }
-    res.render('game');
+
+    const connectionId = req.body.partnerCode;
+    console.log(connectionId);
+    res.render('game', {connectionId: connectionId});
 };
 
 // web 게임 room 생성 or 참가
@@ -24,7 +43,6 @@ exports.webCreateOrJoinRoom = function (req, res){
     else {
         userModel.checkUsercodeAvailability(vr_userCode, (error, results) => {
             if (error) throw error;
-            console.log(results.length);
             if (results.length <= 0) {
                 res.send('<script>alert("존재하지 않는 유저코드입니다."); location.href="/";</script>');
             }
@@ -114,13 +132,20 @@ exports.deleteRoom = function (req, res) {
 
 // 게임 룸 체크
 exports.checkMatching = function (req, res) {
+
     const web_userCode = req.body.user_code;
     let vr_userCode = req.body.connectionId;
+    console.log(web_userCode);
+    console.log(vr_userCode);
+
     gameModel.checkRoom(web_userCode, vr_userCode, (error, results) => {
         if(error)  throw ('error');
+        console.log(results[0]);
         if(results[0].web_state === 'ready' && results[0].vr_state === 'ready'){
+            console.log('성공');
             res.send('매칭 성공');
         }else{
+            console.log('실패');
             res.send('매칭 실패');
         }
     })
@@ -185,3 +210,14 @@ exports.rankpage = function (req, res){
 exports.manual = function (req, res) {
     res.render('manual');
 };
+
+exports.loading = function (req,res){
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); location.href="/auth/login";</script>');
+    }
+
+    const userCode = req.session.user_code;
+    res.render('loading', {userCode: userCode});
+}

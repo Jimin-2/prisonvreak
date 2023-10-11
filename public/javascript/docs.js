@@ -29,7 +29,10 @@ function addPage(page, book) {
 }
 
 function updateTabs() {
-	var tabs = {1: '표지', 2: '전선연결', 3: '모스 부호', 4: '슬라이드스위치', 5: '금고열기', 6:'미로찾기',7:'살인범 찾기'},
+	var tabs = {2: '',
+			3: '', 4: '',
+			5: '', 6: '',
+			7:'',8:''},
 		book = $('.sample-docs'),
 		actualPage = book.turn('page'),
 		view = book.turn('view');
@@ -41,7 +44,7 @@ function updateTabs() {
 		var isHere = $.inArray(parseInt(page, 10), view) !== -1;
 		var tabClass = isHere ? 'on' : '';
 
-		tabHtml += '<a href="#page/' + page + '" class="' + tabClass + '">' + tabs[page] + '</a>';
+		tabHtml += `<img class="`+ tabClass +`" src="/img/postit/i`+page+`.png" alt="post-it" onclick="location.href=\'#page/`+ page +`\'">`;
 	}
 
 	// .left 요소 내부에 탭 추가

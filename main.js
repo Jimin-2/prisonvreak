@@ -36,6 +36,7 @@ app.use((req, res, next) => {
         req.session.is_logined = false; // 초기값은 로그인되지 않은 상태
     }
     res.locals.is_logined = req.session.is_logined;
+    res.locals.nickname = req.session.nickname;
     next();
 });
 
@@ -53,9 +54,7 @@ app.use(passport.session());
         return false;
     }
 });*/
-app.get('/',(req,res) => {
-    res.render('index');
-});
+
 
 // 인증 라우터
 app.use('/auth', authRouter);
