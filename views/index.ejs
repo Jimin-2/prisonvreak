@@ -78,13 +78,17 @@
         </div>
 
         <div id="profile-grid" class="item03">
+          <% if (is_logined) { %>
           <div id="profile">
             <div class="info">
 
               <div id="info-01" class="item02">
                 <h2> COLLABORATOR </h2>
                 <br>
-                <% if (is_logined) { %>
+<<<<<<< Updated upstream
+=======
+                
+>>>>>>> Stashed changes
                   <p> Nickname님 환영합니다. </p>
                   
                   <div>
@@ -94,11 +98,6 @@
                     <p> VR :  </p>
                     <p> WEB :  </p>
                   </div>
-                  <% } else { %>
-                    <div>
-                      로그인 후 이용해주세요.
-                    </div>
-                    <% } %>
 
               </div>
 
@@ -107,18 +106,24 @@
               </div>
 
             </div>
-
-            <% if (is_logined) { %>
               <div>
                 <div id="go-my-page">
                   <p><a> > My Page </a></p>
                 </div>
               </div>
-              <% } else { %>
+<<<<<<< Updated upstream
+          </div>
+          <% } else { %>
 
-                <% } %>
+=======
+
 
           </div>
+          <% } else { %>
+            <div>
+            </div>
+>>>>>>> Stashed changes
+            <% } %>
         </div>
         
       </div>
@@ -127,7 +132,7 @@
 
   <script>
     // loading, main-home
-    var delayInMilliseconds = 8000;
+    var delayInMilliseconds = 3000;
 
     setTimeout(function () {
       var loadingElement = document.getElementById("loading");
