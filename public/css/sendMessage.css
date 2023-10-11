@@ -5,35 +5,39 @@ section {
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 80px;
 }
 
 
 #secondLayout {
-  width: 800px;
+  min-height: 760px;
+  width: 650px;
   height: auto;
   margin-left: 20px;
   margin-right: 20px;
   position: relative;
+  overflow-x: hidden;
   display: flex;
   /*justify-content: center;
   align-items: center;*/
   /*text-align: center;*/
-
+  max-width: 700px;
   flex-direction: column;
   flex-wrap: wrap;
 
   background-color: white;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
-
+#first{
+  width: 650px;
+}
 #secondLayout h2 {
   font-size: 2.2em;
   font-weight: bold;
+/*
+  text-align: left;*/
 
-  text-align: left;
-
-  margin-bottom: 30px;
+/*  margin-bottom: 30px;*/
 }
 #chat-messages {
   padding: 20px;
@@ -78,10 +82,8 @@ section {
 #send-button:hover {
   background-color: #0056b3;
 }
+.msg-received {
 
-.message-received {
-  background-color: #EFEFEF;
-  color: #333;
   text-align: left;
   padding: 10px;
   border-radius: 15px;
@@ -92,9 +94,7 @@ section {
 }
 
 /* 발신자 메시지 말풍선 */
-.message-sent {
-  background-color: #007BFF;
-  color: white;
+.msg-sent {
   text-align: right;
   padding: 10px;
   border-radius: 15px;
@@ -102,4 +102,105 @@ section {
   max-width: 100%; /* 메시지 말풍선의 최대 너비 조절 */
   float: right; /* 오른쪽으로 플로팅 */
   clear: both; /* 플로팅 해제 */
+}
+.message-received {
+  position: relative;
+  background-color: #EFEFEF;
+  color: #333;
+  text-align: left;
+  padding: 10px;
+  margin: 5px 0;
+  max-width: 400px;
+  width: auto;
+  float: left;
+  clear: both;
+  min-width: 100px;
+  min-height: 25px;
+  overflow-wrap: break-word;
+  align-items: center;
+}
+
+.message-received:after {
+  content: "";
+  position: absolute;
+  top: 10.5px;
+  left: -18px; /* 오른쪽에서 왼쪽으로 이동 */
+  border-right: 20px solid #EFEFEF; /* border-left 대신 border-right로 수정 */
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+.message-sent:after {
+  content:"";
+  position: absolute;
+  top: 10.5px;
+  right: -18px;
+  border-left: 20px solid #007BFF;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+/* 발신자 메시지 말풍선 */
+.message-sent{
+  position: relative;
+  background-color: #007BFF;
+  color: white;
+  text-align: left;
+  padding: 10px;
+  margin: 5px 0;
+  max-width: 400px;
+  height: auto;
+  float: right; /* 오른쪽으로 플로팅 */
+  clear: both; /* 플로팅 해제 */
+  min-width: 100px; /* 최소 너비 설정 (원하는 최소 크기로 조절) */
+  min-height: 25px;
+  overflow-wrap: break-word;
+  align-items: center;
+}
+
+.message-received-header{
+  color: black;
+  text-align: left;
+
+  border-radius: 15px;
+
+  max-width: 100%; /* 메시지 말풍선의 최대 너비 조절 */
+  float: left; /* 왼쪽으로 플로팅 */
+  clear: both; /* 플로팅 해제 */
+}
+
+/* 발신자 메시지 말풍선 */
+.message-sent-header {
+  color: black;
+  text-align: right;
+
+  border-radius: 15px;
+
+  max-width: 100%; /* 메시지 말풍선의 최대 너비 조절 */
+  float: right; /* 오른쪽으로 플로팅 */
+  clear: both; /* 플로팅 해제 */
+}
+
+.message-received-read{
+  color: #3a3a3a;
+  text-align: left;
+
+  border-radius: 15px;
+
+  max-width: 100%; /* 메시지 말풍선의 최대 너비 조절 */
+  float: right; /* 왼쪽으로 플로팅 */
+  clear: both; /* 플로팅 해제 */
+  font-size:0.7em;
+}
+
+/* 발신자 메시지 말풍선 */
+.message-sent-read {
+  color: #595757;
+  text-align: left;
+
+  border-radius: 15px;
+
+  max-width: 50%; /* 메시지 말풍선의 최대 너비 조절 */
+  float: left; /* 오른쪽으로 플로팅 */
+  clear: both; /* 플로팅 해제 */
+  font-size:0.7em;
+
 }

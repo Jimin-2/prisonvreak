@@ -73,6 +73,7 @@
         </div>
         <% if (is_logined) { %>
         <div id="profile-grid" class="item03">
+          <% if (is_logined) { %>
           <div id="profile">
             <div class="info">
               <div id="info-01" class="item02">
@@ -96,7 +97,6 @@
                 </div>
               </div>
             <% } %>
-          </div>
         </div>
       </div>
     </div>
@@ -104,6 +104,7 @@
 
   <script>
     // loading, main-home
+
     var delayInMilliseconds = 2000;
 
     setTimeout(function () {
