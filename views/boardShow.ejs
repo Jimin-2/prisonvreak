@@ -128,11 +128,11 @@
                                 comment.cmt_refnum === comments[i].cmt_num); %>
                             <% if (!comments[i].is_deleted || displayDeletedComment) { %>
                               <div id="comment">
-                                        <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
+                                        <div class="<%= moreComments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
                                             id="comment-layout">
                                             <div class="comment-layout">
                                                 <div class="comment">
-                                                    <% if (!comments[i].is_deleted) { %>
+                                                    <% if (!moreComments[i].is_deleted) { %>
                                                         <% if(moreComments[i].additionalInfo.mem_profile != null) { %> 
                                                         <img src="<%= moreComments[i].additionalInfo.mem_profile %>" width="20"
                                                             alt="프로필 사진">
@@ -181,10 +181,10 @@
                                                 </div>
                                                 <div class="comments-content">
                                                     <% if (moreComments[i].is_deleted && displayDeletedComment) { %>
-                                                        <div class="delete-comment"><p>삭제된 댓글입니다.</p></div>
+                                                        삭제된 댓글입니다.
                                                         <% } else { %>
                                                             <%= moreComments[i].cmt_content %>
-                                                                <% if (!comments[i].cmt_refnum) { %>
+                                                                <% if (!moreComments[i].cmt_refnum) { %>
                                                                     <button class="reply-btn"
                                                                         onclick="toggleReplyForm(this)">답글</button>
                                                                     <% } %>
@@ -225,10 +225,10 @@
 
                                         <div class="pagination">
                                             <% if (currentComments > 1) { %>
-                                              <a href="?page=<%= currentComments - 1 %>">이전 페이지</a>
+                                              <a href="?page=<%= currentComments - 1 %>">이전 댓글</a>
                                             <% } %>
-                                            <% if (moreComments.length === perPage) { %>
-                                              <a href="?page=<%= currentComments + 1 %>">댓글 더보기</a>
+                                            <% if (moreComments.length === perPage && nextPage) { %>
+                                              <a href="?page=<%= currentComments + 1 %>">다음 댓글</a>
                                             <% } %>
                                           </div>
                                           

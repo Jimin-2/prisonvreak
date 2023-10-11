@@ -82,8 +82,7 @@ const boardController = {
                       additionalInfo: commentInfo[index],
                     }));
 
-                    console.log(commentsWithInfo);
-
+                    
                     // 댓글 페이지네이션 계산
                     const currentComments = req.query.page ? parseInt(req.query.page) : 1;
                     const perPage = 3;
@@ -91,6 +90,7 @@ const boardController = {
                     const endIndex = startIndex + perPage;
                     const moreComments = commentsWithInfo.slice(startIndex, endIndex);
                     const totalPages = Math.ceil(commentsWithInfo.length / perPage);
+                    const nextPage = moreComments.length == perPage && currentComments < totalPages;
 
                     res.render('boardShow', {
                       post_num: post_num,
@@ -110,6 +110,7 @@ const boardController = {
                       currentComments: currentComments, // 현재 페이지 정보 전달
                       perPage: perPage,
                       totalPages: totalPages,
+                      nextPage: nextPage,
 
                     });
                   });
