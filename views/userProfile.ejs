@@ -35,7 +35,11 @@
     <h1><%= userProfile.mem_nickname %>'s 프로필</h1> <!-- userProfile 객체에서 mem_nickname을 사용합니다 -->
     <br>
     <div id="profileImg">
-        <img src="<%= userProfile.mem_profile %>" alt="프로필 이미지" width="200" height="200">
+        <% if (userProfile && userProfile.mem_profile) { %>
+            <img src="<%= userProfile.mem_profile %>" alt="프로필 이미지" width="200" height="200">
+        <% } else { %>
+            <img src="/img/profile_default.jpg" alt="프로필 이미지" width="200" height="200">
+        <% } %>
     </div>
 
     <div id="myProfileInfo">
@@ -66,7 +70,9 @@
 
     <div id="link">
         <!--<p onclick="showProfile('<%= userProfile.mem_nickname %>')">-->
-            <a href="/auth/profile/<%= userProfile.mem_nickname %>">>>상세조회</a><!--</p>-->
+            <% if (userProfile && userProfile.mem_profile) { %>
+                <a href="/auth/profile/<%= userProfile.mem_nickname %>">>>상세조회</a><!--</p>-->
+            <% } %>
     </div>
 </div>
  <!-- mem_intro를 사용합니다 -->
