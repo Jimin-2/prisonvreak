@@ -128,11 +128,11 @@
                                 comment.cmt_refnum === comments[i].cmt_num); %>
                             <% if (!comments[i].is_deleted || displayDeletedComment) { %>
                               <div id="comment">
-                                        <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
+                                        <div class="<%= moreComments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
                                             id="comment-layout">
                                             <div class="comment-layout">
                                                 <div class="comment">
-                                                    <% if (!comments[i].is_deleted) { %>
+                                                    <% if (!moreComments[i].is_deleted) { %>
                                                         <% if(moreComments[i].additionalInfo.mem_profile != null) { %> 
                                                         <img src="<%= moreComments[i].additionalInfo.mem_profile %>" width="20"
                                                             alt="프로필 사진">
@@ -184,7 +184,7 @@
                                                         <div class="delete-comment"><p>삭제된 댓글입니다.</p></div>
                                                         <% } else { %>
                                                             <%= moreComments[i].cmt_content %>
-                                                                <% if (!comments[i].cmt_refnum) { %>
+                                                                <% if (!moreComments[i].cmt_refnum) { %>
                                                                     <button class="reply-btn"
                                                                         onclick="toggleReplyForm(this)">답글</button>
                                                                     <% } %>
