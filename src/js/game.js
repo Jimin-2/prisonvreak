@@ -19,7 +19,7 @@ const playerDiv = document.getElementById('player');
 /** @type {SendVideo} */
 let sendVideo = new SendVideo(localVideo);
 let channel;
-let connectionId;
+const connectionId = document.getElementById("connectionId").textContent;
 let audioDevice;
 
 const codecPreferences = document.getElementById('codecPreferences');
@@ -45,12 +45,11 @@ window.addEventListener('beforeunload', async () => {
 async function setup() {
   const res = await getServerConfig();
   useWebSocket = res.useWebSocket;
-  connectionId = prompt('user code');
   setUpInputSelect();
   await sendVideo.startLocalVideo(audioDevice);
   showCodecSelect();
   showPlayButton();
-
+  onClickPlayButton();
 }
 
 function showPlayButton() {
@@ -66,7 +65,6 @@ function showPlayButton() {
 
 function onClickPlayButton() {
   playButton.style.display = 'none';
-  createOrJoinRoom(connectionId);
 
   // add video player
   videoPlayer.createPlayer(playerDiv, lockMouseCheck);
@@ -147,7 +145,6 @@ function onConnect() {
   for (const track of tracks) {
     renderstreaming.addTransceiver(track, { direction: 'sendonly' });
   }
-
   showStatsMessage();
 }
 
@@ -164,6 +161,9 @@ async function onDisconnect(connectionId) {
   }
   deleteRoom(connectionId);
   showPlayButton();
+  setTimeout(()=>{
+    document.location.href='/';
+  },1000);
 }
 
 function setCodecPreferences() {
@@ -179,7 +179,6 @@ function setCodecPreferences() {
       selectedCodecs = [selectCodec];
     }
   }
-
   if (selectedCodecs == null) {
     return;
   }
@@ -254,16 +253,6 @@ async function setUpInputSelect() {
       break;
     }
   }
-}
-
-function createOrJoinRoom(connectionId){
-  fetch('/webCreateOrJoinRoom', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ connectionId: connectionId })
-  });
 }
 
 function deleteRoom(connectionId){

@@ -7,11 +7,13 @@ body{
 }
 
 #canvas{
-    width: 720px;
-    height: 1100px;
+    width: 825px;
+    height: 940px;
 }
 
 #book-zoom{
+    width: 825px;
+    height: 940px;
     -webkit-transition: -webkit-transform 1s;
     -moz-transition: -moz-transform 1s;
     -ms-transition: -ms-transform 1s;
@@ -28,13 +30,14 @@ body{
 }
 
 .sample-docs{
-    width:720px;
-    height:1040px;
+    width:651px;
+    height:940px;
+    box-shadow:5px 5px 5px #ccc;
 }
 
 .sample-docs .page{
-    width:720px;
-    height:1040px;
+    width:651px;
+    height:940px;
     background:white;
 
     -webkit-box-shadow:0 0 20px rgba(0,0,0,0.2);
@@ -109,15 +112,16 @@ body{
 }
 
 .tabs{
-    width:720px;
-    height:30px;
+    width:170px;
+    height:940px;
     position:relative;
-    z-index:99;
+    z-index:0;
+    float: right;
 }
 
 .tabs > div{
-    width:720px;
-    height:22px;
+    width:170px;
+    height:1000px;
     text-align: center;
 }
 
@@ -125,27 +129,33 @@ body{
 
 .tabs a{
     color:black;
-    -webkit-border-image: url(/img/manual/tab-off.png) 5 20 5 20 repeat stretch;
     border-width: 5px 20px 5px 20px;
     display:inline-block;
     font:bold 20px arial;
     text-shadow:1px 1px 0 #ddd;
     color:#333;
-    line-height:12px;
+    line-height:15px;
     text-decoration:none;
-    margin: 10px 7px 0px 7px;
+}
+.tabs img{
+    position: relative;
+    width: 200px;
+    height: 75px;
+    padding-right: 30px;
+    left: -150px;
+    transition: left 0.2s ease;
 }
 
 .tabs .on,
 .tabs .on:hover{
-    -webkit-border-image: url(/img/manual/tab-on.png) 5 20 5 20 repeat stretch;
     cursor:default;
+    left: -15px;
+    transition: left 0.2s ease;
 }
 
-.tabs a:hover{
-    color:black;
+.tabs img:hover{
     text-decoration: none;
     cursor:pointer;
-    -webkit-border-image: url(/img/manual/tab-hover.png) 5 20 5 20 repeat stretch;
-
+    left: -15px;
+    transition: left 0.2s ease;
 }
