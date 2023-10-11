@@ -43,6 +43,11 @@
 
       <!-- 보드board -->
       <div class="board-section">
+        <form action="/community/search" method="GET">
+          <label for="검색어">검색어:</label>
+          <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요">
+          <input type="submit" value="검색">
+      </form>
         <!-- 글쓰기 버튼 -->
         <div class="write-button">
           <form action="/community/insert" method="GET">
@@ -54,6 +59,7 @@
             <button type="submit">+</button>
           </form>
         </div>
+        
         <div class="board" class="effect8">
           <table class="table-template">
             <thead>
@@ -68,13 +74,46 @@
             </thead>
 
             <tbody>
-              <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
+              <% if (communitySearch && communitySearch.length > 0) { %>
+                <% for (let i = 0; i < communitySearch.length; i++) { %>
                 <tr>
-                  <td><a href="/community/show/<%= post.post_num %>">
-                      <%= post.post_title %><span style="color: red;"> [<%= post.comment_count %>]</span>
-                    </a></td>
                   <td>
-                    <!-- <i class="fa-solid fa-user"></i> -->
+                    <a href="/community/show/<%= communitySearch[i].post_num %>">
+                      <%= communitySearch[i].post_title %><span style="color: red;"> [<%= cdata[i].comment_count %>]</span>
+                    </a>
+                  </td>
+                  <td>
+                    <div style="display: flex; align-items: center;">
+                      <img src="<%= cdata[i].userInfo[1] %>" alt="프로필 이미지">
+                      <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
+                        <%= cdata[i].userInfo[0] %>
+                      </p>
+                      <div id="profileModal" class="modal">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="reco-class">
+                    <a><i class="fa-solid fa-thumbs-up"></i><%= communitySearch[i].post_like %></a>
+                  </td>
+                  <td>
+                    <i class="fa-solid fa-calendar"></i>
+                    <%= cdata[i].formattedCreatedAt %>
+                  </td>
+                  <td>
+                    <%= communitySearch[i].post_hit %>
+                  </td>
+                </tr>
+                <% } %>
+              <% } else { %>
+                <% data.sort((a, b) => b.post_num - a.post_num).forEach(function (post) { %>
+                <tr>
+                  <td>
+                    <a href="/community/show/<%= post.post_num %>">
+                      <%= post.post_title %><span style="color: red;"> [<%= post.comment_count %>]</span>
+                    </a>
+                  </td>
+                  <td>
                     <div style="display: flex; align-items: center;">
                       <img src="<%= post.userInfo[1] %>" alt="프로필 이미지">
                       <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= post.userInfo[0] %>')">
@@ -83,7 +122,6 @@
                       <div id="profileModal" class="modal">
                         <span class="close" onclick="closeModal()">&times;</span>
                       </div>
-
                     </div>
                   </td>
                   <td class="reco-class">
@@ -96,9 +134,11 @@
                   <td>
                     <%= post.post_hit %>
                   </td>
+                  <% }); %>
                 </tr>
-                <% }); %>
+              <% } %>
             </tbody>
+            
           </table>
         </div>
       </div>
