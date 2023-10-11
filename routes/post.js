@@ -17,6 +17,6 @@ router.post('/community/show/:post_num/edit/:cmt_num', boardController.updateCom
 router.get('/notice', noticeController.showManagerPosts);
 router.get('/notice/show/:post_num', noticeController.showForm);
 router.get('/notice/search', noticeController.searchKeyword);
-router.get('/community/search', noticeController.communitySearch);
+router.get('/community/search', boardController.communitySearch);
 router.post('/post-like/:post_num', boardController.postLike); // 추천 버튼
 module.exports = router;

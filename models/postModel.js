@@ -87,18 +87,29 @@ const postModel = {
     })
   },
 
-  communitySearch: (keyword, callback) => { //커뮤니티 search
+  communitySearch: (keyword, callback) => {
     const searchKeyword = `%${keyword}%`;
-    db.query('SELECT * FROM post WHERE post_title LIKE ? AND post_usernum <> 1', [searchKeyword], (error, results) => {
-      if (error) {
-        console.error(error);
-        callback(error, null);
-      } else {
-        console.log(results);
-        callback(null, results);
-      }
+    db.query(`
+      SELECT post.*, COALESCE(comment.comment_count, 0) AS comment_count
+      FROM post
+      LEFT JOIN (
+        SELECT post_num, COUNT(*) AS comment_count
+        FROM comment
+        WHERE is_deleted = 0
+        GROUP BY post_num
+      ) AS comment ON post.post_num = comment.post_num
+      WHERE post.post_title LIKE ? AND post.post_usernum <> 1
+    `, [searchKeyword], (error, results) => {
+        if (error) {
+            console.error(error);
+            callback(error, null);
+        } else {
+            console.log(results);
+            callback(null, results);
+        }
     });
-  },
+},
+
 
   searchKeyword: (keyword, post_usernum, callback) => { // 검색 기능
     const searchKeyword = `%${keyword}%`;

@@ -22,7 +22,6 @@ const boardController = {
 
   showForm: (req, res) => {
     const post_num = req.params.post_num;
-
     postModel.getPostById(post_num, async (error, result) => {
       if (error) {
         console.error(error);
@@ -106,6 +105,7 @@ const boardController = {
                       currentComments: currentComments, // 현재 페이지 정보 전달
                       perPage: perPage,
                       totalPages: totalPages,
+
                     });
                   });
                 });
@@ -119,9 +119,7 @@ const boardController = {
     });
   },
 
-
-  showList: (req, res, searchResults = []) => {
-    
+  showList: (req, res, searchResults= []) => {
     postModel.excludedUserNum(1, (error, results) => {
       if (error) {
         console.error(error);
@@ -136,7 +134,7 @@ const boardController = {
       const currentPage = req.query.page ? parseInt(req.query.page) : 1;
       const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
       let startIndex, endIndex;
-      
+
       if (currentPage === totalPages) {
         endIndex = totalPosts;
         startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
@@ -176,13 +174,13 @@ const boardController = {
 
           res.render('board', {
             data: formattedResults,
-            search: formattedResults, // 검색 결과를 전달
             totalPages: totalPages,
             currentPage: currentPage,
             prevPage,
             startPage,
             endPage,
             nextPage,
+            communitySearch: null,
           });
         })
         .catch(error => {
@@ -191,6 +189,86 @@ const boardController = {
         });
     });
   },
+
+  communitySearch: (req, res) => {
+    const keyword = req.query.keyword;
+    if (!keyword) {
+        res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
+        return;
+    }
+    postModel.communitySearch(keyword, (error, communitySearch) => {
+      if (error) {
+          console.error(error);
+          res.status(500).send('Internal Server Error');
+          return;
+      }
+
+      if (communitySearch.length === 0) {
+          res.send('<script>alert("검색결과가 없습니다."); history.back();</script>');
+          return;
+      }
+
+      const reversedResults = communitySearch.reverse();
+      const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
+      const totalPosts = reversedResults.length;
+      const totalPages = Math.ceil(totalPosts / postsPerPage);
+      const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+      const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
+      let startIndex, endIndex;
+
+      if (currentPage === totalPages) {
+        endIndex = totalPosts;
+        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+      } else {
+        startIndex = (currentPage - 1) * postsPerPage;
+        endIndex = startIndex + postsPerPage;
+      }
+      const paginatedResults = reversedResults.slice(startIndex, endIndex);
+
+      // 사용자 정보를 가져오는 Promise를 생성하는 함수
+      function getUserInfo(post) {
+        return new Promise((resolve, reject) => {
+          const post_num = post.post_num;
+          postModel.getNicknameByPostId(post_num, (error, nickname, profile) => {
+            if (error) {
+              console.error(error);
+              reject(error);
+            } else {
+              const userInfo = [nickname, profile];
+              resolve(userInfo); // 사용자 정보를 resolve로 반환
+            }
+          });
+        });
+      }
+
+    // 모든 게시물의 사용자 정보를 병렬로 가져오는 Promise 배열
+    const userInfoPromises = paginatedResults.map(post => getUserInfo(post));
+
+    Promise.all(userInfoPromises)
+      .then(userInfos => {
+        const formattedResults = paginatedResults.map((post, index) => ({
+          ...post,
+          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD'),
+          userInfo: userInfos[index],
+        }));
+        console.log(formattedResults)
+        res.render('board', {
+          cdata: formattedResults,
+          totalPages: totalPages,
+          currentPage: currentPage,
+          prevPage,
+          startPage,
+          endPage,
+          nextPage,
+          communitySearch: communitySearch,
+        });
+      })
+      .catch(error => {
+        console.error(error); // 에러 처리
+        res.status(500).send('Internal Server Error');
+      });
+  });
+},
 
   deletePost: (req, res) => {
     const postNum = req.params.post_num;
@@ -408,30 +486,6 @@ const noticeController = {
 
   showManagerPosts: (req, res) => {
     noticeController.fetchAndRenderPosts(req, res, 'notice', 6);
-  },
-  
-  communitySearch: (req, res) => {
-    const keyword = req.query.keyword;
-    if (!keyword) {
-        res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
-        return;
-    }
-
-    postModel.communitySearch(keyword, (error, results) => {
-        if (error) {
-            console.error(error);
-            res.status(500).send('Internal Server Error');
-            return;
-        }
-
-        if (results.length === 0) {
-            res.send('<script>alert("검색결과가 없습니다."); history.back();</script>');
-            return;
-        }
-
-        console.log(keyword);
-        res.redirect(`/community`);
-    });
   },
 
   searchKeyword: (req, res) => {
