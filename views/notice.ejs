@@ -65,17 +65,26 @@
             <div class="content-div">
               <% if (search && search.length> 0) { %>
                 <% for (let i=0; i < search.length; i++) { %>
-                  <div>
-                    <%= search[i].post_num %>
+                  <div class="grid-content">
+
+                  <div class="grid-content-img-layout">
+                    <img src="<%= search[i].post_image %>">
                   </div>
-                  <div>
-                    <a href="/notice/show/<%= search[i].post_num %>">
-                      <%= search[i].post_title %>
-                    </a>
+
+                  <div class="grid-container">
+                    <div class="grid-content-num">
+                      <%= search[i].post_num %>
+                    </div>
+                    <div class="grid-content-title">
+                      <a href="/notice/show/<%= search[i].post_num %>">
+                        <%= search[i].post_title %>
+                      </a>
+                    </div>
+                    <div class="grid-content-date">
+                      <%= search[i].formattedCreatedAt %>
+                    </div>
                   </div>
-                  <div>
-                    <%= search[i].formattedCreatedAt %>
-                  </div>
+                </div>
 
 
                   <% } %>
