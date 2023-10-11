@@ -122,17 +122,42 @@ hr {
   height: auto;
 }
 
+.like-button-div {
+
+  width: auto;
+  height: auto;
+
+  margin-bottom: 40px;
+}
+
+.like-button-div a {
+  font-size: 1.3em;
+}
+
+.like-button-div button {
+  font-size: 1.3em;
+
+  outline: none;
+  border: none;
+
+  background-color: #00000000;
+
+  margin-left: 5px;
+}
+
 /* 댓글보기 */
 .comment-h2 {
-  height: 100%;
-  width: auto;
+  height: auto;
+  width: 900px;
+
+  float: left;
 
   margin-bottom: 40px;
 }
 
 #comment {
   width: 900px;
-  min-height: 400px; /* 최소 높이 설정 */
+  min-height: 133px; /* 최소 높이 설정 */
   flex-grow: 1; /* 자동으로 늘어나도록 설정 */
   margin-bottom: 10px;
 }
@@ -181,6 +206,13 @@ hr {
 .comment-between-section .date {
   font-size: 0.5em;
   color: #808080;
+}
+
+.delete-comment {
+  width: auto;
+  height: auto;
+
+  margin-bottom: 20px;
 }
 
 .more-options {
@@ -261,6 +293,8 @@ hr {
   width: 900px;
   min-height: 200px; /* 최소 높이 설정 */
   flex-grow: 1; /* 자동으로 늘어나도록 설정 */
+
+  margin-top: 30px;
 }
 
 #comment-input-Area0 {
@@ -392,4 +426,8 @@ hr {
 .post-list {
   margin-top: 50px;
   color: #161616;
+}
+
+.pagination {
+  float: right;
 }
