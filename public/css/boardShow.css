@@ -429,5 +429,13 @@ hr {
 }
 
 .pagination {
-  float: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.pagination a {
+  display: block;
+  color: #777;
 }
