@@ -293,3 +293,13 @@ exports.getUserProfileByUsername = function (username, callback) {
     }
   });
 };
+
+exports.getUserProfileByNickname = function (nickname, callback) {
+  db.query('SELECT * FROM member WHERE mem_nickname = ?', [nickname], function (error, results, fields) {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};

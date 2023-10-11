@@ -34,60 +34,13 @@ exports.message = function (req, res) {
 };
 
 
-
-/*exports.chat_room = function (req, res) {
-    console.log(req.session,req.params)
-    var title = '쪽지보내기';
-    const user1_id = req.session.nickname; // 로그인한 사용자
-    const user2_id = req.params.user2_id; // 프로필 조회한 상대방
-
-    // msgModel.chatroom 함수를 호출하여 채팅방을 생성 또는 가져오고, 채팅방 ID를 얻습니다.
-    msgModel.chatroom(user1_id, user2_id, function (error, chatroomId) {
-        if (error) {
-            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
-        } else {
-            // 채팅방 ID(chatroomId)를 사용하여 sendMessage 뷰로 이동합니다.
-            res.render('sendMessage', { title: title, chatroomId: chatroomId ,user2_id : user2_id,user1_id:user1_id});
-        }
-    });
-};*/
-/*
-exports.chat_room = function (req, res) {
-    console.log(req.session, req.params);
-    var title = '쪽지보내기';
-    const user1_id = req.session.nickname; // 로그인한 사용자
-    const user2_id = req.params.user2_id; // 프로필 조회한 상대방
-
-    // msgModel.chatroom 함수를 호출하여 채팅방을 생성 또는 가져오고, 채팅방 ID를 얻습니다.
-    msgModel.chatroom(user1_id, user2_id, function (error, chatroomId) {
-        if (error) {
-            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
-        } else {
-            // 채팅방 ID(chatroomId)를 사용하여 sendMessage 뷰로 이동합니다.
-            // 먼저 채팅 이력을 가져와서 뷰에 전달합니다.
-            msgModel.loadChatHistory(chatroomId, function (error, chatHistory) {
-                if (error) {
-                    res.render('error'); // 에러 화면 렌더링 또는 다른 처리
-                } else {
-                    res.render('sendMessage', {
-                        title: title,
-                        chatroomId: chatroomId,
-                        user2_id: user2_id,
-                        user1_id: user1_id,
-                        chatHistory: chatHistory // 채팅 이력을 뷰로 전달
-                    });
-                }
-            });
-        }
-    });
-};
-*/
 // 채팅방 조회 및 읽음 상태 업데이트
 exports.chat_room = function (req, res) {
     console.log(req.session, req.params);
     var title = '쪽지보내기';
     const user1_id = req.session.nickname; // 로그인한 사용자
     const user2_id = req.params.user2_id; // 프로필 조회한 상대방
+    const nickname = req.params.user2_id;
 
     // msgModel.chatroom 함수를 호출하여 채팅방을 생성 또는 가져오고, 채팅방 ID를 얻습니다.
     msgModel.chatroom(user1_id, user2_id, function (error, chatroomId) {
@@ -105,12 +58,20 @@ exports.chat_room = function (req, res) {
                         if (error) {
                             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
                         } else {
-                            res.render('sendMessage', {
-                                title: title,
-                                chatroomId: chatroomId,
-                                user2_id: user2_id,
-                                user1_id: user1_id,
-                                chatHistory: chatHistory // 채팅 이력을 뷰로 전달
+                            userModel.getUserProfileByNickname(nickname,function (error,results){
+                                if (error) {
+                                    res.render('error');
+                                } else {
+                                    const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+                                    res.render('sendMessage', {
+                                        userProfile : userProfile,
+                                        title: title,
+                                        chatroomId: chatroomId,
+                                        user2_id: user2_id,
+                                        user1_id: user1_id,
+                                        chatHistory: chatHistory // 채팅 이력을 뷰로 전달
+                                    });
+                                }
                             });
                         }
                     });
