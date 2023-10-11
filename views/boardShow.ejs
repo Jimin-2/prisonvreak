@@ -19,6 +19,9 @@
     <!-- JavaScript -->
     <script src="javascript/index.js"></script>
 
+    <!-- icon -->
+    <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+
     <!--Title-->
     <title> CAN </title>
 
@@ -31,48 +34,18 @@
         <section id="section">
             <div id="layout">
 
-                <% if (post_nick===login_nick) { %>
-                    <div id="next-list-button">
-                        <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack">수정</a>
-                        <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack">삭제</a>
-                    </div>
-                    <% } %>
-
                         <div id="title">
                             <h4> > 커뮤니티 </h4>
                             <h1>
                                 <%= data.post_title %>
                             </h1>
 
-                            <br><button id="likeButton"> 추천 <%= data.post_like %> </button>
-
-                            <script>
-                                const likeButton = document.getElementById("likeButton");
-                                let postLike = <%= data.post_like %>;
-                                let isLiked = false;
-
-                                likeButton.addEventListener("click", () => {
-                                    if (!isLiked) {
-                                        alert("추천되었습니다.");
-                                        isLiked = true;
-                                        likeButton.textContent = ` 추천 ${postLike + 1}`;
-                                        fetch(`/post-like/<%= post_num %>`, {
-                                            method: 'POST',
-                                        })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                isLiked = true; // 클릭이 완료
-                                            })
-                                            .catch(error => {
-                                                console.error('오류:', error);
-                                                isLiked = false;
-                                            });
-                                    }
-                                    else {
-                                        alert("이미 추천 버튼을 눌렀습니다.");
-                                    }
-                                });
-                            </script>
+                            <% if (post_nick===login_nick) { %>
+                                <div id="next-list-button">
+                                    <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack">수정</a>
+                                    <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack">삭제</a>
+                                </div>
+                                <% } %>
                         </div>
 
                         <div id="detail">
@@ -112,6 +85,38 @@
                                     </p>
                             </p>
                         </div>
+
+                        <div class="like-button-div">
+                            <a><i class="fa-solid fa-thumbs-up"></i></a><button id="likeButton"> 추천 <%= data.post_like %> </button>
+    
+                                <script>
+                                    const likeButton = document.getElementById("likeButton");
+                                    let postLike = <%= data.post_like %>;
+                                    let isLiked = false;
+    
+                                    likeButton.addEventListener("click", () => {
+                                        if (!isLiked) {
+                                            alert("추천되었습니다.");
+                                            isLiked = true;
+                                            likeButton.textContent = ` 추천 ${postLike + 1}`;
+                                            fetch(`/post-like/<%= post_num %>`, {
+                                                method: 'POST',
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    isLiked = true; // 클릭이 완료
+                                                })
+                                                .catch(error => {
+                                                    console.error('오류:', error);
+                                                    isLiked = false;
+                                                });
+                                        }
+                                        else {
+                                            alert("이미 추천 버튼을 눌렀습니다.");
+                                        }
+                                    });
+                                </script>
+                            </div>
 
                         <div class="comment-h2">
                             <h2> 댓글 <%= commentCount %>
@@ -176,7 +181,7 @@
                                                 </div>
                                                 <div class="comments-content">
                                                     <% if (moreComments[i].is_deleted && displayDeletedComment) { %>
-                                                        삭제된 댓글입니다.
+                                                        <div class="delete-comment"><p>삭제된 댓글입니다.</p></div>
                                                         <% } else { %>
                                                             <%= moreComments[i].cmt_content %>
                                                                 <% if (!comments[i].cmt_refnum) { %>
@@ -186,10 +191,8 @@
                                                                         <% } %>
                                                 </div>
                                                 <% } %>
-
-
-                                                    <hr style="background: #e9e9e9; height:1px; border:0;">
                                             </div>
+                                            <hr style="background: #e9e9e9; height:1px; border:0;">
                                             <br>
 
                                             <!-- 답글 등록 폼 -->
@@ -230,7 +233,6 @@
                                           </div>
                                           
 
-                                            <hr>
                                             <form action="/community/show/<%= data.post_num %>" method="POST"
                                                 autocomplete="off">
                                                 <input type="hidden" name="post_num" value="<%= data.post_num %>">
