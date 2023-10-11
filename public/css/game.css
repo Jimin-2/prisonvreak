@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    background-image: url("/img/gamebackground.jpg");
 }
 
 #container{
@@ -14,19 +15,19 @@
     display: block;
 }
 #playManual{
-    width: 720px;
+    width: 835px;
     display: inline-block;
     margin-left: 10px;
     float: right;
     min-height: 800px;
 }
 .manual{
-    width: 720px;
-    height: 1100px;
+    width: 835px;
+    height: 955px;
     display: inline-block;
 }
 #wrap{
-    min-width: 1700px;
+    min-width: 1850px;
 }
 
 #content{
@@ -38,32 +39,41 @@
     min-height: 1080px;
 }
 #cctv_btn{
-    display: inline-block;
-    width: 50%;
-    margin-top: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
+    width: 47%;
+    margin-top: 20px;
     float: left;
+    background-color: #9f9f9f;
+    height: 420px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: solid black 3px;
+    box-shadow: 0 0 0 1px #676767 inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 8px 0 0 rgba(110, 110, 110, 0.7),
+    0 8px 0 1px rgba(0,0,0,.4),
+    0 8px 8px 1px rgba(0,0,0,0.5);
 }
 #cctv_btn ul{
     padding: 0;
     text-align: center;
+    width: 620px;
 }
 #cctv_btn li{
     display: inline-block;
     min-width: 130px;
 }
-.cctv_btn {
-    width: 70%;
-    height: 60px;
 
-    margin: 0;
-}
 #both{
     clear: both;
 }
 #playerField{
     position: relative;
     display: inline-block;
-    width: 50%;
+    width: 47%;
     height: 0;
     padding-bottom: 30%;
     float: left;
@@ -77,8 +87,8 @@
     align-items: center;
     justify-content: center;
     display: flex;
-    background-color: #323232;
-    margin-top: 250px;
+    background-color: #343434;
+    border: solid black 3px;
 
 }
 
@@ -108,63 +118,11 @@ a:hover,
 a:focus {
     color: #2b2b2b;
 }
-.button:active { /*Clicked and held*/
-    box-shadow: 0px 5px 6px rgba(0,0,0,0.3);
-}
-.button.button--wapasha {
-    background: #2b2b2b;
-    color: #fff;
-    -webkit-transition: background-color 0.3s, color 0.3s;
-    transition: background-color 0.3s, color 0.3s;
-
-
-}
-.button--wapasha.button--inverted {
-    background: #fff;
-    color: #37474f;
-}
-.button--wapasha::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 2px solid #505050;
-    z-index: -1;
-    border-radius: inherit;
-    opacity: 0;
-    -webkit-transform: scale3d(0.6, 0.6, 1);
-    transform: scale3d(0.6, 0.6, 1);
-    -webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
-    transition: transform 0.3s, opacity 0.3s;
-    -webkit-transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-    transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
-}
-.button--wapasha.button--inverted::before {
-    border-color: #cdcdcd;
-}
-.button--wapasha:hover {
-    background-color: #fff;
-    color: #2b2b2b;
-}
-.button--wapasha.button--inverted:hover {
-    background-color: #505050;
-    color: #525252;
-}
-.button--wapasha:hover::before {
-    -webkit-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-    opacity: 1;
-}
-
 .button {
     float: left;
-    min-width: 145px;
-    max-width: 250px;
+    width: 180px;
+    height: 80px;
     display: block;
-    padding: 1em 2em;
-    border: none;
     background: none;
     color: inherit;
     vertical-align: middle;
@@ -172,11 +130,78 @@ a:focus {
     z-index: 1;
     -webkit-backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
-}
-.button:focus {
-    outline: none;
-}
-.button > span {
-    vertical-align: middle;
+    font-size: 1.2em;
+    font-weight: bolder;
+    margin: 8px;
 }
 
+.btn-3d {
+    color: #000000;
+    border-radius: 6px;
+    text-align: center;
+    transition: top .01s linear;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+    transition: background-color 0.3s ease;
+}
+.btn-3d.blue {
+    background-color: #dedede;
+    box-shadow: 0 0 0 1px #676767 inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 8px 0 0 rgba(110, 110, 110, 0.7),
+    0 8px 0 1px rgba(0,0,0,.4),
+    0 8px 8px 1px rgba(0,0,0,0.5);
+}
+.btn-3d.blue:active {
+    box-shadow: 0 0 0 1px #363636 inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 0 0 1px rgba(0,0,0,0.4);
+}
+.btn-3d:active {
+    top: 9px;
+}
+.btn-3d.blue:hover   {background-color: #a9a9a9;}
+
+.opendoor{
+    float: right;
+}
+.sabotage{
+    float: left;
+}
+
+#sabotage{
+    width: 200px;
+    height: 200px;
+    background-color: #d90000;
+    border-radius: 50%;
+    font-size: 3em;
+    margin-left: 115px;
+    color: white;
+}
+#sabotage:hover{
+    background-color: #ad0000;
+    color: white;
+}
+
+#sabotage .on{
+    background-color: #312c2c;
+    color: #c4c4c4;
+}
+
+#opendoor{
+    width: 140px;
+    height: 200px;
+    background-color: #7a7a7a;
+    font-size: 3em;
+    color: white;
+    margin-right: 39px;
+}
+
+#opendoor:hover{
+    background-color: #2c2c2c;
+    color: white;
+}
+
+#opendoor .on{
+    background-color: #312c2c;
+    color: #c4c4c4;
+}

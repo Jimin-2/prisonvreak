@@ -20,9 +20,7 @@
 <div id="canvas">
     <div id="book-zoom">
         <div class="tabs"><div class="tab"></div></div>
-        <div class="sample-docs">
-
-        </div>
+        <div class="sample-docs"></div>
     </div>
 
 </div>
@@ -55,11 +53,11 @@
         // Create the flipbook
         flipbook.turn({
             elevation: 50,
-            acceleration: false,
+            acceleration: true,
             gradients: true,
             autoCenter: true,
             duration: 1000,
-            pages: 7,
+            pages: 8,
             display: "single",
             when: {
                 turning: function(e, page, view) {
@@ -106,6 +104,5 @@
     }
     loadApp();
 </script>
-
 </body>
 </html>

@@ -118,20 +118,19 @@ exports.login_process = function (req, res) {
                 req.session.provider = results[0].mem_provider;
                 req.session.user_code = results[0].mem_code;
                 req.session.save(function () {
-                    // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
-                    const authStatusUI = `${req.session.nickname}님 환영합니다!`;
-                    res.send(`<script type="text/javascript">alert("${authStatusUI}");
-                    location.href="/";</script>`);
+                    // 로그인 성공 시 메인 페이지로 이동
+                    res.send(`<script type="text/javascript">document.location.href='/';
+                </script>`);
                 });
             } else {
                 res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); 
-                document.location.href="/auth/login";</script>`);
+                </script>`);
             }
         });
 
     } else {
         res.send(`<script type="text/javascript">alert("아이디와 비밀번호를 입력하세요!"); 
-        document.location.href="/auth/login";</script>`);
+        </script>`);
     }
 
 };
@@ -185,9 +184,9 @@ exports.kakao_callback = function (req, res, next) {
                 req.session.nickname = results[0].mem_nickname;
                 req.session.user_id = results[0].mem_id;
                 req.session.provider = results[0].mem_provider;
-                const authStatusUI = `${req.session.nickname}님 환영합니다!`;
-                res.send(`<script type="text/javascript">alert("${authStatusUI}");
-                    document.location.href="/";</script>`);
+                req.session.user_code = results[0].mem_code;
+                res.send(`<script type="text/javascript">document.location.href='/';
+                </script>`);
                 /*req.session.save(function () {
                     res.redirect('/');
                 });*/
@@ -221,9 +220,9 @@ exports.google_callback = function (req, res, next) {
                 req.session.nickname = results[0].mem_nickname;
                 req.session.user_id = results[0].mem_id;
                 req.session.provider = results[0].mem_provider;
-                const authStatusUI = `${req.session.nickname}님 환영합니다!`;
-                res.send(`<script type="text/javascript">alert("${authStatusUI}");
-                    document.location.href="/";</script>`);
+                req.session.user_code = results[0].mem_code;
+                res.send(`<script type="text/javascript">document.location.href='/';
+                </script>`);
                 /*req.session.save(function () {
                     res.redirect('/');
                 });*/

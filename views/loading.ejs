@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+    <link href="https://db.onlinewebfonts.com/c/1db29588408eadbd4406aae9238555eb?family=Consolas" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/loading.css">
+
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Title-->
+    <title> CAN </title>
+
+</head>
+
+<body>
+<p id="userCode" style="display: none"><%= userCode %></p>
+<section>
+    <div id="matching">
+        <form action="/game" method="post" id="gamepage">
+            <div id="console">
+                <p>Prison VReak [Version 1.0.0 Release 2023.10.23]</p>
+                <p>Create By CAN</p>
+                <p></p>
+                <br>
+                <p>파트너코드를 입력하세요 : <input type="text" id="partnerCode" name="partnerCode"></p>
+                <div id="status"></div>
+                <p onclick="location.href='/'">< 나가기</p>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    document.getElementById('gamepage').addEventListener('submit', function(event) {
+        // submit 이벤트의 기본 동작 취소
+        event.preventDefault();
+    });
+
+    const partnerCodeInput = document.getElementById("partnerCode");
+
+
+    partnerCodeInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            runSequence();
+        }
+    });
+    function runSequence() {
+        const partnerCode = document.getElementById("partnerCode").value;
+        createOrJoinRoom(partnerCode);
+        setTimeout(checkMatchingStatus,1000)
+    }
+
+    function createOrJoinRoom(connectionId) {
+        const response = fetch('/webCreateOrJoinRoom', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ connectionId: connectionId })
+        });
+        const consolediv = document.getElementById("status");
+        const p = document.createElement("p");
+        p.textContent = "Create Or Join Room...";
+        consolediv.appendChild(p);
+    }
+
+
+    function checkMatchingStatus() {
+        const partnerCode = document.getElementById("partnerCode").value;
+        const userCode = document.getElementById("userCode").textContent;
+        let checked = false;
+        const url = '/checkMatching';
+        const consolediv = document.getElementById('status');
+        const promises = [];
+
+        for (let i = 0; i < 5; i++) {
+            let p = document.createElement("p");
+            p.textContent = "...";
+
+
+            const promise = new Promise(resolve => {
+                setTimeout(() => {
+                    fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ connectionId: partnerCode, user_code: userCode })
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data === '매칭 성공') {
+                                checked = true;
+                            }
+                            resolve();
+                        })
+                        .catch(error => console.error('오류 발생', error));
+                    consolediv.appendChild(p);
+                }, 1000 * i);
+            });
+
+            promises.push(promise);
+        }
+
+        Promise.all(promises).then(() => { // 모든 fetch 요청들이 완료된 후
+            setTimeout(() => { // 추가로 1초 뒤
+                if (checked) {
+                    let pSuccess = document.createElement("p");
+                    pSuccess.textContent = "매칭 성공!";
+                    consolediv.appendChild(pSuccess);
+                    setTimeout(() => {
+                        const gameform = document.getElementById("gamepage");
+                        gameform.submit();
+                    }, 1000);
+                } else {
+                    let pFail = document.createElement("p");
+                    pFail.textContent = "매칭 실패..";
+                    consolediv.appendChild(pFail);
+                    fetch('/deleteRoom', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ connectionId: partnerCode }),
+                        keepalive : true
+                    });
+                    setTimeout(()=>{
+                        let pTags = consolediv.getElementsByTagName('p');
+                        while(pTags.length > 0) {
+                            consolediv.removeChild(pTags[0]);
+                        }
+                    }, 1000)
+                }
+            }, 1000);
+        });
+    }
+
+
+</script>
+</body>
+
+</html>
