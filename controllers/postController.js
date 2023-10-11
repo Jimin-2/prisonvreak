@@ -77,15 +77,20 @@ const boardController = {
                       cmt_created_at: moment(comment.cmt_created_at).format('YY.MM.DD HH:mm:ss'),
                     }));
 
+                    const commentsWithInfo = formattedComments.map((comment, index) => ({
+                      ...comment,
+                      additionalInfo: commentInfo[index],
+                    }));
+
+                    console.log(commentsWithInfo);
 
                     // 댓글 페이지네이션 계산
                     const currentComments = req.query.page ? parseInt(req.query.page) : 1;
-                    const perPage = 5;
-                    const startIndex = (currentComments - 1) * perPage; // 현재 페이지의 시작 인덱스 계산
-                    const endIndex = startIndex + perPage; // 현재 페이지의 끝 인덱스 계산
-                    const moreComments = formattedComments.slice(startIndex, endIndex); // 현재 페이지에 표시할 댓글 추출
-                    const totalPages = Math.ceil(formattedComments.length / perPage); // 전체 페이지 수 계산
-
+                    const perPage = 3;
+                    const startIndex = (currentComments - 1) * perPage;
+                    const endIndex = startIndex + perPage;
+                    const moreComments = commentsWithInfo.slice(startIndex, endIndex);
+                    const totalPages = Math.ceil(commentsWithInfo.length / perPage);
 
                     res.render('boardShow', {
                       post_num: post_num,

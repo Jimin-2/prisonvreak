@@ -53,7 +53,6 @@ const postModel = {
       if (error) {
         callback(error, null);
       } else {
-        console.log(result[0]);
         callback(null, result[0]);
       }
     });
