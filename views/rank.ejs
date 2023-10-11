@@ -100,33 +100,6 @@
       </table>
     </div>
     </div>
-    <div class="pagination">
-      <% if (prevPage !== null) { %>
-        <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
-      <% } else { %>
-        <span class="disabled">&laquo; 이전</span>
-      <% } %>
-
-      <% for (let i = startPage; i <= endPage; i++) { %>
-        <% if (i === currentPage) { %>
-          <span class="active"><%= i %></span>
-        <% } else { %>
-          <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
-        <% } %>
-      <% } %>
-
-      <% if (nextPage !== null) { %>
-        <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
-      <% } else { %>
-        <a href="#" id="disabledNextPage">다음 &raquo;</a>
-        <script>
-          document.getElementById("disabledNextPage").addEventListener("click", function(event) {
-            event.preventDefault();
-            alert("더 이상 페이지가 없습니다.");
-          });
-        </script>
-      <% } %>
-    </div>
 
   </section>
 

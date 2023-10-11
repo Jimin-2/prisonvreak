@@ -154,31 +154,10 @@ exports.rankpage = function (req, res){
     gameModel.getRank((error, data)=>{
         if (error) throw ('error');
 
-        const totalPosts = data.length;
-        const totalPages = Math.ceil(totalPosts / 10);
-        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
-        const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
-
-        let startIndex, endIndex;
-        if (currentPage === totalPages) {
-            endIndex = totalPosts;
-            startIndex = Math.max(endIndex - (totalPosts % 10), 0);
-        } else {
-            startIndex = (currentPage - 1) * 10;
-            endIndex = startIndex + 10;
-        }
-
-        const paginatedResults = data.slice(startIndex, endIndex);
+        const paginatedResults = data.slice(0, 20);
 
         res.render('rank', {
             data: paginatedResults,
-            totalPages: totalPages,
-            currentPage: currentPage,
-            keyword: null,
-            prevPage,
-            startPage,
-            endPage,
-            nextPage
         });
     });
 }
