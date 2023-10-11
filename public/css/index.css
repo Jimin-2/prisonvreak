@@ -1,157 +1,394 @@
-#section {
+body {
   width: 100%;
-  height: 4069px;
+  height: 1000px;
+
+  overflow: hidden;
+  background-image: linear-gradient(#1d1d1d, black);
+  cursor: none;
 }
 
-/* ------- 첫 번째 섹션 ------- */
-#firstSection {
-  height: 100vh;
-  font-size: 100px;
-
-  background-image: url("background/index01.png");
-  background-repeat:no-repeat;
-  background-size: cover;
-}
-
-#pvLogo {
-  width: 614px;
-}
-
-#firstGrid {
+section {
   width: 100%;
-  height: 800px;
-  
-  /*중앙(수평/수직)정렬*/
-  display: flex;
-  align-items:center; 
-  justify-content:center;
-
-  /*줄바꿈*/
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  /*background-color: black;*/
+  height: 1000px;
 }
 
-#youtube {
+#cursor {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 75%;
+  transform-origin: top;
+  transform: translate(-1px, 5px) rotate(15deg) scale(0);
+  transition: transform 0.1s;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 15px #fff) drop-shadow(0 0 35px #fff) hue-rotate(60deg);
+}
+
+body:hover #cursor {
+  transform: translate(-1px, 5px) rotate(15deg) scale(1);
+}
+
+.element {
   position: absolute;
-  top: 85%;
-  left: 50%;
   transform: translate(-50%, -50%);
+  color: #fff;
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  transition: 1s;
+  font-size: 1.6em;
+  filter: drop-shadow(0 0 5px #fff) drop-shadow(0 0 25px #fff) hue-rotate(60deg);
 }
 
-.gameInfo {
-  box-shadow: 20px 20px 20px #000;
-  margin-right: 70px;
-}
+/* 위에 까지는 cursor, body 기본적인 속성 */
 
-/* ------- 두 번째 섹션 ------- */
-#secondSection {
-  height: 1004px;
-  font-size: 100px;
-
-  /*background-color: black;*/
-}
-
-#secondGrid {
+#loading {
   width: 100%;
-  height: 720px;
+  height: 900px;
 
   display: flex;
-  align-items:center; 
-  justify-content:center;
-
-  background-image: url("background/index02.png");
-  background-repeat:no-repeat;
-  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-#vrVersion {
-  max-width: 100%;
+#loader {
+  position: relative;
+}
+
+#loader h2 {
+  font-family: Consolas;
+
+  position: relative;
+  color: #ffffff;
+  letter-spacing: 5px;
+  font-size: 4em;
+  text-transform: uppercase;
+  overflow: hidden;
+  animation: typing 8s steps(10) infinite;
+  -webkit-box-reflect: below -30px linear-gradient(transparent, #0002);
+  filter: drop-shadow(0 0 10px #fff) hue-rotate(60deg);
+}
+
+@keyframes typing {
+
+  0%,
+  90%,
+  100% {
+    width: 0px;
+  }
+
+  30%,
+  60% {
+    width: 331.84px;
+  }
+}
+
+#loader:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: #ffffff;
+  -webkit-box-reflect: below -30px linear-gradient(transparent, #0002);
+  animation: blinkCursor 0.8s steps(3) infinite;
+}
+
+@keyframes blinkCursor {
+
+  0%,
+  75% {
+    opacity: 1;
+  }
+
+  76%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* main home */
+#main-home {
+  height: 980px;
+
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+
+  color: #fff;
+}
+
+#grid-01 {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  text-align: left;
+
+  margin-left: 80px;
+  margin-bottom: 150px;
+}
+
+.item {
+  padding: 20px;
+}
+
+#main-home-logo {
+
+}
+
+#main-home h5 {
+  margin-left: 10px;
+}
+
+#main-home h1 {
+  font-size: 7.5em;
+  -webkit-box-reflect: below -20px linear-gradient(transparent, #0002);
+  filter: drop-shadow(0 0 20px #fff) hue-rotate(60deg);
+
+  margin-top: 10px;
+}
+
+#play-content {
+  width: auto;
   height: auto;
 
-  position: absolute;
-  left: 50%;
-  top: 190%;
-  transform: translate(-50%, -50%);
+  margin-top: 50px;
+  margin-left: 30px;
 }
 
-#vrVersion img {
-  box-shadow: 15px 15px 15px #000;
+#play-content p {
+  margin-top: 10px;
+  font-size: 1em;
 }
 
-.vrVersion {
-  
+#play-button {
+  width: auto;
+  height: auto;
+
+  margin-top: 40px;
+  margin-left: 30px;
 }
 
-/* ------- 세 번째 섹션 ------- */
+#play-button button {
+  width: 120px;
+  height: 35px;
 
-#thirdSection{
-  width: 1980px;
-  height: 2248px;
+  border: none;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #161616;
+
+  font-size: 1em;
+  font-weight: bold;
+
+  margin-right: 15px;
+  cursor: none;
+}
+
+#play-button button:hover {
+  border: #fff;
+  border-radius: 20px;
+
+  background: none;
+  color: #fff;
+}
+
+#play-button button:focus {
+  outline: none;
+}
+
+#grid-02 {
+  display: grid;
+  grid-template-rows: 55% 45%;
+  gap: 1px;
+}
+
+.item03 {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  text-align: right;
+}
+
+#menu {
+  text-align: right;
+  padding-top: 30px;
+  padding-right: 90px;
+}
+
+#menu li {
+  font-size: 1.5em;
+
+  margin-bottom: 30px;
+}
+
+ul li 
+{
+	position: relative;
+	padding: 10px 0;
+	list-style: none;
+}
+ul li a 
+{
+	text-decoration: none;
+	color: #555;
+	cursor: none;
+}
+ul li a span 
+{
+	position: relative;
+	letter-spacing: 0.05em;
+	transition: 0.25s;
+	text-transform: uppercase;
+}
+ul li:hover a span 
+{
+	color: #fff;
+	text-shadow: 0 0 5px #fff,
+	0 0 15px #fff,
+	0 0 30px #fff,
+	0 0 60px #fff,
+	0 0 100px #fff;
+}
+#cursor2
+{
+	position: fixed;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: #fff;
+	box-shadow: 0 0 5px #fff,
+	0 0 15px #fff,
+	0 0 30px #fff,
+	0 0 60px #fff;
+	transform: translate(-50%,-50%);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+body:hover #cursor2
+{
+	opacity: 1;
+}
+
+#profile {
+  width: 580px;
+  height: 320px;
+
+  background-image: linear-gradient(#1d1d1d00, rgb(17, 17, 17));
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  border-radius: 25px;
+}
+
+#profile-grid {
+  padding-right: 70px;
+  padding-bottom: 70px;
+}
+
+#profile .info {
+  width: 580px;
+  height: 260px;
+
+  display: grid;
+  grid-template-columns: 340px 240px;
+  gap: 1px;
+}
+
+.item02 {
+  /* background-color: aquamarine; */
 
   display: flex;
-  justify-content:center;
-  text-align: center;
+  justify-content: center;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
-#thirdSection h1 {
-  font-size: 30px;
+#info-01 {
+  align-items: left;
+  
+  padding: 40px 40px 40px 40px;
 }
 
-#thFirst {
-  /*background-color: #000;*/
+#info-01 h1 {
+  font-size: 1.5em;
 }
 
-#thSecond {
-  /*background-color: aqua;*/
+#info-01 div {
+  margin-left: 10px;
+  margin-top: 15px;
 }
 
-.thirdGrid {
-  width: 1980px;
-  height: 1124px;
+#info-01 div p {
+  margin-top: 10px;
 }
 
+#info-02 {
+  align-items: center;
 
-.btn {
-  border: none;
-  display: block;
-  text-align: center;
-  cursor: pointer;
-  text-transform: uppercase;
-  outline: none;
-  overflow: hidden;
-  position: relative;
-  color: #fff;
-  font-weight: 700;
-  font-size: 15px;
-  background-color: #222;
-  padding: 17px 60px;
-  margin: 0 auto;
-  margin-top: 20px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.20);
+  padding-top: 40px;
+  padding-right: 40px;
 }
 
-.btn span {
-  position: relative; 
-  z-index: 1;
+#item02-box {
+  width: 180px;
+  height: 220px;
+
+  background-color: rgb(0, 0, 0);
 }
 
-.btn:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 350%;
-  width: 140%;
-  background: white;
-  -webkit-transition: all .5s ease-in-out;
-  transition: all .5s ease-in-out;
-  -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);
-  transform: translateX(-98%) translateY(-25%) rotate(45deg);
+#go-my-page {
+  width: 540px;
+  height: 60px;
+
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  text-align: left;
 }
 
-.btn:hover:after {
-  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
-  transform: translateX(-9%) translateY(-25%) rotate(45deg);
+.circle 
+{
+	position: absolute;
+	bottom: 0;
+	width: 0;
+	aspect-ratio: 1/1;
+	background: rgb(255, 255, 255);
+	box-shadow: 0 0 10px rgb(255, 255, 255),
+	0 0 20px rgb(255, 255, 255),
+	0 0 30px rgb(255, 255, 255),
+	0 0 50px rgb(255, 255, 255);
+	border-radius: 50%;
+	animation: animate 5s linear forwards;
+}
+@keyframes animate 
+{
+	0% 
+	{
+		transform: translateY(0);
+		opacity: 1;
+	}
+	50% 
+	{
+		opacity: 1;
+	}
+	100% 
+	{
+		transform: translateY(-100vh);
+		opacity: 0;
+	}
+}
+.circle::before 
+{
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 25%;
+	width: 50%;
+	height: 100vh;
+	opacity: 0.5;
+	background: linear-gradient(rgb(245, 245, 245),transparent);
 }

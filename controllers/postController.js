@@ -351,7 +351,6 @@ const boardController = {
             () => {
               res.send(`<script>
               var mem_id = "${mem_id}";
-              alert("댓글 등록이 완료되었습니다.");
               window.location.href = "/community/show/${post_num}";
             </script>`);
             }

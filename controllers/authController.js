@@ -116,6 +116,7 @@ exports.login_process = function (req, res) {
                 req.session.nickname = results[0].mem_nickname;
                 req.session.user_id = results[0].mem_id;
                 req.session.provider = results[0].mem_provider;
+                req.session.user_code = results[0].mem_code;
                 req.session.save(function () {
                     // 로그인 성공 시 메인 페이지로 이동하고 환영 메시지를 alert로 띄우기
                     const authStatusUI = `${req.session.nickname}님 환영합니다!`;
@@ -140,21 +141,17 @@ exports.vr_login_process = function (req, res) {
     const userCode = req.body.userCode;
     const password = req.body.pwd;
 
-    if (id && password) {             // id와 pw가 입력되었는지 확인
+    if (userCode && password) {             // id와 pw가 입력되었는지 확인
         userModel.vrLoginProcess(userCode, password, function(error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
-                const userInfo= {
-                    userCode: results[0].mem_code,
-                    nickname: results[0].mem_nickname,
-                };
-                res.json(userInfo);
+                res.send('로그인 성공');
             } else {
-                res.send("로그인 정보가 일치하지 않습니다.");
+                res.send('로그인 정보가 일치하지 않습니다.');
             }
         });
     } else {
-        res.send("아이디와 비밀번호를 입력하세요.");
+        res.send('아이디와 비밀번호를 입력하세요.');
     }
 };
 
@@ -286,6 +283,14 @@ exports.login = function (req, res) {
     };
 };
 
+function isLogined (req, res) {
+    const isLogined = req.session.is_logined;
+    if (!isLogined) { // 로그인 X
+        // alert 메시지 이후, 이전 페이지 돌아가기
+        return res.send('<script>alert("로그인이 필요합니다."); location.href="/auth/login";</script>');
+    }
+}
+
 // 아이디 중복 확인
 exports.check_id_availability = function (req, res) {
     const id = req.body.id;
@@ -381,17 +386,20 @@ exports.customer_send = function (req, res) {
     const contents = req.body.contents;
 
     // 클라이언트에서 전송한 파일 정보
-    const fileName = req.body.fileName; // 수정된 부분
-    const fileData = req.body.fileData; // 파일 데이터 (Base64 형식)
-    // 파일 데이터를 Buffer로 변환
-    const fileBuffer = Buffer.from(fileData.split(',')[1], 'base64'); // 'data:image/jpeg;base64,' 이 부분 제거
-    const maxFileSizeBytes = 25 * 1024 * 1024; // 25MB를 바이트로 변환
+    const fileName = req.body.fileName;
+    const fileData = req.body.fileData;
 
-    if (fileBuffer.length > maxFileSizeBytes) {
-        // 파일 크기가 제한을 초과한 경우
-        return res.send('<script type="text/javascript">alert("첨부파일은 25MB 이하만 첨부가능합니다.");history.back();</script>');
+    // 파일 데이터가 있는 경우에만 처리
+    if (fileName && fileData) {
+        // 파일 데이터를 Buffer로 변환
+        const fileBuffer = Buffer.from(fileData.split(',')[1], 'base64');
+        const maxFileSizeBytes = 25 * 1024 * 1024; // 25MB를 바이트로 변환
+
+        if (fileBuffer.length > maxFileSizeBytes) {
+            // 파일 크기가 제한을 초과한 경우
+            return res.send('<script type="text/javascript">alert("첨부파일은 25MB 이하만 첨부가능합니다.");history.back();</script>');
+        }
     }
-
 
     // 이메일 발송 설정
     const transporter = nodemailer.createTransport({
@@ -407,18 +415,22 @@ exports.customer_send = function (req, res) {
         to: 'prisonvreakcan@gmail.com',
         subject: '고객지원문의',
         text: `고객명: ${name}\n이메일: ${email}\n전화번호:${phone}\n문의내용: ${contents}`,
-        attachments: [
+    };
+
+    // 파일 데이터가 있는 경우에만 첨부
+    if (fileName && fileData) {
+        mailOptions.attachments = [
             {
                 filename: fileName,
                 content: fileBuffer,
             }
-        ],
-    };
+        ];
+    }
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.error('이메일 전송 오류:', error);
-            res.send('<script type="text/javascript">alert("파일의 크기가 너무 큽니다 (25MB이하만 첨부가능합니다!)");history.back();</script>');
+            res.send('<script type="text/javascript">alert("파일의 크기가 너무 큽니다 (25MB 이하만 첨부가능합니다!)");history.back();</script>');
         } else {
             console.log('이메일 전송 성공:', info.response);
             res.send('<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");document.location.href="/auth/customer";</script>');
@@ -427,12 +439,10 @@ exports.customer_send = function (req, res) {
 };
 
 
+
 exports.customer = function (req, res) {
+    isLogined(req, res);
     const userId = req.session.user_id;
-    const isLogined = req.session.is_logined;
-    if (!isLogined) {
-        return res.send('<script>alert("로그인이 필요합니다.");  document.location.href="/auth/login";</script>');
-    }
     userModel.getUserProfile(userId, (error, results) => {
         if (error) {
             res.render('error');
@@ -692,34 +702,27 @@ function generateTemporaryPassword() {
 
 // 마이페이지
 exports.mypage = function (req, res) {
-    const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    const isLogined = req.session.is_logined;
+    isLogined(req, res);
+    const nickname = req.session.nickname;// 로그인된 사용자의 아이디
     const postsPerPage = 5;
     const link = 'myPage';
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
-    myPostList(req, res, userId, postsPerPage, link);
+    myPostList(req, res, nickname, postsPerPage, link);
 };
 
 // 작성한 게시글 페이지
 exports.myPost = function (req, res) {
-    const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    const isLogined = req.session.is_logined;
+    isLogined(req, res);
+    const nickname = req.session.nickname;// 로그인된 사용자의 아이디
     const postsPerPage = 15;
     const link = 'myPost';
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
-    myPostList(req, res, userId, postsPerPage, link);
+
+    myPostList(req, res, nickname, postsPerPage, link);
 };
 
 // 작성한 게시글 가져오는 함수
-myPostList = function (req, res, userId, postsPerPage, link){
+myPostList = function (req, res, nickname, postsPerPage, link){
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
-    userModel.getUserProfile(userId, (error, results) => {
+    userModel.getUserProfileByUsername(nickname, (error, results) => {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
         } else {
@@ -770,22 +773,16 @@ myPostList = function (req, res, userId, postsPerPage, link){
 
 // 개인 정보 수정 페이지
 exports.myProfileInfo = function (req, res) {
-    const isLogined = req.session.is_logined;
+    isLogined(req, res);
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
-        res.render('myProfileInfo', {user: req.session});
+
+    res.render('myProfileInfo', {user: req.session});
 };
 
 // 개인 정보 수정 창 들어갈때 비밀번호 확인
 exports.editMyProfile = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
 
     const id = req.body.id;
     const password = req.body.pwd;
@@ -810,11 +807,8 @@ exports.editMyProfile = function (req, res) {
 
 // 프로필 수정(닉네임, 전화번호, 이메일)
 exports.editMyInfo = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.body.id;
     const nickname = req.body.nickname;
     const email = req.body.email;
@@ -847,11 +841,8 @@ exports.editMyInfo = function (req, res) {
 
 // 비밀번호 수정
 exports.editMyPassword = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.body.id;
     const password = req.body.pwd;
 
@@ -869,13 +860,10 @@ exports.editMyPassword = function (req, res) {
     }
 }
 
-// 회원탈퇴(local 계정)
+// 회원탈퇴
 exports.withdrawal = function (req, res) {
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.body.id;
     const password = req.body.pwd;
 
@@ -904,11 +892,8 @@ exports.withdrawal = function (req, res) {
 
 // 한줄 소개 수정
 exports.updateProfileIntro = function (req, res){
-    const isLogined = req.session.is_logined;
-    if (!isLogined) { // 로그인 X
-        // alert 메시지 이후, 이전 페이지 돌아가기
-        return res.send('<script>alert("로그인이 필요합니다."); history.back();</script>');
-    }
+    isLogined(req, res);
+
     const id = req.session.user_id;
     const newIntro = req.body.memIntro;
     userModel.getUserProfile(id, function (error, results){
@@ -937,6 +922,8 @@ exports.userProfile = function (req, res) {
     userModel.getUserProfileByUsername(username, (error, results) => {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
+        } else if (results.length === 0) { // 사용자가 없는 경우
+            res.render('userProfile', { userProfile: { mem_nickname: "Former User", mem_intro: "탈퇴한 사용자입니다."} });
         } else {
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
             res.render('userProfile', { userProfile: userProfile });
@@ -949,8 +936,6 @@ exports.profile = function (req, res) {
     console.log(req.params)
     console.log(req.body)
     const username = req.params.username;
-    //const userId = req.session.user_id;// 로그인된 사용자의 아이디
-    //const isLogined = req.session.is_logined;
     const postsPerPage = 5;
     console.log(username)
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
@@ -1011,3 +996,4 @@ exports.profile = function (req, res) {
         }
     });
 };
+
