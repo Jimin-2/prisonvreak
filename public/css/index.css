@@ -65,7 +65,7 @@ body:hover #cursor {
   font-size: 4em;
   text-transform: uppercase;
   overflow: hidden;
-  animation: typing 8s steps(10) infinite;
+  animation: typing 3s steps(10) infinite;
   -webkit-box-reflect: below -30px linear-gradient(transparent, #0002);
   filter: drop-shadow(0 0 10px #fff) hue-rotate(60deg);
 }
