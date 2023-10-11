@@ -11,7 +11,9 @@
   flex-wrap: wrap;
 
   position: relative;
+  background-color: #161616 !important;
 }
+
 
 .box {
   width: 80%;
@@ -22,7 +24,7 @@
 
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
-  background-color: #4e4e4e;
+  background-color: white;
 }
 
 .number {
@@ -42,7 +44,7 @@
   height: auto;
   display: flex;
   justify-content: center;
-  align-items: center; /* 변경 */
+  align-items: center;
   text-align: center;
 
   flex-direction: column;
@@ -59,68 +61,42 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-
-  background-color: white;
-
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-table.table-template {
+/* 테이블 스타일 */
+.table-template {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   text-align: center;
   line-height: 1.5;
   color: #161616;
+  background-color: #E2E2E2;
+  background-image: url('../img/ranking.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  border-radius: 2cm;
 }
-table.table-template thead th {
+
+.table-template thead th {
   padding: 10px;
   font-weight: bold;
   vertical-align: top;
   color: #161616;
   border-bottom: 2px solid #161616;
-}
-table.table-template tbody th {
-  width: 150px;
-  padding: 10px;
-  font-weight: bold;
-  vertical-align: top;
-  border-bottom: 1px solid #f3f3f3;
-  white-space: nowrap; /* 긴 내용을 한 줄로 표시 */
-  overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
-  text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
-  background: white;
-}
-table.table-template td {
-  width: 350px;
-  padding: 10px;
-  vertical-align: top;
-  border-bottom: 1px solid #f3f3f3;
-  white-space: nowrap; /* 긴 내용을 한 줄로 표시 */
-  overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
-  text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
-}
-
-.pagination {
-  width: 100%;
-  height: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* 변경 */
   text-align: center;
-
-  margin-top: 40px;
 }
 
-.pagination a {
-  margin-right: 10px;
-  color: #2c2c2c;
-  filter: drop-shadow(2px 2px 2px #161616);
-}
-
-.pagination span {
-  margin-right: 10px;
+.table-template tbody th,
+.table-template td {
+  width: 25%;
+  padding: 10px;
   font-weight: bold;
-  filter: drop-shadow(2px 2px 2px #161616);
+  vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 tbody i {
@@ -128,28 +104,10 @@ tbody i {
 }
 
 tbody img {
-  width: 10%;
-}
-
-/* 각 셀의 너비 조정 */
-table.table-template tbody th:nth-child(1),
-table.table-template td:nth-child(1) {
-  width: 10%; /* 첫 번째 열의 너비를 30%로 설정 */
-}
-
-table.table-template tbody th:nth-child(2),
-table.table-template td:nth-child(2) {
-  width: 10%; /* 두 번째 열의 너비를 20%로 설정 */
-}
-
-table.table-template tbody th:nth-child(3),
-table.table-template td:nth-child(3) {
-  width: 10%; /* 두 번째 열의 너비를 20%로 설정 */
-}
-
-table.table-template tbody th:nth-child(4),
-table.table-template td:nth-child(4) {
-  width: 20%; /* 두 번째 열의 너비를 20%로 설정 */
+  width: 28.03px;
+  height: 28.03px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* 모달 스타일 */
@@ -157,13 +115,12 @@ table.table-template td:nth-child(4) {
   display: none;
   position: fixed;
   z-index: 999;
-  top: 0;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   overflow: auto;
-  text-align: center;
   justify-content: center;
   align-items: center;
 }
