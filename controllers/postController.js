@@ -85,13 +85,14 @@ const boardController = {
                     
                     // 댓글 페이지네이션 계산
                     const currentComments = req.query.page ? parseInt(req.query.page) : 1;
-                    const perPage = 3;
+                    const perPage = 5;
                     const startIndex = (currentComments - 1) * perPage;
                     const endIndex = startIndex + perPage;
                     const moreComments = commentsWithInfo.slice(startIndex, endIndex);
                     const totalPages = Math.ceil(commentsWithInfo.length / perPage);
                     const nextPage = moreComments.length == perPage && currentComments < totalPages;
 
+                    console.log(moreComments);
                     res.render('boardShow', {
                       post_num: post_num,
                       data: result,
@@ -483,7 +484,7 @@ const noticeController = {
         prevPage,
         startPage,
         endPage,
-        nextPage
+        nextPage,
       });
     });
   },

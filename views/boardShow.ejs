@@ -33,14 +33,10 @@
         <!-- Section -->
         <section id="section">
             <div id="layout">
-
-                        <div id="title">
-                            <h4> > 커뮤니티 </h4>
-                            <h1>
-                                <%= data.post_title %>
-                            </h1>
-
-                            <% if (post_nick===login_nick) { %>
+                <div id="title">
+                    <h4> > 커뮤니티 </h4>
+                    <h1> <%= data.post_title %> </h1>
+                    <% if (post_nick===login_nick) { %>
                                 <div id="next-list-button">
                                     <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack">수정</a>
                                     <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack">삭제</a>
@@ -124,8 +120,8 @@
                         </div>
 
                         <% for (let i = 0; i < moreComments.length; i++) { %>
-                            <% let displayDeletedComment = comments[i].is_deleted && comments.some(comment =>
-                                comment.cmt_refnum === comments[i].cmt_num); %>
+                            <% let displayDeletedComment = moreComments[i].is_deleted && comments.some(comment =>
+                                comment.cmt_refnum === moreComments[i].cmt_num); %>
                             <% if (!comments[i].is_deleted || displayDeletedComment) { %>
                               <div id="comment">
                                         <div class="<%= moreComments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
@@ -163,11 +159,11 @@
                                                         <% } %>
                                                             <div class="options" style="display:none;">
                                                                 <% if(login_nick &&
-                                                                    commentInfo[i].mem_nickname===login_nick) { %>
+                                                                moreComments[i].additionalInfo.mem_nickname === login_nick) { %>
                                                                     <button class="update-btn"
                                                                         onclick="toggleUpdateForm(this)">수정</button>
                                                                     <form
-                                                                        action="/community/show/<%= data.post_num %>/delete/<%= comments[i].cmt_num %>"
+                                                                        action="/community/show/<%= data.post_num %>/delete/<%= moreComments[i].cmt_num %>"
                                                                         method="POST" class="delete-form">
                                                                         <button type="submit"
                                                                             class="delete-btn">삭제</button>
@@ -200,7 +196,7 @@
                                                 autocomplete="off" class="reply-form" style="display: none;">
                                                 <input type="hidden" name="post_num" value="<%= data.post_num %>">
                                                 <input type="hidden" name="cmt_refnum"
-                                                    value="<%= comments[i].cmt_num %>">
+                                                    value="<%= moreComments[i].cmt_num %>">
                                                 <textarea id="comment-input-Area<%= i %>" name="cmt_content"
                                                     placeholder="답글을 입력하세요."
                                                     oninput="byteCount(this, 'byte-count<%= i %>')"></textarea>
@@ -212,10 +208,10 @@
                                         </div>
                                         <!-- 댓글 수정 폼 -->
                                         <form
-                                            action="/community/show/<%= data.post_num %>/edit/<%= comments[i].cmt_num %>"
+                                            action="/community/show/<%= data.post_num %>/edit/<%= moreComments[i].cmt_num %>"
                                             method="POST" class="update-form" style="display: none;">
                                             <textarea id="comment-input-Area1" name="cmt_content"
-                                                oninput="byteCount(this, 'byte-counta')"><%= comments[i].cmt_content %></textarea>
+                                                oninput="byteCount(this, 'byte-counta')"><%= moreComments[i].cmt_content %></textarea>
                                             <div class="submit">
                                                 <p id="byte-counta">0 byte</p>
                                                 <button class="button btnFade btnBlack" type="submit"> 등록 </button>
