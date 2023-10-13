@@ -94,7 +94,7 @@
             })
                 .then(response => response.text())
                 .then(data => {
-                    if (data === '본인의 유저코드를 사용할수 없습니다.' || data === '존재하지 않는 유저코드입니다.') {
+                    if (data === '본인의 유저코드를 사용할수 없습니다.' || data === '존재하지 않는 유저코드입니다.' || data === '방 정보가 올바르지 않습니다.') {
                         const error = document.createElement("p");
                         error.textContent = "Error : " + data;
                         statusdiv.appendChild(error);

@@ -123,14 +123,14 @@ exports.login_process = function (req, res) {
                 </script>`);
                 });
             } else {
-                res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); 
-                </script>`);
+                res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다.");
+                document.location.href='/auth/login';</script>`);
             }
         });
 
     } else {
         res.send(`<script type="text/javascript">alert("아이디와 비밀번호를 입력하세요!"); 
-        </script>`);
+        document.location.href='/auth/login';</script>`);
     }
 
 };
@@ -172,8 +172,6 @@ exports.kakao_callback = function (req, res, next) {
 
         var kakaoUserId = user.id;
         var email = user._json.kakao_account.email;
-        console.log('카카오톡 아이디:', kakaoUserId);
-        console.log('카카오톡 이메일:', email);
 
         userModel.getUserByKakaoId(kakaoUserId, function (error, results) {
             if (error) throw error;
@@ -209,7 +207,6 @@ exports.google_callback = function (req, res, next) {
 
         var googleUserId = profile.id;
         var email = profile.emails[0].value;;
-        console.log('구글 아이디:', googleUserId);
 
         userModel.getUserByGoogleId(googleUserId, function (error, results) {
             if (error) throw error;
@@ -248,7 +245,6 @@ exports.register = function (req, res) {
 // 소셜 회원가입 화면
 exports.socialregister = function (req, res) {
     var title = '회원가입';
-    console.log(req.query)
     var kakaoUserId = req.query.kakaoUserId; // URL 매개변수로 전달받은 kakaoUserId
     var googleUserId = req.query.googleUserId; // URL 매개변수로 전달받은 googleUserId
     var email = req.query.email;
@@ -293,7 +289,6 @@ function isLogined (req, res) {
 // 아이디 중복 확인
 exports.check_id_availability = function (req, res) {
     const id = req.body.id;
-    console.log('아이디 사용 가능 여부 확인:', id);
 
     userModel.checkIdAvailability(id,function (error,results) {
         if (error) throw error;
@@ -302,7 +297,6 @@ exports.check_id_availability = function (req, res) {
             available: results.length === 0
         };
 
-        console.log('아이디 사용 가능 여부:', availability.available);
         res.json(availability);
     });
 };
@@ -310,7 +304,6 @@ exports.check_id_availability = function (req, res) {
 // 닉네임 중복 확인
 exports.check_nickname_availability = function (req, res) {
     const nickname = req.body.nickname;
-    console.log('닉네임 사용 가능 여부 확인:', nickname);
 
     userModel.checkNicknameAvailability(nickname,function (error,results) {
         if (error) throw error;
@@ -319,7 +312,6 @@ exports.check_nickname_availability = function (req, res) {
             available: results.length === 0
         };
 
-        console.log('닉네임 사용 가능 여부:', availability.available);
         res.json(availability);
     });
 };
@@ -327,7 +319,6 @@ exports.check_nickname_availability = function (req, res) {
 // 이메일 중복 확인
 exports.check_email_availability = function (req, res) {
     const email = req.body.email;
-    console.log('이메일 사용 가능 여부 확인:', email);
 
     userModel.checkEmailAvailability(email,function (error,results) {
         if (error) throw error;
@@ -336,7 +327,6 @@ exports.check_email_availability = function (req, res) {
             available: results.length === 0
         };
 
-        console.log('이메일 사용 가능 여부:', availability.available);
         res.json(availability);
     });
 };
@@ -345,7 +335,6 @@ exports.check_email_availability = function (req, res) {
 exports.check_nickname = function (req, res) {
     const nickname = req.body.nickname;
     const userId = req.session.user_id;
-    console.log('닉네임 주인 확인:', nickname);
 
     userModel.checkNicknameAvailability(nickname,function (error,results) {
         if (error) throw error;
@@ -354,7 +343,6 @@ exports.check_nickname = function (req, res) {
             available: results[0].mem_id === userId
         };
 
-        console.log('닉네임 주인:', check.available);
         res.json(check);
     });
 };
@@ -363,7 +351,6 @@ exports.check_nickname = function (req, res) {
 exports.check_email = function (req, res) {
     const email = req.body.email;
     const userId = req.session.user_id;
-    console.log('이메일 주인 확인:', email);
 
     userModel.checkEmailAvailability(email,function (error,results) {
         if (error) throw error;
@@ -372,7 +359,6 @@ exports.check_email = function (req, res) {
             available: results[0].mem_id === userId
         };
 
-        console.log('이메일 주인:', check.available);
         res.json(check);
     });
 };
@@ -428,10 +414,8 @@ exports.customer_send = function (req, res) {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.error('이메일 전송 오류:', error);
             res.send('<script type="text/javascript">alert("파일의 크기가 너무 큽니다 (25MB 이하만 첨부가능합니다!)");history.back();</script>');
         } else {
-            console.log('이메일 전송 성공:', info.response);
             res.send('<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");document.location.href="/auth/customer";</script>');
         }
     });
@@ -459,12 +443,10 @@ exports.passwordVerificationEmail = function (req, res) {
     // 이메일 일치 확인
     userModel.checkEmailAvailability(email, function (error, results) {
         if (error) {
-            console.error('데이터베이스 오류:', error);
             res.status(500).send();
         } else {
             if (results.length > 0) {
                 // 일치하는 이메일인 경우, 이메일 전송 로직 수행
-                console.log('Sending verification email to:', email);
 
                 // 무작위 인증 코드 생성 (6자리 숫자)
                 var verificationCode = generateVerificationCode();
@@ -490,10 +472,8 @@ exports.passwordVerificationEmail = function (req, res) {
 
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
-                        console.error('이메일 전송 오류:', error);
                         res.status(500).send();
                     } else {
-                        console.log('이메일 전송 성공:', info.response);
                         res.status(200).send();
                     }
                 });
@@ -519,7 +499,6 @@ exports.sendVerificationEmail = function (req, res) {
     // 이메일 중복 확인
     userModel.checkEmailAvailability(email, function (error, results) {
         if (error) {
-            console.error('데이터베이스 오류:', error);
             res.status(500).send();
         } else {
             if (results.length > 0) {
@@ -527,7 +506,6 @@ exports.sendVerificationEmail = function (req, res) {
                 res.status(400).json({ message: '중복된 이메일입니다.' });
             } else {
                 // 중복되지 않은 경우, 이메일 전송 로직 수행
-                console.log('Sending verification email to:', email);
 
                 // 무작위 인증 코드 생성 (6자리 숫자)
                 var verificationCode = generateVerificationCode();
@@ -553,10 +531,8 @@ exports.sendVerificationEmail = function (req, res) {
 
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
-                        console.error('이메일 전송 오류:', error);
                         res.status(500).send();
                     } else {
-                        console.log('이메일 전송 성공:', info.response);
                         res.status(200).send();
                     }
                 });
@@ -657,7 +633,6 @@ exports.find_pw = function (req, res) {
 
 
 exports.sendTemporaryPassword = function (email, temporaryPassword, callback) {
-    console.log('Sending temporary password email to:', email);
 
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -676,10 +651,8 @@ exports.sendTemporaryPassword = function (email, temporaryPassword, callback) {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            console.error('이메일 전송 오류:', error);
             callback(error, null);
         } else {
-            console.log('이메일 전송 성공:', info.response);
             callback(null, info);
         }
     });
@@ -730,7 +703,6 @@ myPostList = function (req, res, nickname, postsPerPage, link){
             // 작성한 게시글 가져오는 부분
             postModel.getPostsByUserNum(userProfile.mem_code,(error, data)=>{
                 if (error) {
-                    console.error(error);
                     res.status(500).send('Internal Server Error');
                 }
                 const reversedResults = data.reverse();
@@ -742,10 +714,10 @@ myPostList = function (req, res, nickname, postsPerPage, link){
                 let startIndex, endIndex;
                 if (currentPage === totalPages) {
                     endIndex = totalPosts;
-                    startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
+                    startIndex = Math.min(endIndex - (totalPosts % postsPerPage), 0);
                 } else {
                     startIndex = (currentPage - 1) * postsPerPage;
-                    endIndex = startIndex + postsPerPage;
+                    endIndex = Math.max(startIndex + postsPerPage, totalPosts);
                 }
 
                 const paginatedResults = reversedResults.slice(startIndex, endIndex);
@@ -753,7 +725,6 @@ myPostList = function (req, res, nickname, postsPerPage, link){
                     ...post,
                     formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
                 }));
-
                 res.render(link, {
                     userProfile: userProfile,
                     data: formattedResults,
@@ -827,6 +798,7 @@ exports.editMyInfo = function (req, res) {
                     if (error) {
                         res.render('error'); // 에러 화면 렌더링 또는 다른 처리
                     } else {
+                        req.session.nickname = nickname;
                         res.send(`<script type="text/javascript">
                         alert('수정되었습니다.');
                         opener.parent.location.reload();
@@ -907,7 +879,6 @@ exports.updateProfileIntro = function (req, res){
             } else {
                 userModel.updateProfileIntro(id, newIntro, function (error, data) {
                     if (error) throw error;
-                    console.log(id, newIntro);
                     res.send(`<script type="text/javascript">alert("한 줄 소개가 수정되었습니다."); location.href="/auth/mypage";</script>`);
                 });
             }}});
@@ -915,7 +886,6 @@ exports.updateProfileIntro = function (req, res){
 
 //유저프로필 조회
 exports.userProfile = function (req, res) {
-    console.log(req.params)
     const username = req.params.username;
 
     userModel.getUserProfileByUsername(username, (error, results) => {
@@ -932,67 +902,9 @@ exports.userProfile = function (req, res) {
 
 // 프로필 조회
 exports.profile = function (req, res) {
-    console.log(req.params)
-    console.log(req.body)
     const username = req.params.username;
     const postsPerPage = 5;
-    console.log(username)
+    const link = 'profile';
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
-    userModel.getUserProfileByUsername(username, (error, results) => {
-        if (error) {
-            //console.error(error);
-            res.render('error'); // 에러 화면 렌더링 또는 다른 처리
-        } else {
-            //console.log('User Profile Results:', results);
-            const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
-
-            console.log(results);
-            console.log(userProfile);
-
-
-            // 작성한 게시글 가져오는 부분
-            postModel.getPostsByUserNum(userProfile.mem_code,(error, data)=>{
-                if (error) {
-                    console.error(error);
-                    res.status(500).send('Internal Server Error');
-                }
-                const reversedResults = data.reverse();
-
-                const totalPosts = reversedResults.length;
-                const totalPages = Math.ceil(totalPosts / postsPerPage);
-
-                const currentPage = req.query.page ? parseInt(req.query.page) : 1;
-
-                const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
-
-                let startIndex, endIndex;
-                if (currentPage === totalPages) {
-                    endIndex = totalPosts;
-                    startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
-                } else {
-                    startIndex = (currentPage - 1) * postsPerPage;
-                    endIndex = startIndex + postsPerPage;
-                }
-
-                const paginatedResults = reversedResults.slice(startIndex, endIndex);
-                const formattedResults = paginatedResults.map(post => ({
-                    ...post,
-                    formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
-                }));
-
-                res.render('profile', {
-                    userProfile: userProfile,
-                    data: formattedResults,
-                    totalPages: totalPages,
-                    currentPage: currentPage,
-                    keyword: null,
-                    prevPage,
-                    startPage,
-                    endPage,
-                    nextPage
-                });
-            });
-        }
-    });
+    myPostList(req, res, username, postsPerPage, link);
 };
-

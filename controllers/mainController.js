@@ -135,8 +135,8 @@ exports.deleteRoom = function (req, res) {
 // 게임 룸 체크
 exports.checkMatching = function (req, res) {
 
-    const web_userCode = req.body.user_code;
-    let vr_userCode = req.body.connectionId;
+    const web_userCode = req.body.web_userCode;
+    let vr_userCode = req.body.vr_userCode;
     console.log(web_userCode);
     console.log(vr_userCode);
 

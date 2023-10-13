@@ -108,6 +108,9 @@
                 </tr>
               </thead>
               <tbody class="content">
+              <% if(data.length===0){ %>
+                <tr><td>작성된 게시글이 없습니다</td></tr>
+              <% } else { %>
               <% for (let i=0; i < data.length; i++) { %>
                 <tr>
                   <td>
@@ -119,7 +122,7 @@
                     </a>
                   </td>
                   <td>
-                    <%= data[i].post_usernum %>
+                    <%= userProfile.mem_nickname %>
                   </td>
                   <td>
                     <%= data[i].formattedCreatedAt %>
@@ -128,6 +131,7 @@
                     <%= data[i].post_hit %>
                   </td>
                 </tr>
+              <% } %>
               <% } %>
               </tbody>
             </table>
