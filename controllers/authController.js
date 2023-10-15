@@ -7,6 +7,8 @@ const nodemailer = require('nodemailer');
 const authCheckMiddleware = require('../middleware/authCheck');
 const moment = require("moment/moment");
 const { boardController, noticeController } = require('../controllers/postController');
+const { friendModel } = require('../models/connectionModel');
+const { type } = require('os');
 
 // 랜덤 유저코드 생성
 function getRandom() {
@@ -980,16 +982,31 @@ exports.profile = function (req, res) {
                     formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
                 }));
 
-                res.render('profile', {
-                    userProfile: userProfile,
-                    data: formattedResults,
-                    totalPages: totalPages,
-                    currentPage: currentPage,
-                    keyword: null,
-                    prevPage,
-                    startPage,
-                    endPage,
-                    nextPage
+                const login_code = req.session.user_code || null;
+                const friend_code = userProfile.mem_code;
+
+                console.log(login_code, friend_code);
+
+                friendModel.checkFriendship(login_code, friend_code, (error, isFriend) => {
+                    if (error) {
+                        console.error(error);
+                        res.render('error');
+                    } else {
+                        res.render('profile', {
+                            userProfile: userProfile,
+                            data: formattedResults,
+                            totalPages: totalPages,
+                            currentPage: currentPage,
+                            keyword: null,
+                            prevPage,
+                            startPage,
+                            endPage,
+                            nextPage,
+                            login_code: login_code,
+                            friend_code,
+                            isFriend,
+                        });
+                    }
                 });
             });
         }
