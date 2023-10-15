@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/myPage.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--Title-->
+  <title> CAN </title>
+
+</head>
+
+<body>
+  <style>
+    .friend-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .friend-item {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      margin: 10px 0;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-info {
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-id {
+      font-weight: bold;
+      border: 1px solid #ccc;
+      padding: 4px 10px;
+      border-radius: 5px;
+      margin-right: 10px;
+      width: 100px;
+    }
+
+    .user-nickname {
+      color: #007bff;
+    }
+
+    .no-friends-message {
+      font-size: 18px;
+      font-style: italic;
+      color: #999;
+      text-align: center;
+    }
+  </style>
+  <!-- header -->
+  <%- include('partials/header')%>
+
+    <!-- Section -->
+    <section id="section">
+      <div id="layout">
+        <div id="firstLayout">
+          <div class="myPageList">
+            <h2> 계정 정보 </h2>
+            <hr>
+            <ul>
+              <li><a href="/auth/mypage"> 내 프로필 </a></li>
+              <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
+              <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
+              <li><a href="/msg/message"> 쪽지함 </a></h3>
+              </li>
+              <li><a href="/myPage/newAlarm"> 알림 </a></h3>
+              </li>
+              <li><a href="/myPage/friendList"> 친구목록 </a></h3>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+        <div id="secondLayout">
+          <div id="first">
+            <h2> 친구 목록 </h2>
+            <ul class="friend-list">
+              <% if (friendList && friendList.length > 0) { %>
+                  <% for (let i = friendList.length - 1; i >= 0; i--) { %>
+                      <% if (friendList[i].status === 'accepted') { %>
+                          <li class="friend-item">
+                              <span class="user-info">
+                                <img style="margin-right: 10px;" src="<%= friendList[i].mem_profile %>" width="30px" alt="<%= friendList[i].mem_nickname %>'s Profile">
+                                  <span class="user-id">
+                                    <% if (friendList[i].user1_mem_code === login_code) { %>
+                                          <%= friendList[i].user2_mem_code %>
+                                      <% } else { %>
+                                          <%= friendList[i].user1_mem_code %>
+                                      <% } %>
+                                  </span>
+                                  <span class="user-nickname">
+                                      <%= friendList[i].mem_nickname %>
+                                  </span>
+                              </span>
+                          </li>
+                      <% } %>
+                  <% } %>
+              <% } else { %>
+                  <p class="no-friends-message">친구를 만들어보세요! ^^</p>
+              <% } %>
+          </ul>
+          
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <%- include('partials/footer')%>
+
+</body>
+
+</html>

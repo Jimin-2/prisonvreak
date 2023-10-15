@@ -9,6 +9,7 @@ const postRouter = require('./routes/post');
 const imageRouter = require('./routes/img');
 const mainRouter = require('./routes/main');
 const msgRouter = require('./routes/message');
+const connectionRouter = require('./routes/connection');
 
 const app = express();
 const port = 8080;
@@ -62,6 +63,7 @@ app.use('/img',imageRouter);
 app.use('/', postRouter); // 게시판
 app.use('/', mainRouter);
 app.use('/msg', msgRouter);
+app.use('/', connectionRouter); // 알림 및 친구기능
 
 // 메인 페이지
 /*app.get('/main', (req, res) => {
