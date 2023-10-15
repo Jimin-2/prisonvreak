@@ -173,7 +173,7 @@ const friendModel = {
 
         db.query(rejectQuery, rejectValues, (error, results) => {
             if (error) {
-                console.error('친구 삭제 중 에러 발생:', error);
+                console.error('친구 요청 거부 중 에러 발생:', error);
                 callback(false);
             } else {
                 callback(true);
@@ -181,6 +181,19 @@ const friendModel = {
         });
     },
 
+    deleteFriend: (friend_code, login_code, callback) => {
+        const deleteQuery = 'DELETE FROM friendships WHERE ((user1_mem_code = ? AND user2_mem_code = ?) OR (user1_mem_code = ? AND user2_mem_code = ?)) AND status = ?';
+        const deleteValues = [friend_code, login_code, login_code, friend_code, 'accepted'];
+        db.query(deleteQuery, deleteValues, (error, results) => {
+            if (error) {
+                console.error('친구 삭제 중 에러 발생:', error);
+                callback(error, false);
+            } else {
+                console.log('친구 삭제 완료');
+                callback(null, true);
+            }
+        });
+    },
 
 
 };

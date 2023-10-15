@@ -59,6 +59,8 @@
 
     .user-nickname {
       color: #007bff;
+      display: inline-block;
+      margin-right: 5px;
     }
 
     .no-friends-message {
@@ -66,6 +68,20 @@
       font-style: italic;
       color: #999;
       text-align: center;
+    }
+
+    .delete-button {
+      background-color: #ff4136;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 5px 15px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+    .delete-button:hover {
+    background-color: #f11f0e;
     }
   </style>
   <!-- header -->
@@ -96,31 +112,35 @@
           <div id="first">
             <h2> 친구 목록 </h2>
             <ul class="friend-list">
-              <% if (friendList && friendList.length > 0) { %>
-                  <% for (let i = friendList.length - 1; i >= 0; i--) { %>
-                      <% if (friendList[i].status === 'accepted') { %>
-                          <li class="friend-item">
-                              <span class="user-info">
-                                <img style="margin-right: 10px;" src="<%= friendList[i].mem_profile %>" width="30px" alt="<%= friendList[i].mem_nickname %>'s Profile">
-                                  <span class="user-id">
-                                    <% if (friendList[i].user1_mem_code === login_code) { %>
-                                          <%= friendList[i].user2_mem_code %>
-                                      <% } else { %>
-                                          <%= friendList[i].user1_mem_code %>
-                                      <% } %>
-                                  </span>
-                                  <span class="user-nickname">
-                                      <%= friendList[i].mem_nickname %>
-                                  </span>
-                              </span>
-                          </li>
+              <% if (friendList && friendList.length> 0) { %>
+                <% for (let i=friendList.length - 1; i>= 0; i--) { %>
+                  <% if (friendList[i].status==='accepted' ) { %>
+                    <li class="friend-item">
+                      <span class="user-info">
+                        <img style="margin-right: 10px;" src="<%= friendList[i].mem_profile %>" width="30px"
+                        alt="<%= friendList[i].mem_nickname %>'s Profile">
+                        <span class="user-id">
+                          <% if (friendList[i].user1_mem_code===login_code) { %>
+                            <%= friendList[i].user2_mem_code %>
+                            <% } else { %>
+                              <%= friendList[i].user1_mem_code %>
+                              <% } %>
+                            </span>
+                            <span class="user-nickname">
+                              <%= friendList[i].mem_nickname %>
+                            </span>  
+                          </span>
+                          <button class="delete-button"
+                            data-user-id="<%= friendList[i].user1_mem_code === login_code ? friendList[i].user2_mem_code : friendList[i].user1_mem_code %>">친구
+                            삭제</button>
+                    </li>
+                    <% } %>
                       <% } %>
-                  <% } %>
-              <% } else { %>
-                  <p class="no-friends-message">친구를 만들어보세요! ^^</p>
-              <% } %>
-          </ul>
-          
+                        <% } else { %>
+                          <p class="no-friends-message">친구를 만들어보세요! ^^</p>
+                          <% } %>
+            </ul>
+
           </div>
         </div>
       </div>
@@ -129,6 +149,39 @@
     <!-- footer -->
     <%- include('partials/footer')%>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const deleteButtons = document.querySelectorAll(".delete-button");
+          
+          deleteButtons.forEach((button) => {
+            button.addEventListener("click", (event) => {
+              const confirmDelete = confirm('친구를 삭제하시겠습니까?');
+              const friend_code = event.target.getAttribute("data-user-id");
+              if (confirmDelete) {
+              fetch('/deleteFriend', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ friend_code: friend_code }),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  console.log(data)
+                  if (data) {
+                    location.reload();
+                  } else {
+                    alert('친구 삭제 오류');
+                  }
+                })
+                .catch(error => {
+                  console.error('친구 삭제 오류:', error);
+                });
+              }
+            });
+          });
+        });
+    </script>
 </body>
 
 </html>
