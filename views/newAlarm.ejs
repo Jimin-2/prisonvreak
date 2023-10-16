@@ -11,7 +11,7 @@
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/myPage.css">
+  <link rel="stylesheet" type="text/css" href="/css/newAlarm.css">
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
@@ -22,140 +22,94 @@
   <title> CAN </title>
 
 </head>
-<style>
-  /* 스타일 수정 */
-  .friend-request-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .friend-request-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 0;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
-  }
-
-  .friend-request-text {
-    flex: 1;
-  }
-
-  .friend-request-buttons {
-    display: flex;
-  }
-
-  .accept-button,
-  .reject-button {
-    padding: 5px 10px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 5px;
-  }
-
-  .cancel-button {
-    padding: 5px 10px;
-    background-color: #ff9999;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-</style>
 
 <body>
-  <!-- header -->
-  <%- include('partials/header')%>
+<!-- header -->
+<%- include('partials/header')%>
 
-    <!-- Section -->
-    <section id="section">
-      <div id="layout">
-        <div id="firstLayout">
-          <div class="myPageList">
-            <h2> 계정 정보 </h2>
-            <hr>
-            <ul>
-              <li><a href="/auth/mypage"> 내 프로필 </a></li>
-              <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
-              <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
-              <li><a href="/msg/message"> 쪽지함 </a></h3>
-              </li>
-              <li><a href="/myPage/newAlarm"> 알림 </a></h3>
-              </li>
-              <li><a href="/myPage/friendList"> 친구목록 </a></h3>
-              </li>
-            </ul>
-          </div>
+<!-- Section -->
+<section id="section">
+  <div id="layout">
+    <div id="firstLayout">
+      <div class="myPageList">
+        <h2> 계정 정보 </h2>
+        <hr>
+        <ul>
+          <li><a href="/auth/mypage"> 내 프로필 </a></li>
+          <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
+          <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
+          <li><a href="/msg/message"> 쪽지함 </a></h3>
+          </li>
+          <li><a href="/myPage/newAlarm"> 알림 </a></h3>
+          </li>
+          <li><a href="/myPage/friendList"> 친구목록 </a></h3>
+          </li>
+        </ul>
+      </div>
 
-        </div>
-        <div id="secondLayout">
-          <div id="first">
-            <h2> 알림 </h2>
+    </div>
+    <div id="secondLayout">
+      <div id="first">
+        <h2> 알림 </h2>
+        <ul class="friend-request-list">
+          <% if (pendingList) { %>
+            <p>친구 요청 목록</p>
+            <% for (let i = pendingList.user2Array.length - 1; i >= 0; i--) { %>
+              <li class="friend-request-item">
+                <%= pendingList.user2Array[i].mem_nickname %> 님의 친구 요청
+                <div class="friend-request-buttons">
+                  <button class="accept-button" data-user-id="<%= pendingList.user2Array[i].user1_mem_code %>">수락</button>
+                  <button class="reject-button" data-user-id="<%= pendingList.user2Array[i].user1_mem_code %>">거절</button>
+                </div>
+              </li>
+            <% } %>
+
+            <hr> <br><br>
+
+            <p>친구 신청 목록</p>
             <ul class="friend-request-list">
-              <% if (pendingList) { %>
-                <p>친구 요청 목록</p>
-                <% for (let i = pendingList.user2Array.length - 1; i >= 0; i--) { %>
-                  <li class="friend-request-item">
-                    <%= pendingList.user2Array[i].mem_nickname %> 님의 친구 요청
-                    <div class="friend-request-buttons">
-                      <button class="accept-button" data-user-id="<%= pendingList.user2Array[i].user1_mem_code %>">수락</button>
-                      <button class="reject-button" data-user-id="<%= pendingList.user2Array[i].user1_mem_code %>">거절</button>
-                    </div>
-                  </li>
-                <% } %>
-              
-                <hr> <br><br>
-              
-                <p>친구 신청 목록</p>
-                <ul class="friend-request-list">
-                  <% for (let i = 0; i < pendingList.user1Array.length; i++) { %>
-                    <li class="friend-request-item">
+              <% for (let i = 0; i < pendingList.user1Array.length; i++) { %>
+                <li class="friend-request-item">
                       <span class="friend-request-text">
                         <%= pendingList.user1Array[i].mem_nickname %> 님에게 친구 요청을 보냈습니다.
                       </span>
-                      <button class="cancel-button" data-user-id="<%= pendingList.user1Array[i].user2_mem_code %>">요청 취소</button>
-                    </li>
-                  <% } %>
-                </ul>
-              <% } else { %>
-                <p>알림이 없습니다 ^^</p>
+                  <button class="cancel-button" data-user-id="<%= pendingList.user1Array[i].user2_mem_code %>">요청 취소</button>
+                </li>
               <% } %>
-              
+            </ul>
+          <% } else { %>
+            <p>알림이 없습니다 ^^</p>
+          <% } %>
 
-          </div>
 
-
-
-        </div>
       </div>
-    </section>
-
-    <!-- footer -->
-    <%- include('partials/footer')%>
-
-      <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          const acceptButtons = document.querySelectorAll(".accept-button");
-          const rejectButtons = document.querySelectorAll(".reject-button");
-          const cancelButtons = document.querySelectorAll(".cancel-button");
 
 
-          acceptButtons.forEach((button) => {
-            button.addEventListener("click", (event) => {
-              const friend_code = event.target.getAttribute("data-user-id");
-              fetch('/acceptFriend', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ friend_code: friend_code }),
-              })
+
+    </div>
+  </div>
+</section>
+
+<!-- footer -->
+<%- include('partials/footer')%>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const acceptButtons = document.querySelectorAll(".accept-button");
+    const rejectButtons = document.querySelectorAll(".reject-button");
+    const cancelButtons = document.querySelectorAll(".cancel-button");
+
+
+    acceptButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        const friend_code = event.target.getAttribute("data-user-id");
+        fetch('/acceptFriend', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ friend_code: friend_code }),
+        })
                 .then(response => response.json())
                 .then(data => {
                   console.log(data)
@@ -169,20 +123,20 @@
                 .catch(error => {
                   console.error('친구 신청 수락 중에 오류 발생:', error);
                 });
-            });
-          });
+      });
+    });
 
 
-          rejectButtons.forEach((button) => { // 거절
-            button.addEventListener("click", (event) => {
-              const friend_code = event.target.getAttribute("data-user-id");
-              fetch('/rejectFriend', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ friend_code: friend_code }),
-              })
+    rejectButtons.forEach((button) => { // 거절
+      button.addEventListener("click", (event) => {
+        const friend_code = event.target.getAttribute("data-user-id");
+        fetch('/rejectFriend', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ friend_code: friend_code }),
+        })
                 .then(response => response.json())
                 .then(data => {
                   console.log(data)
@@ -196,19 +150,19 @@
                 .catch(error => {
                   console.error('친구 요청 거부 중에 오류 발생:', error);
                 });
-            });
-          });
+      });
+    });
 
-          cancelButtons.forEach((button) => {
-            button.addEventListener("click", (event) => {
-              const friend_code = event.target.getAttribute("data-user-id");
-              fetch('/cancelFriend', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ friend_code: friend_code }),
-              })
+    cancelButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        const friend_code = event.target.getAttribute("data-user-id");
+        fetch('/cancelFriend', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ friend_code: friend_code }),
+        })
                 .then(response => response.json())
                 .then(data => {
                   if (data) {
@@ -221,10 +175,9 @@
                 .catch(error => {
                   console.error('친구 요청 취소 중에 오류 발생:', error);
                 });
-            });
-          });
-        });
-      </script>
+      });
+    });
+  });
+</script>
 </body>
-
 </html>

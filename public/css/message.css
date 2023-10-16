@@ -27,6 +27,7 @@ section {
   width: 300px;
   height: 1400px;
 
+  text-align: left;
   flex-direction: column;
   flex-wrap: wrap;
 
@@ -39,12 +40,6 @@ section {
   margin-bottom: 30px;
 }
 /* 채팅 목록 스타일 */
-.myPageList {
-  background-color: #f8f8f8;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
 .myPageList h2 {
   font-size: 24px;
@@ -58,7 +53,13 @@ section {
   list-style: none;
   padding: 0;
 }
-
+.myPageList {
+  margin-left: 30px;
+}
+.myPageList ul {
+  list-style: none;
+  padding: 0;
+}
 .myPageList li {
   margin: 20px 0;
 }
@@ -75,43 +76,15 @@ section {
   margin-right: 10px;
 }
 
-.myPageList li a:hover {
+.chatlist li a:hover {
   background-color: #e5e5e5;
-  transition: background-color 0.3s;
-}
-
-/* 테이블 스타일 */
-table {
-  width: 90%;
-  margin: 20px auto;
-  border-collapse: collapse;
-}
-
-table th, table td {
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
-table th {
-  background-color: #333;
-  color: white;
-  font-weight: bold;
-}
-
-table td {
-  text-align: center;
-}
-
-/* 마우스 호버 효과 */
-table tr:hover {
-  background-color: #f0f0f0;
   transition: background-color 0.3s;
 }
 
 
 #secondLayout {
   width: 800px;
-  height: 950px;
+  height: 1000px;
 
   margin-left: 50px;
 
@@ -141,158 +114,14 @@ table tr:hover {
 
 #first {
   width: 90%;
-  height: 600px;
-
+  margin-top: 50px;
   display: flex;
   justify-content: center;
-
+  margin-bottom: auto;
   flex-direction: column;
   flex-wrap: wrap;
 }
 
-#myProfile {
-  display: flex;
-  justify-content: left;
-  align-items: flex-start;
-  text-align: left;
-
-  margin-left: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-#profileImg {
-  width: 200px;
-  height: 200px;
-  background-color: black;
-  object-fit: cover; /* 이미지가 크기를 맞추며 비율을 유지하도록 설정 */
-}
-
-#myProfileInfo {
-  margin-left: 20px;
-  margin-bottom: 10px;
-}
-
-#myProfileInfo hr {
-  margin-top: 10px;
-}
-
-#myProfileInfo div {
-  width: 470px;
-
-  font-size: 1em;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-#myProfileInfo h3 {
-  font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 10px;
-
-  font-size: 2em;
-}
-
-#rank {
-  display: flex;
-  justify-content: left;
-  align-items: flex-start;
-  text-align: left;
-
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  margin-top: 20px;
-}
-
-#rank div {
-  margin-top: 10px;
-
-  display: flex;
-  justify-content: left;
-  align-items: flex-start;
-  text-align: left;
-
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-
-#rank h4 {
-
-  font-weight: 900;
-  font-size: 1.2em;
-}
-
-#memIntro {
-  width: 93%;
-  height: 100px;
-  resize: none;
-  margin-top: 20px;
-  margin-left: 10px;
-
-  padding: 10px 10px 10px 10px;
-  display: flex;
-  justify-content: left;
-  align-items: flex-start;
-  text-align: left;
-
-  border-radius: 15px;
-  border: 1px solid #161616;
-}
-#textCount {
-  display: inline-block;
-  float: right;
-  font-size: 0.7em;
-  color: #161616;
-}
-.button {
-  margin-top: 10px;
-  display: block;
-  float: right;
-  width: 50px;
-  height: 30px;
-  line-height: 3px;
-  color: #161616;
-  border-radius: 5px;
-}
-
-.btnFade.btnBlack:hover {
-  background: #161616;
-  color: white;
-}
-
-/* 마이페이지 두번째 */
-
-#second {
-  width: 90%;
-  height: 350px;
-}
-
-#other {
-  width: 100%;
-  height: auto;
-
-  display: flex;
-  justify-content: right;
-  align-items: flex-end;
-
-  margin-bottom: 5px;
-}
-
-table {
-  width: 90%;
-  text-align: center;
-  border: 1px solid #fff;
-  border-spacing: 1px;
-  margin: auto;
-}
-
-table td {
-  padding: 10px;
-}
-
-table th {
-  padding: 10px;
+#chatroom {
+  min-height: 870px;
 }

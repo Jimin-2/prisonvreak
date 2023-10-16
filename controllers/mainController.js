@@ -38,13 +38,13 @@ exports.webCreateOrJoinRoom = function (req, res){
     const device = 'web'
 
     if(web_userCode===vr_userCode){
-        res.send('<script>alert("유저코드 같습니다."); location.href="/";</script>');
+        res.send('본인의 유저코드를 사용할수 없습니다.');
     }
     else {
         userModel.checkUsercodeAvailability(vr_userCode, (error, results) => {
             if (error) throw error;
             if (results.length <= 0) {
-                res.send('<script>alert("존재하지 않는 유저코드입니다."); location.href="/";</script>');
+                res.send('존재하지 않는 유저코드입니다.');
             }
             else {
                 gameModel.checkRoom(web_userCode, vr_userCode, (error, results) => {
@@ -53,15 +53,17 @@ exports.webCreateOrJoinRoom = function (req, res){
                     if (results.length <= 0) {
                         gameModel.createRoom(web_userCode, vr_userCode, device, (error, results) => {
                             if (error) throw ('error');
+                            res.send('생성');
                         });
                     }
                     // 방이 있으면 참가
                     else if (results[0].web_user === web_userCode && results[0].web_state !== 'ready' && results[0].vr_user === vr_userCode) {
                         gameModel.joinRoom(web_userCode, vr_userCode, device, (error, results) => {
                             if (error) throw ('error');
+                            res.send('참가');
                         });
                     } else {
-                        res.send('<script>alert("방 정보가 올바르지 않습니다."); location.href="/auth/login";</script>');
+                        res.send('방 정보가 올바르지 않습니다.');
                     }
                 });
             }
@@ -133,8 +135,8 @@ exports.deleteRoom = function (req, res) {
 // 게임 룸 체크
 exports.checkMatching = function (req, res) {
 
-    const web_userCode = req.body.user_code;
-    let vr_userCode = req.body.connectionId;
+    const web_userCode = req.body.web_userCode;
+    let vr_userCode = req.body.vr_userCode;
     console.log(web_userCode);
     console.log(vr_userCode);
 

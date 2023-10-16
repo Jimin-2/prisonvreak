@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +12,7 @@
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/myPage.css">
+  <link rel="stylesheet" type="text/css" href="/css/friendList.css">
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
@@ -24,66 +25,6 @@
 </head>
 
 <body>
-  <style>
-    .friend-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .friend-item {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      margin: 10px 0;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-radius: 10px;
-      box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .user-info {
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-    }
-
-    .user-id {
-      font-weight: bold;
-      border: 1px solid #ccc;
-      padding: 4px 10px;
-      border-radius: 5px;
-      margin-right: 10px;
-      width: 100px;
-    }
-
-    .user-nickname {
-      color: #007bff;
-      display: inline-block;
-      margin-right: 5px;
-    }
-
-    .no-friends-message {
-      font-size: 18px;
-      font-style: italic;
-      color: #999;
-      text-align: center;
-    }
-
-    .delete-button {
-      background-color: #ff4136;
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: 5px 15px;
-      margin-top: 5px;
-      cursor: pointer;
-    }
-
-    .delete-button:hover {
-    background-color: #f11f0e;
-    }
-  </style>
   <!-- header -->
   <%- include('partials/header')%>
 
@@ -183,5 +124,4 @@
         });
     </script>
 </body>
-
 </html>

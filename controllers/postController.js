@@ -393,7 +393,6 @@ const boardController = {
       cmt_num,
       () => {
         res.send(`<script>
-          alert("댓글 수정이 완료되었습니다.");
           window.location.href = "/community/show/${post_num}";
         </script>`);
       }

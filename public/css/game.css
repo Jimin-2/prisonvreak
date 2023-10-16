@@ -205,3 +205,28 @@ a:focus {
     background-color: #312c2c;
     color: #c4c4c4;
 }
+
+#opendoor:disabled{
+    background-color: #3a3a3a;
+    cursor: not-allowed;
+    top:9px;
+    box-shadow: 0 0 0 1px #676767 inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 2px 0 0 rgba(110, 110, 110, 0.7),
+    0 2px 0 1px rgba(0,0,0,.4),
+    0 2px 2px 1px rgba(0,0,0,0.5);
+}
+#opendoor:disabled:hover{
+    background-color: #3a3a3a;
+}
+
+.cctv:disabled{
+    top:9px;
+    cursor: not-allowed;
+    background-color: #9d9d9d;
+    box-shadow: 0 0 0 1px #676767 inset,
+    0 0 0 2px rgba(255,255,255,0.15) inset,
+    0 2px 0 0 rgba(110, 110, 110, 0.7),
+    0 2px 0 1px rgba(0,0,0,.4),
+    0 2px 2px 1px rgba(0,0,0,0.5);
+}

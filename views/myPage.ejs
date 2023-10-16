@@ -38,9 +38,10 @@
             <li><a href="/auth/mypage"> 내 프로필 </a></li>
             <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
             <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
-            <li><a href="/msg/message"> 쪽지함 </a></h3></li>
-            <li><a href="/myPage/newAlarm"> 알림 </a></h3></li>
-            <li><a href="/myPage/friendList"> 친구목록 </a></h3></li>
+            <li><a href="/msg/message"> 쪽지함 </a></li>
+            <li><a href="/myPage/newAlarm"> 알림 </a></li>
+            <li><a href="/myPage/friendList"> 친구목록 </a></li>
+
           </ul>
         </div>
 
@@ -49,7 +50,7 @@
 
         <!-- 마이페이지 첫 번재 레이아웃 --><!--마이페이지 메인-->
         <div id="first">
-          <h2> My Profile </h2>
+          <h2> 내 프로필 </h2>
 
             <div id="myProfile">
              <div id="profileImg">
@@ -110,6 +111,9 @@
                 </tr>
               </thead>
               <tbody class="content">
+              <% if(data.length===0){ %>
+                <tr><td>작성된 게시글이 없습니다</td></tr>
+              <% } else { %>
               <% for (let i=0; i < data.length; i++) { %>
                 <tr>
                   <td>
@@ -121,7 +125,7 @@
                     </a>
                   </td>
                   <td>
-                    <%= data[i].post_usernum %>
+                    <%= userProfile.mem_nickname %>
                   </td>
                   <td>
                     <%= data[i].formattedCreatedAt %>
@@ -130,6 +134,7 @@
                     <%= data[i].post_hit %>
                   </td>
                 </tr>
+              <% } %>
               <% } %>
               </tbody>
             </table>

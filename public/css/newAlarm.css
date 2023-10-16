@@ -1,0 +1,145 @@
+section {
+    width: 100%;
+    height: 1800px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#layout {
+    width: 1200px;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+}
+
+#firstLayout, #secondLayout {
+    margin-top: 100px;
+}
+
+#firstLayout {
+    width: 300px;
+    height: 1400px;
+
+    text-align: left;
+
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#firstLayout hr {
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+.myPageList {
+    margin-left: 30px;
+}
+
+.myPageList h2 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-left: 10px;
+
+    margin-top: 80px;
+}
+
+.myPageList li {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    margin-left: 30px;
+}
+
+#secondLayout {
+    width: 800px;
+    height: 950px;
+
+    margin-left: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#secondLayout h2 {
+    font-size: 2.2em;
+    font-weight: bold;
+
+    text-align: left;
+
+    margin-bottom: 30px;
+}
+
+
+/* 마이페이지 첫번째 */
+
+#first {
+    width: 90%;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: auto;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+/* 스타일 수정 */
+.friend-request-list {
+    list-style: none;
+    padding: 0;
+}
+
+.friend-request-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);
+}
+
+.friend-request-text {
+    flex: 1;
+}
+
+.friend-request-buttons {
+    display: flex;
+}
+
+.accept-button,
+.reject-button {
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.cancel-button {
+    padding: 5px 10px;
+    background-color: #ff9999;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

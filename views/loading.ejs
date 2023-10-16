@@ -31,15 +31,16 @@
                 <p>Create By CAN</p>
                 <p></p>
                 <br>
-                <p>파트너코드를 입력하세요 : <input type="text" id="partnerCode" name="partnerCode"></p>
+                <p>파트너( VR 유저 )의 코드를 입력하세요 : <input type="text" id="partnerCode" name="partnerCode" required autofocus></p>
                 <div id="status"></div>
-                <p onclick="location.href='/'">< 나가기</p>
+                <p onclick="location.href='/'" id="exit">< EXIT</p>
             </div>
         </form>
     </div>
 </section>
 
 <script>
+
     document.getElementById('gamepage').addEventListener('submit', function(event) {
         // submit 이벤트의 기본 동작 취소
         event.preventDefault();
@@ -50,27 +51,69 @@
 
     partnerCodeInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
-            runSequence();
+            const partnerCode = partnerCodeInput.value;
+            if(partnerCode !== "") {
+                partnerCodeInput.readOnly = true;
+                const consolediv = document.getElementById('console');
+                let exit = consolediv.querySelector('#exit');
+                exit.removeAttribute('onclick');
+                exit.textContent = "";
+                runSequence();
+            }
         }
     });
     function runSequence() {
         const partnerCode = document.getElementById("partnerCode").value;
-        createOrJoinRoom(partnerCode);
-        setTimeout(checkMatchingStatus,1000)
+        createOrJoinRoom(partnerCode)
+            .then(result => {
+                console.log(result);
+                if(result){
+                    checkMatchingStatus();
+                }
+
+            })
+            .catch(error => {
+                // 오류 처리
+            });
+
     }
 
     function createOrJoinRoom(connectionId) {
-        const response = fetch('/webCreateOrJoinRoom', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ connectionId: connectionId })
+        return new Promise((resolve, reject) => {
+            const statusdiv = document.getElementById('status');
+            const p = document.createElement("p");
+            p.textContent = "방을 찾는중...";
+            statusdiv.appendChild(p);
+
+            fetch('/webCreateOrJoinRoom', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ connectionId: connectionId })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    if (data === '본인의 유저코드를 사용할수 없습니다.' || data === '존재하지 않는 유저코드입니다.' || data === '방 정보가 올바르지 않습니다.') {
+                        const error = document.createElement("p");
+                        error.textContent = "Error : " + data;
+                        statusdiv.appendChild(error);
+                        resetStatus('다시하기');
+                        resolve(false); // Promise를 해결하여 false 반환
+                    } else if (data === '생성' || data === '참가') {
+                        const error = document.createElement("p");
+                        error.textContent = "방 " + data + " 완료!";
+                        statusdiv.appendChild(error);
+                        resolve(true); // Promise를 해결하여 true 반환
+                    } else {
+                        reject(new Error('Unknown response')); // 알 수 없는 응답에 대한 오류 처리
+                    }
+                })
+                .catch(error => {
+                    console.error('오류 발생', error);
+                    reject(error);
+                });
         });
-        const consolediv = document.getElementById("status");
-        const p = document.createElement("p");
-        p.textContent = "Create Or Join Room...";
-        consolediv.appendChild(p);
     }
 
 
@@ -79,7 +122,7 @@
         const userCode = document.getElementById("userCode").textContent;
         let checked = false;
         const url = '/checkMatching';
-        const consolediv = document.getElementById('status');
+        const statusdiv = document.getElementById('status');
         const promises = [];
 
         for (let i = 0; i < 5; i++) {
@@ -92,7 +135,7 @@
                     fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ connectionId: partnerCode, user_code: userCode })
+                        body: JSON.stringify({ vr_userCode: partnerCode, web_userCode: userCode })
                     })
                         .then(response => response.text())
                         .then(data => {
@@ -102,8 +145,8 @@
                             resolve();
                         })
                         .catch(error => console.error('오류 발생', error));
-                    consolediv.appendChild(p);
-                }, 1000 * i);
+                    statusdiv.appendChild(p);
+                }, 750 * i);
             });
 
             promises.push(promise);
@@ -114,15 +157,15 @@
                 if (checked) {
                     let pSuccess = document.createElement("p");
                     pSuccess.textContent = "매칭 성공!";
-                    consolediv.appendChild(pSuccess);
+                    statusdiv.appendChild(pSuccess);
                     setTimeout(() => {
                         const gameform = document.getElementById("gamepage");
                         gameform.submit();
-                    }, 1000);
+                    }, 750);
                 } else {
                     let pFail = document.createElement("p");
                     pFail.textContent = "매칭 실패..";
-                    consolediv.appendChild(pFail);
+                    statusdiv.appendChild(pFail);
                     fetch('/deleteRoom', {
                         method: 'POST',
                         headers: {
@@ -132,16 +175,37 @@
                         keepalive : true
                     });
                     setTimeout(()=>{
-                        let pTags = consolediv.getElementsByTagName('p');
-                        while(pTags.length > 0) {
-                            consolediv.removeChild(pTags[0]);
-                        }
-                    }, 1000)
+                        resetStatus('리셋');
+                    }, 750)
                 }
-            }, 1000);
+            }, 750);
         });
     }
 
+    function resetStatus(status){
+        const partnerCode = document.getElementById("partnerCode");
+        const consolediv = document.getElementById('console');
+        const statusdiv = document.getElementById('status');
+        const exit = consolediv.querySelector("#exit");
+        if(status === '리셋') {
+            partnerCode.readOnly = false;
+            partnerCode.value = '';
+            let pTags = statusdiv.getElementsByTagName('p');
+            while (pTags.length > 0) {
+                statusdiv.removeChild(pTags[0]);
+            }
+            exit.textContent = '< EXIT';
+            exit.addEventListener("click", function () {
+                location.href = '/';
+            });
+        }
+        else if(status === '다시하기'){
+            exit.textContent = "< BACK";
+            exit.addEventListener("click", function () {
+                resetStatus('리셋');
+            });
+        }
+    }
 
 </script>
 </body>

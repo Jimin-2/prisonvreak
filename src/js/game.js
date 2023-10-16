@@ -30,6 +30,17 @@ messageDiv.style.display = 'none';
 const lockMouseCheck = document.getElementById('lockMouseCheck');
 const videoPlayer = new VideoPlayer();
 
+// 버튼들 가져오기
+const cctv_1 = document.getElementById('CCTV-1');
+const cctv_2 = document.getElementById('CCTV-2');
+const cctv_3= document.getElementById('CCTV-3');
+const cctv_4= document.getElementById('CCTV-4');
+const cctv_5= document.getElementById('CCTV-5');
+const cctv_6= document.getElementById('CCTV-6');
+const sabotage= document.getElementById('sabotage');
+const opendoor= document.getElementById('opendoor');
+
+
 setup();
 
 window.document.oncontextmenu = function () {
@@ -70,51 +81,44 @@ function onClickPlayButton() {
   videoPlayer.createPlayer(playerDiv, lockMouseCheck);
   setupRenderStreaming();
 
-  const cctv_1 = document.getElementById('CCTV-1');
-  // playerDiv.appendChild(cctv_1);
   cctv_1.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 1);
   });
 
-  const cctv_2 = document.getElementById('CCTV-2');
-  // playerDiv.appendChild(cctv_2);
   cctv_2.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 2);
   });
 
-  const cctv_3= document.getElementById('CCTV-3');
-  // playerDiv.appendChild(cctv_3);
   cctv_3.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 3);
   });
 
-  const cctv_4= document.getElementById('CCTV-4');
-  // playerDiv.appendChild(cctv_4);
   cctv_4.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 4);
   });
 
-  const cctv_5= document.getElementById('CCTV-5');
-  // playerDiv.appendChild(cctv_5);
   cctv_5.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 5);
   });
 
-  const cctv_6= document.getElementById('CCTV-6');
   cctv_6.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 6);
   });
 
-  const sabotage= document.getElementById('sabotage');
   sabotage.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 7);
   });
 
-  const opendoor= document.getElementById('opendoor');
   opendoor.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 8);
+      this.disabled = true;
+      cctv_1.disabled = false;
+      cctv_2.disabled = false;
+      cctv_3.disabled = false;
+      cctv_4.disabled = false;
+      cctv_5.disabled = false;
+      cctv_6.disabled = false;
   });
-
 }
 
 async function setupRenderStreaming() {
@@ -146,6 +150,7 @@ function onConnect() {
     renderstreaming.addTransceiver(track, { direction: 'sendonly' });
   }
   showStatsMessage();
+  opendoor.disabled = false;
 }
 
 async function onDisconnect(connectionId) {
