@@ -45,7 +45,11 @@ function formatTime(sent) {
 
     return `${ampm} ${formattedHours}:${formattedMinutes}`;
 }
-
+function Time(sent) {
+    const serverTime = new Date(sent); // 서버로부터 받은 시간
+    const koreaTime = new Date(serverTime.getTime() + (9 * 60 * 60 * 1000)); // 9시간을 더해서 한국 시간으로 변환
+    return `${koreaTime}`;
+}
 // 채팅방 조회 및 읽음 상태 업데이트
 exports.chat_room = function (req, res) {
     console.log(req.session, req.params);
@@ -76,6 +80,7 @@ exports.chat_room = function (req, res) {
                                     sender_id: message.sender_id,
                                     message_content: message.message_content,
                                     is_read: message.is_read,
+                                    time : Time(message.sent_at),
                                     sent_at: formatTime(message.sent_at) // 형식화된 시간 추가
                                 };
                             });

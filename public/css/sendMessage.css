@@ -224,3 +224,8 @@ section {
   font-size:0.7em;
 
 }
+
+.date-separator {
+  padding: 5px; /* 패딩 추가 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
