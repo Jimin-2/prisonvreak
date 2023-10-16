@@ -7,6 +7,8 @@ const nodemailer = require('nodemailer');
 const authCheckMiddleware = require('../middleware/authCheck');
 const moment = require("moment/moment");
 const { boardController, noticeController } = require('../controllers/postController');
+const { friendModel } = require('../models/connectionModel');
+const { type } = require('os');
 
 // 랜덤 유저코드 생성
 function getRandom() {

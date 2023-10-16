@@ -31,7 +31,9 @@
 
   <!-- Section -->
   <section id="section">
-    <img src="/img/rankLogo.png" style="width: 700px;">
+    <img src="/img/rankLogo.png" style="width: 700px; text-shadow: 	0 0 30px #fff;" class="rank-img">
+
+    <!-- <div class="ranking-logo"> <a> 랭킹 </a></div> -->
 
     <div class="board-section">
     <div class="board" class="effect8">
@@ -51,7 +53,7 @@
             <td>
               <%= data[i].rank %>
             </td>
-            <td>
+            <td style="justify-content: center;">
               <!-- <i class="fa-solid fa-user"></i> -->
               <div style="display: flex; align-items: center;">
                 <% if(data[i].vr_profile == null) { %>
@@ -71,7 +73,7 @@
 
               </div>
             </td>
-            <td>
+            <td style="text-align: center; padding-left: 50px;">
               <!-- <i class="fa-solid fa-user"></i> -->
               <div style="display: flex; align-items: center;">
                 <% if(data[i].web_profile == null) { %>
@@ -81,7 +83,7 @@
                   </p>
                 <% } else { %>
                 <img src="<%= data[i].web_profile %>" alt="프로필 이미지">
-                <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].web_nickname %>')">
+                <p style=" margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].web_nickname %>')">
                   <%= data[i].web_nickname %>
                 </p>
                 <div id="profileModal" class="modal">
@@ -92,7 +94,7 @@
               </div>
             </td>
             <td>
-              <%= data[i].formatted_game_clear_time %>
+              ⏳ <%= data[i].formatted_game_clear_time %>
             </td>
           </tr>
         <% } %>
@@ -100,38 +102,11 @@
       </table>
     </div>
     </div>
-    <div class="pagination">
-      <% if (prevPage !== null) { %>
-        <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
-      <% } else { %>
-        <span class="disabled">&laquo; 이전</span>
-      <% } %>
-
-      <% for (let i = startPage; i <= endPage; i++) { %>
-        <% if (i === currentPage) { %>
-          <span class="active"><%= i %></span>
-        <% } else { %>
-          <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
-        <% } %>
-      <% } %>
-
-      <% if (nextPage !== null) { %>
-        <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
-      <% } else { %>
-        <a href="#" id="disabledNextPage">다음 &raquo;</a>
-        <script>
-          document.getElementById("disabledNextPage").addEventListener("click", function(event) {
-            event.preventDefault();
-            alert("더 이상 페이지가 없습니다.");
-          });
-        </script>
-      <% } %>
-    </div>
 
   </section>
+  <!-- footer -->
+  <%- include('partials/footer')%>
 
-<!-- footer -->
-<%- include('partials/footer')%>
 
   <script>
     function showProfile(username) {
@@ -168,6 +143,38 @@
     });
 
   </script>
+
+
+<script>
+  function applyRowStyles(i) {
+  const tableRows = document.querySelectorAll("table.table-template tbody tr");
+
+  if (i < tableRows.length) {
+    const ranks = [
+      { color: "#dfb700", fontSize: "30px", emoji: "\u{1F947}" },
+      { color: "#9a9a9a", fontSize: "26px", emoji: "\u{1F948}" },
+      { color: "#cd7f32", fontSize: "22px", emoji: "\u{1F949}" }
+    ];
+
+    const row = tableRows[i];
+    const tds = row.getElementsByTagName('td');
+    
+    if (i < ranks.length) {
+      tds[3].style.color = ranks[i].color;
+      tds[3].style.fontWeight = "900";
+      tds[0].style.fontSize = ranks[i].fontSize;
+      tds[0].textContent = ranks[i].emoji;
+    }
+  }
+}
+
+  const dataLength = <%= data.length %>;
+
+  for (let i = 0; i < dataLength; i++) {
+    applyRowStyles(i);
+  }
+</script>
+
 </body>
 
 </html>

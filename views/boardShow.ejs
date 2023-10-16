@@ -19,6 +19,9 @@
     <!-- JavaScript -->
     <script src="javascript/index.js"></script>
 
+    <!-- icon -->
+    <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+
     <!--Title-->
     <title> CAN </title>
 
@@ -30,49 +33,15 @@
         <!-- Section -->
         <section id="section">
             <div id="layout">
-
-                <% if (post_nick===login_nick) { %>
-                    <div id="next-list-button">
-                        <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack">수정</a>
-                        <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack">삭제</a>
-                    </div>
-                    <% } %>
-
-                        <div id="title">
-                            <h4> > 커뮤니티 </h4>
-                            <h1>
-                                <%= data.post_title %>
-                            </h1>
-
-                            <br><button id="likeButton"> 추천 <%= data.post_like %> </button>
-
-                            <script>
-                                const likeButton = document.getElementById("likeButton");
-                                let postLike = <%= data.post_like %>;
-                                let isLiked = false;
-
-                                likeButton.addEventListener("click", () => {
-                                    if (!isLiked) {
-                                        alert("추천되었습니다.");
-                                        isLiked = true;
-                                        likeButton.textContent = ` 추천 ${postLike + 1}`;
-                                        fetch(`/post-like/<%= post_num %>`, {
-                                            method: 'POST',
-                                        })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                isLiked = true; // 클릭이 완료
-                                            })
-                                            .catch(error => {
-                                                console.error('오류:', error);
-                                                isLiked = false;
-                                            });
-                                    }
-                                    else {
-                                        alert("이미 추천 버튼을 눌렀습니다.");
-                                    }
-                                });
-                            </script>
+                <div id="title">
+                    <h4> > 커뮤니티 </h4>
+                    <h1> <%= data.post_title %> </h1>
+                    <% if (post_nick===login_nick) { %>
+                                <div id="next-list-button">
+                                    <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack">수정</a>
+                                    <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack">삭제</a>
+                                </div>
+                                <% } %>
                         </div>
 
                         <div id="detail">
@@ -113,30 +82,62 @@
                             </p>
                         </div>
 
+                        <div class="like-button-div">
+                            <a><i class="fa-solid fa-thumbs-up"></i></a><button id="likeButton"> 추천 <%= data.post_like %> </button>
+    
+                                <script>
+                                    const likeButton = document.getElementById("likeButton");
+                                    let postLike = <%= data.post_like %>;
+                                    let isLiked = false;
+    
+                                    likeButton.addEventListener("click", () => {
+                                        if (!isLiked) {
+                                            alert("추천되었습니다.");
+                                            isLiked = true;
+                                            likeButton.textContent = ` 추천 ${postLike + 1}`;
+                                            fetch(`/post-like/<%= post_num %>`, {
+                                                method: 'POST',
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    isLiked = true; // 클릭이 완료
+                                                })
+                                                .catch(error => {
+                                                    console.error('오류:', error);
+                                                    isLiked = false;
+                                                });
+                                        }
+                                        else {
+                                            alert("이미 추천 버튼을 눌렀습니다.");
+                                        }
+                                    });
+                                </script>
+                            </div>
+
                         <div class="comment-h2">
                             <h2> 댓글 <%= commentCount %>
                             </h2>
                         </div>
 
                         <% for (let i = 0; i < moreComments.length; i++) { %>
-                            <% let displayDeletedComment = comments[i].is_deleted && comments.some(comment =>
-                                comment.cmt_refnum === comments[i].cmt_num); %>
+                            <% let displayDeletedComment = moreComments[i].is_deleted && comments.some(comment =>
+                                comment.cmt_refnum === moreComments[i].cmt_num); %>
                             <% if (!comments[i].is_deleted || displayDeletedComment) { %>
                               <div id="comment">
-                                        <div class="<%= comments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
+                                        <div class="<%= moreComments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
                                             id="comment-layout">
                                             <div class="comment-layout">
                                                 <div class="comment">
-                                                    <% if (!comments[i].is_deleted) { %>
-                                                        <% if(commentInfo[i].mem_profile != null) { %> 
-                                                        <img src="<%= commentInfo[i].mem_profile %>" width="20"
+                                                    <% if (!moreComments[i].is_deleted) { %>
+                                                        <% if(moreComments[i].additionalInfo.mem_profile != null) { %> 
+                                                        <img src="<%= moreComments[i].additionalInfo.mem_profile %>" width="20"
                                                             alt="프로필 사진">
                                                             <% } else { %>
                                                                 <img src="/img/profile_default.jpg" width="20" alt="프로필 사진">
                                                                 <% } %>
-                                                        <% if(commentInfo[i].mem_nickname != null) { %>   
+                                                        <% if(moreComments[i].additionalInfo.mem_nickname != null) { %>   
                                                         <div class="comment-nickname">
-                                                            <%= commentInfo[i].mem_nickname %>
+                                                            <%= moreComments[i].additionalInfo.mem_nickname %>
                                                         </div>
                                                         <% } else { %>
                                                             <div class="comment-nickname">
@@ -158,11 +159,11 @@
                                                         <% } %>
                                                             <div class="options" style="display:none;">
                                                                 <% if(login_nick &&
-                                                                    commentInfo[i].mem_nickname===login_nick) { %>
+                                                                moreComments[i].additionalInfo.mem_nickname === login_nick) { %>
                                                                     <button class="update-btn"
                                                                         onclick="toggleUpdateForm(this)">수정</button>
                                                                     <form
-                                                                        action="/community/show/<%= data.post_num %>/delete/<%= comments[i].cmt_num %>"
+                                                                        action="/community/show/<%= data.post_num %>/delete/<%= moreComments[i].cmt_num %>"
                                                                         method="POST" class="delete-form">
                                                                         <button type="submit"
                                                                             class="delete-btn">삭제</button>
@@ -179,17 +180,15 @@
                                                         삭제된 댓글입니다.
                                                         <% } else { %>
                                                             <%= moreComments[i].cmt_content %>
-                                                                <% if (!comments[i].cmt_refnum) { %>
+                                                                <% if (!moreComments[i].cmt_refnum) { %>
                                                                     <button class="reply-btn"
                                                                         onclick="toggleReplyForm(this)">답글</button>
                                                                     <% } %>
                                                                         <% } %>
                                                 </div>
                                                 <% } %>
-
-
-                                                    <hr style="background: #e9e9e9; height:1px; border:0;">
                                             </div>
+                                            <hr style="background: #e9e9e9; height:1px; border:0;">
                                             <br>
 
                                             <!-- 답글 등록 폼 -->
@@ -197,7 +196,7 @@
                                                 autocomplete="off" class="reply-form" style="display: none;">
                                                 <input type="hidden" name="post_num" value="<%= data.post_num %>">
                                                 <input type="hidden" name="cmt_refnum"
-                                                    value="<%= comments[i].cmt_num %>">
+                                                    value="<%= moreComments[i].cmt_num %>">
                                                 <textarea id="comment-input-Area<%= i %>" name="cmt_content"
                                                     placeholder="답글을 입력하세요."
                                                     oninput="byteCount(this, 'byte-count<%= i %>')"></textarea>
@@ -209,10 +208,10 @@
                                         </div>
                                         <!-- 댓글 수정 폼 -->
                                         <form
-                                            action="/community/show/<%= data.post_num %>/edit/<%= comments[i].cmt_num %>"
+                                            action="/community/show/<%= data.post_num %>/edit/<%= moreComments[i].cmt_num %>"
                                             method="POST" class="update-form" style="display: none;">
                                             <textarea id="comment-input-Area1" name="cmt_content"
-                                                oninput="byteCount(this, 'byte-counta')"><%= comments[i].cmt_content %></textarea>
+                                                oninput="byteCount(this, 'byte-counta')"><%= moreComments[i].cmt_content %></textarea>
                                             <div class="submit">
                                                 <p id="byte-counta">0 byte</p>
                                                 <button class="button btnFade btnBlack" type="submit"> 등록 </button>
@@ -222,15 +221,14 @@
 
                                         <div class="pagination">
                                             <% if (currentComments > 1) { %>
-                                              <a href="?page=<%= currentComments - 1 %>">이전 페이지</a>
+                                              <a href="?page=<%= currentComments - 1 %>">이전 댓글</a>
                                             <% } %>
-                                            <% if (moreComments.length === perPage) { %>
-                                              <a href="?page=<%= currentComments + 1 %>">댓글 더보기</a>
+                                            <% if (moreComments.length === perPage && nextPage) { %>
+                                              <a href="?page=<%= currentComments + 1 %>">다음 댓글</a>
                                             <% } %>
                                           </div>
                                           
 
-                                            <hr>
                                             <form action="/community/show/<%= data.post_num %>" method="POST"
                                                 autocomplete="off">
                                                 <input type="hidden" name="post_num" value="<%= data.post_num %>">

@@ -53,7 +53,6 @@ const postModel = {
       if (error) {
         callback(error, null);
       } else {
-        console.log(result[0]);
         callback(null, result[0]);
       }
     });
@@ -251,7 +250,6 @@ getNicknameByPostId: (post_num, callback) => {
 const commentModel = {
   getComments: (post_usernum, callback) => {
     db.query(`
-
       SELECT * 
       FROM comment AS c 
       LEFT JOIN post AS p ON c.post_num = p.post_num 
@@ -261,7 +259,8 @@ const commentModel = {
               WHEN c.cmt_refnum IS NULL THEN c.cmt_num
               ELSE c.cmt_refnum
           END ASC,
-          c.cmt_refnum ASC
+          c.cmt_refnum ASC,
+          c.cmt_created_at ASC;
     `, [post_usernum], (error, results) => {
       if (error) {
         callback(error, null);
