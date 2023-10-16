@@ -2,7 +2,7 @@ const { friendModel, alarmModel } = require('../models/connectionModel');
 
 const friendController = {
     friendList: (req, res) => {
-        const mem_code = parseInt(req.session.user_code);
+        const mem_code = req.session.user_code;
         friendModel.getFriends(mem_code, (err, result) => {
             if (err) {
                 console.log(err)
@@ -27,7 +27,7 @@ const friendController = {
     },
 
     pendingList: (req, res) => {
-        const mem_code = parseInt(req.session.user_code);
+        const mem_code = req.session.user_code;
         friendModel.pendingList(mem_code, (err, result) => {
             if (err) {
                 console.log(err)
@@ -38,8 +38,8 @@ const friendController = {
     },
 
     acceptedFriend: (req, res) => {
-        const friend_code = parseInt(req.body.friend_code);
-        const login_code = parseInt(req.session.user_code);
+        const friend_code = req.body.friend_code;
+        const login_code = req.session.user_code;
 
         friendModel.acceptedFriend(friend_code, login_code, (err, result) => {
             if (err) {
@@ -53,8 +53,8 @@ const friendController = {
     },
 
     rejectFriend: (req, res) => {
-        const friend_code = parseInt(req.body.friend_code);
-        const login_code = parseInt(req.session.user_code);
+        const friend_code = req.body.friend_code;
+        const login_code = req.session.user_code;
 
         friendModel.rejectFriend(friend_code, login_code, (err, result) => {
             if (err) {
@@ -68,8 +68,8 @@ const friendController = {
     },
 
     cancelFriend: (req, res) => {
-        const friend_code = parseInt(req.body.friend_code);
-        const login_code = parseInt(req.session.user_code);
+        const friend_code = req.body.friend_code;
+        const login_code = req.session.user_code;
 
         friendModel.rejectFriend(login_code, friend_code, (err, result) => {
             if (err) {
@@ -80,6 +80,20 @@ const friendController = {
                 res.status(200).json({ data: result, message: '친구 요청 취소' });
             }
         });
+    },
+    
+    deleteFriend: (req, res) => {
+        const friend_code = req.body.friend_code;
+        const login_code = req.session.user_code;
+        friendModel.deleteFriend(friend_code, login_code, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ data: result, message: '친구 삭제 오류' });
+            } else {
+                console.log(result)
+                res.status(200).json({ data: result, message: '친구 삭제 성공' });
+            }
+        })
     }
 
 };
