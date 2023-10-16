@@ -2,21 +2,25 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!--글꼴 Link-->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
-  <!--CSS-->
-  <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/boardshow.css">
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
 
-  <!-- JavaScript -->
-  <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/boardShow.css">
+
+    <!-- JavaScript -->
+    <script src="javascript/index.js"></script>
+
+    <!-- icon -->
+    <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
 
     <!--Title-->
     <title> CAN </title>
@@ -31,69 +35,50 @@
   <section id="section">
     <div id="layout">
 
-      <div id="next-list-button">
-        <button> 다음글 </button>
-        <button onclick="location.href='/notice'"> 목록 </button>
-      </div>
       <div id="title">
         <h4> > 공지사항 </h4>
         <h1> <%= data.post_title %> </h1>
       </div>
 
       <div id="detail">
-        <div class="profile"></div>
         <div>
+          <div class="profile-info"
+            style="display: flex; align-items: center; margin-bottom: 10px;">
+                <p class="nickname" name="mem_nickname">
+                  Admin
+                </p>
+          </div>
+            <!-- 작성일, 조회수, 마지막 수정일시를 병렬로 표시 -->
+            <div class="date-info">
 
-          <p class="ninkname" name="mem_nickname">이름: <%= data.post_usernum %> </p>
-          <p class="date">작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %> </p>
-          <p class="date">조회수: <%= data.post_hit %></p>
-          <p class="date">마지막 수정일시: <%= data.post_updated_at %></p>
+                <p>작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %>
+                </p>
+                <p>조회수: <%= data.post_hit %>
+                </p>
+                <p>마지막 수정일시: <%= data.post_updated_at %>
+                </p>
+            </div>
         </div>
-      </div>
+    </div>
 
       <hr>
 
       <div id="content">
         <p>
-          <%= data.post_content %>
+            <%= data.post_content %>
+                <p>
+                    <img src="<%= data.post_image %>">
+                </p>
         </p>
-        <p>
-          <img src="<%= data.post_image %>">
-        </p>
-      </div>
-      <hr>
+      </div>   
 
-      <div id="comment">
-        <h2> 댓글 </h2>
-
-        <div class="comment-relative">
-          <p class="ninkname"> 작성자: <%= data.post_num %> </p>
-        </div>
-        <div> 댓글! </div>
-
-        <div id="comment-absolute"> 답글 </div>
+      <div style="width: 900px;">
+        <hr>
       </div>
 
-      <div id="comment-01">
-        <div class="comment-relative">
-          <p class="ninkname"> 정예은 </p>
-          <p><a class=date> 2023/07/27 PM 03:14</a></p>
-        </div>
-        <div> 답글 내용입니다. </div>
-      </div>
-
-      <hr>
-
-      <div id="comment-input">
-        <p name="mem_nickname"> 정예은 </p>
-        <textarea id="comment-input-Area" placeholder="댓글을 입력하세요."></textarea>
-        <div class="submit">
-          <p> 0 byte </p>
-          <button class="button btnFade btnBlack"> 등록 </button>
-        </div>
-      </div>
-      <a href="/notice">목록</a>
-    </div>
+        <div id="notice-comment">
+          <p>댓글을 작성할 수 없습니다.</p>
+        </div>   
   </section>
 <!-- footer -->
 <%- include('partials/footer')%>
