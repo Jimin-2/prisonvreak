@@ -33,7 +33,23 @@ exports.message = function (req, res) {
     });
 };
 
+function formatTime(sent) {
+    const serverTime = new Date(sent); // 서버로부터 받은 시간
+    const koreaTime = new Date(serverTime.getTime() + (9 * 60 * 60 * 1000)); // 9시간을 더해서 한국 시간으로 변환
 
+    const hours = koreaTime.getHours();
+    const minutes = koreaTime.getMinutes();
+    const ampm = hours >= 12 ? '오후' : '오전';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return `${ampm} ${formattedHours}:${formattedMinutes}`;
+}
+function Time(sent) {
+    const serverTime = new Date(sent); // 서버로부터 받은 시간
+    const koreaTime = new Date(serverTime.getTime() + (9 * 60 * 60 * 1000)); // 9시간을 더해서 한국 시간으로 변환
+    return `${koreaTime}`;
+}
 // 채팅방 조회 및 읽음 상태 업데이트
 exports.chat_room = function (req, res) {
     console.log(req.session, req.params);
@@ -58,18 +74,30 @@ exports.chat_room = function (req, res) {
                         if (error) {
                             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
                         } else {
-                            userModel.getUserProfileByNickname(nickname,function (error,results){
+                            // 여기서 message.sent_at 값을 형식화한 새로운 배열 생성
+                            const formattedChatHistory = chatHistory.map(message => {
+                                return {
+                                    sender_id: message.sender_id,
+                                    message_content: message.message_content,
+                                    is_read: message.is_read,
+                                    time : Time(message.sent_at),
+                                    sent_at: formatTime(message.sent_at) // 형식화된 시간 추가
+                                };
+                            });
+
+                            userModel.getUserProfileByNickname(nickname, function (error, results) {
                                 if (error) {
                                     res.render('error');
                                 } else {
                                     const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
+                                    console.log('Formatted Message:', formattedChatHistory);
                                     res.render('sendMessage', {
-                                        userProfile : userProfile,
+                                        userProfile: userProfile,
                                         title: title,
                                         chatroomId: chatroomId,
                                         user2_id: user2_id,
                                         user1_id: user1_id,
-                                        chatHistory: chatHistory // 채팅 이력을 뷰로 전달
+                                        chatHistory: formattedChatHistory // 형식화된 채팅 이력을 뷰로 전달
                                     });
                                 }
                             });
@@ -137,8 +165,10 @@ exports.loadChatHistory = function (req, res) {
             console.error('채팅 내역을 불러오는 중 오류 발생:', error);
             res.status(500).json({ error: '채팅 내역을 불러오는 중 오류가 발생했습니다.' });
         } else {
+
             // 채팅 내역을 클라이언트에게 응답으로 전송
             res.json(chatHistory);
+
         }
     });
 };

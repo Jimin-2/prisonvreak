@@ -84,13 +84,25 @@ section {
 }
 .msg-received {
 
+  width: 100%;
+  display: flex;
+  margin-bottom: 25px;
+/*
   text-align: left;
   padding: 10px;
   border-radius: 15px;
   margin: 10px 0;
-  max-width: 100%; /* 메시지 말풍선의 최대 너비 조절 */
-  float: left; /* 왼쪽으로 플로팅 */
-  clear: both; /* 플로팅 해제 */
+  max-width: 100%; !* 메시지 말풍선의 최대 너비 조절 *!
+  float: left; !* 왼쪽으로 플로팅 *!
+  clear: both; !* 플로팅 해제 *!*/
+}
+.msg-received img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.msg-received-img{
 }
 
 /* 발신자 메시지 말풍선 */
@@ -108,7 +120,8 @@ section {
   background-color: #EFEFEF;
   color: #333;
   text-align: left;
-  padding: 10px;
+  /*padding: 10px;*/
+  padding: 13px;
   margin: 5px 0;
   max-width: 400px;
   width: auto;
@@ -118,6 +131,9 @@ section {
   min-height: 25px;
   overflow-wrap: break-word;
   align-items: center;
+  font-size: 18px;
+  border-radius: 15px;
+  margin-right: 5px;
 }
 
 .message-received:after {
@@ -140,6 +156,7 @@ section {
 }
 /* 발신자 메시지 말풍선 */
 .message-sent{
+  border-radius: 15px;
   position: relative;
   background-color: #007BFF;
   color: white;
@@ -157,14 +174,17 @@ section {
 }
 
 .message-received-header{
-  color: black;
+  margin-bottom: 5px;
+  display: block;
+  text-align: left;
+/*  color: black;
   text-align: left;
 
   border-radius: 15px;
 
-  max-width: 100%; /* 메시지 말풍선의 최대 너비 조절 */
-  float: left; /* 왼쪽으로 플로팅 */
-  clear: both; /* 플로팅 해제 */
+  max-width: 100%; !* 메시지 말풍선의 최대 너비 조절 *!
+  float: left; !* 왼쪽으로 플로팅 *!
+  clear: both; !* 플로팅 해제 *!*/
 }
 
 /* 발신자 메시지 말풍선 */
@@ -203,4 +223,9 @@ section {
   clear: both; /* 플로팅 해제 */
   font-size:0.7em;
 
+}
+
+.date-separator {
+  padding: 5px; /* 패딩 추가 */
+  border-radius: 5px; /* 모서리 둥글게 */
 }
