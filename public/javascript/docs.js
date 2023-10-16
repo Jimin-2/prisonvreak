@@ -32,7 +32,7 @@ function updateTabs() {
 	var tabs = {2: '',
 			3: '', 4: '',
 			5: '', 6: '',
-			7:'',8:''},
+			7:'',8:'',9:'',10:''},
 		book = $('.sample-docs'),
 		actualPage = book.turn('page'),
 		view = book.turn('view');

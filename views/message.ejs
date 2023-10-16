@@ -32,9 +32,19 @@
     <div id="layout">
       <div id="firstLayout">
         <div class="myPageList">
-          <h2> 쪽지함 </h2>
+          <h2> 계정 정보 </h2>
           <hr>
           <ul>
+            <li><a href="/auth/mypage"> 내 프로필 </a></li>
+            <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
+            <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
+            <li><a href="/msg/message"> 쪽지함 </a></li>
+            <li><a href="/myPage/newAlarm"> 알림 </a></li>
+            <li><a href="/myPage/friendList"> 친구목록 </a></li>
+          </ul>
+          <hr>
+          <h3> 쪽지 목록 </h3>
+          <ul class="chatlist">
             <% for (const chatroom of chatroomList) { %>
               <li>
                 <!-- 각 쪽지함 항목 -->
@@ -50,9 +60,11 @@
       </div>
       <div id="secondLayout">
         <div id="first">
-          <h2> Message </h2>
+          <h2> 쪽지함 </h2>
+          <iframe src="" frameborder="0" id="chatroom"></iframe>
         </div>
         <!--여기에서 이제 1대1 쪽지 보낼수있도록,,,,시발,,,할수있너?!-->
+
     </div>
     </div>
   </section>
@@ -62,14 +74,11 @@
 
 </body>
 <script>
+  const chatroom = document.getElementById("chatroom");
   // 팝업 열기 함수
   function openPopup(user2_id) {
     const url = `/msg/sendMessage/${user2_id}`;
-    // 팝업 창 열기
-    const popup = window.open(url, 'popup', 'width=500,height=600,top=300,left=600,resizable=no');
-    if (popup) {
-      popup.focus();
-    }
+    chatroom.src = url;
   }
 
   // 각 쪽지함 항목의 팝업 열기 버튼에 이벤트 리스너 추가

@@ -221,6 +221,7 @@ a:focus {
 }
 
 .cctv:disabled{
+    top:9px;
     cursor: not-allowed;
     background-color: #9d9d9d;
     box-shadow: 0 0 0 1px #676767 inset,

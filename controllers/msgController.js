@@ -98,8 +98,6 @@ exports.sendMessage = function(req, res) {
             //res.redirect('/msg/sendMessage/${chatroomId}');
 
             res.send(`<script>
-              
-              alert("채팅이 보내졌습니다.");
               window.location.href = "/msg/sendMessage/${receiverId}";
             </script>`);
         }
