@@ -101,6 +101,39 @@
         </tbody>
       </table>
     </div>
+    <div class="pagination">
+      <% if (prevPage !==null) { %>
+        <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo;
+          이전</a>
+        <% } else { %>
+          <span class="disabled">&laquo; 이전</span>
+          <% } %>
+
+            <% for (let i=startPage; i <=endPage; i++) { %>
+              <% if (i===currentPage) { %>
+                <span class="active">
+                  <%= i %>
+                </span>
+                <% } else { %>
+                  <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">
+                    <%= i %>
+                  </a>
+                  <% } %>
+                    <% } %>
+
+                      <% if (nextPage !==null) { %>
+                        <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음
+                          &raquo;</a>
+                        <% } else { %>
+                          <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                          <script>
+                            document.getElementById("disabledNextPage").addEventListener("click", function (event) {
+                              event.preventDefault();
+                              alert("더 이상 페이지가 없습니다.");
+                            });
+                          </script>
+                          <% } %>
+    </div>
     </div>
 
   </section>
@@ -144,37 +177,36 @@
 
   </script>
 
-
-<script>
-  function applyRowStyles(i) {
-  const tableRows = document.querySelectorAll("table.table-template tbody tr");
-
-  if (i < tableRows.length) {
-    const ranks = [
-      { color: "#dfb700", fontSize: "30px", emoji: "\u{1F947}" },
-      { color: "#9a9a9a", fontSize: "26px", emoji: "\u{1F948}" },
-      { color: "#cd7f32", fontSize: "22px", emoji: "\u{1F949}" }
-    ];
-
-    const row = tableRows[i];
-    const tds = row.getElementsByTagName('td');
-    
-    if (i < ranks.length) {
-      tds[3].style.color = ranks[i].color;
-      tds[3].style.fontWeight = "900";
-      tds[0].style.fontSize = ranks[i].fontSize;
-      tds[0].textContent = ranks[i].emoji;
+<% if (currentPage === 1) { %>
+  <script>
+    function applyRowStyles(i) {
+      const tableRows = document.querySelectorAll("table.table-template tbody tr");
+  
+      if (i < tableRows.length) {
+            const ranks = [
+              { color: "#dfb700", fontSize: "30px", emoji: "\u{1F947}" },
+              { color: "#9a9a9a", fontSize: "26px", emoji: "\u{1F948}" },
+              { color: "#cd7f32", fontSize: "22px", emoji: "\u{1F949}" }
+            ];
+            const row = tableRows[i];
+            const tds = row.getElementsByTagName('td');
+      
+            if (i < ranks.length) {
+              tds[3].style.color = ranks[i].color;
+              tds[3].style.fontWeight = "900";
+              tds[0].style.fontSize = ranks[i].fontSize;
+              tds[0].textContent = ranks[i].emoji;
+            }
+          }
     }
-  }
-}
-
-  const dataLength = <%= data.length %>;
-
-  for (let i = 0; i < dataLength; i++) {
-    applyRowStyles(i);
-  }
-</script>
-
+    
+    const dataLength = <%= data.length %>;
+    for (let i = 0; i < dataLength; i++) {
+      applyRowStyles(i);
+    }
+  </script>
+  <% } %>
+  
 </body>
 
 </html>
