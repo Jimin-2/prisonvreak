@@ -1,9 +1,46 @@
 section {
   width: 100%;
-  height: 2400px;
+  height: 2000px;
 
   position: relative;
-  background-color: #161616;
+  background-image: url("background/info2.png");
+}
+
+.search-button-m {
+  position: fixed;
+
+  top: 85%;
+  right: 5%;
+
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center; /* 변경 */
+  text-align: center;
+
+  background-color: #ffffff;
+  color: #161616;
+
+  border-radius: 50%;
+  z-index: 1;
+
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.search-button-m button {
+  color: #161616;
+  background: #ffffff;
+
+  font-size: 1.3em;
+  font-weight: bold;
+
+  outline: none;
+  border: none;
+  border-radius: 5px;
+
+  cursor: pointer;
 }
 
 .notice-background {
@@ -18,10 +55,9 @@ section {
 
 .container-01 {
   width: 100%;
-  height: 350px;
+  height: 380px;
 
   display: grid;
-  width: 100%;
 }
 
 /* 첫 번째 그리드 */
@@ -46,47 +82,9 @@ section {
   display: none;
 }
 
-/* 왜 이러는 거임
-
-.search-input {
-  background-color: #fff;
-  color: #161616;
-
-  border: 0;
-  font-size: 18px;
-  padding: 15px;
-  height: 50px;
-  width: 50px;
-  transition: width 0.3s ease;
+#main-notice {
+  display: none;
 }
-
-.search-btn {
-  background-color: #fff;
-  color: #161616;
-  
-  border: 0;
-  cursor: pointer;
-  font-size: 24px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 50px;
-  width: 50px;
-  transition: transform 0.3s ease;
-}
-
-.search-btn:focus,
-.search-input:focus {
-  outline: none;
-}
-
-.search.active .search-input {
-  width: 200px;
-}
-
-.search.active .btn {
-  transform: translateX(198px);
-} */
 
 /* grandopen logo */
 #grandopen-logo {
@@ -104,7 +102,7 @@ section {
 /* 세 번째 섹션 */
 #thirdSection {
   width: 100%;
-  height: 1800px;
+  height: 2100px;
 
   display: flex;
   justify-content: center;
@@ -114,13 +112,13 @@ section {
 
 #thirdSectionBox {
   width: 100%;
-  height: 1800px;
+  height: 2100px;
 
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: #161616;
+  background-color: #ffffff;
 }
 
 .title {
@@ -170,7 +168,7 @@ section {
   font-size: 2em;
   font-weight: bold;
 
-  color: #ffffff;
+  color: #111111;
 }
 
 .grid-container {

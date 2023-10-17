@@ -50,13 +50,36 @@
               </form>
             </div>
 
+            <div class="search-button-m"> <!-- 검색창으로 바꿀 예정 -->
+              <form action="/community/insert" method="GET">
+                <button type="submit">+</button>
+              </form>
+            </div>
           </div>
+        </div>
 
-          <!-- Section -->
-          <div id="grandopen-logo" class="item">
-            <img src="/img/grandopenInfo.png">
-          </div>
+        <% if (search && search.length> 0) { %>
+          <% for (let i=0; i < search.length; i++) { %>
 
+              <% } %>
+                <% } else if (data && data.length> 0) { %>
+                  <div id="main-notice" class="noisy">
+
+                      <div class="main-notice-img-layout">
+                        <img src="<%= data[0].post_image %>">
+                      </div>
+
+                      <div class="main-notice-container">
+                        <div class="main-notice-content-title">
+                          <a href="/notice/show/<%= data[0].post_num %>">
+                            <%= data[0].post_title %>
+                          </a>
+                        </div>
+                        <div class="main-notice-content-date">
+                          <%= data[0].formattedCreatedAt %>
+                        </div>
+                      </div>
+                      <% } %>
         </div>
 
         <!-- Section -->
@@ -68,7 +91,7 @@
                   <div class="grid-content">
 
                   <div class="grid-content-img-layout">
-                    <img src="<%= search[i].post_image %>">
+                      <img src="<%= search[i].post_image %>">
                   </div>
 
                   <div class="grid-container">
