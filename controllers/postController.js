@@ -134,7 +134,7 @@ const boardController = {
       }
 
       const reversedResults = results.reverse();
-      const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
+      const postsPerPage = 20; // 한 페이지당 표시되는 게시물 수
       const totalPosts = reversedResults.length;
       const totalPages = Math.ceil(totalPosts / postsPerPage);
       const currentPage = req.query.page ? parseInt(req.query.page) : 1;
@@ -319,8 +319,10 @@ const boardController = {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const postNum = req.params.post_num;
+    const imageUrl = req.file ? req.file.location : null;
     postModel.updatePost(
       body.post_title,
+      imageUrl,
       body.post_content,
       koreanTime,
       postNum,
