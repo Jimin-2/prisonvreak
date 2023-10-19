@@ -155,15 +155,13 @@ exports.checkMatching = function (req, res) {
 
 // 랭크 생성
 exports.createRank = function (req, res){
-  let room_num;
   const cleartime = req.body.cleartime;
   const vr_userCode = req.body.vr_userCode;
   const web_userCode = req.body.web_userCode;
   gameModel.checkRoom(web_userCode,vr_userCode,(error,results)=>{
       if(error)  throw ('error');
       if(results[0].web_state === 'ready' && results[0].vr_state === 'ready'){
-          room_num = results[0].room_num;
-          gameModel.createRank(room_num,cleartime,vr_nickname,web_nickname, (error, results)=>{
+          gameModel.createRank(cleartime,vr_userCode,web_userCode, (error, results)=>{
               if(error)  throw ('error');
               gameModel.deleteRoom(web_userCode, vr_userCode, (error, results) => {
                   if (error) throw ('error');
@@ -188,11 +186,11 @@ exports.rankpage = function (req, res){
 
         let startIndex, endIndex;
         if (currentPage === totalPages) {
+            startIndex = (totalPages - 1) * postsPerPage;
             endIndex = totalPosts;
-            startIndex = Math.max(endIndex - (totalPosts % 10), 0);
         } else {
-            startIndex = (currentPage - 1) * 10;
-            endIndex = startIndex + 10;
+            startIndex = (currentPage - 1) * postsPerPage;
+            endIndex = Math.min(startIndex + postsPerPage, totalPosts);
         }
         const paginatedResults = data.slice(startIndex, endIndex);
         res.render('rank', {

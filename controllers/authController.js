@@ -715,13 +715,12 @@ myPostList = function (req, res, nickname, postsPerPage, link){
 
                 let startIndex, endIndex;
                 if (currentPage === totalPages) {
+                    startIndex = (totalPages - 1) * postsPerPage;
                     endIndex = totalPosts;
-                    startIndex = Math.min(endIndex - (totalPosts % postsPerPage), 0);
                 } else {
                     startIndex = (currentPage - 1) * postsPerPage;
-                    endIndex = Math.max(startIndex + postsPerPage, totalPosts);
+                    endIndex = Math.min(startIndex + postsPerPage, totalPosts);
                 }
-
                 const paginatedResults = reversedResults.slice(startIndex, endIndex);
                 const formattedResults = paginatedResults.map(post => ({
                     ...post,
@@ -937,11 +936,11 @@ exports.profile = function (req, res) {
 
                 let startIndex, endIndex;
                 if (currentPage === totalPages) {
+                    startIndex = (totalPages - 1) * postsPerPage;
                     endIndex = totalPosts;
-                    startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
                 } else {
                     startIndex = (currentPage - 1) * postsPerPage;
-                    endIndex = startIndex + postsPerPage;
+                    endIndex = Math.min(startIndex + postsPerPage, totalPosts);
                 }
 
                 const paginatedResults = reversedResults.slice(startIndex, endIndex);

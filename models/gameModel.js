@@ -68,8 +68,8 @@ exports.deleteRoom = function (web_userCode, vr_userCode, callback){
     });
 }
 
-exports.createRank = function (room_num, cleartime, vr_userCode, web_userCode, callback){
-    db.query(`INSERT INTO game_rank (room_num, game_clear_time, vr_user, web_user) VALUES (?, ?, ?, ?)`, [room_num, cleartime, vr_userCode, web_userCode], function (error, results){
+exports.createRank = function (cleartime, vr_userCode, web_userCode, callback){
+    db.query(`INSERT INTO game_rank (game_clear_time, vr_user, web_user) VALUES (?, ?, ?)`, [cleartime, vr_userCode, web_userCode], function (error, results){
         if(error){
             callback(error, null);
         } else{

@@ -142,11 +142,11 @@ const boardController = {
       let startIndex, endIndex;
 
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
 
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
@@ -223,11 +223,11 @@ const boardController = {
       let startIndex, endIndex;
 
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
 
@@ -462,11 +462,11 @@ const noticeController = {
 
       let startIndex, endIndex;
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
 
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
@@ -526,11 +526,11 @@ const noticeController = {
 
       let startIndex, endIndex;
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
 
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
