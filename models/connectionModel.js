@@ -194,7 +194,16 @@ const friendModel = {
             }
         });
     },
-
+    
+    fwithdrawal: (mem_code, callback) => {
+        db.query('DELETE FROM friendships WHERE user1_mem_code = ? OR user2_mem_code = ?', [mem_code, mem_code], (error, results) => {
+          if (error) {
+            callback(error, null);
+          } else {
+            callback(null, results);
+          }
+        });
+      },
 
 };
 

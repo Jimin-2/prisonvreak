@@ -21,13 +21,13 @@ function getRandom() {
 // 데이터베이스에서 해당 유저 코드가 이미 존재하는지 확인하는 함수
 function checkIfUserCodeExists(usercode) {
 
-    userModel.checkUsercodeAvailability(usercode, function (error, data){
-        if(error) throw error;
+    userModel.checkUsercodeAvailability(usercode, function (error, data) {
+        if (error) throw error;
 
-        if(data.length > 0){
+        if (data.length > 0) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     });
@@ -43,7 +43,7 @@ exports.register_process = function (req, res) {
     const email = req.body.email;
     let usercode = getRandom();
     if (name && nickname && id && password && phone && email) {
-        while (checkIfUserCodeExists(usercode)){
+        while (checkIfUserCodeExists(usercode)) {
             usercode = getRandom();
         }
 
@@ -72,7 +72,7 @@ exports.socialregister_process = function (req, res) {
 
     // 구현 내용...
     if (name && nickname && phone && email) {
-        while (checkIfUserCodeExists(usercode)){
+        while (checkIfUserCodeExists(usercode)) {
             usercode = getRandom();
         }
         if (kakaoUserId) {
@@ -111,7 +111,7 @@ exports.login_process = function (req, res) {
     const password = req.body.pwd;
 
     if (id && password) {             // id와 pw가 입력되었는지 확인
-        userModel.loginProcess(id, password, function(error, results, fields) {
+        userModel.loginProcess(id, password, function (error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                 req.session.is_logined = true;      // 세션 정보 갱신
@@ -143,7 +143,7 @@ exports.vr_login_process = function (req, res) {
     const password = req.body.pwd;
 
     if (userCode && password) {             // id와 pw가 입력되었는지 확인
-        userModel.vrLoginProcess(userCode, password, function(error, results, fields) {
+        userModel.vrLoginProcess(userCode, password, function (error, results, fields) {
             if (error) throw error;
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
                 res.send('로그인 성공');
@@ -192,7 +192,7 @@ exports.kakao_callback = function (req, res, next) {
                 });*/
             } else {
                 // 회원가입이 되어 있지 않은 경우 회원가입 페이지로 이동
-                res.redirect('/auth/signupsocial?kakaoUserId=' + kakaoUserId +'&email='+ email);
+                res.redirect('/auth/signupsocial?kakaoUserId=' + kakaoUserId + '&email=' + email);
             }
         });
     })(req, res, next);
@@ -228,7 +228,7 @@ exports.google_callback = function (req, res, next) {
             } else {
                 // 회원가입이 되어 있지 않은 경우 회원가입 페이지로 이동
 
-                res.redirect('/auth/signupsocial?googleUserId=' + googleUserId +'&email='+ email);
+                res.redirect('/auth/signupsocial?googleUserId=' + googleUserId + '&email=' + email);
             }
         });
     })(req, res, next);
@@ -267,7 +267,7 @@ exports.socialregister = function (req, res) {
     res.render('signupsocial', {
         title: title,
         hiddenInput: hiddenInput,
-        provider : provider,
+        provider: provider,
         email: email
     });
 };
@@ -280,7 +280,7 @@ exports.login = function (req, res) {
     };
 };
 
-function isLogined (req, res) {
+function isLogined(req, res) {
     const isLogined = req.session.is_logined;
     if (!isLogined) { // 로그인 X
         // alert 메시지 이후, 이전 페이지 돌아가기
@@ -292,7 +292,7 @@ function isLogined (req, res) {
 exports.check_id_availability = function (req, res) {
     const id = req.body.id;
 
-    userModel.checkIdAvailability(id,function (error,results) {
+    userModel.checkIdAvailability(id, function (error, results) {
         if (error) throw error;
 
         var availability = {
@@ -307,7 +307,7 @@ exports.check_id_availability = function (req, res) {
 exports.check_nickname_availability = function (req, res) {
     const nickname = req.body.nickname;
 
-    userModel.checkNicknameAvailability(nickname,function (error,results) {
+    userModel.checkNicknameAvailability(nickname, function (error, results) {
         if (error) throw error;
 
         var availability = {
@@ -322,7 +322,7 @@ exports.check_nickname_availability = function (req, res) {
 exports.check_email_availability = function (req, res) {
     const email = req.body.email;
 
-    userModel.checkEmailAvailability(email,function (error,results) {
+    userModel.checkEmailAvailability(email, function (error, results) {
         if (error) throw error;
 
         var availability = {
@@ -338,7 +338,7 @@ exports.check_nickname = function (req, res) {
     const nickname = req.body.nickname;
     const userId = req.session.user_id;
 
-    userModel.checkNicknameAvailability(nickname,function (error,results) {
+    userModel.checkNicknameAvailability(nickname, function (error, results) {
         if (error) throw error;
 
         var check = {
@@ -354,7 +354,7 @@ exports.check_email = function (req, res) {
     const email = req.body.email;
     const userId = req.session.user_id;
 
-    userModel.checkEmailAvailability(email,function (error,results) {
+    userModel.checkEmailAvailability(email, function (error, results) {
         if (error) throw error;
 
         var check = {
@@ -566,7 +566,7 @@ exports.findID = function (req, res) {
 };
 
 //아이디 찾기 프로세스
-exports.find_id = function (req,res) {
+exports.find_id = function (req, res) {
     const name = req.body.name;
     const email = req.body.email;
 
@@ -694,7 +694,7 @@ exports.myPost = function (req, res) {
 };
 
 // 작성한 게시글 가져오는 함수
-myPostList = function (req, res, nickname, postsPerPage, link){
+myPostList = function (req, res, nickname, postsPerPage, link) {
     // userModel을 사용하여 사용자의 프로필 정보 가져오기
     userModel.getUserProfileByUsername(nickname, (error, results) => {
         if (error) {
@@ -703,7 +703,7 @@ myPostList = function (req, res, nickname, postsPerPage, link){
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
 
             // 작성한 게시글 가져오는 부분
-            postModel.getPostsByUserNum(userProfile.mem_code,(error, data)=>{
+            postModel.getPostsByUserNum(userProfile.mem_code, (error, data) => {
                 if (error) {
                     res.status(500).send('Internal Server Error');
                 }
@@ -747,7 +747,7 @@ exports.myProfileInfo = function (req, res) {
     isLogined(req, res);
     const userId = req.session.user_id;// 로그인된 사용자의 아이디
 
-    res.render('myProfileInfo', {user: req.session});
+    res.render('myProfileInfo', { user: req.session });
 };
 
 // 개인 정보 수정 창 들어갈때 비밀번호 확인
@@ -759,7 +759,7 @@ exports.editMyProfile = function (req, res) {
     const password = req.body.pwd;
 
     if (id && password) {             // id와 pw가 입력되었는지 확인
-        userModel.getMyProfile(id, password, function(error, results) {
+        userModel.getMyProfile(id, password, function (error, results) {
             if (error) throw error;
             if (results.length > 0) {
                 const myProfile = results[0]; // 프로필 정보를 myProfile 변수로 저장
@@ -785,17 +785,17 @@ exports.editMyInfo = function (req, res) {
     const email = req.body.email;
     const phone = req.body.phone;
 
-    userModel.getUserProfile(id, function (error, results){
+    userModel.getUserProfile(id, function (error, results) {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
         } else {
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
-            if(nickname==userProfile.mem_nickname && email == userProfile.mem_email && phone == userProfile.mem_phone){
+            if (nickname == userProfile.mem_nickname && email == userProfile.mem_email && phone == userProfile.mem_phone) {
                 res.send(`<script type="text/javascript">
             alert('수정된 정보가 없습니다.');
             history.back();</script>`);
-            } else{
-                userModel.updateUserInfo(id,nickname,phone,email,function (error, data){
+            } else {
+                userModel.updateUserInfo(id, nickname, phone, email, function (error, data) {
                     if (error) {
                         res.render('error'); // 에러 화면 렌더링 또는 다른 처리
                     } else {
@@ -840,15 +840,18 @@ exports.withdrawal = function (req, res) {
     const password = req.body.pwd;
 
     if (id && password) {             // id와 pw가 입력되었는지 확인
-        userModel.getMyProfile(id, password, function(error, results) {
+        userModel.getMyProfile(id, password, function (error, results) {
             if (error) throw error;
             if (results.length > 0) {
-                userModel.withdrawal(id, password, function (error, data) {
+                userModel.withdrawal(id, password, function (error, data, mem_code) {
                     if (error) throw error;
                     req.session.is_logined = false;
-                    res.send(`<script type="text/javascript">
+                    const memCode = mem_code.mem_code;
+                    friendModel.fwithdrawal(memCode, function (err, fresult) {
+                        res.send(`<script type="text/javascript">
                     opener.parent.location='/';
                     window.close();</script>`);
+                    })
                 });
             } else {
                 res.send(`<script type="text/javascript">alert("비밀번호가 일치하지 않습니다."); 
@@ -863,17 +866,17 @@ exports.withdrawal = function (req, res) {
 
 
 // 한줄 소개 수정
-exports.updateProfileIntro = function (req, res){
+exports.updateProfileIntro = function (req, res) {
     isLogined(req, res);
 
     const id = req.session.user_id;
     const newIntro = req.body.memIntro;
-    userModel.getUserProfile(id, function (error, results){
+    userModel.getUserProfile(id, function (error, results) {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
         } else {
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
-            if(newIntro==userProfile.mem_intro){
+            if (newIntro == userProfile.mem_intro) {
                 res.send(`<script type="text/javascript">
             alert('수정된 내용이 없습니다.');
             history.back();</script>`);
@@ -882,7 +885,9 @@ exports.updateProfileIntro = function (req, res){
                     if (error) throw error;
                     res.send(`<script type="text/javascript">alert("한 줄 소개가 수정되었습니다."); location.href="/auth/mypage";</script>`);
                 });
-            }}});
+            }
+        }
+    });
 }
 
 //유저프로필 조회
@@ -893,7 +898,7 @@ exports.userProfile = function (req, res) {
         if (error) {
             res.render('error'); // 에러 화면 렌더링 또는 다른 처리
         } else if (results.length === 0) { // 사용자가 없는 경우
-            res.render('userProfile', { userProfile: { mem_nickname: "Former User", mem_intro: "탈퇴한 사용자입니다."} });
+            res.render('userProfile', { userProfile: { mem_nickname: "Former User", mem_intro: "탈퇴한 사용자입니다." } });
         } else {
             const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
             res.render('userProfile', { userProfile: userProfile });
@@ -920,7 +925,7 @@ exports.profile = function (req, res) {
 
 
             // 작성한 게시글 가져오는 부분
-            postModel.getPostsByUserNum(userProfile.mem_code,(error, data)=>{
+            postModel.getPostsByUserNum(userProfile.mem_code, (error, data) => {
                 if (error) {
                     console.error(error);
                     res.status(500).send('Internal Server Error');
