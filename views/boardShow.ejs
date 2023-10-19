@@ -210,10 +210,10 @@
                                         <form
                                             action="/community/show/<%= data.post_num %>/edit/<%= moreComments[i].cmt_num %>"
                                             method="POST" class="update-form" style="display: none;">
-                                            <textarea id="comment-input-Area1" name="cmt_content"
-                                                oninput="byteCount(this, 'byte-counta')"><%= moreComments[i].cmt_content %></textarea>
+                                            <textarea id="comment-input-Area<%= i %>" name="cmt_content"
+                                                oninput="byteCount(this, 'byteCount<%= i %>')"><%= moreComments[i].cmt_content %></textarea>
                                             <div class="submit">
-                                                <p id="byte-counta">0 byte</p>
+                                                <p id="byteCount<%= i %>">0 byte</p>
                                                 <button class="button btnFade btnBlack" type="submit"> 등록 </button>
                                             </div>
                                         </form>
