@@ -173,15 +173,15 @@ body:hover #cursor {
 }
 
 #play-button button {
-  width: 140px;
-  height: 40px;
+  width: 200px;
+  height: 65px;
 
   border: none;
   border-radius: 20px;
   background-color: #fff;
   color: #161616;
 
-  font-size: 1em;
+  font-size: 1.5em;
   font-weight: bold;
 
   margin-right: 15px;

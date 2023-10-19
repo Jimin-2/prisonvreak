@@ -11,7 +11,8 @@
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/myPage.css">
+  <link rel="stylesheet" type="text/css" href="/css/profile.css">
+
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
@@ -85,153 +86,73 @@
                   <textarea id="memIntro" name="memIntro" rows="3" placeholder="한 줄 소개"
                     readonly><%= userProfile.mem_intro%></textarea>
           </div>
-
           <!-- 마이페이지 두 번재 레이아웃 -->
           <div id="second">
-            <h2>
-              <%= userProfile.mem_nickname %> Post
-            </h2>
+            <h2> <%= userProfile.mem_nickname %> Post </h2>
             <hr>
             <div id="myPostList">
               <table>
                 <thead>
-                  <tr class="title">
-                    <th>번호</th>
-                    <th>제목</th>
-                    <th>글쓴이</th>
-                    <th>날짜</th>
-                    <th>조회수</th>
-                  </tr>
+                <tr class="title">
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>글쓴이</th>
+                  <th>날짜</th>
+                  <th>조회수</th>
+                </tr>
                 </thead>
                 <tbody class="content">
-                  <% for (let i=0; i < data.length; i++) { %>
-                    <tr>
-                      <td>
-                        <%= data[i].post_num %>
-                      </td>
-                      <td>
-                        <a href="/notice/show/<%= data[i].post_num %>">
-                          <%= data[i].post_title %>
-                        </a>
-                      </td>
-                      <td>
-                        <%= data[i].post_usernum %>
-                      </td>
-                      <td>
-                        <%= data[i].formattedCreatedAt %>
-                      </td>
-                      <td>
-                        <%= data[i].post_hit %>
-                      </td>
-                    </tr>
-                    <% } %>
+                <% for (let i=0; i < data.length; i++) { %>
+                  <tr>
+                    <td>
+                      <%= data[i].post_num %>
+                    </td>
+                    <td>
+                      <a href="/community/show/<%= data[i].post_num %>">
+                        <%= data[i].post_title %>
+                      </a>
+                    </td>
+                    <td>
+                      <%= data[i].post_usernum %>
+                    </td>
+                    <td>
+                      <%= data[i].formattedCreatedAt %>
+                    </td>
+                    <td>
+                      <%= data[i].post_hit %>
+                    </td>
+                  </tr>
+                <% } %>
                 </tbody>
               </table>
             </div>
             <div class="pagination">
-              <% if (prevPage !==null) { %>
-                <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo;
-                  이전</a>
-                <% } else { %>
-                  <span class="disabled">&laquo; 이전</span>
-                  <% } %>
-
-                    <% for (let i=startPage; i <=endPage; i++) { %>
-                      <% if (i===currentPage) { %>
-                        <span class="active">
-                          <%= i %>
-                        </span>
-                        <% } else { %>
-                          <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">
-                            <%= i %>
-                          </a>
-                          <% } %>
-                            <% } %>
-
-                              <% if (nextPage !==null) { %>
-                                <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음
-                                  &raquo;</a>
-                                <% } else { %>
-                                  <a href="#" id="disabledNextPage">다음 &raquo;</a>
-                                  <script>
-                                    document.getElementById("disabledNextPage").addEventListener("click", function (event) {
-                                      event.preventDefault();
-                                      alert("더 이상 페이지가 없습니다.");
-                                    });
-                                  </script>
-                                  <% } %>
-            </div>
-          </div>
-        </div>
-          <textarea id="memIntro" name="memIntro" rows="3" placeholder="한 줄 소개" readonly><%= userProfile.mem_intro%></textarea>
-      </div>
-
-      <!-- 마이페이지 두 번재 레이아웃 -->
-        <div id="second">
-          <h2> <%= userProfile.mem_nickname %> Post </h2>
-          <hr>
-          <div id="myPostList">
-            <table>
-              <thead>
-              <tr class="title">
-                <th>번호</th>
-                <th>제목</th>
-                <th>글쓴이</th>
-                <th>날짜</th>
-                <th>조회수</th>
-              </tr>
-              </thead>
-              <tbody class="content">
-              <% for (let i=0; i < data.length; i++) { %>
-                <tr>
-                  <td>
-                    <%= data[i].post_num %>
-                  </td>
-                  <td>
-                    <a href="/community/show/<%= data[i].post_num %>">
-                      <%= data[i].post_title %>
-                    </a>
-                  </td>
-                  <td>
-                    <%= data[i].post_usernum %>
-                  </td>
-                  <td>
-                    <%= data[i].formattedCreatedAt %>
-                  </td>
-                  <td>
-                    <%= data[i].post_hit %>
-                  </td>
-                </tr>
-              <% } %>
-              </tbody>
-            </table>
-          </div>
-          <div class="pagination">
-            <% if (prevPage !== null) { %>
-              <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
-            <% } else { %>
-              <span class="disabled">&laquo; 이전</span>
-            <% } %>
-
-            <% for (let i = startPage; i <= endPage; i++) { %>
-              <% if (i === currentPage) { %>
-                <span class="active"><%= i %></span>
+              <% if (prevPage !== null) { %>
+                <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo; 이전</a>
               <% } else { %>
-                <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
+                <span class="disabled">&laquo; 이전</span>
               <% } %>
-            <% } %>
 
-            <% if (nextPage !== null) { %>
-              <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
-            <% } else { %>
-              <a href="#" id="disabledNextPage">다음 &raquo;</a>
-              <script>
-                document.getElementById("disabledNextPage").addEventListener("click", function(event) {
-                  event.preventDefault();
-                  alert("더 이상 페이지가 없습니다.");
-                });
-              </script>
-            <% } %>
+              <% for (let i = startPage; i <= endPage; i++) { %>
+                <% if (i === currentPage) { %>
+                  <span class="active"><%= i %></span>
+                <% } else { %>
+                  <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>"><%= i %></a>
+                <% } %>
+              <% } %>
+
+              <% if (nextPage !== null) { %>
+                <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음 &raquo;</a>
+              <% } else { %>
+                <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                <script>
+                  document.getElementById("disabledNextPage").addEventListener("click", function(event) {
+                    event.preventDefault();
+                    alert("더 이상 페이지가 없습니다.");
+                  });
+                </script>
+              <% } %>
+            </div>
           </div>
         </div>
       </div>
@@ -251,7 +172,7 @@
 
           // window.open 메서드를 사용하여 팝업 창을 열음
           const user2_id = '<%= userProfile.mem_nickname %>'; // 상대방 ID
-          window.open(`/msg/sendMessage/${user2_id}`, 'popup', 'width=500,height=600,top=300,left=600,resizable=no');
+          window.open(`/msg/sendMessage/${user2_id}`, 'popup', 'width=720,height=800,top=300,left=600,resizable=no');
         }
 
         // 링크 클릭 시 팝업 창 열기 함수를 호출
