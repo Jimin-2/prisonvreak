@@ -37,7 +37,7 @@
             <hr>
             <ul>
               <li><a href="/auth/mypage"> 내 프로필 </a></li>
-              <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
+              <li><a href="" id="openPopup"> 개인 정보 수정 </a></li>
               <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
               <li><a href="/msg/message"> 쪽지함 </a></h3>
               </li>
@@ -122,6 +122,23 @@
             });
           });
         });
+      // 팝업 창을 열기 위한 함수
+      function openPopup() {
+        // 현재 호스트와 프로토콜을 가져와서 URL을 생성
+        const baseUrl = window.location.protocol + '//' + window.location.host;
+
+        // 라우터 주소를 추가하여 완전한 URL을 생성
+        const routerUrl = baseUrl + '/auth/myProfileInfo';
+
+        // window.open 메서드를 사용하여 팝업 창을 열음
+        window.open(routerUrl, 'popup', 'width=1100,height=760,top=300,left=600,resizable=no');
+      }
+
+      // 링크 클릭 시 팝업 창 열기 함수를 호출
+      document.getElementById('openPopup').addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 동작(링크 이동)을 막습니다.
+        openPopup(); // 팝업 열기 함수를 호출합니다.
+      });
     </script>
 </body>
 </html>
