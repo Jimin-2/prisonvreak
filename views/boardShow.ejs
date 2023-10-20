@@ -59,11 +59,13 @@
                                 <!-- 작성일, 조회수, 마지막 수정일시를 병렬로 표시 -->
                                 <div class="date-info">
 
-                                    <p>작성일: <%= data.post_created_at %>
+                                    <p>작성일: <% if (data.post_updated_at !== null) { %>
+                                        <%= data.post_updated_at %> 수정됨.
+                                      <% } else { %>
+                                        <%= data.post_created_at %>
+                                      <% } %>
                                     </p>
                                     <p>조회수: <%= data.post_hit %>
-                                    </p>
-                                    <p>마지막 수정일시: <%= data.post_updated_at %>
                                     </p>
                                 </div>
                             </div>
@@ -148,7 +150,11 @@
                                                 <div class="comment-between-section">
                                                     <div>
                                                         <a class="date">
-                                                            <%= moreComments[i].cmt_created_at %>
+                                                            <% if (moreComments[i].cmt_updated_at !== null) { %>
+                                                                <%= moreComments[i].cmt_updated_at %> 수정됨.
+                                                              <% } else { %>
+                                                                <%= moreComments[i].cmt_created_at %>
+                                                              <% } %>
                                                         </a>
                                                     </div>
 
