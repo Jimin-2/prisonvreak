@@ -33,11 +33,19 @@
             <hr>
         </div>
 
-        <form id="form" action="" method="">
+        <form id="form" action="" method="post" enctype="multipart/form-data">
             <div id="titleForm" class="form">
                 <h4> 제목 </h4>
                 <input type="text" name="post_title" id="post_title" placeholder="제목을 입력해 주세요"
                     value="<%= data.post_title %>" class="form-control" required>
+            </div>
+
+            <div class="form">
+                <h4> 첨부파일 </h4>
+                <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*" style="font-size: 1em;">
+                <% if (data.post_image) { %>
+                    <img id="imagePreview" src="<%= data.post_image %>" alt="Image Preview" style="max-width: 200px;">
+                <% } %>
             </div>
 
             <div id="contentForm" class="form">
@@ -82,6 +90,15 @@
         // 폼 제출
         form.submit();
     }
+
+    document.getElementById('post_image').addEventListener('change', function(event) {
+    const reader = new FileReader();
+    reader.onload = function() {
+        const output = document.getElementById('imagePreview');
+        output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+});
 </script>
 
 <!-- footer -->

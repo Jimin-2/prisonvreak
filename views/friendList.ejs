@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,7 +36,7 @@
             <hr>
             <ul>
               <li><a href="/auth/mypage"> 내 프로필 </a></li>
-              <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
+              <li><a href="" id="openPopup"> 개인 정보 수정 </a></li>
               <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
               <li><a href="/msg/message"> 쪽지함 </a></h3>
               </li>
@@ -51,37 +50,76 @@
         </div>
         <div id="secondLayout">
           <div id="first">
-            <h2> 친구 목록 </h2>
-            <ul class="friend-list">
-              <% if (friendList && friendList.length> 0) { %>
-                <% for (let i=friendList.length - 1; i>= 0; i--) { %>
-                  <% if (friendList[i].status==='accepted' ) { %>
-                    <li class="friend-item">
-                      <span class="user-info">
-                        <img style="margin-right: 10px;" src="<%= friendList[i].mem_profile %>" width="30px"
-                        alt="<%= friendList[i].mem_nickname %>'s Profile">
-                        <span class="user-id">
-                          <% if (friendList[i].user1_mem_code===login_code) { %>
-                            <%= friendList[i].user2_mem_code %>
-                            <% } else { %>
-                              <%= friendList[i].user1_mem_code %>
-                              <% } %>
-                            </span>
-                            <span class="user-nickname">
-                              <%= friendList[i].mem_nickname %>
-                            </span>  
+            <h2>친구 목록</h2>
+            <div class="friend-list-container">
+              <ul class="friend-list">
+                <% if (friendList && friendList.length> 0) { %>
+                  <% for (let i=friendList.length - 1; i>= 0; i--) { %>
+                    <% if (friendList[i].status==='accepted' ) { %>
+                      <li class="friend-item">
+                        <span class="user-info">
+                          <img style="margin-right: 10px;" src="<%= friendList[i].mem_profile %>" width="30px"
+                            alt="<%= friendList[i].mem_nickname %>'s Profile">
+                          <span class="user-id">
+                            <% if (friendList[i].user1_mem_code===login_code) { %>
+                              <%= friendList[i].user2_mem_code %>
+                                <% } else { %>
+                                  <%= friendList[i].user1_mem_code %>
+                                    <% } %>
                           </span>
-                          <button class="delete-button"
-                            data-user-id="<%= friendList[i].user1_mem_code === login_code ? friendList[i].user2_mem_code : friendList[i].user1_mem_code %>">친구
-                            삭제</button>
-                    </li>
-                    <% } %>
+                          <span class="user-nickname" onclick="showProfile('<%= friendList[i].mem_nickname %>')" style="cursor: pointer">
+                            <%= friendList[i].mem_nickname %>
+                          </span>
+                          <div id="profileModal" class="modal">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                          </div>
+                        </span>
+                        <button class="delete-button"
+                          data-user-id="<%= friendList[i].user1_mem_code === login_code ? friendList[i].user2_mem_code : friendList[i].user1_mem_code %>">친구
+                          삭제</button>
+                      </li>
                       <% } %>
-                        <% } else { %>
-                          <p class="no-friends-message">친구를 만들어보세요! ^^</p>
-                          <% } %>
+                        <% } %>
+                          <% } else { %>
+                            <p class="no-friends-message">친구를 만들어보세요! ^^</p>
+                            <% } %>
+              </ul>
+            </div>
+            <br><br><br>
+            <h2>사용자 검색</h2>
+            <div id="search-form">
+              <form action="/userSearch" method="get">
+                <select id="searchOption" name="searchOption">
+                  <option value="usernickname">닉네임</option>
+                  <option value="usercode">코드</option>
+                </select>
+                <input type="text" id="search" name="keyword" placeholder="검색하세요.">
+                <button id="search-button" type="submit">검색</button>
+              </form>
+            </div>
+            <ul class="second-item">
+              <% if (Array.isArray(search) && search.length> 0) { %>
+                <% for (let i=0; i < search.length; i++) { %>
+                  <li class="second-item">
+                    <img class="user-profile" style="margin-right: 10px;" src="<%= search[i].mem_profile %>"
+                      width="30px" alt="<%= search[i].mem_nickname %>'s Profile">
+                    <span class="user-id">
+                      <%= search[i].mem_code %>
+                    </span>
+                    <span class="search-user-id" onclick="showProfile('<%= search[i].mem_nickname %>')" style="cursor: pointer">
+                      <%= search[i].mem_nickname %>
+                    </span>
+                    <div id="profileModal" class="modal">
+                      <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
+                    <button class="friend-request-button" data-user-id="<%= search[i].mem_code %>"
+                      data-status="<%= search[i].status.status %>">친구신청</button>
+                  </li>
+                  <% } %>
+                    <% } else { %>
+                      <p class="search-no-results-message">검색 결과가 없습니다.</p>
+                      <% } %>
             </ul>
-
           </div>
         </div>
       </div>
@@ -90,38 +128,131 @@
     <!-- footer -->
     <%- include('partials/footer')%>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
           const deleteButtons = document.querySelectorAll(".delete-button");
-          
+          const requestButtons = document.querySelectorAll(".friend-request-button");
+
           deleteButtons.forEach((button) => {
             button.addEventListener("click", (event) => {
               const confirmDelete = confirm('친구를 삭제하시겠습니까?');
               const friend_code = event.target.getAttribute("data-user-id");
               if (confirmDelete) {
-              fetch('/deleteFriend', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ friend_code: friend_code }),
-              })
-                .then(response => response.json())
-                .then(data => {
-                  console.log(data)
-                  if (data) {
-                    location.reload();
-                  } else {
-                    alert('친구 삭제 오류');
-                  }
+                fetch('/deleteFriend', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ friend_code: friend_code }),
                 })
-                .catch(error => {
-                  console.error('친구 삭제 오류:', error);
-                });
+                  .then(response => response.json())
+                  .then(data => {
+                    console.log(data)
+                    if (data) {
+                      location.reload();
+                    } else {
+                      alert('친구 삭제 오류');
+                    }
+                  })
+                  .catch(error => {
+                    console.error('친구 삭제 오류:', error);
+                  });
               }
             });
           });
+
+          requestButtons.forEach((button) => {
+            const status = button.getAttribute("data-status");
+            if (status === "not_friends") {
+              button.textContent = "친구신청";
+            } else if (status === "pending") {
+              button.textContent = "친구 대기중";
+              button.disabled = true;
+            } else if (status === "accepted") {
+              button.textContent = "친구!";
+              button.disabled = true;
+            }
+            button.addEventListener("click", (event) => {
+              const confirmRequest = confirm('친구 신청하시겠습니까?');
+              const friend_code = event.target.getAttribute("data-user-id");
+              if (confirmRequest) {
+                fetch('/sendFriendRequest', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ friend_code }),
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.success) {
+                      alert('친구 신청이 완료되었습니다.');
+                      button.innerText = '친구 요청 완료!';
+                      button.disabled = true;
+                    } else {
+                      alert('친구 신청중 오류 발생');
+                    }
+                  });
+              }
+            });
+          });
+
         });
-    </script>
+
+
+        function showProfile(username) {
+          // 모달 요소 가져오기
+          const modal = document.getElementById('profileModal');
+
+          // 모달 내용을 동적으로 로드
+          fetch(`/auth/userProfile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
+                  .then((response) => response.text())
+                  .then((html) => {
+                    modal.innerHTML = html; // userprofile.ejs의 HTML을 모달 내용에 설정
+                  })
+                  .catch((error) => {
+                    console.error('Error fetching profile:', error);
+                  });
+
+          // 모달 표시
+          modal.style.display = 'block';
+        }
+
+        // 모달 닫기 함수
+        function closeModal() {
+          const modal = document.getElementById('profileModal');
+
+          // 모달을 숨김 처리
+          modal.style.display = 'none';
+        }
+
+        window.addEventListener('click', function (event) {
+          const modal = document.getElementById('profileModal');
+          if (event.target === modal) {
+            closeModal();
+          }
+        });
+
+
+
+        // 팝업 창을 열기 위한 함수
+        function openPopup() {
+          // 현재 호스트와 프로토콜을 가져와서 URL을 생성
+          const baseUrl = window.location.protocol + '//' + window.location.host;
+
+          // 라우터 주소를 추가하여 완전한 URL을 생성
+          const routerUrl = baseUrl + '/auth/myProfileInfo';
+
+          // window.open 메서드를 사용하여 팝업 창을 열음
+          window.open(routerUrl, 'popup', 'width=1100,height=760,top=300,left=600,resizable=no');
+        }
+
+        // 링크 클릭 시 팝업 창 열기 함수를 호출
+        document.getElementById('openPopup').addEventListener('click', function (event) {
+          event.preventDefault(); // 기본 동작(링크 이동)을 막습니다.
+          openPopup(); // 팝업 열기 함수를 호출합니다.
+        });
+      </script>
 </body>
+
 </html>

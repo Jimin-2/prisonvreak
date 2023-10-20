@@ -28,7 +28,10 @@ const boardController = {
         res.status(500).send('Internal Server Error');
         return;
       }
-      result.post_created_at = moment(result.post_created_at).format('YYYY-MM-DD');
+      result.post_created_at = moment(result.post_created_at).format('YY.MM.DD. HH:mm');
+      if (result.post_updated_at !== null) {
+        result.post_updated_at = moment(result.post_updated_at).format('YY.MM.DD. HH:mm');
+      };
 
       // postInfo 가져오기
       postModel.getNicknameByPostId(post_num, async (error, post_nick, post_pro) => {
@@ -53,6 +56,13 @@ const boardController = {
             try {
               const commentCount = comments.filter(comment => comment.is_deleted === 0).length;
 
+
+              comments.forEach(comment => {
+                if (comment.cmt_updated_at !== null) {
+                  comment.cmt_updated_at = moment(comment.cmt_updated_at).format('YY.MM.DD HH:mm:ss');
+                }
+              });
+              
               // 중복된 cmt_usernum을 허용한 배열 생성
               const usernums = comments.map(comment => comment.cmt_usernum);
               commentModel.getMemberByUserNum(usernums, post_num, (error, commentInfo) => {
@@ -82,7 +92,6 @@ const boardController = {
                       additionalInfo: commentInfo[index],
                     }));
 
-                    
                     // 댓글 페이지네이션 계산
                     const currentComments = req.query.page ? parseInt(req.query.page) : 1;
                     const perPage = 10;
@@ -91,6 +100,8 @@ const boardController = {
                     const moreComments = commentsWithInfo.slice(startIndex, endIndex);
                     const totalPages = Math.ceil(commentsWithInfo.length / perPage);
                     const nextPage = moreComments.length == perPage && currentComments < totalPages;
+
+                    console.log(moreComments);
 
                     res.render('boardShow', {
                       post_num: post_num,
@@ -125,7 +136,7 @@ const boardController = {
     });
   },
 
-  showList: (req, res, searchResults= []) => {
+  showList: (req, res, searchResults = []) => {
     postModel.excludedUserNum(1, (error, results) => {
       if (error) {
         console.error(error);
@@ -134,7 +145,7 @@ const boardController = {
       }
 
       const reversedResults = results.reverse();
-      const postsPerPage = 10; // 한 페이지당 표시되는 게시물 수
+      const postsPerPage = 20; // 한 페이지당 표시되는 게시물 수
       const totalPosts = reversedResults.length;
       const totalPages = Math.ceil(totalPosts / postsPerPage);
       const currentPage = req.query.page ? parseInt(req.query.page) : 1;
@@ -142,11 +153,11 @@ const boardController = {
       let startIndex, endIndex;
 
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
 
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
@@ -199,19 +210,19 @@ const boardController = {
   communitySearch: (req, res) => {
     const keyword = req.query.keyword;
     if (!keyword) {
-        res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
-        return;
+      res.send('<script>alert("검색어를 입력하세요"); history.back();</script>');
+      return;
     }
     postModel.communitySearch(keyword, (error, communitySearch) => {
       if (error) {
-          console.error(error);
-          res.status(500).send('Internal Server Error');
-          return;
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+        return;
       }
 
       if (communitySearch.length === 0) {
-          res.send('<script>alert("검색결과가 없습니다."); history.back();</script>');
-          return;
+        res.send('<script>alert("검색결과가 없습니다."); history.back();</script>');
+        return;
       }
 
       const reversedResults = communitySearch.reverse();
@@ -223,11 +234,11 @@ const boardController = {
       let startIndex, endIndex;
 
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
 
@@ -247,34 +258,34 @@ const boardController = {
         });
       }
 
-    // 모든 게시물의 사용자 정보를 병렬로 가져오는 Promise 배열
-    const userInfoPromises = paginatedResults.map(post => getUserInfo(post));
+      // 모든 게시물의 사용자 정보를 병렬로 가져오는 Promise 배열
+      const userInfoPromises = paginatedResults.map(post => getUserInfo(post));
 
-    Promise.all(userInfoPromises)
-      .then(userInfos => {
-        const formattedResults = paginatedResults.map((post, index) => ({
-          ...post,
-          formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD'),
-          userInfo: userInfos[index],
-        }));
-        console.log(formattedResults)
-        res.render('board', {
-          cdata: formattedResults,
-          totalPages: totalPages,
-          currentPage: currentPage,
-          prevPage,
-          startPage,
-          endPage,
-          nextPage,
-          communitySearch: communitySearch,
+      Promise.all(userInfoPromises)
+        .then(userInfos => {
+          const formattedResults = paginatedResults.map((post, index) => ({
+            ...post,
+            formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD'),
+            userInfo: userInfos[index],
+          }));
+          console.log(formattedResults)
+          res.render('board', {
+            cdata: formattedResults,
+            totalPages: totalPages,
+            currentPage: currentPage,
+            prevPage,
+            startPage,
+            endPage,
+            nextPage,
+            communitySearch: communitySearch,
+          });
+        })
+        .catch(error => {
+          console.error(error); // 에러 처리
+          res.status(500).send('Internal Server Error');
         });
-      })
-      .catch(error => {
-        console.error(error); // 에러 처리
-        res.status(500).send('Internal Server Error');
-      });
-  });
-},
+    });
+  },
 
   deletePost: (req, res) => {
     const postNum = req.params.post_num;
@@ -320,8 +331,10 @@ const boardController = {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const postNum = req.params.post_num;
+    const imageUrl = req.file ? req.file.location : null;
     postModel.updatePost(
       body.post_title,
+      imageUrl,
       body.post_content,
       koreanTime,
       postNum,
@@ -461,11 +474,11 @@ const noticeController = {
 
       let startIndex, endIndex;
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
 
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
@@ -525,11 +538,11 @@ const noticeController = {
 
       let startIndex, endIndex;
       if (currentPage === totalPages) {
+        startIndex = (totalPages - 1) * postsPerPage;
         endIndex = totalPosts;
-        startIndex = Math.max(endIndex - (totalPosts % postsPerPage), 0);
       } else {
         startIndex = (currentPage - 1) * postsPerPage;
-        endIndex = startIndex + postsPerPage;
+        endIndex = Math.min(startIndex + postsPerPage, totalPosts);
       }
 
       const paginatedResults = reversedResults.slice(startIndex, endIndex);
@@ -537,7 +550,7 @@ const noticeController = {
         ...post,
         formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
       }));
-      
+
       res.render('notice', {
         data: formattedResults,
         search: formattedResults, // 검색 결과를 전달

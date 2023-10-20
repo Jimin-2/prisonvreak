@@ -1,6 +1,6 @@
-#section {
+section {
   width: 100%;
-  height: 1000px;
+  height: 1200px;
 
   display: flex;
   justify-content: center;
@@ -8,9 +8,62 @@
   text-align: center;
 }
 
-#container {
-  width: 400px;
-  height: 800px;
+#layout {
+  width: 1200px;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+}
+
+#firstLayout, #secondLayout {
+  margin-top: 100px;
+}
+
+#firstLayout {
+  width: 300px;
+  height: 950px;
+
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-color: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#firstLayout hr {
+  width: 80%;
+  margin-bottom: 30px;
+}
+
+.myPageList {
+  margin-left: 30px;
+}
+
+.myPageList h2 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 15px;
+  margin-left: 10px;
+
+  margin-top: 80px;
+}
+
+.myPageList li {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  margin-left: 30px;
+}
+
+#secondLayout {
+  width: 800px;
+  height: 950px;
+
+  margin-left: 50px;
 
   display: flex;
   justify-content: center;
@@ -20,76 +73,176 @@
   flex-direction: column;
   flex-wrap: wrap;
 
-  color: white;
-
-  border-radius: 15px;
-  background-color: #161616;
+  background-color: white;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-#container img {
-  width: 180px;
-  height: 180px;
-  border-radius: 70%;
-  overflow: hidden;
+#secondLayout h2 {
+  font-size: 2.2em;
+  font-weight: bold;
 
-  margin: 0px 0px 15px 0px;
+  text-align: left;
+
+  margin-bottom: 30px;
 }
 
-#profileCon h5 {
-  margin-bottom: 20px;
+
+/* 마이페이지 첫번째 */
+
+#first {
+  width: 90%;
+  height: 600px;
+
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
-#profileCon a {
-  margin-left: 5px;
-  margin-right: 5px;
-
-  color: #ccc;
-}
-
-#introduce {
-  width: 100%;
-  height: 150px;
-
-  margin-top: 15px;
-  margin-bottom: 20px;
-
-  border: 1px solid #ccc;
-}
-
-#introduce div {
+#myProfile {
   display: flex;
   justify-content: left;
   align-items: flex-start;
   text-align: left;
 
-  margin: 10px 10px 10px 10px;
-}
-
-#commuCon {
+  margin-left: 10px;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-#commuCon h2 {
+#profileImg {
+  width: 200px;
+  height: 200px;
+  background-color: black;
+  object-fit: cover; /* 이미지가 크기를 맞추며 비율을 유지하도록 설정 */
+}
+
+#myProfileInfo {
+  margin-left: 20px;
   margin-bottom: 10px;
 }
 
-table {
+#myProfileInfo hr {
+  margin-top: 10px;
+}
+
+#myProfileInfo div {
+  width: 470px;
+
+  font-size: 1em;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#myProfileInfo h3 {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+  font-size: 2em;
+}
+
+#rank {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  margin-top: 20px;
+}
+
+#rank div {
+  margin-top: 10px;
+
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+#rank h4 {
+
+  font-weight: 900;
+  font-size: 1.2em;
+}
+
+#memIntro {
+  width: 93%;
+  height: 100px;
+  resize: none;
+  margin-top: 20px;
+  margin-left: 10px;
+
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  text-align: left;
+
+  border-radius: 15px;
+  border: 1px solid #161616;
+}
+#textCount {
+  display: inline-block;
+  float: right;
+  font-size: 0.7em;
+  color: #161616;
+}
+.button {
+  margin-top: 10px;
+  display: block;
+  float: right;
+  width: 50px;
+  height: 30px;
+  line-height: 3px;
+  color: #161616;
+  border-radius: 5px;
+}
+
+.btnFade.btnBlack:hover {
+  background: #161616;
+  color: white;
+}
+
+/* 마이페이지 두번째 */
+
+#second {
+  width: 90%;
+  height: 350px;
+}
+
+#other {
   width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: right;
+  align-items: flex-end;
+
+  margin-bottom: 5px;
+}
+
+table {
+  width: 90%;
   text-align: center;
+  border: 1px solid #fff;
   border-spacing: 1px;
   margin: auto;
 }
 
 table td {
   padding: 10px;
-  color: #ccc;
 }
 
 table th {
   padding: 10px;
-}
-
-#chat {
-  ;
 }

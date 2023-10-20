@@ -155,15 +155,13 @@ exports.checkMatching = function (req, res) {
 
 // 랭크 생성
 exports.createRank = function (req, res){
-  let room_num;
   const cleartime = req.body.cleartime;
   const vr_userCode = req.body.vr_userCode;
   const web_userCode = req.body.web_userCode;
   gameModel.checkRoom(web_userCode,vr_userCode,(error,results)=>{
       if(error)  throw ('error');
       if(results[0].web_state === 'ready' && results[0].vr_state === 'ready'){
-          room_num = results[0].room_num;
-          gameModel.createRank(room_num,cleartime,vr_nickname,web_nickname, (error, results)=>{
+          gameModel.createRank(cleartime,vr_userCode,web_userCode, (error, results)=>{
               if(error)  throw ('error');
               gameModel.deleteRoom(web_userCode, vr_userCode, (error, results) => {
                   if (error) throw ('error');
@@ -181,13 +179,34 @@ exports.rankpage = function (req, res){
     gameModel.getRank((error, data)=>{
         if (error) throw ('error');
 
-        const paginatedResults = data.slice(0, 20);
+        const totalPosts = data.length;
+        const totalPages = Math.ceil(totalPosts / 10);
+        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+        const { prevPage, startPage, endPage, nextPage } = noticeController.calculatePagination(currentPage, totalPages);
 
+        let startIndex, endIndex;
+        if (currentPage === totalPages) {
+            startIndex = (totalPages - 1) * 10;
+            endIndex = totalPosts;
+        } else {
+            startIndex = (currentPage - 1) * 10;
+            endIndex = Math.min(startIndex + 10, totalPosts);
+        }
+        const paginatedResults = data.slice(startIndex, endIndex);
         res.render('rank', {
             data: paginatedResults,
+            totalPages: totalPages,
+            currentPage: currentPage,
+            keyword: null,
+            prevPage,
+            startPage,
+            endPage,
+            nextPage,
+            data_length: data.length,
         });
     });
-}
+};
+
 exports.manual = function (req, res) {
     res.render('manual');
 };
@@ -201,4 +220,24 @@ exports.loading = function (req,res){
 
     const userCode = req.session.user_code;
     res.render('loading', {userCode: userCode});
+}
+exports.vrGetAllRank = function (req, res){
+    gameModel.vrGetRank((error, results)=>{
+        if (error) throw ('error');
+
+        res.json(results);
+    })
+}
+
+exports.vrClearGetRank = function (req, res){
+    const cleartime = req.body.clearTime;
+    let data;
+    gameModel.vrClearGetRank(cleartime, (error, result, result2)=>{
+        if (error) throw ('error');
+
+
+        data = result.reverse();
+        const concatdata = data.concat(result2);
+        res.json(concatdata);
+    });
 }

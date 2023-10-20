@@ -58,15 +58,20 @@ const postModel = {
     });
   },
 
-  updatePost: (post_title, post_content, post_updated_at, post_num, callback) => {
-    db.query(
-      'UPDATE post SET post_title = ?, post_content = ?, post_updated_at = ? WHERE post_num = ?',
-      [post_title, post_content, post_updated_at, post_num],
-      () => {
+  updatePost: (post_title, post_image, post_content, post_updated_at, post_num, callback) => {
+    let sql = 'UPDATE post SET post_title = ?, post_content = ?, post_updated_at = ? WHERE post_num = ?';
+    let parameters = [post_title, post_content, post_updated_at, post_num];
+
+    if (post_image) {
+        sql = 'UPDATE post SET post_title = ?, post_image = ?, post_content = ?, post_updated_at = ? WHERE post_num = ?';
+        parameters = [post_title, post_image, post_content, post_updated_at, post_num];
+    }
+
+    db.query(sql, parameters, () => {
         callback();
-      }
-    );
-  },
+    });
+},
+
 
   incrementPostHit: (post_num, callback) => {
     db.query('UPDATE post SET post_hit = post_hit + 1 WHERE post_num = ?', [post_num], (error, results) => {

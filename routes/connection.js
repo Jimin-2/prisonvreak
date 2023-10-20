@@ -9,4 +9,5 @@ router.post('/acceptFriend', friendController.acceptedFriend);
 router.post('/rejectFriend', friendController.rejectFriend);
 router.post('/cancelFriend', friendController.cancelFriend);
 router.post('/deleteFriend', friendController.deleteFriend);
+router.get('/userSearch', friendController.userSearch);
 module.exports = router;
