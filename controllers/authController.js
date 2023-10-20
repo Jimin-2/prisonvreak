@@ -378,20 +378,8 @@ exports.customer_send = function (req, res) {
     const contents = req.body.contents;
 
     // 클라이언트에서 전송한 파일 정보
-    const fileName = req.body.fileName;
-    const fileData = req.body.fileData;
-
-    // 파일 데이터가 있는 경우에만 처리
-    if (fileName && fileData) {
-        // 파일 데이터를 Buffer로 변환
-        const fileBuffer = Buffer.from(fileData.split(',')[1], 'base64');
-        const maxFileSizeBytes = 25 * 1024 * 1024; // 25MB를 바이트로 변환
-
-        if (fileBuffer.length > maxFileSizeBytes) {
-            // 파일 크기가 제한을 초과한 경우
-            return res.send('<script type="text/javascript">alert("첨부파일은 25MB 이하만 첨부가능합니다.");history.back();</script>');
-        }
-    }
+    const fileName = req.body.fileName; // 수정된 부분
+    const fileData = req.body.fileData; // 파일 데이터 (Base64 형식)
 
     // 이메일 발송 설정
     const transporter = nodemailer.createTransport({
@@ -409,8 +397,18 @@ exports.customer_send = function (req, res) {
         text: `고객명: ${name}\n이메일: ${email}\n전화번호:${phone}\n문의내용: ${contents}`,
     };
 
-    // 파일 데이터가 있는 경우에만 첨부
+    // 파일 데이터가 있는 경우에만 처리
     if (fileName && fileData) {
+        // 파일 데이터를 Buffer로 변환
+        const fileBuffer = Buffer.from(fileData.split(',')[1], 'base64');
+        const maxFileSizeBytes = 25 * 1024 * 1024; // 25MB를 바이트로 변환
+
+        if (fileBuffer.length > maxFileSizeBytes) {
+            // 파일 크기가 제한을 초과한 경우
+            return res.send('<script type="text/javascript">alert("첨부파일은 25MB 이하만 첨부가능합니다.");history.back();</script>');
+        }
+
+        // 파일 데이터가 있는 경우에만 첨부
         mailOptions.attachments = [
             {
                 filename: fileName,
@@ -421,12 +419,15 @@ exports.customer_send = function (req, res) {
 
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-            res.send('<script type="text/javascript">alert("파일의 크기가 너무 큽니다 (25MB 이하만 첨부가능합니다!)");history.back();</script>');
+            console.error('이메일 전송 오류:', error);
+            res.send('<script type="text/javascript">alert("이메일 전송 오류가 발생했습니다.");history.back();</script>');
         } else {
+            console.log('이메일 전송 성공:', info.response);
             res.send('<script type="text/javascript">alert("이메일 발송이 완료되었습니다!");document.location.href="/auth/customer";</script>');
         }
     });
 };
+
 
 
 
