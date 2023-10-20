@@ -289,6 +289,7 @@ const boardController = {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const imageUrl = req.file ? req.file.location : null;
+
     postModel.getMemNumByMemId(userId, (error, memnum) => {
       postModel.insertPost(
         body.post_title,
