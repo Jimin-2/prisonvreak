@@ -53,13 +53,11 @@ exports.loginProcess = function (id, password, callback) {
 };
 
 // 유저코드와 비밀번호로 사용자 정보 조회
-exports.vrLoginProcess = function (userCode, password, callback) {
-  db.query('SELECT * FROM member WHERE mem_code = ? AND mem_password = ?', [userCode, password], function (error, results, fields) {
+exports.vrLoginProcess = function (id, password, callback) {
+  db.query('SELECT * FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
     if (error) {
       callback(error, null);
     } else {
-
-      console.log(results);
       callback(null, results);
     }
   });
@@ -250,48 +248,43 @@ exports.updateProfileIntro = function (userId, newIntro, callback ) {
 
 exports.getUserProfileByUsername = function (username, callback) {
   db.query(`
-    SELECT
-        vr.formatted_game_clear_time AS vr_clear_time,
-        web.formatted_game_clear_time AS web_clear_time,
+      SELECT
+        min(CASE WHEN vr_web.user_type = 'vr' THEN vr_web.clear_time END) AS vr_clear_time,
+        min(CASE WHEN vr_web.user_type = 'web' THEN vr_web.clear_time END) AS web_clear_time,
         m.*
-    FROM (
+      FROM (
         SELECT
+            'vr' AS user_type,
+            vr_user AS user_code,
             CONCAT(
                 LPAD(FLOOR((r.game_clear_time / 60000) % 60), 2, '0'), ':',
                 LPAD(FLOOR((r.game_clear_time / 1000) % 60), 2, '0'), '.',
                 LPAD(r.game_clear_time % 1000, 3, '0')
-            ) AS formatted_game_clear_time,
-            r.vr_user AS user_code
+            ) AS clear_time
         FROM prisonvreak.game_rank AS r
-        WHERE r.game_clear_time = (
-            SELECT MIN(game_clear_time)
-            FROM prisonvreak.game_rank
-            WHERE vr_user = r.vr_user
-        )
-    ) AS vr
-    LEFT JOIN (
+        WHERE vr_user IS NOT NULL
+        UNION ALL
         SELECT
+            'web' AS user_type,
+            web_user AS user_code,
             CONCAT(
                 LPAD(FLOOR((r.game_clear_time / 60000) % 60), 2, '0'), ':',
                 LPAD(FLOOR((r.game_clear_time / 1000) % 60), 2, '0'), '.',
                 LPAD(r.game_clear_time % 1000, 3, '0')
-            ) AS formatted_game_clear_time,
-            r.web_user AS user_code
+            ) AS clear_time
         FROM prisonvreak.game_rank AS r
-        WHERE r.game_clear_time = (
-            SELECT MIN(game_clear_time)
-            FROM prisonvreak.game_rank
-            WHERE web_user = r.web_user
-        )
-    ) AS web ON vr.user_code = web.user_code
-    RIGHT JOIN prisonvreak.member AS m ON vr.user_code = m.mem_code
-    WHERE m.mem_nickname = ?;`, [username], function (error, results, fields) {
-    if (error) {
-      callback(error, null);
-    } else {
-      callback(null, results);
-    }
-  });
+        WHERE web_user IS NOT NULL
+        ) AS vr_web
+        LEFT JOIN prisonvreak.member AS m ON vr_web.user_code = m.mem_code
+        WHERE m.mem_nickname = ?
+        GROUP BY m.mem_code, m.mem_nickname;`, [username],
+      function (error, results, fields) {
+        if (error) {
+          callback(error, null);
+        } else {
+          callback(null, results);
+        }
+    });
 };
 
 exports.getUserProfileByNickname = function (nickname, callback) {

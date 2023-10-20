@@ -139,15 +139,20 @@ exports.login_process = function (req, res) {
 
 // VR 로그인 프로세스
 exports.vr_login_process = function (req, res) {
-    const userCode = req.body.userCode;
+    const id = req.body.id;
     const password = req.body.pwd;
 
-    if (userCode && password) {             // id와 pw가 입력되었는지 확인
-        userModel.vrLoginProcess(userCode, password, function (error, results, fields) {
+    if (id && password) {             // id와 pw가 입력되었는지 확인
+        userModel.vrLoginProcess(id, password, function(error, results, fields) {
+
             if (error) throw error;
             if (results.length > 0) {       // db에서의 반환값이 있으면 로그인 성공
-                res.send('로그인 성공');
-            } else {
+                const userInfo= {
+                    vr_userCode: results[0].mem_code,
+                    message: '로그인 성공',
+                };
+                res.json(userInfo);
+            }  else {
                 res.send('로그인 정보가 일치하지 않습니다.');
             }
         });

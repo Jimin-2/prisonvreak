@@ -22,4 +22,7 @@ router.get('/manual', mainController.manual);
 
 router.get('/loading', mainController.loading);
 
+router.post('/vrGetAfterClearRank', mainController.vrClearGetRank);
+
+router.get('/vrGetAllRank', mainController.vrGetAllRank);
 module.exports = router;
