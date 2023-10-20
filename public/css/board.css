@@ -136,6 +136,9 @@ table.table-template thead th {
   vertical-align: top;
   color: #161616;
   border-bottom: 2px solid #161616;
+  text-align: center;
+  align-items: center;
+  text-align: center;
 }
 table.table-template tbody th {
   width: 150px;
@@ -147,6 +150,10 @@ table.table-template tbody th {
   overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
   text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
   background: white;
+
+  text-align: center;
+  align-items: center;
+  text-align: center;
 }
 table.table-template td {
   width: 350px;
@@ -156,6 +163,10 @@ table.table-template td {
   white-space: nowrap; /* 긴 내용을 한 줄로 표시 */
   overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
   text-overflow: ellipsis; /* 숨겨진 내용을 "..."으로 표시 */
+
+  text-align: center;
+  align-items: center;
+  text-align: center;
 }
 
 .pagination {

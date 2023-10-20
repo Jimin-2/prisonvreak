@@ -155,6 +155,19 @@ hr {
   margin-bottom: 40px;
 }
 
+#notice-comment {
+  width: 900px;
+  min-height: 133px; /* 최소 높이 설정 */
+  flex-grow: 1; /* 자동으로 늘어나도록 설정 */
+  margin-bottom: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
 #comment {
   width: 900px;
   min-height: 133px; /* 최소 높이 설정 */
