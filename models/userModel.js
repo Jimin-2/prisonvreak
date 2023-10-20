@@ -206,23 +206,13 @@ exports.updateUserPassword = function (id, password, callback) {
 
 // 회원 탈퇴 처리
 exports.withdrawal = function (id, password, callback) {
-  db.query('SELECT mem_code FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
-    if (error) {
-      callback(error, null);
-    } else if (results.length > 0) {
-      const mem_code = results[0].mem_code;
-      db.query('DELETE FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
-        if (error) {
-          callback(error, null);
-        } else {
-          callback(null, results, { mem_code: mem_code });
-        }
-      });
-    } else {
-      // 아이디 및 비밀번호가 불일치
-      callback("정보 불일치", null);
-    }
-  });
+   db.query('DELETE FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, results);
+      }
+   });
 };
 
 //프로필 업데이트
