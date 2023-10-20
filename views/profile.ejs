@@ -76,8 +76,16 @@
                       <div id="rank">
                         <h4> 최고기록 </h4>
                         <div id="rankPuzzle">
-                          <div> puzzle 000:000:000 </div>
-                          <div> total 000:000:000 </div>
+                          <% if(userProfile.vr_clear_time == null && userProfile.web_clear_time == null) { %>
+                            <div> 클리어 기록이 없습니다 </div>
+                          <% } else { %>
+                            <% if(userProfile.vr_clear_time != null) { %>
+                              <div> VR <%= userProfile.vr_clear_time %> </div>
+                            <% } %>
+                            <% if(userProfile.web_clear_time != null) { %>
+                              <div> WEB <%= userProfile.web_clear_time %> </div>
+                            <% } %>
+                          <% } %>
                         </div>
                       </div>
 

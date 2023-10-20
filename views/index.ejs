@@ -98,6 +98,7 @@
           </div>
       </div>
         <% } %>
+      </div>
     </div>
   </section>
 
@@ -179,11 +180,6 @@
 			text.innerHTML = text.innerText.split('').map((letters,i) => `<span style="transition-delay:${i*40}ms;">${letters}</span>`).join('');
 		});
 
-		let cursor2 = document.querySelector('#cursor2');
-		document.addEventListener('mousemove', (e) => {
-			cursor2.style.top = e.pageY + 'px';
-			cursor2.style.left = e.pageX + 'px';
-		});
 
 
   </script>

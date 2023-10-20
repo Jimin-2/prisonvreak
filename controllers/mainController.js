@@ -186,11 +186,11 @@ exports.rankpage = function (req, res){
 
         let startIndex, endIndex;
         if (currentPage === totalPages) {
-            startIndex = (totalPages - 1) * postsPerPage;
+            startIndex = (totalPages - 1) * 10;
             endIndex = totalPosts;
         } else {
-            startIndex = (currentPage - 1) * postsPerPage;
-            endIndex = Math.min(startIndex + postsPerPage, totalPosts);
+            startIndex = (currentPage - 1) * 10;
+            endIndex = Math.min(startIndex + 10, totalPosts);
         }
         const paginatedResults = data.slice(startIndex, endIndex);
         res.render('rank', {
@@ -220,4 +220,24 @@ exports.loading = function (req,res){
 
     const userCode = req.session.user_code;
     res.render('loading', {userCode: userCode});
+}
+exports.vrGetAllRank = function (req, res){
+    gameModel.vrGetRank((error, results)=>{
+        if (error) throw ('error');
+
+        res.json(results);
+    })
+}
+
+exports.vrClearGetRank = function (req, res){
+    const cleartime = req.body.clearTime;
+    let data;
+    gameModel.vrClearGetRank(cleartime, (error, result, result2)=>{
+        if (error) throw ('error');
+
+
+        data = result.reverse();
+        const concatdata = data.concat(result2);
+        res.json(concatdata);
+    });
 }
