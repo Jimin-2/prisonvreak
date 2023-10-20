@@ -842,11 +842,12 @@ exports.withdrawal = function (req, res) {
     if (id && password) {             // id와 pw가 입력되었는지 확인
         userModel.getMyProfile(id, password, function (error, results) {
             if (error) throw error;
+            
+            const memCode = results[0].mem_code;
             if (results.length > 0) {
-                userModel.withdrawal(id, password, function (error, data, mem_code) {
+                userModel.withdrawal(id, password, function (error, data) {
                     if (error) throw error;
                     req.session.is_logined = false;
-                    const memCode = mem_code.mem_code;
                     friendModel.fwithdrawal(memCode, function (err, fresult) {
                         res.send(`<script type="text/javascript">
                     opener.parent.location='/';
