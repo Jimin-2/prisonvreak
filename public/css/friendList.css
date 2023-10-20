@@ -18,7 +18,8 @@ section {
 
 }
 
-#firstLayout, #secondLayout {
+#firstLayout,
+#secondLayout {
     margin-top: 100px;
 }
 
@@ -32,7 +33,7 @@ section {
     flex-wrap: wrap;
 
     background-color: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 #firstLayout hr {
@@ -74,7 +75,7 @@ section {
     flex-wrap: wrap;
 
     background-color: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 #secondLayout h2 {
@@ -119,6 +120,10 @@ section {
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
 }
 
+.friend-item:hover {
+    background-color: #dfe2e2;;
+}
+
 .user-info {
     font-size: 16px;
     display: flex;
@@ -160,3 +165,97 @@ section {
 .delete-button:hover {
     background-color: #f11f0e;
 }
+
+.friend-list-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#search-form {
+    text-align: center;
+    padding: 10px;
+}
+
+#searchOption {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#search {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#search-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #0056b3;
+}
+
+
+ul.second-item {
+    list-style: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+li.second-item {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 2px 2px 5px #aaa;
+    border-radius: 5px;
+    display: flex;
+    align-items: flex-start;
+}
+
+li.second-item:hover {
+    background-color: #dfe2e2;
+}
+
+
+.search-user-id {
+    font-weight: bold;
+    margin: 3px;
+}
+
+.search-no-results-message {
+    color: #ff0000;
+    font-style: italic;
+}
+
+.user-profile {
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.friend-request-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.friend-request-button:hover {
+    background-color: #0056b3;
+}
+
+.friend-request-button:disabled {
+    background-color: #ccc;
+  }

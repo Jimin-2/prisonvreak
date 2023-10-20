@@ -203,15 +203,15 @@ exports.updateUserPassword = function (id, password, callback) {
 };
 
 // 회원 탈퇴 처리
-exports.withdrawal = function (id, password, callback){
+exports.withdrawal = function (id, password, callback) {
    db.query('DELETE FROM member WHERE mem_id = ? AND mem_password = ?', [id, password], function (error, results, fields) {
-     if (error) {
-       callback(error, null);
-     } else {
-       callback(null, results);
-     }
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, results);
+      }
    });
-}
+};
 
 //프로필 업데이트
 exports.updateProfile = function (userId, imageURL, callback ) {
