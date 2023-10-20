@@ -275,7 +275,7 @@ exports.getUserProfileByUsername = function (username, callback) {
         FROM prisonvreak.game_rank AS r
         WHERE web_user IS NOT NULL
         ) AS vr_web
-        LEFT JOIN prisonvreak.member AS m ON vr_web.user_code = m.mem_code
+        RIGHT JOIN prisonvreak.member AS m ON vr_web.user_code = m.mem_code
         WHERE m.mem_nickname = ?
         GROUP BY m.mem_code, m.mem_nickname;`, [username],
       function (error, results, fields) {
