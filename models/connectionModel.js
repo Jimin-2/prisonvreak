@@ -23,12 +23,12 @@ const friendModel = {
                         // 'mem_nickname' 값을 'user_mem_code'와 연결
                         const nicknameMap = {};
                         const profileMap = {};
-                
+
                         memResults.forEach((mem) => {
                             nicknameMap[mem.mem_code] = mem.mem_nickname;
                             profileMap[mem.mem_code] = mem.mem_profile;
                         });
-                
+
                         // results 객체에 'mem_nickname' 및 'mem_profile' 추가
                         for (let i = 0; i < results.length; i++) {
                             const userMemCode = userMemCodes[i];
@@ -41,8 +41,6 @@ const friendModel = {
                             results[i].mem_nickname = nicknameMap[userMemCode];
                             results[i].mem_profile = profileMap[userMemCode];
                         }
-                
-                        console.log(results);
                         callback(null, results);
                     }
                 });
@@ -194,16 +192,63 @@ const friendModel = {
             }
         });
     },
-    
+
     fwithdrawal: (mem_code, callback) => {
         db.query('DELETE FROM friendships WHERE user1_mem_code = ? OR user2_mem_code = ?', [mem_code, mem_code], (error, results) => {
-          if (error) {
-            callback(error, null);
-          } else {
-            callback(null, results);
-          }
+            if (error) {
+                callback(error, null);
+            } else {
+                callback(null, results);
+            }
         });
-      },
+    },
+
+    userSearch: (option, keyword, callback) => {
+        let sql = '';
+        let queryParams = ['%' + keyword + '%'];
+
+        if (option === 'usernickname') {
+            sql = 'SELECT * FROM member WHERE mem_nickname LIKE ?';
+        } else if (option === 'usercode') {
+            sql = 'SELECT * FROM member WHERE mem_code LIKE ?';
+        } else {
+            callback(new Error('올바르지 않은 검색 옵션'), null);
+            return;
+        }
+
+        db.query(sql, queryParams, (error, results) => {
+            if (error) {
+                console.error('검색 오류:', error);
+                callback(error, []);
+            } else {
+                callback(null, results);
+            }
+        });
+    },
+
+    userFilter: (login_code, mem_code) => {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT status FROM friendships WHERE (user1_mem_code = ? AND user2_mem_code = ?) OR (user1_mem_code = ? AND user2_mem_code = ?)',
+                [login_code, mem_code, mem_code, login_code],
+                (error, results) => {
+                    if (error) {
+                        console.error('친구 신청 상태 확인 오류:', error);
+                        reject(error);
+                    } else if (results.length === 0) {
+                        resolve({ mem_code: mem_code, button: '친구 신청', status: 'not_friends' });
+                    } else {
+                        const status = results[0].status;
+                        if (status === 'pending') {
+                            resolve({ mem_code: mem_code, button: '친구 대기중', status: 'pending' });
+                        } else if (status === 'accepted') {
+                            resolve({ mem_code: mem_code, button: '친구', status: 'accepted' });
+                        } else {
+                            resolve({ button: '에러', status: 'error' });
+                        }
+                    }
+                });
+        });
+    }
 
 };
 

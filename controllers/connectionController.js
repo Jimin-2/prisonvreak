@@ -1,18 +1,52 @@
 const { friendModel, alarmModel } = require('../models/connectionModel');
 
 const friendController = {
-    friendList: (req, res) => {
+    friendList: (req, res, searchResults = []) => {
         const mem_code = req.session.user_code;
         friendModel.getFriends(mem_code, (err, result) => {
             if (err) {
                 console.log(err)
             }
-            res.render('friendList', { friendList: result, login_code: mem_code, });
+            res.render('friendList', { friendList: result, login_code: mem_code, search: searchResults, });
         });
     },
 
+    userSearch: (req, res) => {
+        const option = req.query.searchOption;
+        const keyword = req.query.keyword;
+        const login_code = req.session.user_code;
+
+        friendModel.userSearch(option, keyword, (err, search) => {
+            if (err) {
+                console.error(err);
+            } else {
+                const filteredSearch = search.filter(item => item.mem_code !== login_code);
+                const memCodes = filteredSearch.map(item => item.mem_code);
+
+                // 모든 mem_code에 대한 결과를 처리
+                const promises = memCodes.map(mem_code => {
+                    return friendModel.userFilter(login_code, mem_code);
+                });
+
+                Promise.all(promises)
+                    .then(statuses => { // filterdSearch에 합치기
+                        filteredSearch.forEach((item, index) => {
+                            item.status = statuses[index];
+                        });
+                        
+                        friendController.friendList(req, res, filteredSearch);
+                    })
+                    .catch(error => {
+                        // 오류 처리
+                        console.error(error);
+                    });
+            }
+        });
+    },
+
+
     sendFriendRequest: (req, res) => {
-        const login_code = req.body.login_code;
+        const login_code = req.session.user_code;
         const friend_code = req.body.friend_code;
 
         friendModel.sendFriendRequest(login_code, friend_code, (error, success) => {
@@ -81,7 +115,7 @@ const friendController = {
             }
         });
     },
-    
+
     deleteFriend: (req, res) => {
         const friend_code = req.body.friend_code;
         const login_code = req.session.user_code;
@@ -94,7 +128,7 @@ const friendController = {
                 res.status(200).json({ data: result, message: '친구 삭제 성공' });
             }
         })
-    }
+    },
 
 };
 
