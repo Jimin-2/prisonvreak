@@ -76,7 +76,7 @@
 <script>
   const chatroom = document.getElementById("chatroom");
   // 팝업 열기 함수
-  function openPopup(user2_id) {
+  function open_Popup(user2_id) {
     const url = `/msg/sendMessage/${user2_id}`;
     chatroom.src = url;
   }
@@ -86,7 +86,7 @@
     link.addEventListener('click', function (e) {
       e.preventDefault();
       const receiverName = link.getAttribute('data-receiver-name');
-      openPopup(receiverName);
+      open_Popup(receiverName);
     });
   });
 
