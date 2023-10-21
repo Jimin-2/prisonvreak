@@ -10,6 +10,7 @@ const imageRouter = require('./routes/img');
 const mainRouter = require('./routes/main');
 const msgRouter = require('./routes/message');
 const connectionRouter = require('./routes/connection');
+const { friendModel } = require('./models/connectionModel');
 
 const app = express();
 const port = 8080;
@@ -56,6 +57,28 @@ app.use(passport.session());
     }
 });*/
 
+app.use((req, res, next) => {
+    if (req.session.is_logined) {
+        const mem_code = req.session.user_code;
+        friendModel.pendingList(mem_code, (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          console.log("출력합니다");
+          console.log(req.session);
+          if (result && 'user1Array' in result) {
+            res.locals.newAlarm = true;
+          } else {
+            res.locals.newAlarm = false;
+          }
+          next();
+        });
+      } else {
+        res.locals.newAlarm = false;
+        // req.session.user_code이 초기 값이 없을 때 실행하지 않음
+        next();
+      }
+});
 
 // 인증 라우터
 app.use('/auth', authRouter);

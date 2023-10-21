@@ -1,0 +1,16 @@
+<ul>
+    <li><a href="/auth/mypage"> 내 프로필 </a></li>
+    <li><a href="" id="openPopup"> 개인 정보 수정 </a></li>
+    <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
+    <li><a href="/msg/message"> 쪽지함 </a></li>
+    <li><a href="/myPage/newAlarm"> 알림 </a>
+        <% if (newAlarm) { %>
+            <span class="new-text"> new </span> <% } %></li>
+    <li><a href="/myPage/friendList"> 친구목록 </a></li>
+</ul>
+<style>
+    .new-text {
+        color: red;
+        font-weight: bold;
+    }
+</style>

@@ -731,6 +731,7 @@ myPostList = function (req, res, nickname, postsPerPage, link) {
                     ...post,
                     formattedCreatedAt: moment(post.post_created_at).format('YYYY-MM-DD')
                 }));
+                console.log(res.locals.newAlarm);
                 res.render(link, {
                     userProfile: userProfile,
                     data: formattedResults,
@@ -740,7 +741,8 @@ myPostList = function (req, res, nickname, postsPerPage, link) {
                     prevPage,
                     startPage,
                     endPage,
-                    nextPage
+                    nextPage,
+                    newAlarm: res.locals.newAlarm,
                 });
             });
         }
