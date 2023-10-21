@@ -7,7 +7,7 @@ const friendController = {
             if (err) {
                 console.log(err)
             }
-            res.render('friendList', { friendList: result, login_code: mem_code, search: searchResults, });
+            res.render('friendList', { friendList: result, login_code: mem_code, search: searchResults, newAlarm: res.locals.newAlarm});
         });
     },
 
@@ -20,7 +20,7 @@ const friendController = {
             if (err) {
                 console.error(err);
             } else {
-                const filteredSearch = search.filter(item => item.mem_code !== login_code);
+                const filteredSearch = search.filter(item => (item.mem_code !== login_code) && (item.mem_code !== '1'));
                 const memCodes = filteredSearch.map(item => item.mem_code);
 
                 // 모든 mem_code에 대한 결과를 처리
@@ -66,8 +66,15 @@ const friendController = {
             if (err) {
                 console.log(err)
             }
-            console.log(result);
-            res.render('newAlarm', { pendingList: result });
+            
+            if (result && 'user1Array' in result) {
+                res.locals.newAlarm = true;
+            } else {
+                res.locals.newAlarm = false;
+            }
+            console.log(res.locals.newAlarm);
+
+            res.render('newAlarm', { pendingList: result, newAlarm: res.locals.newAlarm });
         });
     },
 
@@ -129,7 +136,6 @@ const friendController = {
             }
         })
     },
-
 };
 
 const alarmController = {

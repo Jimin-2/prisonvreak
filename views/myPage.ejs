@@ -27,40 +27,35 @@
   <!-- header -->
   <%- include('partials/header')%>
 
-  <!-- Section -->
-  <section id="section">
-    <div id="layout">
-      <div id="firstLayout">
-        <div class="myPageList">
-          <h2> 계정 정보 </h2>
-          <hr>
-          <ul>
-            <li><a href="/auth/mypage"> 내 프로필 </a></li>
-            <li><a href="" id="openPopup"> 개인 정보 수정 </a></li>
-            <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
-            <li><a href="/msg/message"> 쪽지함 </a></li>
-            <li><a href="/myPage/newAlarm"> 알림 </a></li>
-            <li><a href="/myPage/friendList"> 친구목록 </a></li>
+    <!-- Section -->
+    <section id="section">
+      <div id="layout">
+        <div id="firstLayout">
+          <div class="myPageList">
+            <h2> 계정 정보 </h2>
+            <hr>
+            <%- include('partials/menu')%>
+          </div>
 
-          </ul>
         </div>
+        <div id="secondLayout">
 
-      </div>
-      <div id="secondLayout">
-
-        <!-- 마이페이지 첫 번재 레이아웃 --><!--마이페이지 메인-->
-        <div id="first">
-          <h2> 내 프로필 </h2>
+          <!-- 마이페이지 첫 번재 레이아웃 --><!--마이페이지 메인-->
+          <div id="first">
+            <h2> 내 프로필 </h2>
 
             <div id="myProfile">
-             <div id="profileImg">
-              <img src="<%= userProfile.mem_profile %>" alt="프로필 이미지" width="200" height="200">
-            </div>
+              <div id="profileImg">
+                <img src="<%= userProfile.mem_profile %>" alt="프로필 이미지" width="200" height="200">
+              </div>
 
               <div id="myProfileInfo">
-                <h3> <%= userProfile.mem_nickname %> </h3>
+                <h3>
+                  <%= userProfile.mem_nickname %>
+                </h3>
                 <div>
-                  <p class="next"> # <%= userProfile.mem_code %></p>
+                  <p class="next"> # <%= userProfile.mem_code %>
+                  </p>
                 </div>
 
                 <hr>
@@ -68,109 +63,118 @@
                 <div id="rank">
                   <h4> 최고기록 </h4>
                   <div id="rankPuzzle">
-                    <% if(userProfile.vr_clear_time == null && userProfile.web_clear_time == null) { %>
+                    <% if(userProfile.vr_clear_time==null && userProfile.web_clear_time==null) { %>
                       <div> 클리어 기록이 없습니다 </div>
-                    <% } else { %>
-                      <% if(userProfile.vr_clear_time != null) { %>
-                        <div> VR <%= userProfile.vr_clear_time %> </div>
-                      <% } %>
-                      <% if(userProfile.web_clear_time != null) { %>
-                        <div> WEB <%= userProfile.web_clear_time %> </div>
-                      <% } %>
-                    <% } %>
+                      <% } else { %>
+                        <% if(userProfile.vr_clear_time !=null) { %>
+                          <div> VR <%= userProfile.vr_clear_time %>
+                          </div>
+                          <% } %>
+                            <% if(userProfile.web_clear_time !=null) { %>
+                              <div> WEB <%= userProfile.web_clear_time %>
+                              </div>
+                              <% } %>
+                                <% } %>
                   </div>
                 </div>
 
               </div>
             </div>
-          <form action="/auth/updateProfileIntro" method="post">
-            <p id="textCount">0자 / 100자</p>
-            <textarea id="memIntro" name="memIntro" rows="3" oninput="byteCount(this)" placeholder="한 줄 소개"><%= userProfile.mem_intro%></textarea>
-            <button class="button btnFade btnBlack" type="submit"> 수정 </button>
-          </form>
-        </div>
-
-        <!-- 마이페이지 두 번재 레이아웃 -->
-        <div id="second">
-          <h2> My Post </h2>
-          <div id="other">
-            <a href="/auth/myPost">더보기</a>
+            <form action="/auth/updateProfileIntro" method="post">
+              <p id="textCount">0자 / 100자</p>
+              <textarea id="memIntro" name="memIntro" rows="3" oninput="byteCount(this)"
+                placeholder="한 줄 소개"><%= userProfile.mem_intro%></textarea>
+              <button class="button btnFade btnBlack" type="submit"> 수정 </button>
+            </form>
           </div>
 
-          <hr>
+          <!-- 마이페이지 두 번재 레이아웃 -->
+          <div id="second">
+            <h2> My Post </h2>
+            <div id="other">
+              <a href="/auth/myPost">더보기</a>
+            </div>
 
-          <div>
-            <table>
-              <thead>
-                <tr class="title">
-                  <th>번호</th>
-                  <th>제목</th>
-                  <th>글쓴이</th>
-                  <th>날짜</th>
-                  <th>조회수</th>
-                </tr>
-              </thead>
-              <tbody class="content">
-              <% if(data.length===0){ %>
-                <tr><td>작성된 게시글이 없습니다</td></tr>
-              <% } else { %>
-              <% for (let i=0; i < data.length; i++) { %>
-                <tr>
-                  <td>
-                    <%= data[i].post_num %>
-                  </td>
-                  <td>
-                    <a href="/community/show/<%= data[i].post_num %>">
-                      <%= data[i].post_title %>
-                    </a>
-                  </td>
-                  <td>
-                    <%= userProfile.mem_nickname %>
-                  </td>
-                  <td>
-                    <%= data[i].formattedCreatedAt %>
-                  </td>
-                  <td>
-                    <%= data[i].post_hit %>
-                  </td>
-                </tr>
-              <% } %>
-              <% } %>
-              </tbody>
-            </table>
+            <hr>
+
+            <div>
+              <table>
+                <thead>
+                  <tr class="title">
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>글쓴이</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                  </tr>
+                </thead>
+                <tbody class="content">
+                  <% if(data.length===0){ %>
+                    <tr>
+                      <td>작성된 게시글이 없습니다</td>
+                    </tr>
+                    <% } else { %>
+                      <% for (let i=0; i < data.length; i++) { %>
+                        <tr>
+                          <td>
+                            <%= data[i].post_num %>
+                          </td>
+                          <td>
+                            <a href="/community/show/<%= data[i].post_num %>">
+                              <% let postTitle=data[i].post_title; if (postTitle.length> 20) {
+                                postTitle = postTitle.substring(0, 20) + "...";
+                                }
+                                %>
+                                <%= postTitle %>
+                            </a>
+                          </td>
+                          <td>
+                            <%= userProfile.mem_nickname %>
+                          </td>
+                          <td>
+                            <%= data[i].formattedCreatedAt %>
+                          </td>
+                          <td>
+                            <%= data[i].post_hit %>
+                          </td>
+                        </tr>
+                        <% } %>
+                          <% } %>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
 
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- footer -->
-  <%- include('partials/footer')%>
+    <!-- footer -->
+    <%- include('partials/footer')%>
 
-  <script>
-    function byteCount(textarea) {
-      let content = textarea.value;
+      <script>
+        function byteCount(textarea) {
+          let content = textarea.value;
 
-      // 글자수 세기
-      if (content.length === 0 || content === '') {
-        document.querySelector('#textCount').innerText = '0자 / 100자';
-      } else {
-        document.querySelector('#textCount').innerText = content.length + '자 / 100자';
-      }
+          // 글자수 세기
+          if (content.length === 0 || content === '') {
+            document.querySelector('#textCount').innerText = '0자 / 100자';
+          } else {
+            document.querySelector('#textCount').innerText = content.length + '자 / 100자';
+          }
 
-      // 글자수 제한
-      if (content.length > 100) {
-        // 200자 부터는 타이핑 되지 않도록
-        textarea.value = textarea.value.substring(0, 100);
-        // 200자 넘으면 알림창 뜨도록
-        alert('글자수는 100자까지 입력 가능합니다.');
-        document.querySelector('#textCount').innerText = '100자 / 100자';
-      }
-    };
+          // 글자수 제한
+          if (content.length > 100) {
+            // 200자 부터는 타이핑 되지 않도록
+            textarea.value = textarea.value.substring(0, 100);
+            // 200자 넘으면 알림창 뜨도록
+            alert('글자수는 100자까지 입력 가능합니다.');
+            document.querySelector('#textCount').innerText = '100자 / 100자';
+          }
+        };
 
-    byteCount(document.querySelector('#memIntro'));
-  </script>
+        byteCount(document.querySelector('#memIntro'));
+      </script>
 
 </body>
 
@@ -189,9 +193,10 @@
   }
 
   // 링크 클릭 시 팝업 창 열기 함수를 호출
-  document.getElementById('openPopup').addEventListener('click', function(event) {
+  document.getElementById('openPopup').addEventListener('click', function (event) {
     event.preventDefault(); // 기본 동작(링크 이동)을 막습니다.
     openPopup(); // 팝업 열기 함수를 호출합니다.
   });
 </script>
+
 </html>
