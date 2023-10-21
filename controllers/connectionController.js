@@ -67,7 +67,7 @@ const friendController = {
                 console.log(err)
             }
             
-            if (result && 'user1Array' in result) {
+            if (result && 'user2Array' in result && result.user2Array.length > 0) {
                 res.locals.newAlarm = true;
             } else {
                 res.locals.newAlarm = false;
