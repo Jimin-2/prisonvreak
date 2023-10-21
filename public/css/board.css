@@ -153,6 +153,10 @@ table.table-template tbody th {
   align-items: center;
   text-align: center;
   background: white;
+
+  text-align: center;
+  align-items: center;
+  text-align: center;
 }
 table.table-template td {
   width: 350px;

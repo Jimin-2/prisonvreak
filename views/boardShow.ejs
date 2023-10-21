@@ -387,9 +387,23 @@
             closeModal();
           }
         });
+        
+        for (let i = 0; i <= 999; i++) {
+                const pageId = `comment-input-Area${i}`;
+                const element = document.getElementById(pageId);
+                if (element) {
+                    element.style.width = '900px';
+                    element.style.height = '80px';
+                    element.style.padding = '5px';
+                    element.style.fontSize = '1em';
+                    element.style.borderRadius = '5px';
+                    element.style.borderColor = '#cccccc';
+                    element.style.marginTop = '10px';
+                    element.style.resize = 'none';
+                }
+            }
 
             
         </script>
 </body>
-
 </html>

@@ -32,6 +32,7 @@
 
   <div id="sectionRap">
   <!-- Section -->
+
     <section id="section">
       <div class="rank-img">
         <img src="/img/rankingLogo.png" style="width: 40%;">
@@ -65,7 +66,7 @@
                       (알 수 없음)
                     </p>
                     <% } else { %>
-                      <img src="<%= data[i].vr_profile %>" alt="프로필 이미지">
+                      <img src="<%= data[i].vr_profile %>" alt="프로필 이미지" style="cursor: pointer;" onclick="showProfile('<%= data[i].vr_nickname %>')">
                       <p style="margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].vr_nickname %>')">
                         <%= data[i].vr_nickname %>
                       </p>
@@ -84,7 +85,7 @@
                       (알 수 없음)
                     </p>
                     <% } else { %>
-                      <img src="<%= data[i].web_profile %>" alt="프로필 이미지">
+                      <img src="<%= data[i].web_profile %>" alt="프로필 이미지" style="cursor: pointer;" onclick="showProfile('<%= data[i].web_nickname %>')">
                       <p style=" margin-left: 10px; cursor: pointer;" onclick="showProfile('<%= data[i].web_nickname %>')">
                         <%= data[i].web_nickname %>
                       </p>

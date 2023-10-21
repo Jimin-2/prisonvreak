@@ -34,17 +34,7 @@
           <div class="myPageList">
             <h2> 계정 정보 </h2>
             <hr>
-            <ul>
-              <li><a href="/auth/mypage"> 내 프로필 </a></li>
-              <li><a href="" id="openPopup"> 개인 정보 수정 </a></li>
-              <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
-              <li><a href="/msg/message"> 쪽지함 </a></h3>
-              </li>
-              <li><a href="/myPage/newAlarm"> 알림 </a></h3>
-              </li>
-              <li><a href="/myPage/friendList"> 친구목록 </a></h3>
-              </li>
-            </ul>
+            <%- include('partials/menu')%>
           </div>
 
         </div>
@@ -67,9 +57,12 @@
                                   <%= friendList[i].user1_mem_code %>
                                     <% } %>
                           </span>
-                          <span class="user-nickname">
+                          <span class="user-nickname" onclick="showProfile('<%= friendList[i].mem_nickname %>')" style="cursor: pointer">
                             <%= friendList[i].mem_nickname %>
                           </span>
+                          <div id="profileModal" class="modal">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                          </div>
                         </span>
                         <button class="delete-button"
                           data-user-id="<%= friendList[i].user1_mem_code === login_code ? friendList[i].user2_mem_code : friendList[i].user1_mem_code %>">친구
@@ -103,9 +96,12 @@
                     <span class="user-id">
                       <%= search[i].mem_code %>
                     </span>
-                    <span class="search-user-id">
+                    <span class="search-user-id" onclick="showProfile('<%= search[i].mem_nickname %>')" style="cursor: pointer">
                       <%= search[i].mem_nickname %>
                     </span>
+                    <div id="profileModal" class="modal">
+                      <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
                     <button class="friend-request-button" data-user-id="<%= search[i].mem_code %>"
                       data-status="<%= search[i].status.status %>">친구신청</button>
                   </li>
@@ -191,6 +187,40 @@
             });
           });
 
+        });
+
+
+        function showProfile(username) {
+          // 모달 요소 가져오기
+          const modal = document.getElementById('profileModal');
+
+          // 모달 내용을 동적으로 로드
+          fetch(`/auth/userProfile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
+                  .then((response) => response.text())
+                  .then((html) => {
+                    modal.innerHTML = html; // userprofile.ejs의 HTML을 모달 내용에 설정
+                  })
+                  .catch((error) => {
+                    console.error('Error fetching profile:', error);
+                  });
+
+          // 모달 표시
+          modal.style.display = 'block';
+        }
+
+        // 모달 닫기 함수
+        function closeModal() {
+          const modal = document.getElementById('profileModal');
+
+          // 모달을 숨김 처리
+          modal.style.display = 'none';
+        }
+
+        window.addEventListener('click', function (event) {
+          const modal = document.getElementById('profileModal');
+          if (event.target === modal) {
+            closeModal();
+          }
         });
 
 
