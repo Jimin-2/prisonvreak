@@ -107,18 +107,22 @@ function onClickPlayButton() {
 
   sabotage.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 7);
+    sabotage.disabled = true;
+    setTimeout(() => {
+       sabotage.disabled = false;
+    }, 15000);
   });
 
   opendoor.addEventListener("click", function () {
     sendClickEvent(channel, videoPlayer, 8);
-    this.disabled = true;
-    sabotage.disabled = false;
-    cctv_1.disabled = false;
-    cctv_2.disabled = false;
-    cctv_3.disabled = false;
-    cctv_4.disabled = false;
-    cctv_5.disabled = false;
-    cctv_6.disabled = false;
+      this.disabled = true;
+      sabotage.disabled = false;
+      cctv_1.disabled = false;
+      cctv_2.disabled = false;
+      cctv_3.disabled = false;
+      cctv_4.disabled = false;
+      cctv_5.disabled = false;
+      cctv_6.disabled = false;
   });
 }
 

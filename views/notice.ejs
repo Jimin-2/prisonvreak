@@ -46,7 +46,7 @@
             <div id="search-div">
               <form class="search" action="/notice/search" method="get">
                 <input type="text" name="keyword" class="search-input" placeholder="입력">
-                <button class="search-btn" type="submit">검색</button>
+                <button class="search-btn" type="submit" style="cursor: pointer">검색</button>
               </form>
             </div>
 
@@ -66,7 +66,7 @@
                   <div id="main-notice" class="noisy">
 
                       <div class="main-notice-img-layout">
-                        <img src="<%= data[0].post_image %>">
+                        <img src="<%= data[0].post_image %>" onclick="location.href='/notice/show/<%= data[0].post_num %>'" style="cursor: pointer">
                       </div>
 
                       <div class="main-notice-container">
@@ -90,14 +90,11 @@
                 <% for (let i=0; i < search.length; i++) { %>
                   <div class="grid-content">
 
-                  <div class="grid-content-img-layout">
+                  <div class="grid-content-img-layout" onclick="location.href='/notice/show/<%= search[i].post_num %>'" style="cursor: pointer">
                       <img src="<%= search[i].post_image %>">
                   </div>
 
                   <div class="grid-container">
-                    <div class="grid-content-num">
-                      <%= search[i].post_num %>
-                    </div>
                     <div class="grid-content-title">
                       <a href="/notice/show/<%= search[i].post_num %>">
                         <%= search[i].post_title %>
@@ -115,14 +112,11 @@
                       <% for (let i=0; i < data.length; i++) { %>
                         <div class="grid-content">
 
-                          <div class="grid-content-img-layout">
+                          <div class="grid-content-img-layout" onclick="location.href='/notice/show/<%= data[i].post_num %>'" style="cursor: pointer">
                             <img src="<%= data[i].post_image %>">
                           </div>
 
                           <div class="grid-container">
-                            <div class="grid-content-num">
-                              <%= data[i].post_num %>
-                            </div>
                             <div class="grid-content-title">
                               <a href="/notice/show/<%= data[i].post_num %>">
                                 <%= data[i].post_title %>
