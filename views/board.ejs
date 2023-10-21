@@ -72,7 +72,7 @@
                 <!-- <th>번호</th> -->
                 <th>제목</th>
                 <th>글쓴이</th>
-                <th class="reco-class">추천</th>
+                <th>추천</th>
                 <th>날짜</th>
                 <th>조회수</th>
               </tr>
@@ -88,7 +88,7 @@
                       </a>
                     </td>
                     <td>
-                      <div style="display: flex; align-items: center;">
+                      <div id = "tableimg" style="display: flex; align-items: center;">
                         <img src="<%= cdata[i].userInfo[1] %>" alt="프로필 이미지">
                         <p style="margin-left: 10px; cursor: pointer;"
                           onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
@@ -99,7 +99,7 @@
                         </div>
                       </div>
                     </td>
-                    <td class="reco-class">
+                    <td>
                       <a><i class="fa-solid fa-thumbs-up"></i>
                         <%= communitySearch[i].post_like %>
                       </a>
@@ -133,7 +133,7 @@
                               </div>
                             </div>
                           </td>
-                          <td class="reco-class">
+                          <td>
                             <a><i class="fa-solid fa-thumbs-up"></i>
                               <%= post.post_like %>
                             </a>

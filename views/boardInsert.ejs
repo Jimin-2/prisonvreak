@@ -10,7 +10,8 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/boardInsert.css">
+    <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/boardInsert.css">
+    <link rel="stylesheet" media="(max-width: 900px)" href="/css/boardInsert_m.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
@@ -34,7 +35,6 @@
         <div id="layout">
             <div id="sectionTitle">
                 <h1> 커뮤니티 글쓰기 </h1>
-                <hr>
             </div>
 
             <form action="/community/insert" method="post" enctype="multipart/form-data">

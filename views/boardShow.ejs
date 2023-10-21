@@ -14,7 +14,11 @@
     <link rel="stylesheet" type="text/css" href="/css/header.css">
     <link rel="stylesheet" type="text/css" href="/css/footer.css">
 
-    <link rel="stylesheet" type="text/css" href="/css/boardShow.css">
+    <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/boardShow.css">
+    <link rel="stylesheet" media="(max-width: 900px)" href="/css/boardShow_m.css">
+
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- JavaScript -->
     <script src="javascript/index.js"></script>
@@ -53,7 +57,7 @@
                                 <div class="profile-info"
                                     style="display: flex; align-items: center; margin-bottom: 10px;">
 
-                                    <img src="<%= post_pro %>" alt="프로필 사진" width="50px" style="margin-right: 15px;">
+                                    <img src="<%= post_pro %>" alt="프로필 사진" width="40px" style="margin-right: 15px;">
 
                                     <p class="nickname" name="mem_nickname">
                                         <%= post_nick %>
@@ -354,10 +358,10 @@
                 const pageId = `comment-input-Area${i}`;
                 const element = document.getElementById(pageId);
                 if (element) {
-                    element.style.width = '900px';
+                    element.style.width = '97%';
                     element.style.height = '80px';
                     element.style.padding = '5px';
-                    element.style.fontSize = '1em';
+                    element.style.fontSize = '0.8em';
                     element.style.borderRadius = '5px';
                     element.style.borderColor = '#cccccc';
                     element.style.marginTop = '10px';
