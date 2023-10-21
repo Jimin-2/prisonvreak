@@ -64,8 +64,6 @@ app.use((req, res, next) => {
           if (err) {
             console.log(err);
           }
-          console.log("출력합니다");
-          console.log(req.session);
           if (result && 'user1Array' in result) {
             res.locals.newAlarm = true;
           } else {
@@ -75,7 +73,6 @@ app.use((req, res, next) => {
         });
       } else {
         res.locals.newAlarm = false;
-        // req.session.user_code이 초기 값이 없을 때 실행하지 않음
         next();
       }
 });
