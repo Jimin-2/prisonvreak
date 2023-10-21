@@ -62,9 +62,12 @@
                                     <%= data[i].post_num %>
                                 </td>
                                 <td>
-                                    <a href="/community/show/<%= data[i].post_num %>">
-                                        <%= data[i].post_title %>
-                                    </a>
+		                    <a href="/community/show/<%= data[i].post_num %>">
+		                      <% let postTitle=data[i].post_title; if (postTitle.length> 20) {
+		                               postTitle = postTitle.substring(0, 20) + "...";
+		                                }%>
+		                  	<%= postTitle %>
+		                    </a>
                                 </td>
                                 <td>
                                     <%= userProfile.mem_nickname %>
