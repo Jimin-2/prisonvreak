@@ -79,11 +79,18 @@
                 <h2> COLLABORATOR </h2>
                 <br>
                   <p> <%= userProfile.mem_nickname %>님 환영합니다. </p>
-                  <div>
+                <div>
                     <p> Code : <%= userProfile.mem_code %> </p>
                     <br>
-                    <p> VR : <%= userProfile.vr_clear_time %> </p>
-                    <p> WEB : <%= userProfile.web_clear_time %> </p>
+                      <% if(userProfile.vr_clear_time == null && userProfile.web_clear_time == null) { %>
+                      <% } else { %>
+                        <% if(userProfile.vr_clear_time != null) { %>
+                        <p> VR : <%= userProfile.vr_clear_time %> </p>
+                        <% } %>
+                        <% if(userProfile.web_clear_time != null) { %>
+                            <p> WEB : <%= userProfile.web_clear_time %> </p>
+                        <% } %>
+                      <% } %>
                   </div>
               </div>
                 <div id="info-02" class="item02">
@@ -115,49 +122,6 @@
       loadingElement.style.display = "none";
       mainhomeElement.style.display = "grid";
     }, delayInMilliseconds);
-
-    /*// cursor
-    let cursor = document.querySelector('#cursor');
-    let body = document.querySelector('body');
-    document.onmousemove = function (e) {
-      // move cursor
-      cursor.style.top = e.pageY + 'px';
-      cursor.style.left = e.pageX + 'px';
-
-      // add elements to body
-      let element = document.createElement('div');
-      element.className = 'element';
-      body.prepend(element);
-
-      // move elements randomly across x and y axis
-      element.style.left = cursor.getBoundingClientRect().x + 'px';
-      element.style.top = cursor.getBoundingClientRect().y - 20 + 'px';
-
-      setTimeout(function () {
-        let text = document.querySelectorAll('.element')[0],
-          directionX = Math.random(),
-          directionY = Math.random()
-
-        text.style.left = parseInt(text.style.left) - (directionX * (Math.random() * 250)) + 'px';
-        text.style.top = parseInt(text.style.top) - (directionY * (Math.random() * 250)) + 'px';
-        text.style.opacity = 0;
-        text.style.transform = 'scale(0.25)';
-        text.innerHTML = randomText();
-
-        // remove element
-        setTimeout(function () {
-          element.remove()
-        }, 500)
-
-      }, 5)
-    }
-
-    // add random text on numbers
-    function randomText() {
-      var text = ("PRIZONVREAKCANprisonvreakcan").split("");
-      letter = text[Math.floor(Math.random() * text.length)];
-      return letter;
-    }*/
 
     function lines() {
       let sizeW = Math.random() * 12;
