@@ -36,7 +36,7 @@
                 <hr>
                 <ul>
                     <li><a href="/auth/mypage"> 내 프로필 </a></li>
-                    <li><a href="" id="openPopup"> 개인 정보 수정 </a></li>
+                    <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
                     <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
                     <li><a href="/msg/message"> 쪽지함 </a></li>
                     <li><a href="/myPage/newAlarm"> 알림 </a></li>
@@ -69,9 +69,12 @@
                                     <%= data[i].post_num %>
                                 </td>
                                 <td>
-                                    <a href="/community/show/<%= data[i].post_num %>">
-                                        <%= data[i].post_title %>
-                                    </a>
+		                    <a href="/community/show/<%= data[i].post_num %>">
+		                      <% let postTitle=data[i].post_title; if (postTitle.length> 20) {
+		                               postTitle = postTitle.substring(0, 20) + "...";
+		                                }%>
+		                  	<%= postTitle %>
+		                    </a>
                                 </td>
                                 <td>
                                     <%= userProfile.mem_nickname %>

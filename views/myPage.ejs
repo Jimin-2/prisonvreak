@@ -36,7 +36,7 @@
           <hr>
           <ul>
             <li><a href="/auth/mypage"> 내 프로필 </a></li>
-            <li><a href="" id="openPopup"> 개인 정보 수정 </a></li>
+            <li><a href="#" id="openPopup"> 개인 정보 수정 </a></li>
             <li><a href="/auth/mypost"> 작성한 게시글 </a></li>
             <li><a href="/msg/message"> 쪽지함 </a></li>
             <li><a href="/myPage/newAlarm"> 알림 </a></li>
@@ -86,7 +86,7 @@
           <form action="/auth/updateProfileIntro" method="post">
             <p id="textCount">0자 / 100자</p>
             <textarea id="memIntro" name="memIntro" rows="3" oninput="byteCount(this)" placeholder="한 줄 소개"><%= userProfile.mem_intro%></textarea>
-            <button class="button btnFade btnBlack" type="submit"> 수정 </button>
+            <button class="button btnFade btnBlack" type="submit" style="cursor: pointer"> 수정 </button>
           </form>
         </div>
 
@@ -103,11 +103,11 @@
             <table>
               <thead>
                 <tr class="title">
-                  <th>번호</th>
-                  <th>제목</th>
-                  <th>글쓴이</th>
-                  <th>날짜</th>
-                  <th>조회수</th>
+                  <th class="postNum">번호</th>
+                  <th class="postTitle">제목</th>
+                  <th class="postNick">글쓴이</th>
+                  <th class="postDate">날짜</th>
+                  <th class="postHit">조회수</th>
                 </tr>
               </thead>
               <tbody class="content">
@@ -116,21 +116,24 @@
               <% } else { %>
               <% for (let i=0; i < data.length; i++) { %>
                 <tr>
-                  <td>
+                  <td class="postNum">
                     <%= data[i].post_num %>
                   </td>
-                  <td>
+                  <td class="postTitle">
                     <a href="/community/show/<%= data[i].post_num %>">
-                      <%= data[i].post_title %>
+                      <% let postTitle=data[i].post_title; if (postTitle.length> 20) {
+                               postTitle = postTitle.substring(0, 20) + "...";
+                                }%>
+                  	<%= postTitle %>
                     </a>
                   </td>
-                  <td>
+                  <td class="postNick">
                     <%= userProfile.mem_nickname %>
                   </td>
-                  <td>
+                  <td class="postDate">
                     <%= data[i].formattedCreatedAt %>
                   </td>
-                  <td>
+                  <td class="postHit">
                     <%= data[i].post_hit %>
                   </td>
                 </tr>

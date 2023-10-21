@@ -45,17 +45,14 @@
           <div class="profile-info"
             style="display: flex; align-items: center; margin-bottom: 10px;">
                 <p class="nickname" name="mem_nickname">
-                  Admin
+                  관리자
                 </p>
           </div>
-            <!-- 작성일, 조회수, 마지막 수정일시를 병렬로 표시 -->
             <div class="date-info">
 
                 <p>작성일: <%= new Date(data.post_created_at).toISOString().slice(0, 10) %>
                 </p>
                 <p>조회수: <%= data.post_hit %>
-                </p>
-                <p>마지막 수정일시: <%= data.post_updated_at %>
                 </p>
             </div>
         </div>
