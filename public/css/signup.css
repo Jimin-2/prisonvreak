@@ -3,7 +3,7 @@ body {
 }
 
 #section {
-  height: 1400px;
+  height: 1500px;
 
   padding: 0;
   margin: 0;
@@ -16,7 +16,7 @@ body {
 }
 
 #section-social {
-  height: 1200px;
+  height: 1300px;
 
   padding: 0;
   margin: 0;
@@ -32,7 +32,7 @@ body {
   position: relative;
   margin: 100px auto;
   width: 500px;
-  height: 1150px;
+  height: 1200px;
 
   display: flex;
   flex-direction: column;
