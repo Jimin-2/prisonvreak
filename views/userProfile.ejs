@@ -32,7 +32,7 @@
 
 
 <div id="myProfile">
-    <h1><%= userProfile.mem_nickname %>'s 프로필</h1> <!-- userProfile 객체에서 mem_nickname을 사용합니다 -->
+    <h1 id="profileNickname"><%= userProfile.mem_nickname %>'s 프로필</h1> <!-- userProfile 객체에서 mem_nickname을 사용합니다 -->
     <br>
     <div id="profileImg">
         <% if (userProfile && userProfile.mem_profile) { %>
