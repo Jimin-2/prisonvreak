@@ -32,343 +32,382 @@
 </head>
 
 <body>
-    <!-- header -->
-    <%- include('partials/header')%>
-        <!-- Section -->
-        <section id="section">
-            <div id="layout">
+<!-- header -->
+<%- include('partials/header')%>
+<!-- Section -->
+<section id="section">
+    <div id="layout">
+        <div id="title">
+            <h4><a href="/community"> > 커뮤니티 </a></h4>
+            <h1> <%= data.post_title %> </h1>
+            <% if (post_nick===login_nick) { %>
+                <div id="next-list-button">
+                    <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack" style="cursor: pointer;">수정</a>
+                    <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack" style="cursor: pointer;">삭제</a>
+                </div>
+            <% } %>
+        </div>
 
-                        <div id="title">
-                            <h4> > 커뮤니티 </h4>
-                            <h1>
-                                <%= data.post_title %>
-                            </h1>
+        <div id="detail">
+            <div>
+                <div class="profile-info"
+                     style="display: flex; align-items: center; margin-bottom: 10px;">
 
-                            <% if (post_nick===login_nick) { %>
-                                <div id="next-list-button">
-                                    <a href="/community/edit/<%= post_num %>" class="button btnFade btnBlack">수정</a>
-                                    <a href="/community/delete/<%= post_num %>" class="button btnFade btnBlack">삭제</a>
-                                </div>
-                                <% } %>
-                        </div>
+                    <img src="<%= post_pro %>" alt="프로필 사진" width="50px" style="margin-right: 15px; cursor: pointer;" onclick="showProfile('<%= post_nick %>')">
 
-                        <div id="detail">
-                            <div>
-                                <div class="profile-info"
-                                    style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <p class="nickname" name="mem_nickname" onclick="showProfile('<%= post_nick %>')" style="cursor: pointer;">
+                        <%= post_nick %>
+                    </p>
+                    <div id="profileModal" class="modal">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                    </div>
 
-                                    <img src="<%= post_pro %>" alt="프로필 사진" width="40px" style="margin-right: 15px;">
+                </div>
 
-                                    <p class="nickname" name="mem_nickname">
-                                        <%= post_nick %>
-                                    </p>
-                                </div>
+                <!-- 작성일, 조회수, 마지막 수정일시를 병렬로 표시 -->
+                <div class="date-info">
 
-                                <!-- 작성일, 조회수, 마지막 수정일시를 병렬로 표시 -->
-                                <div class="date-info">
-
-                                    <p>작성일: <%= data.post_created_at %>
-                                    </p>
-                                    <p>조회수: <%= data.post_hit %>
-                                    </p>
-                                    <p>마지막 수정일시: <%= data.post_updated_at %>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <br><br>
-                        <br><br>
-
-                        <div id="content">
-                            <p>
-                                <%= data.post_content %>
-                                    <p>
-                                        <img src="<%= data.post_image %>">
-                                    </p>
-                            </p>
-                        </div>
-
-                        <div class="like-button-div">
-                            <a><i class="fa-solid fa-thumbs-up"></i></a><button id="likeButton"> 추천 <%= data.post_like %> </button>
-    
-                                <script>
-                                    const likeButton = document.getElementById("likeButton");
-                                    let postLike = <%= data.post_like %>;
-                                    let isLiked = false;
-    
-                                    likeButton.addEventListener("click", () => {
-                                        if (!isLiked) {
-                                            alert("추천되었습니다.");
-                                            isLiked = true;
-                                            likeButton.textContent = ` 추천 ${postLike + 1}`;
-                                            fetch(`/post-like/<%= post_num %>`, {
-                                                method: 'POST',
-                                            })
-                                                .then(response => response.json())
-                                                .then(data => {
-                                                    isLiked = true; // 클릭이 완료
-                                                })
-                                                .catch(error => {
-                                                    console.error('오류:', error);
-                                                    isLiked = false;
-                                                });
-                                        }
-                                        else {
-                                            alert("이미 추천 버튼을 눌렀습니다.");
-                                        }
-                                    });
-                                </script>
-                            </div>
-
-                        <div class="comment-h2">
-                            <h2> 댓글 <%= commentCount %>
-                            </h2>
-                        </div>
-
-                        <% for (let i = 0; i < moreComments.length; i++) { %>
-                            <% let displayDeletedComment = comments[i].is_deleted && comments.some(comment =>
-                                comment.cmt_refnum === comments[i].cmt_num); %>
-                            <% if (!comments[i].is_deleted || displayDeletedComment) { %>
-                              <div id="comment">
-                                        <div class="<%= moreComments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
-                                            id="comment-layout">
-                                            <div class="comment-layout">
-                                                <div class="comment">
-                                                    <% if (!moreComments[i].is_deleted) { %>
-                                                        <% if(moreComments[i].additionalInfo.mem_profile != null) { %> 
-                                                        <img src="<%= moreComments[i].additionalInfo.mem_profile %>" width="20"
-                                                            alt="프로필 사진">
-                                                            <% } else { %>
-                                                                <img src="/img/profile_default.jpg" width="20" alt="프로필 사진">
-                                                                <% } %>
-                                                        <% if(moreComments[i].additionalInfo.mem_nickname != null) { %>   
-                                                        <div class="comment-nickname">
-                                                            <%= moreComments[i].additionalInfo.mem_nickname %>
-                                                        </div>
-                                                        <% } else { %>
-                                                            <div class="comment-nickname">
-                                                                (알 수 없음)
-                                                            </div>
-                                                            <% } %>
-                                                </div>
-                                                <div class="comment-between-section">
-                                                    <div>
-                                                        <a class="date">
-                                                            <%= moreComments[i].cmt_created_at %>
-                                                        </a>
-                                                    </div>
-
-
-                                                    <div class="more-options">
-                                                        <button class="more-btn"
-                                                            onclick="toggleOptions(this)">더보기</button>
-                                                        <% } %>
-                                                            <div class="options" style="display:none;">
-                                                                <% if(login_nick &&
-                                                                    commentInfo[i].mem_nickname===login_nick) { %>
-                                                                    <button class="update-btn"
-                                                                        onclick="toggleUpdateForm(this)">수정</button>
-                                                                    <form
-                                                                        action="/community/show/<%= data.post_num %>/delete/<%= comments[i].cmt_num %>"
-                                                                        method="POST" class="delete-form">
-                                                                        <button type="submit"
-                                                                            class="delete-btn">삭제</button>
-                                                                    </form>
-                                                                    <% } else { %>
-                                                                        <button class="report-btn"
-                                                                            onclick="report(event)">신고</button>
-                                                                        <% } %>
-                                                            </div>
-                                                    </div>
-                                                </div>
-                                                <div class="comments-content">
-                                                    <% if (moreComments[i].is_deleted && displayDeletedComment) { %>
-                                                        <div class="delete-comment"><p>삭제된 댓글입니다.</p></div>
-                                                        <% } else { %>
-                                                            <%= moreComments[i].cmt_content %>
-                                                                <% if (!moreComments[i].cmt_refnum) { %>
-                                                                    <button class="reply-btn"
-                                                                        onclick="toggleReplyForm(this)">답글</button>
-                                                                    <% } %>
-                                                                        <% } %>
-                                                </div>
-                                                <% } %>
-                                            </div>
-                                            <hr style="background: #e9e9e9; height:1px; border:0;">
-                                            <br>
-
-                                            <!-- 답글 등록 폼 -->
-                                            <form action="/community/show/<%= data.post_num %>" method="POST"
-                                                autocomplete="off" class="reply-form" style="display: none;">
-                                                <input type="hidden" name="post_num" value="<%= data.post_num %>">
-                                                <input type="hidden" name="cmt_refnum"
-                                                    value="<%= comments[i].cmt_num %>">
-                                                <textarea id="comment-input-Area<%= i %>" name="cmt_content"
-                                                    placeholder="답글을 입력하세요."
-                                                    oninput="byteCount(this, 'byte-count<%= i %>')"></textarea>
-                                                <div class="submit">
-                                                    <p id="byte-count<%= i %>">0 byte</p>
-                                                    <button class="button btnFade btnBlack" type="submit">등록</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <!-- 댓글 수정 폼 -->
-                                        <form
-                                            action="/community/show/<%= data.post_num %>/edit/<%= comments[i].cmt_num %>"
-                                            method="POST" class="update-form" style="display: none;">
-                                            <textarea id="comment-input-Area1" name="cmt_content"
-                                                oninput="byteCount(this, 'byte-counta')"><%= comments[i].cmt_content %></textarea>
-                                            <div class="submit">
-                                                <p id="byte-counta">0 byte</p>
-                                                <button class="button btnFade btnBlack" type="submit"> 등록 </button>
-                                            </div>
-                                        </form>
-                                        <% } %>
-
-                                        <div class="pagination">
-                                            <% if (currentComments > 1) { %>
-                                              <a href="?page=<%= currentComments - 1 %>">이전 페이지</a>
-                                            <% } %>
-                                            <% if (moreComments.length === perPage) { %>
-                                              <a href="?page=<%= currentComments + 1 %>">댓글 더보기</a>
-                                            <% } %>
-                                          </div>
-                                          
-
-                                            <form action="/community/show/<%= data.post_num %>" method="POST"
-                                                autocomplete="off">
-                                                <input type="hidden" name="post_num" value="<%= data.post_num %>">
-                                                <div id="comment-input">
-                                                    <div
-                                                        style="display: flex; text-align: center; align-items: center; justify-content: left;">
-                                                        <img src="<%= login_pro %>" width="30">
-                                                        <p style="margin-left: 8px;" name="mem_nickname">
-                                                            <%= login_nick %>
-                                                        </p>
-                                                    </div>
-                                                    <textarea id="comment-input-Area3" name="cmt_content"
-                                                        placeholder="댓글을 입력하세요."
-                                                        oninput="byteCount(this, 'byte-countb')"></textarea>
-                                                    <div class="submit">
-                                                        <p id="byte-countb">0 byte</p>
-                                                    </div>
-                                                    <button class="button btnFade btnBlack" type="submit"> 등록 </button>
-                                                </div>
-                                            </form>
-
-                                            <div class="next-pre-post">
-                                                <% if (nextPost) { %>
-                                                    <div class="next-post">
-                                                        <a href="/community/show/<%= nextPost %>">
-                                                            다음 글: <%= nextTitle %>
-                                                        </a>
-                                                    </div>
-                                                    <% } else { %>
-                                                        <p class="no-next-post">다음 글이 없습니다.</p>
-                                                        <% } %>
-                                                            <% if (previousPost) { %>
-                                                                <div class="previous-post">
-                                                                    <a href="/community/show/<%= previousPost %>">
-                                                                        이전 글: <%= previousTitle %>
-                                                                    </a>
-                                                                </div>
-                                                                <% } else { %>
-                                                                    <p class="no-previous-post">이전 글이 없습니다.</p>
-                                                                    <% } %>
-                                                                        <div class="post-list">
-                                                                            <a href="/community">목록</a>
-                                                                        </div>
-
-                                            </div>
-
-                                    </div>
-
-                                    <div id="commentsList">
-                                        <!-- 여기에 댓글을 추가합니다. -->
-                                    </div>
+                    <p>작성일: <% if (data.post_updated_at !== null) { %>
+                            <%= data.post_updated_at %> 수정됨.
+                        <% } else { %>
+                            <%= data.post_created_at %>
+                        <% } %>
+                    </p>
+                    <p>조회수: <%= data.post_hit %>
+                </div>
             </div>
-        </section>
-        <!-- footer -->
-        <!-- <%- include('partials/footer')%> -->
-        <script>
+        </div>
 
-            function byteCount(textarea, byteCountId) {
-                const text = textarea.value;
-                const byteCount = new TextEncoder('utf-8').encode(text).length;
-                const byteCountText = `${byteCount} byte`;
 
-                // 바이트 수 변화
+        <br><br>
+        <br><br>
 
-                document.getElementById(byteCountId).textContent = byteCountText;
-            }
+        <div id="content">
+            <p>
+                <%= data.post_content %>
+            <p>
+                <img src="<%= data.post_image %>">
+            </p>
+            </p>
+        </div>
 
-            function toggleReplyForm(buttonElement) {
-                const commentDiv = buttonElement.closest('#comment');
-                const replyForm = commentDiv.querySelector('.reply-form');
-                if (replyForm.style.display === 'none' || !replyForm.style.display) {
-                    replyForm.style.display = 'block';
-                } else {
-                    replyForm.style.display = 'none';
-                }
-            }
+        <div class="like-button-div">
+            <a><i class="fa-solid fa-thumbs-up"></i></a><button id="likeButton" style="cursor: pointer"> 추천 <%= data.post_like %> </button>
 
-            function toggleUpdateForm(button) {
-                const commentDiv = button.closest('div#comment');
-                const editForm = commentDiv.querySelector('.update-form');
-                editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-            }
+            <script>
+                const likeButton = document.getElementById("likeButton");
+                let postLike = <%= data.post_like %>;
+                let isLiked = false;
 
-            function toggleOptions(buttonElement) {
-                const moreOptionsDiv = buttonElement.closest('.more-options');
-                const optionsDiv = moreOptionsDiv.querySelector('.options');
-                if (optionsDiv.style.display === 'none' || !optionsDiv.style.display) {
-                    optionsDiv.style.display = 'block';
-                    event.stopPropagation();
-                } else {
-                    optionsDiv.style.display = 'none';
-                }
-            }
-
-            document.addEventListener('click', function (event) {
-                const allOptions = document.querySelectorAll('.options');
-                allOptions.forEach(function (options) {
-                    if (!options.contains(event.target) && options !== event.target) {
-                        options.style.display = 'none';
+                likeButton.addEventListener("click", () => {
+                    if (!isLiked) {
+                        alert("추천되었습니다.");
+                        isLiked = true;
+                        likeButton.textContent = ` 추천 ${postLike + 1}`;
+                        fetch(`/post-like/<%= post_num %>`, {
+                            method: 'POST',
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                isLiked = true; // 클릭이 완료
+                            })
+                            .catch(error => {
+                                console.error('오류:', error);
+                                isLiked = false;
+                            });
+                    }
+                    else {
+                        alert("이미 추천 버튼을 눌렀습니다.");
                     }
                 });
+            </script>
+        </div>
+
+        <div class="comment-h2">
+            <h2> 댓글 <%= commentCount %>
+            </h2>
+        </div>
+
+        <% for (let i = 0; i < moreComments.length; i++) { %>
+            <% let displayDeletedComment = moreComments[i].is_deleted && comments.some(comment =>
+                    comment.cmt_refnum === moreComments[i].cmt_num); %>
+            <% if (!comments[i].is_deleted || displayDeletedComment) { %>
+        <div id="comment">
+            <div class="<%= moreComments[i].cmt_refnum ? 'reply-relative' : 'comment-relative' %>"
+                 id="comment-layout">
+                <div class="comment-layout">
+                    <div class="comment">
+                        <% if (!moreComments[i].is_deleted) { %>
+                            <% if(moreComments[i].additionalInfo.mem_profile != null) { %>
+                                <img src="<%= moreComments[i].additionalInfo.mem_profile %>" width="20"
+                                     alt="프로필 사진" onclick="showProfile('<%= moreComments[i].additionalInfo.mem_nickname %>')" style="cursor: pointer;">
+                            <% } else { %>
+                                <img src="/img/profile_default.jpg" width="20" alt="프로필 사진">
+                            <% } %>
+                            <% if(moreComments[i].additionalInfo.mem_nickname != null) { %>
+                                <div class="comment-nickname" onclick="showProfile('<%= moreComments[i].additionalInfo.mem_nickname %>')" style="cursor: pointer;">
+                                    <%= moreComments[i].additionalInfo.mem_nickname %>
+                                </div>
+                                <div id="profileModal" class="modal">
+                                    <span class="close" onclick="closeModal()">&times;</span>
+                                </div>
+
+                            <% } else { %>
+                                <div class="comment-nickname">
+                                    (알 수 없음)
+                                </div>
+                            <% } %>
+                    </div>
+                    <div class="comment-between-section">
+                        <div>
+                            <a class="date">
+                                <%= moreComments[i].cmt_created_at %>
+                            </a>
+                        </div>
+
+
+                        <div class="more-options">
+                            <button class="more-btn"
+                                    onclick="toggleOptions(this)" style="cursor: pointer">더보기</button>
+                            <% } %>
+                            <div class="options" style="display:none;">
+                                <% if(login_nick &&
+                                        moreComments[i].additionalInfo.mem_nickname === login_nick) { %>
+                                    <button class="update-btn"
+                                            onclick="toggleUpdateForm(this)" style="cursor: pointer">수정</button>
+                                    <form
+                                            action="/community/show/<%= data.post_num %>/delete/<%= moreComments[i].cmt_num %>"
+                                            method="POST" class="delete-form">
+                                        <button type="submit"
+                                                class="delete-btn" style="cursor: pointer">삭제</button>
+                                    </form>
+                                <% } else { %>
+                                    <button class="report-btn"
+                                            onclick="report(event)" style="cursor: pointer">신고</button>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comments-content">
+                        <% if (moreComments[i].is_deleted && displayDeletedComment) { %>
+                            삭제된 댓글입니다.
+                        <% } else { %>
+                            <%= moreComments[i].cmt_content %>
+                            <% if (!moreComments[i].cmt_refnum) { %>
+                                <button class="reply-btn"
+                                        onclick="toggleReplyForm(this)" style="cursor: pointer">답글</button>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <% } %>
+                </div>
+                <hr style="background: #e9e9e9; height:1px; border:0;">
+                <br>
+
+                <!-- 답글 등록 폼 -->
+                <form action="/community/show/<%= data.post_num %>" method="POST"
+                      autocomplete="off" class="reply-form" style="display: none;">
+                    <input type="hidden" name="post_num" value="<%= data.post_num %>">
+                    <input type="hidden" name="cmt_refnum"
+                           value="<%= moreComments[i].cmt_num %>">
+                    <textarea id="comment-input-Area<%= i %>" name="cmt_content"
+                              placeholder="답글을 입력하세요."
+                              oninput="byteCount(this, 'byte-count<%= i %>')"></textarea>
+                    <div class="submit">
+                        <p id="byte-count<%= i %>">0 byte</p>
+                        <button class="button btnFade btnBlack" type="submit" style="cursor: pointer">등록</button>
+                    </div>
+                </form>
+            </div>
+            <!-- 댓글 수정 폼 -->
+            <form
+                    action="/community/show/<%= data.post_num %>/edit/<%= moreComments[i].cmt_num %>"
+                    method="POST" class="update-form" style="display: none;">
+                                            <textarea id="comment-input-Area1" name="cmt_content"
+                                                      oninput="byteCount(this, 'byte-counta')"><%= moreComments[i].cmt_content %></textarea>
+                <div class="submit">
+                    <p id="byte-counta">0 byte</p>
+                    <button class="button btnFade btnBlack" type="submit" style="cursor: pointer"> 등록 </button>
+                </div>
+            </form>
+            <% } %>
+
+            <div class="pagination">
+                <% if (currentComments > 1) { %>
+                    <a href="?page=<%= currentComments - 1 %>">이전 댓글</a>
+                <% } %>
+                <% if (moreComments.length === perPage && nextPage) { %>
+                    <a href="?page=<%= currentComments + 1 %>">다음 댓글</a>
+                <% } %>
+            </div>
+
+
+            <form action="/community/show/<%= data.post_num %>" method="POST"
+                  autocomplete="off">
+                <input type="hidden" name="post_num" value="<%= data.post_num %>">
+                <div id="comment-input">
+                    <div
+                            style="display: flex; text-align: center; align-items: center; justify-content: left;">
+                        <img src="<%= login_pro %>" width="30">
+                        <p style="margin-left: 8px;" name="mem_nickname">
+                            <%= login_nick %>
+                        </p>
+                    </div>
+                    <textarea id="comment-input-Area3" name="cmt_content"
+                              placeholder="댓글을 입력하세요."
+                              oninput="byteCount(this, 'byte-countb')"></textarea>
+                    <div class="submit">
+                        <p id="byte-countb">0 byte</p>
+                    </div>
+                    <button class="button btnFade btnBlack" type="submit" style="cursor: pointer"> 등록 </button>
+                </div>
+            </form>
+
+            <div class="next-pre-post">
+                <% if (nextPost) { %>
+                    <div class="next-post">
+                        <a href="/community/show/<%= nextPost %>">
+                            다음 글: <%= nextTitle %>
+                        </a>
+                    </div>
+                <% } else { %>
+                    <p class="no-next-post">다음 글이 없습니다.</p>
+                <% } %>
+                <% if (previousPost) { %>
+                    <div class="previous-post">
+                        <a href="/community/show/<%= previousPost %>">
+                            이전 글: <%= previousTitle %>
+                        </a>
+                    </div>
+                <% } else { %>
+                    <p class="no-previous-post">이전 글이 없습니다.</p>
+                <% } %>
+                <div class="post-list">
+                    <a href="/community">목록</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="commentsList">
+            <!-- 여기에 댓글을 추가합니다. -->
+        </div>
+    </div>
+</section>
+<!-- footer -->
+<%- include('partials/footer')%>
+<script>
+
+    function byteCount(textarea, byteCountId) {
+        const text = textarea.value;
+        const byteCount = new TextEncoder('utf-8').encode(text).length;
+        const byteCountText = `${byteCount} byte`;
+
+        // 바이트 수 변화
+
+        document.getElementById(byteCountId).textContent = byteCountText;
+    }
+
+    function toggleReplyForm(buttonElement) {
+        const commentDiv = buttonElement.closest('#comment');
+        const replyForm = commentDiv.querySelector('.reply-form');
+        if (replyForm.style.display === 'none' || !replyForm.style.display) {
+            replyForm.style.display = 'block';
+        } else {
+            replyForm.style.display = 'none';
+        }
+    }
+
+    function toggleUpdateForm(button) {
+        const commentDiv = button.closest('div#comment');
+        const editForm = commentDiv.querySelector('.update-form');
+        editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleOptions(buttonElement) {
+        const moreOptionsDiv = buttonElement.closest('.more-options');
+        const optionsDiv = moreOptionsDiv.querySelector('.options');
+        if (optionsDiv.style.display === 'none' || !optionsDiv.style.display) {
+            optionsDiv.style.display = 'block';
+            event.stopPropagation();
+        } else {
+            optionsDiv.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('click', function (event) {
+        const allOptions = document.querySelectorAll('.options');
+        allOptions.forEach(function (options) {
+            if (!options.contains(event.target) && options !== event.target) {
+                options.style.display = 'none';
+            }
+        });
+    });
+
+    function report(event) {
+        alert('신고되었습니다.');
+        const moreOptionsDiv = event.target.closest('.more-options');
+        const optionsDiv = moreOptionsDiv.querySelector('.options');
+        optionsDiv.style.display = 'none';
+    }
+
+    window.addEventListener('popstate', function () {
+        var textareas = document.querySelectorAll('[id^="comment-input-Area"]');
+        textareas.forEach(function (textarea) {
+            textarea.value = '';
+        });
+    });
+
+    function showProfile(username) {
+        // 모달 요소 가져오기
+        const modal = document.getElementById('profileModal');
+
+        // 모달 내용을 동적으로 로드
+        fetch(`/auth/userProfile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
+            .then((response) => response.text())
+            .then((html) => {
+                modal.innerHTML = html; // userprofile.ejs의 HTML을 모달 내용에 설정
+            })
+            .catch((error) => {
+                console.error('Error fetching profile:', error);
             });
 
-            function report(event) {
-                alert('신고되었습니다.');
-                const moreOptionsDiv = event.target.closest('.more-options');
-                const optionsDiv = moreOptionsDiv.querySelector('.options');
-                optionsDiv.style.display = 'none';
-            }
+        // 모달 표시
+        modal.style.display = 'block';
+    }
 
-            window.addEventListener('popstate', function () {
-                var textareas = document.querySelectorAll('[id^="comment-input-Area"]');
-                textareas.forEach(function (textarea) {
-                    textarea.value = '';
-                });
-            });
+    // 모달 닫기 함수
+    function closeModal() {
+        const modal = document.getElementById('profileModal');
 
-            for (let i = 0; i <= 999; i++) {
-                const pageId = `comment-input-Area${i}`;
-                const element = document.getElementById(pageId);
-                if (element) {
-                    element.style.width = '97%';
-                    element.style.height = '80px';
-                    element.style.padding = '5px';
-                    element.style.fontSize = '0.8em';
-                    element.style.borderRadius = '5px';
-                    element.style.borderColor = '#cccccc';
-                    element.style.marginTop = '10px';
-                    element.style.resize = 'none';
-                }
-            }
+        // 모달을 숨김 처리
+        modal.style.display = 'none';
+    }
 
-        </script>
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById('profileModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    for (let i = 0; i <= 999; i++) {
+        const pageId = `comment-input-Area${i}`;
+        const element = document.getElementById(pageId);
+        if (element) {
+            element.style.width = '100%';
+            element.style.height = '80px';
+            element.style.padding = '5px';
+            element.style.fontSize = '0.8em';
+            element.style.borderRadius = '5px';
+            element.style.borderColor = '#cccccc';
+            element.style.marginTop = '10px';
+            element.style.resize = 'none';
+        }
+    }
+
+
+</script>
 </body>
 </html>
