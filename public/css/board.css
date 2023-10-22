@@ -240,3 +240,7 @@ table.table-template td:nth-child(5) {
   left: 50%; /* 좌측에서 50% 위치에 위치 */
   transform: translate(-50%, -50%); /* 가운데로 정렬 */
 }
+
+#search-div2 {
+  display: none;
+}

@@ -31,180 +31,198 @@
 
 <body>
 
-<!-- header -->
-<%- include('partials/header')%>
+  <!-- header -->
+  <%- include('partials/header')%>
 
-<section>
-  <div class="board-search">
-    <div class="board-search-container">
-      <form action="/community/search" method="GET">
-        <input type="text" id="keyword" name="keyword" placeholder="입력">
-        <button class="search-btn" type="submit" style="cursor: pointer">검색</button>
-      </form>
-    </div>
-  </div>
+    <section>
+      <div class="board-search">
+        <div class="board-search-container">
+          <form action="/community/search" method="GET">
+            <input type="text" id="keyword" name="keyword" placeholder="입력">
+            <button class="search-btn" type="submit" style="cursor: pointer">검색</button>
+          </form>
+        </div>
+      </div>
 
-  <!-- 커뮤니티 로고 -->
-  <div class="board-logo">
-    <img src="/img/cmLogo.png">
-  </div>
+      <!-- 커뮤니티 로고 -->
+      <div class="board-logo">
+        <img src="/img/cmLogo.png">
+      </div>
 
-  <!-- 보드board -->
-  <div class="board-section">
+      <!-- 보드board -->
+      <div class="board-section">
 
-    <!-- 글쓰기 버튼 -->
-    <div class="write-button">
-      <form action="/community/insert" method="GET">
-        <button type="submit">글쓰기</button>
-      </form>
-    </div>
+        <!-- 글쓰기 버튼 -->
+        <div class="write-button">
+          <form action="/community/insert" method="GET">
+            <button type="submit">글쓰기</button>
+          </form>
+        </div>
 
-    <div class="write-button-m">
-      <form action="/community/insert" method="GET">
-        <button type="submit">+</button>
-      </form>
-    </div>
+        <div class="write-button-m">
+          <form action="/community/insert" method="GET">
+            <button type="submit">+</button>
+          </form>
+        </div>
 
-    <div class="board" class="effect8">
-      <table class="table-template">
-        <thead>
-        <tr>
-          <!-- <th>번호</th> -->
-          <th>제목</th>
-          <th>글쓴이</th>
-          <th class="reco-class">추천</th>
-          <th>날짜</th>
-          <th>조회수</th>
-        </tr>
-        </thead>
+        <div class="board" class="effect8">
+          <table class="table-template">
+            <thead>
+              <tr>
+                <!-- <th>번호</th> -->
+                <th>제목</th>
+                <th>글쓴이</th>
+                <th class="reco-class">추천</th>
+                <th>날짜</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
 
-        <tbody>
-        <% if (communitySearch && communitySearch.length> 0) { %>
-          <% for (let i=0; i < communitySearch.length; i++) { %>
-            <tr>
-              <td>
-                <a href="/community/show/<%= communitySearch[i].post_num %>">
-                  <% let postTitle=communitySearch[i].post_title; if (postTitle.length> 30) {
-                    postTitle = postTitle.substring(0, 30) + "...";
-                  }%>
-                  <%= postTitle %><span style="color: red;"> [<%= cdata[i].comment_count %>]</span>
-                </a>
-              </td>
-              <td>
-                <div style="display: flex; align-items: center;">
-                  <img src="<%= cdata[i].userInfo[1] %>" alt="프로필 이미지" style="margin-left: 55px; cursor: pointer" onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
-                  <p style="margin-left: 10px; cursor: pointer;"
-                     onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
-                    <%= cdata[i].userInfo[0] %>
-                  </p>
-                  <div id="profileModal" class="modal">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                  </div>
-                </div>
-              </td>
-              <td class="reco-class">
-                <a><i class="fa-solid fa-thumbs-up"></i>
-                  <%= communitySearch[i].post_like %>
-                </a>
-              </td>
-              <td>
-                <i class="fa-solid fa-calendar"></i>
-                <%= cdata[i].formattedCreatedAt %>
-              </td>
-              <td>
-                <%= communitySearch[i].post_hit %>
-              </td>
-            </tr>
-          <% } %>
-        <% } else { %>
-          <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
-          <tr>
-            <td>
-              <a href="/community/show/<%= post.post_num %>">
-                <% let postTitle=post.post_title; if (postTitle.length> 30) {
-                  postTitle = postTitle.substring(0, 30) + "...";
-                }%>
-                <%= postTitle %><span style="color: red;"> [<%= post.comment_count %>]</span>
-              </a>
-            </td>
-            <td>
-              <div style="display: flex; align-items: center;">
-                <img src="<%= post.userInfo[1] %>" alt="프로필 이미지" style="margin-left: 55px; cursor: pointer" onclick="showProfile('<%= post.userInfo[0] %>')">
-                <p style="margin-left: 10px; cursor: pointer;"
-                   onclick="showProfile('<%= post.userInfo[0] %>')">
-                  <%= post.userInfo[0] %>
-                </p>
-                <div id="profileModal" class="modal">
-                  <span class="close" onclick="closeModal()">&times;</span>
-                </div>
-              </div>
-            </td>
-            <td class="reco-class">
-              <a><i class="fa-solid fa-thumbs-up"></i>
-                <%= post.post_like %>
-              </a>
-            </td>
-            <td>
-              <i class="fa-solid fa-calendar"></i>
-              <%= post.formattedCreatedAt %>
-            </td>
-            <td>
-              <%= post.post_hit %>
-            </td>
-            <% }); %>
-          </tr>
-        <% } %>
-        </tbody>
+            <tbody>
+              <% if (communitySearch && communitySearch.length> 0) { %>
+                <% for (let i=0; i < communitySearch.length; i++) { %>
+                  <tr>
+                    <td>
+                      <a href="/community/show/<%= communitySearch[i].post_num %>">
+                        <% let postTitle=communitySearch[i].post_title; if (postTitle.length> 30) {
+                          postTitle = postTitle.substring(0, 30) + "...";
+                          }%>
+                          <%= postTitle %><span style="color: red;"> [<%= cdata[i].comment_count %>]</span>
+                      </a>
+                    </td>
+                    <td>
+                      <div style="display: flex; align-items: center;">
+                        <img src="<%= cdata[i].userInfo[1] %>" alt="프로필 이미지" style="margin-left: 55px; cursor: pointer"
+                          onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
+                        <p style="margin-left: 10px; cursor: pointer;"
+                          onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
+                          <%= cdata[i].userInfo[0] %>
+                        </p>
+                        <div id="profileModal" class="modal">
+                          <span class="close" onclick="closeModal()">&times;</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="reco-class">
+                      <a><i class="fa-solid fa-thumbs-up"></i>
+                        <%= communitySearch[i].post_like %>
+                      </a>
+                    </td>
+                    <td>
+                      <i class="fa-solid fa-calendar"></i>
+                      <%= cdata[i].formattedCreatedAt %>
+                    </td>
+                    <td>
+                      <%= communitySearch[i].post_hit %>
+                    </td>
+                  </tr>
+                  <% } %>
+                    <% } else { %>
+                      <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
+                        <tr>
+                          <td>
+                            <a href="/community/show/<%= post.post_num %>">
+                              <% let postTitle=post.post_title; if (postTitle.length> 30) {
+                                postTitle = postTitle.substring(0, 30) + "...";
+                                }%>
+                                <%= postTitle %><span style="color: red;"> [<%= post.comment_count %>]</span>
+                            </a>
+                          </td>
+                          <td>
+                            <div style="display: flex; align-items: center;">
+                              <img src="<%= post.userInfo[1] %>" alt="프로필 이미지"
+                                style="margin-left: 55px; cursor: pointer"
+                                onclick="showProfile('<%= post.userInfo[0] %>')">
+                              <p style="margin-left: 10px; cursor: pointer;"
+                                onclick="showProfile('<%= post.userInfo[0] %>')">
+                                <%= post.userInfo[0] %>
+                              </p>
+                              <div id="profileModal" class="modal">
+                                <span class="close" onclick="closeModal()">&times;</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="reco-class">
+                            <a><i class="fa-solid fa-thumbs-up"></i>
+                              <%= post.post_like %>
+                            </a>
+                          </td>
+                          <td>
+                            <i class="fa-solid fa-calendar"></i>
+                            <%= post.formattedCreatedAt %>
+                          </td>
+                          <td>
+                            <%= post.post_hit %>
+                          </td>
+                          <% }); %>
+                        </tr>
+                        <% } %>
+            </tbody>
 
-      </table>
-    </div>
-  </div>
+          </table>
+        </div>
+      </div>
 
-  <div class="pagination">
-    <% if (prevPage !==null) { %>
-      <a href="?page=<%= Math.max(1, prevPage) %>">&laquo; 이전</a>
-    <% } else { %>
-      <span class="disabled">&laquo; 이전</span>
-    <% } %>
+      <div class="pagination">
+        <% if (prevPage !==null) { %>
+          <a href="?page=<%= Math.max(1, prevPage) %>">&laquo; 이전</a>
+          <% } else { %>
+            <span class="disabled">&laquo; 이전</span>
+            <% } %>
 
-    <% for (let i=startPage; i <=endPage; i++) { %>
-      <% if (i===currentPage) { %>
-        <span class="active">
+              <% for (let i=startPage; i <=endPage; i++) { %>
+                <% if (i===currentPage) { %>
+                  <span class="active">
                     <%= i %>
                   </span>
-      <% } else { %>
-        <a href="?page=<%= i %>">
-          <%= i %>
-        </a>
-      <% } %>
-    <% } %>
+                  <% } else { %>
+                    <a href="?page=<%= i %>">
+                      <%= i %>
+                    </a>
+                    <% } %>
+                      <% } %>
 
-    <% if (nextPage !==null) { %>
-      <a href="?page=<%= nextPage %>">다음 &raquo;</a>
-    <% } else { %>
-      <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                        <% if (nextPage !==null) { %>
+                          <a href="?page=<%= nextPage %>">다음 &raquo;</a>
+                          <% } else { %>
+                            <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                            <script>
+                              document.getElementById("disabledNextPage").addEventListener("click", function (event) {
+                                event.preventDefault();
+                                alert("더 이상 페이지가 없습니다.");
+                              });
+                            </script>
+                            <% } %>
+                            
+      </div>
+
+      <div style="
+      width: 100%;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;">
+        <div id="search-div2">
+          <form class="search2" action="/notice/search" method="get">
+            <input type="text" name="keyword" class="search-input" placeholder="입력">
+            <input id="search_submit" value="검색" type="submit">
+          </form>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- footer -->
+    <%- include('partials/footer')%>
+
       <script>
-        document.getElementById("disabledNextPage").addEventListener("click", function (event) {
-          event.preventDefault();
-          alert("더 이상 페이지가 없습니다.");
-        });
-      </script>
-    <% } %>
-  </div>
+        function showProfile(username) {
+          // 모달 요소 가져오기
+          const modal = document.getElementById('profileModal');
 
-
-</section>
-
-<!-- footer -->
-<%- include('partials/footer')%>
-
-<script>
-  function showProfile(username) {
-    // 모달 요소 가져오기
-    const modal = document.getElementById('profileModal');
-
-    // 모달 내용을 동적으로 로드
-    fetch(`/auth/userProfile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
+          // 모달 내용을 동적으로 로드
+          fetch(`/auth/userProfile/${username}`) // 서버에서 userprofile.ejs를 렌더링하도록 요청
             .then((response) => response.text())
             .then((html) => {
               modal.innerHTML = html; // userprofile.ejs의 HTML을 모달 내용에 설정
@@ -213,27 +231,28 @@
               console.error('Error fetching profile:', error);
             });
 
-    // 모달 표시
-    modal.style.display = 'block';
-  }
+          // 모달 표시
+          modal.style.display = 'block';
+        }
 
-  // 모달 닫기 함수
-  function closeModal() {
-    const modal = document.getElementById('profileModal');
+        // 모달 닫기 함수
+        function closeModal() {
+          const modal = document.getElementById('profileModal');
 
-    // 모달을 숨김 처리
-    modal.style.display = 'none';
-  }
+          // 모달을 숨김 처리
+          modal.style.display = 'none';
+        }
 
-  window.addEventListener('click', function (event) {
-    const modal = document.getElementById('profileModal');
-    if (event.target === modal) {
-      closeModal();
-    }
-  });
+        window.addEventListener('click', function (event) {
+          const modal = document.getElementById('profileModal');
+          if (event.target === modal) {
+            closeModal();
+          }
+        });
 
-</script>
+      </script>
 </body>
+
 
 
 </html>

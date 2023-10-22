@@ -1,6 +1,8 @@
+@import url(https://raw.github.com/FortAwesome/Font-Awesome/master/docs/assets/css/font-awesome.min.css);
+
 section {
   width: 100%;
-  height: 2000px;
+  height: auto;
 
   position: relative;
   background-image: url("background/info2.png");
@@ -102,7 +104,7 @@ section {
 /* 세 번째 섹션 */
 #thirdSection {
   width: 100%;
-  height: 2100px;
+  height: auto;
 
   display: flex;
   justify-content: center;
@@ -112,13 +114,16 @@ section {
 
 #thirdSectionBox {
   width: 100%;
-  height: 2100px;
+  min-height: 300px;
 
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   background-color: #ffffff;
+
+  padding-top: 100px;
+  padding-bottom: 40px;
 }
 
 .title {
@@ -134,7 +139,7 @@ section {
   display: grid;
   grid-template-rows: repeat(6, auto);
   grid-template-columns: repeat(1, 1fr);
-  gap: 80px;
+  gap: 20px;
 }
 
 .content-div img {
@@ -191,11 +196,62 @@ section {
 }
 
 .pagination {
-  width: auto;
+  width: 100%;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 변경 */
+  text-align: center;
+
+  margin-top: 40px;
+  color: white;
+}
+
+.pagination a {
+  margin-right: 10px;
+  color: #white;
+  filter: drop-shadow(2px 2px 2px #161616);
+}
+
+.pagination span {
+  margin-right: 10px;
+  font-weight: bold;
+  filter: drop-shadow(2px 2px 2px #161616);
+}
+
+#search-div2 {
+  width: 400px;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  background-color: #ffffff;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+#search-div2 input[type="text"] {
+  width: 330px;
   height: auto;
 
-  color: rgb(255, 255, 255);
-  text-shadow: 10px 10px 20px black;
+  outline: none;
+  border: none;
 
-  margin-top: 50px;
+  font-size: 1em;
+}
+
+#search-div2 input[type="submit"] {
+  width: 30px;
+  height: auto;
+
+  outline: none;
+  border: none;
+
+  background-color: #ffffff;
+  font-size: 1em;
 }
