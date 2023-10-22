@@ -12,17 +12,17 @@
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
   <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/notice.css">
-  <link rel="stylesheet" media="(max-width: 900px)" href="/css/notice_m.css" >
+  <link rel="stylesheet" media="(max-width: 900px)" href="/css/notice_m.css">
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
   <script src="/javascript/notice.js"></script>
-  
+
   <!-- 반응형 웹 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- icon -->
-    <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+  <!-- icon -->
+  <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
 
   <!--Title-->
   <title> CAN </title>
@@ -50,122 +50,135 @@
               </form>
             </div>
 
-            <div class="search-button-m"> <!-- 검색창으로 바꿀 예정 -->
-              <form action="/community/insert" method="GET">
+            <!-- <div class="search-button-m"> 검색창으로 바꿀 예정 -->
+            <!-- <form action="/community/insert" method="GET">
                 <button type="submit">+</button>
               </form>
-            </div>
+            </div> -->
           </div>
+        </div>
+
+        <div id="search-div2">
+            <form class="search2" action="/notice/search" method="get">
+              <input type="text" name="keyword" class="search-input" placeholder="입력">
+              <input id="search_submit" value="검색" type="submit">
+            </form>
         </div>
 
         <% if (search && search.length> 0) { %>
           <% for (let i=0; i < search.length; i++) { %>
 
-              <% } %>
-                <% } else if (data && data.length> 0) { %>
-                  <div id="main-notice" class="noisy">
+            <% } %>
+              <% } else if (data && data.length> 0) { %>
+                <div id="main-notice" class="noisy">
 
-                      <div class="main-notice-img-layout">
-                        <img src="<%= data[0].post_image %>" onclick="location.href='/notice/show/<%= data[0].post_num %>'" style="cursor: pointer">
-                      </div>
-
-                      <div class="main-notice-container">
-                        <div class="main-notice-content-title">
-                          <a href="/notice/show/<%= data[0].post_num %>">
-                            <%= data[0].post_title %>
-                          </a>
-                        </div>
-                        <div class="main-notice-content-date">
-                          <%= data[0].formattedCreatedAt %>
-                        </div>
-                      </div>
-                      <% } %>
-        </div>
-
-        <!-- Section -->
-        <div id="thirdSection">
-          <div id="thirdSectionBox">
-            <div class="content-div">
-              <% if (search && search.length> 0) { %>
-                <% for (let i=0; i < search.length; i++) { %>
-                  <div class="grid-content">
-
-                  <div class="grid-content-img-layout" onclick="location.href='/notice/show/<%= search[i].post_num %>'" style="cursor: pointer">
-                      <img src="<%= search[i].post_image %>">
+                  <div class="main-notice-img-layout">
+                    <img src="<%= data[0].post_image %>" onclick="location.href='/notice/show/<%= data[0].post_num %>'"
+                      style="cursor: pointer">
                   </div>
 
-                  <div class="grid-container">
-                    <div class="grid-content-title">
-                      <a href="/notice/show/<%= search[i].post_num %>">
-                        <%= search[i].post_title %>
+                  <div class="main-notice-container">
+                    <div class="main-notice-content-title">
+                      <a href="/notice/show/<%= data[0].post_num %>">
+                        <%= data[0].post_title %>
                       </a>
                     </div>
-                    <div class="grid-content-date">
-                      <%= search[i].formattedCreatedAt %>
+                    <div class="main-notice-content-date">
+                      <%= data[0].formattedCreatedAt %>
+                    </div>
+                  </div>
+                  <% } %>
+                </div>
+
+                <!-- Section -->
+                <div id="thirdSection">
+                  <div id="thirdSectionBox">
+                    <div class="content-div">
+                      <% if (search && search.length> 0) { %>
+                        <% for (let i=0; i < search.length; i++) { %>
+                          <div class="grid-content">
+
+                            <div class="grid-content-img-layout"
+                              onclick="location.href='/notice/show/<%= search[i].post_num %>'" style="cursor: pointer">
+                              <img src="<%= search[i].post_image %>">
+                            </div>
+
+                            <div class="grid-container">
+                              <div class="grid-content-title">
+                                <a href="/notice/show/<%= search[i].post_num %>">
+                                  <%= search[i].post_title %>
+                                </a>
+                              </div>
+                              <div class="grid-content-date">
+                                <%= search[i].formattedCreatedAt %>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <% } %>
+                            <% } else if (data && data.length> 0) { %>
+                              <% for (let i=0; i < data.length; i++) { %>
+                                <div class="grid-content">
+
+                                  <div class="grid-content-img-layout"
+                                    onclick="location.href='/notice/show/<%= data[i].post_num %>'"
+                                    style="cursor: pointer">
+                                    <img src="<%= data[i].post_image %>">
+                                  </div>
+
+                                  <div class="grid-container">
+                                    <div class="grid-content-title">
+                                      <a href="/notice/show/<%= data[i].post_num %>">
+                                        <%= data[i].post_title %>
+                                      </a>
+                                    </div>
+                                    <div class="grid-content-date">
+                                      <%= data[i].formattedCreatedAt %>
+                                    </div>
+                                  </div>
+                                </div>
+                                <% } %>
+                                  <% } %>
                     </div>
                   </div>
                 </div>
 
-
-                  <% } %>
-                    <% } else if (data && data.length> 0) { %>
-                      <% for (let i=0; i < data.length; i++) { %>
-                        <div class="grid-content">
-
-                          <div class="grid-content-img-layout" onclick="location.href='/notice/show/<%= data[i].post_num %>'" style="cursor: pointer">
-                            <img src="<%= data[i].post_image %>">
-                          </div>
-
-                          <div class="grid-container">
-                            <div class="grid-content-title">
-                              <a href="/notice/show/<%= data[i].post_num %>">
-                                <%= data[i].post_title %>
-                              </a>
-                            </div>
-                            <div class="grid-content-date">
-                              <%= data[i].formattedCreatedAt %>
-                            </div>
-                          </div>
-                        </div>
-                        <% } %>
-                          <% } %>
-            </div>
-          </div>
-        </div>
-
-        <div class="pagination">
-          <% if (prevPage !==null) { %>
-            <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo;
-              이전</a>
-            <% } else { %>
-              <span class="disabled">&laquo; 이전</span>
-              <% } %>
-
-                <% for (let i=startPage; i <=endPage; i++) { %>
-                  <% if (i===currentPage) { %>
-                    <span class="active">
-                      <%= i %>
-                    </span>
+                <div class="pagination">
+                  <% if (prevPage !==null) { %>
+                    <a href="?page=<%= Math.max(1, prevPage) %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">&laquo;
+                      이전</a>
                     <% } else { %>
-                      <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">
-                        <%= i %>
-                      </a>
+                      <span class="disabled">&laquo; 이전</span>
                       <% } %>
-                        <% } %>
 
-                          <% if (nextPage !==null) { %>
-                            <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음
-                              &raquo;</a>
+                        <% for (let i=startPage; i <=endPage; i++) { %>
+                          <% if (i===currentPage) { %>
+                            <span class="active">
+                              <%= i %>
+                            </span>
                             <% } else { %>
-                              <a href="#" id="disabledNextPage">다음 &raquo;</a>
-                              <script>
-                                document.getElementById("disabledNextPage").addEventListener("click", function (event) {
-                                  event.preventDefault();
-                                  alert("더 이상 페이지가 없습니다.");
-                                });
-                              </script>
+                              <a href="?page=<%= i %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">
+                                <%= i %>
+                              </a>
                               <% } %>
-        </div>
+                                <% } %>
+
+                                  <% if (nextPage !==null) { %>
+                                    <a href="?page=<%= nextPage %><% if (keyword) { %>&keyword=<%= keyword %><% } %>">다음
+                                      &raquo;</a>
+                                    <% } else { %>
+                                      <a href="#" id="disabledNextPage">다음 &raquo;</a>
+                                      <script>
+                                        document.getElementById("disabledNextPage").addEventListener("click", function (event) {
+                                          event.preventDefault();
+                                          alert("더 이상 페이지가 없습니다.");
+                                        });
+                                      </script>
+                                      <% } %>
+                </div>
+
+                <div style="width: auto; height: 200px;"></div>
       </div>
 
 
