@@ -5,6 +5,7 @@
   position: relative;
   background-color: #161616 !important;
 }
+
 #section {
   width: 100%;
   height: auto;
@@ -41,7 +42,8 @@
 } */
 
 .rank-img {
-  padding: 100px;
+  padding: 70px;
+  padding-top: 110px;
 
   text-shadow: 0 3px 6px rgba(255, 255, 255, 0.986), 0 3px 6px rgb(255, 255, 255);
 }
@@ -119,7 +121,6 @@
 
 .table-template tbody th,
 .table-template td {
-  width: 25%;
   padding: 10px;
   font-weight: bold;
   vertical-align: top;

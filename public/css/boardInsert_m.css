@@ -1,0 +1,104 @@
+#section {
+  width: 100%;
+  height: 1100px;
+
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+#layout {
+  width: 100%;
+  height: 1050px;
+
+  display: flex;
+  justify-content: center;
+  text-align: left;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  background-color: white;
+}
+
+#layout h1 {
+  font-size: 1.4em;
+}
+
+#layout h4 {
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+#title {
+  height: 30px;
+}
+
+#sectionTitle {
+  width: auto;
+
+  margin: 0px 0px 10px 10px;
+  color: #161616;
+}
+
+#userID-form {
+  margin-bottom: 40px;
+}
+
+.form {
+  margin: 0px 0px 30px 10px;
+}
+
+input[type=text] {
+  width: 95%;
+
+  padding: 5px 5px 5px 5px;
+  font-size: 0.8em;
+}
+
+#post_content {
+  padding: 5px 5px 5px 5px;
+  font-size: 0.8em;
+
+  width: 95%;
+  height: 500px;
+}
+
+#btn {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  text-align: center;
+}
+
+.custom-btn {
+  width: 80px;
+  height: 30px;
+
+  font-size: 1em;
+  font-weight: bold;
+
+  color: #949494;
+
+  border: 0;
+  outline: 0;
+  background: none;
+}
+
+.custom-btn:hover {
+  color: #000;
+}
+
+div#post_content {
+  padding: 7px 7px 7px 7px;
+  font-size: 0.8em;
+
+  width: 95%;
+  height: 500px;
+
+  border: 1px solid rgb(80, 80, 80);
+  border-radius: 10px;
+}

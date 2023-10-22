@@ -41,14 +41,12 @@ body {
   width: 100%;
   height: 20%;
 
-  margin-top: 70px;
+  margin-top: 90px;
   margin-bottom: 50px;
-
-  text-shadow: 0 3px 6px rgba(255, 255, 255, 0.986), 0 3px 6px rgb(255, 255, 255);
 }
 
 .rank-img img {
-  width: 80%
+  width: 180px;
 }
 
 .box {
@@ -90,7 +88,7 @@ body {
 }
 
 .board {
-  width: 85%;
+  width: 100%;
   height: auto;
 
   display: flex;
@@ -112,9 +110,8 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  border-radius: 1cm;
 
-  font-size: 0.8em;
+  font-size: 0.6em;
 }
 
 .table-template thead th {
@@ -129,10 +126,12 @@ body {
 .table-template tbody th,
 .table-template td {
   padding: 10px;
+  padding-bottom: 20px;
   font-weight: bold;
   vertical-align: top;
   white-space: nowrap;
   overflow: hidden;
+  text-align: center;
   text-overflow: ellipsis;
 }
 
@@ -141,10 +140,31 @@ tbody i {
 }
 
 tbody img {
-  width: 20.03px;
-  height: 20.03px;
+  width: 14.03px;
+  height: 14.03px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+/* 각 셀의 너비 조정 */
+table thead th:nth-child(1),
+table td:nth-child(1) {
+  width: 12%; /* 첫 번째 열의 너비를 30%로 설정 */
+}
+
+table thead th:nth-child(2),
+table td:nth-child(2) {
+  width: 13%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+table thead th:nth-child(3),
+table td:nth-child(3) {
+  width: 13%; /* 두 번째 열의 너비를 20%로 설정 */
+}
+
+table thead th:nth-child(4),
+table td:nth-child(4) {
+  width: 15%; /* 두 번째 열의 너비를 20%로 설정 */
 }
 
 /* 모달 스타일 */
@@ -175,25 +195,4 @@ tbody img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-/* 각 셀의 너비 조정 */
-.table-template tbody th:nth-child(1),
-.table-template td:nth-child(1) {
-  width: 10%; /* 첫 번째 열의 너비를 30%로 설정 */
-}
-
-.table-template tbody th:nth-child(2),
-.table-template td:nth-child(2) {
-  width: 25%; /* 두 번째 열의 너비를 20%로 설정 */
-}
-
-.table-template tbody th:nth-child(3),
-.table-template td:nth-child(3) {
-  width: 25%; /* 두 번째 열의 너비를 20%로 설정 */
-}
-
-.table-template tbody th:nth-child(4),
-.table-template td:nth-child(4) {
-  width: 40%; /* 두 번째 열의 너비를 20%로 설정 */
 }

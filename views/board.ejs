@@ -39,7 +39,7 @@
         <div class="board-search-container">
         <form action="/community/search" method="GET">
           <input type="text" id="keyword" name="keyword" placeholder="입력">
-          <button class="search-btn" type="submit" style="cursor: pointer">검색</button>
+          <button class="search-btn" type="submit">검색</button>
         </form>
       </div>
       </div>
@@ -72,7 +72,7 @@
                 <!-- <th>번호</th> -->
                 <th>제목</th>
                 <th>글쓴이</th>
-                <th class="reco-class">추천</th>
+                <th>추천</th>
                 <th>날짜</th>
                 <th>조회수</th>
               </tr>
@@ -83,16 +83,13 @@
                 <% for (let i=0; i < communitySearch.length; i++) { %>
                   <tr>
                     <td>
-                    <a href="/community/show/<%= communitySearch[i].post_num %>">
-                      <% let postTitle=communitySearch[i].post_title; if (postTitle.length> 30) {
-                               postTitle = postTitle.substring(0, 30) + "...";
-                                }%>
-                  	<%= postTitle %><span style="color: red;"> [<%= cdata[i].comment_count %>]</span>
-                    </a>
+                      <a href="/community/show/<%= communitySearch[i].post_num %>">
+                        <%= communitySearch[i].post_title %><span style="color: red;"> [<%= cdata[i].comment_count %>]</span>
+                      </a>
                     </td>
                     <td>
-                      <div style="display: flex; align-items: center;">
-                        <img src="<%= cdata[i].userInfo[1] %>" alt="프로필 이미지" style="margin-left: 55px; cursor: pointer" onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
+                      <div id = "tableimg" style="display: flex; align-items: center;">
+                        <img src="<%= cdata[i].userInfo[1] %>" alt="프로필 이미지">
                         <p style="margin-left: 10px; cursor: pointer;"
                           onclick="showProfile('<%= cdata[i].userInfo[0] %>')">
                           <%= cdata[i].userInfo[0] %>
@@ -102,7 +99,7 @@
                         </div>
                       </div>
                     </td>
-                    <td class="reco-class">
+                    <td>
                       <a><i class="fa-solid fa-thumbs-up"></i>
                         <%= communitySearch[i].post_like %>
                       </a>
@@ -120,16 +117,13 @@
                       <% data.sort((a, b)=> b.post_num - a.post_num).forEach(function (post) { %>
                         <tr>
                           <td>
-                    		<a href="/community/show/<%= post.post_num %>">
-                      		<% let postTitle=post.post_title; if (postTitle.length> 30) {
-                               		postTitle = postTitle.substring(0, 30) + "...";
-                                		}%>
-                  			<%= postTitle %><span style="color: red;"> [<%= post.comment_count %>]</span>
-                    		</a>
+                            <a href="/community/show/<%= post.post_num %>">
+                              <%= post.post_title %><span style="color: red;"> [<%= post.comment_count %>]</span>
+                            </a>
                           </td>
                           <td>
                             <div style="display: flex; align-items: center;">
-                              <img src="<%= post.userInfo[1] %>" alt="프로필 이미지" style="margin-left: 55px; cursor: pointer" onclick="showProfile('<%= post.userInfo[0] %>')">
+                              <img src="<%= post.userInfo[1] %>" alt="프로필 이미지">
                               <p style="margin-left: 10px; cursor: pointer;"
                                 onclick="showProfile('<%= post.userInfo[0] %>')">
                                 <%= post.userInfo[0] %>
@@ -139,7 +133,7 @@
                               </div>
                             </div>
                           </td>
-                          <td class="reco-class">
+                          <td>
                             <a><i class="fa-solid fa-thumbs-up"></i>
                               <%= post.post_like %>
                             </a>
@@ -234,6 +228,4 @@
 
       </script>
 </body>
-
-
 </html>
