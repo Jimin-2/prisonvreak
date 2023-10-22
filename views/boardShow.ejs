@@ -423,7 +423,7 @@
             }
 
         // 모달 닫기 함수
-        function closeModal() {
+        function closeRepoModal() {
           const repoModal = document.getElementById('reportModal');
 
           // 모달을 숨김 처리
@@ -433,7 +433,7 @@
         window.addEventListener('click', function (event) {
           const repoModal = document.getElementById('reportModal');
           if (event.target === repoModal) {
-            closeModal();
+            closeRepoModal();
           }
         });
 
