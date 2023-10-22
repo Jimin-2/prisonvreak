@@ -1,7 +1,5 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +10,8 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/boardInsert.css">
+    <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/boardInsert.css">
+    <link rel="stylesheet" media="(max-width: 900px)" href="/css/boardInsert_m.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
@@ -25,86 +24,84 @@
 
     <!--Title-->
     <title> CAN </title>
-
 </head>
-
 <body>
 
-    <!-- header -->
-    <%- include('partials/header')%>
+<!-- header -->
+<%- include('partials/header')%>
 
 
-        <!-- Section -->
-        <section id="section">
+<!-- Section -->
+<section id="section">
 
-            <div id="layout">
-                <div id="sectionTitle">
-                    <h1> 커뮤니티 글쓰기 </h1>
-                    <hr>
+    <div id="layout">
+        <div id="sectionTitle">
+            <h1> 커뮤니티 글쓰기 </h1>
+            <hr>
+        </div>
+
+        <form action="/community/insert" method="post" enctype="multipart/form-data">
+            <div id="titleForm" class="form">
+                <!-- <label for="post_title">Title:</label> -->
+                <div id="userID-form">
+                    <p>작성자: <%= userId %> </p>
                 </div>
-
-                <form action="/community/insert" method="post" enctype="multipart/form-data">
-                    <div id="titleForm" class="form">
-                        <!-- <label for="post_title">Title:</label> -->
-                        <div id="userID-form">
-                            <p>작성자: <%= userId %> </p>
-                        </div>
-                        <h4> 제목 </h4>
-                        <input type="text" name="post_title" id="post_title" class="form-control"
-                            placeholder="제목을 입력해 주세요" required>
-                    </div>
-                                        
-                    <div class="form">
-                        <h4 > 첨부파일 </h4>
-                        <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*" style="font-size: 1em;">
-                        <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px;">
-                    </div>
-
-                    <div class="form">
-                        <!-- <label for="post_content">Content:</label> -->
-                        <h4> 내용 </h4>
-                        <textarea name="post_content" id="post_content" class="form-control" rows="5"
-                            placeholder="내용을 입력해 주세요" required></textarea>
-                    </div>
-
-                    <!-- <label for="post_usernum">usernum:</label> -->
-                   
-                    <!-- <div id="contentForm" class="form">
-                     <label for="post_hit">hit:</label>
-                    <h4> 조회수 </h4>
-                    <textarea name="post_hit" id="post_hit" required></textarea>
-                </div>
-                <br> -->
-
-                    <div id="btn">
-                        <input type="submit" value="글쓰기" class="custom-btn btn-16" style="cursor: pointer">
-                    </div>
-                </form>
+                <h4> 제목 </h4>
+                <input type="text" name="post_title" id="post_title" class="form-control"
+                       placeholder="제목을 입력해 주세요" required>
             </div>
-        </section>
 
-        <!-- footer -->
-        <%- include('partials/footer')%>
+            <div class="form">
+                <h4 > 첨부파일 </h4>
+                <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*" style="font-size: 1em;">
+                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px;">
+            </div>
 
-        <script>
-            document.getElementById('post_image').addEventListener('change', function(e) {
-                const imageInput = e.target;
-                const imagePreview = document.getElementById('imagePreview');
-    
-                if (imageInput.files && imageInput.files[0]) {
-                    const reader = new FileReader();
-    
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        imagePreview.style.display = 'block';
-                    }
-    
-                    reader.readAsDataURL(imageInput.files[0]);
-                } else {
-                    imagePreview.style.display = 'none';
-                }
-            });
-        </script>
+            <div class="form">
+                <!-- <label for="post_content">Content:</label> -->
+                <h4> 내용 </h4>
+                <textarea name="post_content" id="post_content" class="form-control" rows="5"
+                          placeholder="내용을 입력해 주세요" required></textarea>
+            </div>
+
+            <!-- <label for="post_usernum">usernum:</label> -->
+
+            <!-- <div id="contentForm" class="form">
+             <label for="post_hit">hit:</label>
+            <h4> 조회수 </h4>
+            <textarea name="post_hit" id="post_hit" required></textarea>
+        </div>
+        <br> -->
+
+            <div id="btn">
+                <input type="submit" value="글쓰기" class="custom-btn btn-16" style="cursor: pointer">
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- footer -->
+<%- include('partials/footer')%>
+
+<script>
+    document.getElementById('post_image').addEventListener('change', function(e) {
+        const imageInput = e.target;
+        const imagePreview = document.getElementById('imagePreview');
+
+        if (imageInput.files && imageInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            }
+
+            reader.readAsDataURL(imageInput.files[0]);
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    });
+</script>
 
 </body>
 </html>

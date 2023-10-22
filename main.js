@@ -26,20 +26,20 @@ app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 app.use(session({
-    secret: 'aaaa@aaaa', // 원하는 문자 입력
-    resave: false,
-    saveUninitialized: true,
-    //store: new FileStore({ path: './sessions' }),
+  secret: 'aaaa@aaaa', // 원하는 문자 입력
+  resave: false,
+  saveUninitialized: true,
+  //store: new FileStore({ path: './sessions' }),
 }));
 
 // is_logined 값 초기화
 app.use((req, res, next) => {
-    if (!req.session.is_logined) {
-        req.session.is_logined = false; // 초기값은 로그인되지 않은 상태
-    }
-    res.locals.is_logined = req.session.is_logined;
-    res.locals.nickname = req.session.nickname;
-    next();
+  if (!req.session.is_logined) {
+    req.session.is_logined = false; // 초기값은 로그인되지 않은 상태
+  }
+  res.locals.is_logined = req.session.is_logined;
+  res.locals.nickname = req.session.nickname;
+  next();
 });
 
 // Passport 및 세션 미들웨어 초기화
@@ -58,28 +58,29 @@ app.use(passport.session());
 });*/
 
 app.use((req, res, next) => {
-    if (req.session.is_logined) {
-        const mem_code = req.session.user_code;
-        friendModel.pendingList(mem_code, (err, result) => {
-          if (err) {
-            console.log(err);
-          }
-          if (result && 'user1Array' in result) {
-            res.locals.newAlarm = true;
-          } else {
-            res.locals.newAlarm = false;
-          }
-          next();
-        });
+  if (req.session.is_logined) {
+    const mem_code = req.session.user_code;
+    friendModel.pendingList(mem_code, (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      if (result && 'user2Array' in result && result.user2Array.length > 0) {
+        console.log(result);
+        res.locals.newAlarm = true;
       } else {
         res.locals.newAlarm = false;
-        next();
       }
+      next();
+    });
+  } else {
+    res.locals.newAlarm = false;
+    next();
+  }
 });
 
 // 인증 라우터
 app.use('/auth', authRouter);
-app.use('/img',imageRouter);
+app.use('/img', imageRouter);
 app.use('/', postRouter); // 게시판
 app.use('/', mainRouter);
 app.use('/msg', msgRouter);
@@ -102,5 +103,5 @@ app.use('/', connectionRouter); // 알림 및 친구기능
 });*/
 app.use('/module', express.static('src'));
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on port ${port}`);
 });

@@ -376,6 +376,27 @@ const commentModel = {
       }
     });
   },
+
+  insertReport: function(cmt_num, reporter_user_id, report_reason, report_detail, date_reported, callback) {
+    db.query(
+      'INSERT INTO report (cmt_num, reporter_user_id, report_reason, report_detail, date_reported) VALUES (?, ?, ?, ?, ?)',
+      [cmt_num, reporter_user_id, report_reason, report_detail, date_reported],
+      () => {
+        callback();
+      }
+    );
+  },
+
+  checkDuplicateReport: function(cmt_num, reporter_user_id, callback) {
+    db.query(
+      'SELECT * FROM report WHERE cmt_num = ? AND reporter_user_id = ?',
+      [cmt_num, reporter_user_id],
+      (err, results) => {
+        callback(!!results.length); // 중복이면 true, 아니면 false를 반환합니다.
+      }
+    );
+  },
+
 }
 
 module.exports = { postModel, commentModel };
