@@ -79,8 +79,9 @@ h1 {
 }
 /* 추가적인 스타일을 원하시면 여기에 추가하세요 */
 #link {
-  text-align: right;
-  position: absolute;
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px;
   bottom: 20px; /* 하단 여백을 조절하세요 */
   right: 20px; /* 왼쪽 여백을 조절하세요 */
 }
@@ -90,7 +91,12 @@ h1 {
 }
 
 #link a {
+  float: right;
   text-decoration: none;
   color: #fff;
   font-weight: bold;
+}
+
+.modal-close{
+  float: left;
 }

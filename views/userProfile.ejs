@@ -71,11 +71,12 @@
 
     <div id="link">
         <!--<p onclick="showProfile('<%= userProfile.mem_nickname %>')">-->
+        <div onclick="closeModal()" class="modal-close" style="font-weight: bold; cursor: pointer;"> 닫기 </div>
             <% if (userProfile && userProfile.mem_profile) { %>
                 <a href="/auth/profile/<%= userProfile.mem_nickname %>">>>상세조회</a><!--</p>-->
             <% } %>
-            </div>
-            <div onclick="closeModal()" class="modal-close" style="font-weight: bold;"> 닫기 </div>
+    </div>
+
 </div>
  <!-- mem_intro를 사용합니다 -->
 <!--<script>

@@ -27,66 +27,81 @@
 </head>
 <body>
 
-    <!-- header -->
-    <%- include('partials/header')%>
+<!-- header -->
+<%- include('partials/header')%>
 
-    <!-- Section -->
-    <section id="section">
-        <div id="layout">
-            <div id="sectionTitle">
-                <h1> 커뮤니티 글쓰기 </h1>
+
+<!-- Section -->
+<section id="section">
+
+    <div id="layout">
+        <div id="sectionTitle">
+            <h1> 커뮤니티 글쓰기 </h1>
+            <hr>
+        </div>
+
+        <form action="/community/insert" method="post" enctype="multipart/form-data">
+            <div id="titleForm" class="form">
+                <!-- <label for="post_title">Title:</label> -->
+                <div id="userID-form">
+                    <p>작성자: <%= userId %> </p>
+                </div>
+                <h4> 제목 </h4>
+                <input type="text" name="post_title" id="post_title" class="form-control"
+                       placeholder="제목을 입력해 주세요" required>
             </div>
 
-            <form action="/community/insert" method="post" enctype="multipart/form-data">
-                <div id="titleForm" class="form">
-                    <div id="userID-form">
-                        <p>작성자: <%= userId %></p>
-                    </div>
-                    <h4> 제목 </h4>
-                    <input type="text" name="post_title" id="post_title" class="form-control" placeholder="제목을 입력해 주세요" required>
-                </div>
+            <div class="form">
+                <h4 > 첨부파일 </h4>
+                <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*" style="font-size: 1em;">
+                <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px;">
+            </div>
 
-                <div class="form">
-                    <h4> 첨부파일 </h4>
-                    <input type="file" name="post_image" id="post_image" class="form-control" accept="image/*" style="font-size: 1em;">
-                    <img id="imagePreview" src="#" alt="Image Preview" style="display: none; max-width: 200px;">
-                </div>
+            <div class="form">
+                <!-- <label for="post_content">Content:</label> -->
+                <h4> 내용 </h4>
+                <textarea name="post_content" id="post_content" class="form-control" rows="5"
+                          placeholder="내용을 입력해 주세요" required></textarea>
+            </div>
 
-                <div class="form">
-                    <h4> 내용 </h4>
-                    <!-- <div id="post_content" class="form-control" contenteditable="true"></div> -->
-                    <textarea name="post_content" id="post_content" class="form-control" rows="5"
-                            placeholder="내용을 입력해 주세요" required></textarea>
-                </div>
+            <!-- <label for="post_usernum">usernum:</label> -->
 
-                <div id="btn">
-                    <input type="button" value="글쓰기" class="custom-btn btn-16" id="submitBtn">
-                </div>
-            </form>
+            <!-- <div id="contentForm" class="form">
+             <label for="post_hit">hit:</label>
+            <h4> 조회수 </h4>
+            <textarea name="post_hit" id="post_hit" required></textarea>
         </div>
-    </section>
+        <br> -->
 
-    <!-- footer -->
-    <%- include('partials/footer')%>
+            <div id="btn">
+                <input type="submit" value="글쓰기" class="custom-btn btn-16" style="cursor: pointer">
+            </div>
+        </form>
+    </div>
+</section>
 
-    <script>
-        document.getElementById('post_image').addEventListener('change', function (e) {
-            const imageInput = e.target;
-            const imagePreview = document.getElementById('imagePreview');
+<!-- footer -->
+<%- include('partials/footer')%>
 
-            if (imageInput.files && imageInput.files[0]) {
-                const reader = new FileReader();
+<script>
+    document.getElementById('post_image').addEventListener('change', function(e) {
+        const imageInput = e.target;
+        const imagePreview = document.getElementById('imagePreview');
 
-                reader.onload = function (e) {
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block';
-                }
+        if (imageInput.files && imageInput.files[0]) {
+            const reader = new FileReader();
 
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                imagePreview.style.display = 'none';
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
             }
-        });
-    </script>
+
+            reader.readAsDataURL(imageInput.files[0]);
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    });
+</script>
+
 </body>
 </html>
