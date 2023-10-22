@@ -181,10 +181,10 @@
                                         <button type="submit"
                                                 class="delete-btn" style="cursor: pointer">삭제</button>
                                     </form>
-                                <% } else { %>
-                                    <button class="report-btn"
-                                            onclick="report(event)" style="cursor: pointer">신고</button>
-                                <% } %>
+                                    <% } else { %>
+                                        <button class="report-btn" data-cmt-num="<%= moreComments[i].cmt_num %>"
+                                            onclick="report(event, <%= moreComments[i].cmt_num %>)">신고</button>
+                                    <% } %>
                             </div>
                         </div>
                     </div>
@@ -231,6 +231,10 @@
                 </div>
             </form>
             <% } %>
+
+            <div id="reportModal" class="repoModal">
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
 
             <div class="pagination">
                 <% if (currentComments > 1) { %>
@@ -345,13 +349,6 @@
         });
     });
 
-    function report(event) {
-        alert('신고되었습니다.');
-        const moreOptionsDiv = event.target.closest('.more-options');
-        const optionsDiv = moreOptionsDiv.querySelector('.options');
-        optionsDiv.style.display = 'none';
-    }
-
     window.addEventListener('popstate', function () {
         var textareas = document.querySelectorAll('[id^="comment-input-Area"]');
         textareas.forEach(function (textarea) {
@@ -406,6 +403,39 @@
             element.style.resize = 'none';
         }
     }
+
+    function report(event, cmt_num) {
+            // 모달 요소 가져오기
+            const repoModal = document.getElementById('reportModal');
+
+            // 모달 내용을 동적으로 로드
+            fetch(`/report/${cmt_num}`, {
+                method: 'GET'
+            })
+            .then((response) => response.text())
+            .then((html) => {
+                repoModal.innerHTML = html;
+                repoModal.style.display = 'block';
+            })
+            .catch((error) => {
+                console.error('Error fetching report:', error);
+            });
+            }
+
+        // 모달 닫기 함수
+        function closeModal() {
+          const repoModal = document.getElementById('reportModal');
+
+          // 모달을 숨김 처리
+          repoModal.style.display = 'none';
+        }
+
+        window.addEventListener('click', function (event) {
+          const repoModal = document.getElementById('reportModal');
+          if (event.target === repoModal) {
+            closeModal();
+          }
+        });
 
 
 </script>
