@@ -1,54 +1,66 @@
 //require('dotenv').config();
 const userModel = require('../models/userModel');
-const { postModel, commentModel } = require('../models/postModel');
-const passport = require('../config/passport');
-const path = require('path'); // 예를 들어, path 모듈을 사용하려면 이와 같이 정의할 수 있습니다.
-const nodemailer = require('nodemailer');
-const authCheckMiddleware = require('../middleware/authCheck');
-const moment = require("moment/moment");
-const { boardController, noticeController } = require('../controllers/postController');
-const fs = require('fs');
-const ejs = require('ejs');
-//const authController = require("controllers/authController");
 const msgModel = require('../models/msgModel');
 
-exports.message = function (req, res) {
+exports.message = async function (req, res) {
     var title = '쪽지함';
 
-    // 현재 로그인한 사용자의 ID를 얻어옵니다. 이 부분은 세션 또는 로그인 정보를 얻는 방법에 따라 다를 수 있습니다.
-    const user1_id = req.session.nickname; // 예시: 세션에서 사용자 ID를 가져옴
+    try {
+        // 현재 로그인한 사용자의 ID를 얻어옵니다. 이 부분은 세션 또는 로그인 정보를 얻는 방법에 따라 다를 수 있습니다.
+        const user1_id = req.session.nickname; // 예시: 세션에서 사용자 ID를 가져옴
 
-    // msgModel.chatroomList 함수를 호출하여 채팅방 목록을 가져옵니다.
-    msgModel.chatroomList(user1_id, function (error, chatroomList) {
-        if (error) {
-            // 오류 처리
-            res.render('error', { error: '채팅방 목록을 가져오는 중 오류가 발생했습니다.' });
-        } else {
-            // 채팅방 목록과 함께 쪽지함 화면을 렌더링합니다.
-            res.render('message', {
-                title: title,
-                chatroomList: chatroomList // 채팅방 목록을 템플릿에 전달
+        // msgModel.chatroomList 함수를 호출하여 채팅방 목록을 가져옵니다.
+        const chatroomList = await new Promise((resolve, reject) => {
+            msgModel.chatroomList(user1_id, (error, chatrooms) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(chatrooms);
+                }
             });
+        });
+
+        // 각 채팅방에 대해 읽지 않은 메시지 여부를 확인하고 해당 정보를 chatroomList에 추가합니다.
+        for (const chatroom of chatroomList) {
+            const chatroomId = chatroom.chatroom_id;
+            const unreadMessageCount = await new Promise((resolve, reject) => {
+                msgModel.countUnreadMessages(chatroomId, user1_id, (error, count) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(count);
+                    }
+                });
+            });
+            chatroom.hasUnreadMessages = unreadMessageCount > 0;
+            console.log(unreadMessageCount);
         }
-    });
+
+        // 쪽지함 화면을 렌더링합니다.
+        res.render('message', {
+            title: title,
+            chatroomList: chatroomList // 수정된 채팅방 목록을 템플릿에 전달
+        });
+    } catch (error) {
+        // 오류 처리
+        res.render('error', { error: '오류가 발생했습니다.' });
+    }
 };
+
+
 
 function formatTime(sent) {
     const serverTime = new Date(sent); // 서버로부터 받은 시간
-    const koreaTime = new Date(serverTime.getTime() + (9 * 60 * 60 * 1000)); // 9시간을 더해서 한국 시간으로 변환
-
-    const hours = koreaTime.getHours();
-    const minutes = koreaTime.getMinutes();
+    const hours = serverTime.getHours();
+    const minutes = serverTime.getMinutes();
     const ampm = hours >= 12 ? '오후' : '오전';
     const formattedHours = hours % 12 || 12;
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-
     return `${ampm} ${formattedHours}:${formattedMinutes}`;
 }
 function Time(sent) {
-    const serverTime = new Date(sent); // 서버로부터 받은 시간
-    const koreaTime = new Date(serverTime.getTime() + (9 * 60 * 60 * 1000)); // 9시간을 더해서 한국 시간으로 변환
-    return `${koreaTime}`;
+        const serverTime = new Date(sent); // 서버로부터 받은 시간
+        return serverTime;
 }
 // 채팅방 조회 및 읽음 상태 업데이트
 exports.chat_room = function (req, res) {
@@ -131,27 +143,6 @@ exports.sendMessage = function(req, res) {
         }
     });
 };
-
-
-/*// 메세지 전송 처리
-exports.sendMessage = function(req, res) {
-    console.log(req.params, req.body, req.session)
-    const chatroomId = req.params.chatroomId;
-    const senderId = req.session.nickname; // 로그인한 사용자
-    const receiverId = req.body.receiverid;
-    const messageContent = req.body.message; // 클라이언트에서 전송한 메세지 내용
-
-    // msgModel.sendMessage 함수를 호출하여 메세지를 저장합니다.
-    msgModel.send_message(chatroomId, senderId, receiverId, messageContent, function(error, result) {
-        if (error) {
-            console.error('에러', error);
-            res.status(500).send('메시지 전송 중 오류가 발생했습니다.');
-        } else {
-            // 메세지를 성공적으로 저장한 후, 현재 채팅방 페이지로 리로드(새로 고침)
-            res.redirect(`/msg/sendMessage/${chatroomId}`);
-        }
-    });
-};*/
 
 // 채팅방 내역을 불러오는 컨트롤러
 exports.loadChatHistory = function (req, res) {
