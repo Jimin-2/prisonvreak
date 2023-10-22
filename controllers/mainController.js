@@ -243,3 +243,7 @@ exports.vrClearGetRank = function (req, res){
         res.json(concatdata);
     });
 }
+
+exports.gameInfo = function (req, res){
+    res.render('gameinfo')
+}

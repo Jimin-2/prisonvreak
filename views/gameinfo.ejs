@@ -4,34 +4,82 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!--글꼴 Link-->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
 
   <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/login.css">
+  <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/gameinfo.css">
+  <link rel="stylesheet" media="(max-width: 900px)" href="/css/gameinfo_m.css">
 
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
-    <!-- 반응형 웹 -->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--Title-->
   <title> CAN </title>
 
 </head>
 
 <body>
-<!-- header -->
-<%- include('partials/header')%>
-  <!-- Section -->
-  <section id="section">
+  <!-- header -->
+  <%- include('partials/header')%>
+    <!-- Section -->
+    <section id="section">
 
-  </section>
+      <div id="box-01">
+        <h2>“억울한 누명을 쓴 동료의 탈옥을 도와라!”</h2>
+      </div>
 
-<!-- footer -->
-<%- include('partials/footer')%>
+      <div id="box-02">
+        <h4>당신은 억울한 누명으로 수감되었습니다.</h4>
+        <h4>외부의 해커와 협동하여 이 감옥을 탈출하세요.</h4>
+      </div>
+
+      <div id="box-03">
+        <div id="box-03-01">
+          <h1> STORY . . . </h1>
+          <br><br>
+          <h5> → 부정부패한 사람들로 점령당한 20XX년. 사회적 질서가 붕괴되고, 불평등과 인권 침해가 일상적으로 발생하며, 자유와 행복은 희귀한 가치가 된 디스토피아 세상.
+            미래가 없는 세상을 바꾸고 싶은 한 사내가 있다. </h5>
+        </div>
+        <div class="box-03-class">
+          <div class="width">
+            <h3> 죄수 PRISONER : VR </h3>
+            <p> 혁명 단체의 우두머리인 그는 비 폭력적으로 세상을 바꾸어 나가려 한다. <br><br>
+              하지만 반대 세력으로 인해 억울하게 누명을 쓰고 감옥에 끌려 들어오게 된 그. <br><br>
+              현재의 상황을 바로잡기 위해, 인류를 위해, 그는 이곳을 탈출 해야만 한다.<br><br><br><br> </p>
+            <p> 게임 목표 : 감옥을 탈출해야 한다. </p>
+          </div>
+          <div>
+            <img src="/img/prisoner.png">
+          </div>
+        </div>
+        <div class="box-03-class">
+          <div class="width">
+            <h3> 해커 HACKER : WEB </h3>
+            <p> 어린 시절 부모님이 로봇에게 잡혀가는 것을 보고 큰 트라우마가 생긴 한 소년.<br><br>
+              의문의 한 남자가 항상 혼자였던 그를 보살펴준다.<br><br>
+              어느 날, 영문도 모른채 잡혀가 버린 그를 도와주기 위해 나선다.<br><br><br><br> </p>
+            <p> 게임 목표 : 누명을 쓴 죄수를 도와 감옥에서 탈출시켜야 한다. </p>
+          </div>
+          <div>
+            <img src="/img/hacker.png">
+          </div>
+        </div>
+      </div>
+
+      <div id="box-04">
+        <h5> Main Theme :: Old City Theme by remaxim </h5>
+        <h5> Game Playing :: Perpetual Tension by Zander Noriega</h5>
+      </div>
+
+    </section>
+
+    <!-- footer -->
+    <%- include('partials/footer')%>
 </body>
 
 
