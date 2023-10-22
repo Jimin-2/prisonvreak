@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/report.css">
+
+    <!-- JavaScript -->
+    <script src="/javascript/index.js"></script>
+    <script src="/javascript/board.js"></script>
+
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- icon -->
+    <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
+
+    <!--Title-->
+    <title> CAN </title>
+</head>
+
+<body>
+
+<!-- 모달 창 시작 -->
+<div id="myReport">
+    <div class="modal-content">
+        <h1>신고하기</h1>
+        <p>신고 사유를 선택해주세요:</p>
+        <form action="/report/<%= cmt_num %>" method="post">
+            <select name="report_reason" id="report_reason">
+                <option value="spam">원치 않는 상업성 콘텐츠 또는 스팸</option>
+                <option value="harassment">희롱 또는 괴롭힘</option>
+                <option value="fakeNews">잘못된 정보</option>
+                <option value="others">기타</option>
+            </select>
+            <br><br>
+            <textarea name="report_detail" id="report_detail" rows="4" cols="50" placeholder="자세한 사유를 입력해주세요 (선택사항)"></textarea>
+            <input type="hidden" name="cmt_num" value="<%= cmt_num %>">  <!-- 댓글 번호를 hidden input으로 전송 -->
+            <br><br>
+            <button type="submit">제출</button>
+        </form>
+    </div>
+</div>
+<!-- 모달 창 끝 -->
+
+<!-- <script>
+
+</script> -->
+</body>
+</html>
+
