@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
   <!--글꼴 Link-->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
   <!-- 반응형 웹 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
   <!--Title-->
   <title> CAN </title>
@@ -86,8 +86,7 @@
                               <div> WEB <%= userProfile.web_clear_time %> </div>
                             <% } %>
                           <% } %>
-                        </div>
-                      </div>
+                        </div>                      </div>
 
                     </div>
                   </div>
@@ -116,9 +115,13 @@
                       <%= data[i].post_num %>
                     </td>
                     <td>
-                      <a href="/community/show/<%= data[i].post_num %>">
-                        <%= data[i].post_title %>
-                      </a>
+			<a href="/community/show/<%= data[i].post_num %>">
+                              <% let postTitle=data[i].post_title; if (postTitle.length> 20) {
+                                postTitle = postTitle.substring(0, 20) + "...";
+                                }
+                                %>
+                                <%= postTitle %>
+                            </a>
                     </td>
                     <td>
                       <%= data[i].post_usernum %>

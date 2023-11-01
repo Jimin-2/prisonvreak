@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
   <!--글꼴 Link-->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
   <!-- JavaScript -->
   <script src="/javascript/index.js"></script>
   <!-- 반응형 웹 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
   <!--Title-->
   <title> CAN </title>
@@ -26,6 +26,7 @@
 <body>
   <!-- header -->
   <%- include('partials/header')%>
+
 
     <!-- Section -->
     <section id="section">
@@ -80,6 +81,7 @@
 
               </div>
             </div>
+
             <form action="/auth/updateProfileIntro" method="post">
               <p id="textCount">0자 / 100자</p>
               <textarea id="memIntro" name="memIntro" rows="3" oninput="byteCount(this)"
@@ -143,8 +145,6 @@
                 </tbody>
               </table>
             </div>
-          </div>
-
         </div>
       </div>
     </section>

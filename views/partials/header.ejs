@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   <link rel="stylesheet" type="text/css" href="/css/header.css">
   <script src="https://kit.fontawesome.com/3756c8d92c.js" crossorigin="anonymous"></script>
   <style>
@@ -17,7 +17,7 @@
 
 <!-- nav : mobile은 X, PC는 O -->
 <ul class="nav">
-  <li class="link-1" onclick="location.href='/'">게임정보</li>
+  <li class="link-1" onclick="location.href='/gameInfo'">게임정보</li>
 
   <li class="link-1" onclick="location.href='/notice'">공지사항</li>
 
@@ -43,21 +43,21 @@
 
 <div class="nav-toggle-button">
   <ul>
-    <li class="link-1" onclick="location.href='/'">게임정보</li>
+    <li class="link-1" onclick="location.href='/gameInfo'" style="color: white;">게임정보</li>
 
-    <li class="link-1" onclick="location.href='/notice'">공지사항</li>
+    <li class="link-1" onclick="location.href='/notice'" style="color: white;">공지사항</li>
 
-    <li class="link-1" onclick="location.href='/community'">커뮤니티</li>
+    <li class="link-1" onclick="location.href='/community'"" style="color: white;">커뮤니티</li>
 
-    <li class="link-1" onclick="location.href='/rank'">랭킹</li>
+    <li class="link-1" onclick="location.href='/rank'" style="color: white;">랭킹</li>
 
-    <li class="link-1" onclick="location.href='/auth/customer'">고객지원</li>
+    <li class="link-1" onclick="location.href='/auth/customer'" style="color: white;">고객지원</li>
 
     <% if (is_logined) { %>
-      <li class="link-1" onclick="location.href='/auth/mypage'"> 마이페이지 </li>
-      <li class="link-1" onclick="location.href='/auth/logout'">로그아웃</li>
+      <li class="link-1" onclick="location.href='/auth/mypage'" style="color: white;"> 마이페이지 </li>
+      <li class="link-1" onclick="location.href='/auth/logout'" style="color: white;">로그아웃</li>
     <% } else { %>
-      <li class="link-1" onclick="location.href='/auth/login'">로그인</li>
+      <li class="link-1" onclick="location.href='/auth/login'" style="color: white;">로그인</li>
     <% } %>
   </ul>
 </div>

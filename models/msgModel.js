@@ -1,40 +1,23 @@
 const db = require('../config/db');
+exports.countUnreadMessages = function (chatroomId, user1_id, callback) {
+    console.log('chatroomId:', chatroomId);
+    db.query('SELECT COUNT(*) AS unreadCount FROM Chatroom_Messages WHERE chatroom_id = ? AND receiver_id = ? AND is_read = 0', [chatroomId, user1_id],
 
-// msgModel.js
-/*exports.chatroomList = function(user1_id, callback) {
-    // user1_id가 속한 채팅방 목록을 가져오는 쿼리
-    db.query(
-        'SELECT Chatrooms.chatroom_id, member.mem_nickname, member.mem_profile ' +
-        'FROM Chatrooms ' +
-        'INNER JOIN Users ON (Chatrooms.user1_id = Users.id OR Chatrooms.user2_id = Users.id) ' +
-        'WHERE Chatrooms.user1_id = ? OR Chatrooms.user2_id = ?',
-        [user1_id, user1_id],
-        function(error, results) {
+        function (error, results) {
+            // 쿼리 내 WHERE 조건을 수정했습니다: receiver_id = ? 대신 receiver_id != ?
             if (error) {
                 callback(error, null);
             } else {
-                // 각 채팅방 정보에 대해 상대방의 프로필 정보를 가져오는 쿼리
-                for (const chatroom of results) {
-                    db.query(
-                        'SELECT mem_profile FROM Users WHERE mem_nickname = ?',
-                        [chatroom.nickname],
-                        function(innerError, profileResults) {
-                            if (innerError) {
-                                callback(innerError, null);
-                            } else {
-                                // 상대방의 프로필 정보를 채팅방 정보에 추가
-                                chatroom.mem_profile = profileResults[0].mem_profile;
-                            }
-                        }
-                    );
+                if (results.length > 0) {
+                    callback(null, results[0].unreadCount);
+                } else {
+                    callback(null, 0);
                 }
-
-                // 모든 정보가 추가된 결과를 반환
-                callback(null, results);
             }
         }
     );
-};*/
+};
+// msgModel.js
 exports.chatroomList = function(user1_id, callback) {
     // user1_id가 속한 채팅방 목록을 가져오는 쿼리
     db.query(
@@ -47,6 +30,11 @@ exports.chatroomList = function(user1_id, callback) {
             if (error) {
                 callback(error, null);
             } else {
+                results.forEach(function(chatroom) {
+                    console.log('Chatroom ID:', chatroom.chatroom_id);
+                    console.log('Receiver Name:', chatroom.receiverName);
+                    console.log('Receiver Profile:', chatroom.receiverProfile);
+                });
                 callback(null, results);
             }
         }

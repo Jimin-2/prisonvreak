@@ -300,6 +300,7 @@ const boardController = {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const imageUrl = req.file ? req.file.location : null;
+
     postModel.getMemNumByMemId(userId, (error, memnum) => {
       postModel.insertPost(
         body.post_title,
@@ -418,7 +419,49 @@ const boardController = {
       res.render('boardShow', { like: res })
     })
   },
-};
+
+  renderReport: (req, res) => {
+    const cmt_num = req.params.cmt_num;
+    const post_num = req.params.post_num;
+
+    res.render('report.ejs', { cmt_num: cmt_num });  // 데이터와 함께 report.ejs를 렌더링
+  },
+
+  submitReport: (req, res) => {
+    console.log(req.session.user_id);
+    const isLoggedIn = req.session.user_id !== undefined;
+    const cmt_num = req.body.cmt_num;
+    const userId = req.session.user_id;
+    const report_reason = req.body.report_reason;
+    const report_detail = req.body.report_detail;
+    const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    const referrer = req.headers.referer;
+
+    if (!isLoggedIn) {
+      return res.send('<script>alert("로그인이 필요한 기능입니다"); window.location.href = "/auth/login";</script>');
+    }
+    else{
+      commentModel.checkDuplicateReport(cmt_num, userId, (isDuplicate) => {
+        if (isDuplicate) {
+            return res.send('<script>alert("이미 신고하셨습니다."); window.history.back();</script>');
+        }
+
+      commentModel.insertReport(
+        cmt_num,
+        userId,
+        report_reason,
+        report_detail,
+        koreanTime,
+        () => {
+          return res.send('<script>alert("신고가 접수되었습니다."); window.location.href="'+ referrer +'";</script>');
+        }
+      );
+    });
+    }
+  },
+  
+}
+
 
 const noticeController = {
   calculatePagination: (currentPage, totalPages) => {

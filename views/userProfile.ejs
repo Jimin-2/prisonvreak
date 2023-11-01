@@ -12,7 +12,8 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/userProfile.css">
+    <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/userProfile.css">
+    <link rel="stylesheet" media="(max-width: 900px)" href="/css/userProfile_m.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
@@ -32,7 +33,7 @@
 
 
 <div id="myProfile">
-    <h1><%= userProfile.mem_nickname %>'s 프로필</h1> <!-- userProfile 객체에서 mem_nickname을 사용합니다 -->
+    <h1 id="profileNickname"><%= userProfile.mem_nickname %>'s 프로필</h1> <!-- userProfile 객체에서 mem_nickname을 사용합니다 -->
     <br>
     <div id="profileImg">
         <% if (userProfile && userProfile.mem_profile) { %>
@@ -70,10 +71,12 @@
 
     <div id="link">
         <!--<p onclick="showProfile('<%= userProfile.mem_nickname %>')">-->
+        <div onclick="closeModal()" class="modal-close" style="font-weight: bold; cursor: pointer;"> 닫기 </div>
             <% if (userProfile && userProfile.mem_profile) { %>
                 <a href="/auth/profile/<%= userProfile.mem_nickname %>">>>상세조회</a><!--</p>-->
             <% } %>
     </div>
+
 </div>
  <!-- mem_intro를 사용합니다 -->
 <!--<script>

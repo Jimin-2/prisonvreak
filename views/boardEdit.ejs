@@ -11,7 +11,8 @@
 
     <!--CSS-->
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/css/boardInsert.css">
+    <link rel="stylesheet" media="(min-width: 900px)" type="text/css" href="/css/boardInsert.css">
+    <link rel="stylesheet" media="(max-width: 900px)" href="/css/boardInsert_m.css">
 
     <!-- JavaScript -->
     <script src="/javascript/index.js"></script>
@@ -30,7 +31,6 @@
     <div id="layout">
         <div id="sectionTitle">
             <h1> 글 수정 </h1>
-            <hr>
         </div>
 
         <form id="form" action="" method="post" enctype="multipart/form-data">
@@ -54,13 +54,13 @@
                     required><%= data.post_content %></textarea>
             </div>
             <br>
-            <div style="display: flex; justify-content: center; ">
+            <div style="display: flex; justify-content: flex-end; ">
 
                 <div class="btn">
-                    <input type="button" data-action="edit" value="수정하기" class="custom-btn btn-16" onclick="submitForm('edit')">
+                    <input type="button" data-action="edit" value="수정하기" style="cursor: pointer" class="custom-btn btn-16" onclick="submitForm('edit')">
                 </div>
                 <div class="btn">
-                    <input type="button" data-action="delete" value="삭제하기" class="custom-btn btn-16" onclick="submitForm('delete')">
+                    <input type="button" data-action="delete" value="삭제하기" style="cursor: pointer" class="custom-btn btn-16" onclick="submitForm('delete')">
                 </div>
             </div>
 

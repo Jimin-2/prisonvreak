@@ -219,9 +219,11 @@ exports.loading = function (req,res){
         return res.send('<script>alert("로그인이 필요합니다."); location.href="/auth/login";</script>');
     }
 
+    const nickname = req.session.nickname;
     const userCode = req.session.user_code;
-    res.render('loading', {userCode: userCode});
+    res.render('loading', {userCode: userCode, nickname: nickname});
 }
+
 exports.vrGetAllRank = function (req, res){
     gameModel.vrGetRank((error, results)=>{
         if (error) throw ('error');
