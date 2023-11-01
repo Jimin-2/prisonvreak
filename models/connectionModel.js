@@ -252,7 +252,4 @@ const friendModel = {
 
 };
 
-const alarmModel = {
-
-};
-module.exports = { friendModel, alarmModel };
+module.exports = { friendModel };

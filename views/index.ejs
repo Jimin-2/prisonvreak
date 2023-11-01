@@ -59,13 +59,16 @@
 
         <div id="menu" class="item03">
           <ul>
-            <li onclick="location.href='/'"><a>Game Info</a></li>
+            <li onclick="location.href='/gameInfo'"><a>Game Info</a></li>
             <li onclick="location.href='/notice'"><a>Notice</a></li>
             <li onclick="location.href='/community'"><a>Community</a></li>
             <li onclick="location.href='/rank'"><a>Ranking</a></li>
             <li onclick="location.href='/auth/customer'"><a>Customer</a></li>
             <% if (is_logined) { %>
               <li onclick="location.href='/auth/logout'"><a>Log out</a></li>
+              <% if (userProfile.mem_code === '1') { %>
+                <li onclick="location.href='/adminPage'"><a>Admin Page</a></li>
+                <% } %>
               <% } else { %>
                 <li onclick="location.href='/auth/login'"><a>Log in</a></li>
                 <% } %>
@@ -85,6 +88,7 @@
                     <p> VR : <%= userProfile.vr_clear_time %> </p>
                     <p> WEB : <%= userProfile.web_clear_time %> </p>
                   </div>
+                  
               </div>
                 <div id="info-02" class="item02">
                   <img id="item02-box" src="<%= userProfile.mem_profile %>" alt="프로필사진">

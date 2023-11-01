@@ -4,6 +4,8 @@ const mainController = require("../controllers/mainController");
 
 router.get('/',mainController.indexpage);
 
+router.get('/gameInfo',mainController.gameInfo);
+
 router.post('/game',mainController.gamepage);
 
 router.get('/rank', mainController.rankpage);

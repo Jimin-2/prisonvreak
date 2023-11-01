@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--글꼴 Link-->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/adminPage.css">
+
+  <!-- JavaScript -->
+  <script src="/javascript/index.js"></script>
+  <!-- 반응형 웹 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title> CAN </title>
+</head>
+
+<body>
+  <header>
+    <h1>관리자 페이지</h1>
+    <a href="/" class="return-button">홈</a>
+  </header>
+  <div class="content-wrapper">
+    <nav id="sticky-nav">
+      <ul>
+        <li><a href="/adminPage/users">회원 관리</a></li>
+        <li><a href="#" id="2">커뮤니티</a></li>
+        <li><a href="#" id="3">컨텐츠 관리</a></li>
+        <li><a href="#" id="3">신고 문의</a></li>
+      </ul>
+    </nav>
+    <main>
+      <div id="usersInfo">
+        <table id="userTable">
+          <thead>
+            <tr style="cursor: pointer;">
+              <th class="sortable" data-sort="mem_code">Code</th>
+              <th class="sortable" data-sort="mem_id">ID</th>
+              <th class="sortable" data-sort="mem_email">E-mail</th>
+              <th class="sortable" data-sort="mem_provider">provider</th>
+              <th class="sortable" data-sort="mem_name">name</th>
+              <th class="sortable" data-sort="mem_nickname">Nickname</th>
+              <th class="sortable" data-sort="mem_created_at">가입일</th>
+              <th class="sortable" data-sort="mem_updated_at">수정일</th>
+              <th class="sortable" data-sort="mem_phone">Phone</th>
+              <th class="sortable" data-sort="mem_intro">Introduction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i=0; i < users.length; i++) { %>
+              <tr>
+                <td>
+                  <%= users[i].mem_code %>
+                </td>
+                <td>
+                  <%= users[i].mem_id %>
+                </td>
+                <td>
+                  <%= users[i].mem_email %>
+                </td>
+                <td>
+                  <%= users[i].mem_provider %>
+                </td>
+                <td>
+                  <%= users[i].mem_name %>
+                </td>
+                <td>
+                  <div style="display: flex; align-items: center;">
+                    <img src="<%= users[i].mem_profile %>" width="30px">
+                    <span style="margin-left: 10px;">
+                      <%= users[i].mem_nickname %>
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <%= users[i].mem_created_at %>
+                </td>
+                <td>
+                  <%= users[i].mem_updated_at %>
+                </td>
+                <td>
+                  <%= users[i].mem_phone %>
+                </td>
+                <td>
+                  <% if (users[i].mem_intro && users[i].mem_intro.length> 10) { %>
+                    <%= users[i].mem_intro.slice(0, 10) + '...' %>
+                      <% } else if (users[i].mem_intro) { %>
+                        <%= users[i].mem_intro %>
+                          <% } %>
+                </td>
+                <td>
+                  <button class="delete-button" data-user-id="<%= users[i].mem_code %>">삭제</button>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+<script>
+  function handleTableSort(event) {
+    const th = event.target;
+    if (th.classList.contains('sortable')) {
+      const table = th.closest('table');
+      const index = th.cellIndex;
+      const isAscending = th.getAttribute('data-sort-direction') === 'asc';
+      const dataKey = th.getAttribute('data-sort');
+      const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+      rows.sort((a, b) => {
+        const aValue = a.cells[index].textContent;
+        const bValue = b.cells[index].textContent;
+
+        if (dataKey === 'mem_code' || dataKey === 'mem_created_at' || dataKey === 'mem_updated_at') {
+          return isAscending
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        } else {
+          return isAscending
+            ? aValue.localeCompare(bValue, undefined, { numeric: true })
+            : bValue.localeCompare(aValue, undefined, { numeric: true });
+        }
+      });
+      rows.forEach(row => row.remove());
+
+      rows.forEach(row => table.querySelector('tbody').appendChild(row));
+
+      th.setAttribute('data-sort-direction', isAscending ? 'desc' : 'asc');
+    }
+  }
+
+  const headers = document.querySelectorAll('.sortable');
+  headers.forEach(header => {
+    header.setAttribute('data-sort-direction', 'asc');
+    header.addEventListener('click', handleTableSort);
+  });
+
+
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const deleteButtons = document.querySelectorAll(".delete-button");
+
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        const confirmDelete = confirm('사용자를 삭제하시겠습니까?');
+        const user_code = event.target.getAttribute("data-user-id");
+        if (confirmDelete) {
+          fetch('/adminPage/deleteUser', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_code: user_code }),
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data)
+              if (data) {
+                alert("사용자가 삭제되었습니다.");
+                location.reload();
+              } else {
+                alert('사용자 삭제 오류');
+              }
+            })
+            .catch(error => {
+              console.error('사용자 삭제 오류:', error);
+            });
+        }
+      });
+    });
+  });
+</script>
+
+</html>
