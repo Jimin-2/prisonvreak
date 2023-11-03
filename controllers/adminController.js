@@ -2,9 +2,9 @@ const { adminModel } = require('../models/adminModel');
 const { friendModel } = require('../models/connectionModel');
 const moment = require('moment');
 
-const adminController = { 
-    adminPage: (req, res ) => {
-         res.render('adminPage', );
+const adminController = {
+    adminPage: (req, res) => {
+        res.render('adminPage',);
     },
 
     adminUsers: (req, res) => {
@@ -14,22 +14,59 @@ const adminController = {
                 if (user.mem_updated_at !== null) {
                     user.mem_updated_at = moment(user.mem_updated_at).format('YY.MM.DD HH:mm:ss');
                 }
-              });
+            });
             res.render('admin_users', { users: users });
         })
     },
 
     deleteUsers: (req, res) => {
         const user_code = req.body.user_code;
-        friendModel.fwithdrawal(user_code, () => {});
+        friendModel.fwithdrawal(user_code, () => { });
         adminModel.deleteUsers(user_code, (err, result) => {
-            if(err){
+            if (err) {
                 res.status(500).json({ data: result, message: '사용자 삭제 오류' });
             } else {
                 res.status(200).json({ data: result, message: '사용자 삭제 성공' });
             }
         })
     },
+
+    reportRequests: (req, res) => {
+        adminModel.reportRequests((err, reports) => {
+            reports.forEach(report => {
+                report.date_reported = moment(report.date_reported).format('YY.MM.DD HH:mm:ss');
+            });
+            res.render('admin_reportRequests', { reports: reports });
+        })
+    },
+
+    reports: (req, res) => {
+        adminModel.reports((err, reports) => {
+            reports.forEach(report => {
+                report.date_reported = moment(report.date_reported).format('YY.MM.DD HH:mm:ss');
+            });
+            res.render('admin_reports', { reports: reports });
+        })
+    },
+
+    deleteReport: (req, res) => {
+        const report_id = req.body.report_id;
+        adminModel.deleteReport(report_id, (err, result) => {
+            if (err) {
+                res.status(500).json({ data: result, message: '신고 삭제 오류' });
+            } else {
+                res.status(200).json({ data: result, message: '신고 삭제 성공' });
+            }
+        })
+    },
+
+    reportCompleted: (req, res) => {
+        const report_id = req.params.report_id;
+        const reportText = req.body.reportText;
+        adminModel.reportCompleted(reportText, report_id, (err, result) => {
+            res.redirect('/adminPage/reportRequests');
+        })
+    }
 };
 
 module.exports = { adminController };

@@ -98,6 +98,7 @@ main{
     footer {
         padding: 5px;
     }
+
 }
 
 /*회원 관리*/
@@ -122,15 +123,34 @@ main{
   }
 
   .delete-button {
-    background-color: #ff4444; /* 배경색 */
-    color: #fff; /* 텍스트 색상 */
-    padding: 5px 10px; /* 내부 여백 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 둥근 모서리 */
-    cursor: pointer; /* 커서 모양 변경 */
+    background-color: #ff4444;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 
   /* 버튼에 호버 효과 추가 */
   .delete-button:hover {
-    background-color: #cc0000; /* 호버 시 배경색 변경 */
+    background-color: #cc0000;
   }
+
+  .review_button {
+    background-color: #007BFF;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+}
+
+.review_button:hover {
+    background-color: #0056b3;
+}
+
+th[data-sort="date_reported"], th[data-sort="comment_code"] {
+    width: 80px;
+  }
+  

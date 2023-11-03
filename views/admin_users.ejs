@@ -22,19 +22,8 @@
 </head>
 
 <body>
-  <header>
-    <h1>관리자 페이지</h1>
-    <a href="/" class="return-button">홈</a>
-  </header>
-  <div class="content-wrapper">
-    <nav id="sticky-nav">
-      <ul>
-        <li><a href="/adminPage/users">회원 관리</a></li>
-        <li><a href="#" id="2">커뮤니티</a></li>
-        <li><a href="#" id="3">컨텐츠 관리</a></li>
-        <li><a href="#" id="3">신고 문의</a></li>
-      </ul>
-    </nav>
+  <%- include('partials/admin_header')%>
+  
     <main>
       <div id="usersInfo">
         <table id="userTable">
@@ -178,6 +167,23 @@
       });
     });
   });
+</script>
+
+<script>
+  window.onscroll = function () {
+    makeSticky();
+  };
+
+  function makeSticky() {
+    const stickyNav = document.getElementById("sticky-nav");
+    if (window.pageYOffset > stickyNav.offsetTop) {
+      stickyNav.style.position = "fixed";
+      stickyNav.style.top = "0";
+    } else {
+      stickyNav.style.position = "sticky";
+      stickyNav.style.top = "0";
+    }
+  }
 </script>
 
 </html>

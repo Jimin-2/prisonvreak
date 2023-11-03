@@ -66,7 +66,6 @@ app.use((req, res, next) => {
         console.log(err);
       }
       if (result && 'user2Array' in result && result.user2Array.length > 0) {
-        console.log(result);
         res.locals.newAlarm = true;
       } else {
         res.locals.newAlarm = false;
