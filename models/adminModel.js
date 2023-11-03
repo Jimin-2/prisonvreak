@@ -79,6 +79,16 @@ const adminModel = {
             callback(null, results);
         });
     },
+
+    community: (callback) => {
+        const query = 'SELECT * FROM post WHERE post_usernum <> 1';
+        db.query(query, (error, results) => {
+            if (error) {
+                console.log(error);
+            }
+            callback(null, results);
+        });
+    },
 };
 
 module.exports = { adminModel };

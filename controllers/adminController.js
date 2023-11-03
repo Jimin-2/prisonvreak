@@ -74,8 +74,17 @@ const adminController = {
                 result.post_created_at = moment(result.post_created_at).format('YY.MM.DD');
             });
             res.render('admin_notice', { results: results });
-        })
-    }
+        });
+    },
+
+    community: (req, res) => {
+        adminModel.community((err, results) => {
+            results.forEach(result => {
+                result.post_created_at = moment(result.post_created_at).format('YY.MM.DD');
+            });
+            res.render('admin_community', { results: results });
+        });
+    },
 };
 
 module.exports = { adminController };

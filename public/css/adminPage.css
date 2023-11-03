@@ -1,3 +1,7 @@
+html {
+    background-color: #ccc;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -11,14 +15,14 @@ header {
     text-align: center;
     padding: 20px;
     display: flex;
-    justify-content: space-between; /* 버튼을 왼쪽에 배치 */
+    justify-content: space-between;
     align-items: center; 
 }
 
 .return-button {
     text-decoration: none;
     padding: 10px 50px;
-    background-color: #E74C3C; /* 빨간색 배경색 */
+    background-color: #E74C3C; 
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
@@ -26,7 +30,7 @@ header {
 }
 
 .return-button:hover {
-    background-color: #C0392B; /* 호버 시 더 어두운 빨간색 */
+    background-color: #C0392B;
 }
 
 .content-wrapper {
