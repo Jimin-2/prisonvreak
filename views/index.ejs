@@ -69,6 +69,9 @@
             <li onclick="location.href='/auth/customer'"><a>Customer</a></li>
             <% if (is_logined) { %>
               <li onclick="location.href='/auth/logout'"><a>Log out</a></li>
+              <% if (userProfile.mem_code === '1') { %>
+                <li onclick="location.href='/adminPage'"><a>Admin Page</a></li>
+                <% } %>
               <% } else { %>
                 <li onclick="location.href='/auth/login'"><a>Log in</a></li>
                 <% } %>
@@ -96,7 +99,7 @@
                       <% } %>
 
                   </div>
-                </div>
+              </div>
                 <div id="info-02" class="item02">
                   <img id="item02-box" src="<%= userProfile.mem_profile %>" alt="프로필사진">
                 </div>

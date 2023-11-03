@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/adminPage.css">
+    <link rel="stylesheet" type="text/css" href="/css/adminNotice.css">
+
+    <!-- JavaScript -->
+    <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> CAN </title>
+</head>
+
+<body>
+    <%- include('partials/admin_header') %>
+        <main>
+            <div id="usersInfo">
+                <table id="userTable">
+                    <thead>
+                        <tr style="cursor: pointer;">
+                            <th class="sortable" data-sort="date">작성일</th>
+                            <th class="sortable" data-sort="title">제목</th>
+                            <th class="sortable" data-sort="content">내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i=results.length - 1; i>= 0; i--) { %>
+                            <tr>
+                                <td>
+                                    <%= results[i].post_created_at %>
+                                </td>
+                                <td>
+                                    <a href="/community/show/<%= results[i].post_num %>">
+                                        <%= results[i].post_title %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="post-content">
+                                        <a href="/community/show/<%= results[i].post_num %>">
+                                            <%= results[i].post_content %>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="edit-button"
+                                        data-href="/community/edit/<%= results[i].post_num %>">수정</button>
+                                    <button class="delete-button"
+                                        data-href="/community/delete/<%= results[i].post_num %>">삭제</button>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        </div>
+
+        <script>
+            const editButtons = document.querySelectorAll(".edit-button");
+            const deleteButtons = document.querySelectorAll(".delete-button");
+
+            editButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const url = this.getAttribute("data-href");
+                    if (url) {
+                        fetch(url, {
+                            method: 'GET'
+                        })
+                            .then(data => {
+                                if (data.ok) {
+                                    window.location.href = url;
+                                } else {
+                                    alert('수정 실패');
+                                }
+                            })
+                            .catch(error => {
+                                console.error(error);
+                                alert('수정 실패');
+                            });
+                    }
+                });
+            });
+
+
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const url = this.getAttribute("data-href");
+                    if (url) {
+                        if (confirm("해당 글을 삭제하시겠습니까?")) {
+                            fetch(url, {
+                                method: 'GET'
+                            })
+                                .then(data => {
+                                    if (data.ok) {
+                                        window.location.reload();
+                                    } else {
+                                        alert('삭제에 실패했습니다.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('삭제 요청 실패:', error);
+                                    alert('삭제에 실패했습니다.');
+                                });
+                        }
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            window.onscroll = function () {
+                makeSticky();
+            };
+
+            function makeSticky() {
+                const stickyNav = document.getElementById("sticky-nav");
+                if (window.pageYOffset > stickyNav.offsetTop) {
+                    stickyNav.style.position = "fixed";
+                    stickyNav.style.top = "0";
+                } else {
+                    stickyNav.style.position = "sticky";
+                    stickyNav.style.top = "0";
+                }
+            }
+        </script>
+</body>
+
+</html>

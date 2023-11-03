@@ -1,0 +1,160 @@
+html {
+    background-color: #ccc;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+header {
+    background-color: #666;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+}
+
+.return-button {
+    text-decoration: none;
+    padding: 10px 50px;
+    background-color: #E74C3C; 
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.return-button:hover {
+    background-color: #C0392B;
+}
+
+.content-wrapper {
+    background-color: #f5f5f5;
+    display: flex;
+}
+
+nav {
+    background-color: #666;
+    color: #fff;
+    width: 200px;
+    padding: 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 10px;
+}
+
+nav ul li a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #444;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 500px;
+}
+
+footer {
+    text-align: center;
+    background-color: #666;
+    color: #fff;
+    padding: 10px;
+}
+main{
+    overflow: auto;
+}
+
+#sticky-nav {
+    position: sticky;
+    top: 0;
+    background-color: #666;
+    color: #fff;
+    padding: 20px;
+    z-index: 100;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 10px;
+    }
+
+    footer {
+        padding: 5px;
+    }
+
+}
+
+/*회원 관리*/
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #ddd;
+  }
+
+  .delete-button {
+    background-color: #ff4444;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* 버튼에 호버 효과 추가 */
+  .delete-button:hover {
+    background-color: #cc0000;
+  }
+
+  .review_button {
+    background-color: #007BFF;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+}
+
+.review_button:hover {
+    background-color: #0056b3;
+}
+
+th[data-sort="date_reported"], th[data-sort="comment_code"] {
+    width: 80px;
+  }
+  

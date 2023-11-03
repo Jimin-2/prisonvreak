@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { friendController, alarmController } = require('../controllers/connectionController');
+const { friendController } = require('../controllers/connectionController');
 
 router.get('/myPage/friendList', friendController.friendList);
 router.post('/sendFriendRequest', friendController.sendFriendRequest);

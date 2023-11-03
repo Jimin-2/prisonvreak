@@ -300,20 +300,25 @@ const boardController = {
     const body = req.body;
     const koreanTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const imageUrl = req.file ? req.file.location : null;
+    console.log(userId);
 
     postModel.getMemNumByMemId(userId, (error, memnum) => {
-      postModel.insertPost(
-        body.post_title,
-        imageUrl,
-        body.post_content,
-        memnum,
-        koreanTime,
-        () => {
-          res.redirect('/community');
-        }
-      );
-    })
-  },
+        postModel.insertPost(
+            body.post_title,
+            imageUrl,
+            body.post_content,
+            memnum,
+            koreanTime,
+            () => {
+                if (userId === 'admin') {
+                  res.redirect('/adminPage/notice');
+                } else {
+                    res.redirect('/community');
+                }
+            }
+        );
+    });
+},
 
   showEditForm: (req, res) => {
     const postNum = req.params.post_num;
@@ -338,10 +343,13 @@ const boardController = {
       body.post_content,
       koreanTime,
       postNum,
-      () => {
-        res.redirect('/community');
-      }
-    );
+      (err, results) => {
+        if (results === '1') {
+          res.redirect('/adminPage/notice');
+        } else {
+            res.redirect('/community');
+        }
+    });
   },
 
   addComment: (req, res) => {

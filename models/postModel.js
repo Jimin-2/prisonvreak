@@ -67,8 +67,23 @@ const postModel = {
         parameters = [post_title, post_image, post_content, post_updated_at, post_num];
     }
 
-    db.query(sql, parameters, () => {
-        callback();
+    db.query(sql, parameters, (error, results) => {
+        if (error) {
+            console.error('업데이트 실패:', error);
+            callback(error, null);
+        } else {
+            // 업데이트된 post_usernum을 가져오는 SQL 쿼리 실행
+            const selectUsernumQuery = 'SELECT post_usernum FROM post WHERE post_num = ?';
+            db.query(selectUsernumQuery, [post_num], (selectError, selectResults) => {
+                if (selectError) {
+                    console.error('post_usernum 조회 실패:', selectError);
+                    callback(selectError, null);
+                } else {
+                    const updatedUsernum = selectResults[0].post_usernum;
+                    callback(null, updatedUsernum);
+                }
+            });
+        }
     });
 },
 

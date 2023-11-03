@@ -138,8 +138,5 @@ const friendController = {
     },
 };
 
-const alarmController = {
 
-};
-
-module.exports = { friendController, alarmController };
+module.exports = { friendController };

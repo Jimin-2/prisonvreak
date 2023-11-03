@@ -12,11 +12,12 @@ exports.indexpage = function (req,res){
                 res.render('error'); // 에러 화면 렌더링 또는 다른 처리
             } else {
                 const userProfile = results[0]; // 프로필 정보를 userProfile 변수로 저장
-                res.render('index', { userProfile: userProfile });
+                console.log(userProfile.mem_code);
+                res.render('index', { userProfile: userProfile, });
             }
         });
     }
-    else res.render('index');
+    else res.render('index', {userProfile: null, });
 }
 
 exports.gamepage = function (req, res) {
@@ -246,4 +247,4 @@ exports.vrClearGetRank = function (req, res){
 
 exports.gameInfo = function (req, res){
     res.render('gameinfo')
-}
+};

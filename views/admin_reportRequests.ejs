@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/adminPage.css">
+    <link rel="stylesheet" type="text/css" href="/css/admin_reports.css">
+
+    <!-- JavaScript -->
+    <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title> CAN </title>
+</head>
+
+<body>
+    <%- include('partials/admin_header')%>
+        <main>
+            <div id="usersInfo">
+                <table id="userTable">
+                    <thead>
+                        <tr>
+                            <th class="sortable" data-sort="date_reported">신고일</th>
+                            <th class="sortable" data-sort="report_reason">신고 유형</th>
+                            <th class="sortable" data-sort="reporter_user_id">신고자</th>
+                            <th class="sortable" data-sort="report_detail">신고 이유</th>
+                            <th class="sortable" data-sort="comment_code">대상 코드</th>
+                            <th class="sortable" data-sort="comment">신고 댓글 내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let i=0; i < reports.length; i++) { %>
+                            <tr>
+                                <td>
+                                    <%= reports[i].date_reported %>
+                                </td>
+                                <td>
+                                    <%= reports[i].report_reason %>
+                                </td>
+                                <td>
+                                    <%= reports[i].reporter_user_id %>
+                                </td>
+                                <td>
+                                    <% if (reports[i].report_detail && reports[i].report_detail.length> 30) { %>
+                                        <%= reports[i].report_detail.slice(0, 30) + '...' %>
+                                            <% } else if (reports[i].report_detail) { %>
+                                                <%= reports[i].report_detail %>
+                                                    <% } %>
+                                </td>
+                                <td>
+                                    <%= reports[i].cmt_usernum %>
+                                </td>
+                                <td>
+                                    <% if (reports[i].cmt_content && reports[i].cmt_content.length> 30) { %>
+                                        <%= reports[i].cmt_content.slice(0, 30) + '...' %>
+                                            <% } else if (reports[i].cmt_content) { %>
+                                                <%= reports[i].cmt_content %>
+                                                    <% } %>
+                                                        <button class="review_button"
+                                                            data-post-num="<%= reports[i].post_num %>">글 확인</button>
+                                </td>
+                                <td>
+                                    <button class="openModalButton">신고 처리</button>
+                                    <div class="modal">
+                                        <div class="modal-content">
+                                            <span class="close-button">닫기</span>
+                                            <h2>신고 처리 내용</h2>
+                                            <form action="/adminPage/reportCompleted/<%= reports[i].report_id %>" method="POST" autocomplete="off">
+                                                <textarea name="reportText" placeholder="처리 내용을 적어주세요"></textarea>
+                                                <button class="form_button" type="submit" onclick="showAlert()">제출</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <script>
+            function showAlert() {
+                alert('제출되었습니다.');
+            }
+        </script>
+        <script>
+            const openModalButtons = document.querySelectorAll(".openModalButton");
+            const modals = document.querySelectorAll(".modal");
+
+            // 각 버튼에 대한 클릭 이벤트 처리기 추가
+            openModalButtons.forEach((button, index) => {
+                button.addEventListener("click", () => {
+                    modals[index].style.display = "block";
+                });
+            });
+
+            // 각 모달에 대한 닫기 버튼 및 외부 클릭 처리기 추가
+            modals.forEach((modal) => {
+                const closeModalButton = modal.querySelector(".close-button");
+                modal.addEventListener("click", (event) => {
+                    if (event.target === modal || event.target === closeModalButton) {
+                        modal.style.display = "none";
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            window.onscroll = function () {
+                makeSticky();
+            };
+
+            function makeSticky() {
+                const stickyNav = document.getElementById("sticky-nav");
+                if (window.pageYOffset > stickyNav.offsetTop) {
+                    stickyNav.style.position = "fixed";
+                    stickyNav.style.top = "0";
+                } else {
+                    stickyNav.style.position = "sticky";
+                    stickyNav.style.top = "0";
+                }
+            }
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const reviewButtons = document.querySelectorAll(".review_button");
+                const deleteButtons = document.querySelectorAll(".delete-button");
+
+                reviewButtons.forEach((button) => {
+                    button.addEventListener("click", (event) => {
+                        const post_num = event.target.getAttribute("data-post-num");
+                        window.open(`/community/show/${post_num}`, '_blank');
+                    });
+                });
+
+                deleteButtons.forEach((button) => {
+                    button.addEventListener("click", (event) => {
+                        const confirmProcessing = confirm('처리를 완료하시겠습니까?');
+                        const report_id = event.target.getAttribute("data-id");
+                        if (confirmProcessing) {
+                            fetch('/adminPage/deleteReport', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ report_id: report_id }),
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    console.log(data)
+                                    if (data) {
+                                        location.reload();
+                                    } else {
+                                        alert('신고 삭제 오류');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('신고 삭제 오류:', error);
+                                });
+                        }
+                    });
+                });
+            });
+        </script>
+
+</body>
+
+</html>

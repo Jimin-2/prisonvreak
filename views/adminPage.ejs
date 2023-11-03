@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--글꼴 Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/adminPage.css">
+
+    <!-- JavaScript -->
+    <script src="/javascript/index.js"></script>
+    <!-- 반응형 웹 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> CAN </title>
+</head>
+
+<body>
+    <%- include('partials/admin_header') %>
+        <main>
+            
+        </main>
+    </div>
+
+    <script>
+        window.onscroll = function () {
+            makeSticky();
+        };
+
+        function makeSticky() {
+            const stickyNav = document.getElementById("sticky-nav");
+            if (window.pageYOffset > stickyNav.offsetTop) {
+                stickyNav.style.position = "fixed";
+                stickyNav.style.top = "0";
+            } else {
+                stickyNav.style.position = "sticky";
+                stickyNav.style.top = "0";
+            }
+        }
+    </script>
+</body>
+
+</html>
