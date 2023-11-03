@@ -39,7 +39,7 @@ const adminModel = {
         const query = `SELECT report.*, comment.cmt_usernum, comment.cmt_content, comment.post_num
         FROM report
         JOIN comment ON report.cmt_num = comment.cmt_num
-        WHERE report.is_completed <> 1;`;
+        WHERE report.is_completed <> 1 OR report.is_completed IS NULL;`;
         db.query(query, (error, results) => {
             if (error) {
                 console.log(error);
