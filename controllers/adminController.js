@@ -66,6 +66,15 @@ const adminController = {
         adminModel.reportCompleted(reportText, report_id, (err, result) => {
             res.redirect('/adminPage/reportRequests');
         })
+    },
+
+    notice: (req, res) => {
+        adminModel.notice((err, results) => {
+            results.forEach(result => {
+                result.post_created_at = moment(result.post_created_at).format('YY.MM.DD');
+            });
+            res.render('admin_notice', { results: results });
+        })
     }
 };
 
